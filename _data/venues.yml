@@ -7,3 +7,20 @@
 
 "Vision":
   color: "#009f36"
+  url: https://jov.arvojournals.org/
+
+"JNeurosci":
+  url: https://www.jneurosci.org/
+  color: "#8c1515"
+
+"Cosyne":
+  url: https://www.cosyne.org/
+  color: "#6a5acd"
+
+"MICCAI":
+  url: https://www.miccai.org/
+  color: "#0076b6"
+
+"arXiv":
+  url: https://arxiv.org/
+  color: "#b31b1b"
