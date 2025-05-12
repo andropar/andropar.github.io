@@ -37,18 +37,7 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "post-a-crash-course-in-functional-mri-for-vision-research-part-0-introduction",
-      
-        title: "A crash course in functional MRI for vision research - Part 0: Introduction...",
-      
-      description: "",
-      section: "Posts",
-      handler: () => {
-        
-          window.location.href = "/blog/2025/crash-course-fMRI-overview/";
-        
-      },
-    },{id: "books-the-godfather",
+        },{id: "books-the-godfather",
           title: 'The Godfather',
           description: "",
           section: "Books",handler: () => {
