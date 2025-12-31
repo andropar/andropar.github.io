@@ -44,8 +44,9 @@ import Layout from '../layouts/Layout.astro';
     <div class="card">
       <h3 class="item-title">Large-Scale Image Curation</h3>
       <p class="item-description">
-        Vision research needs naturalistic images. I built pipelines to curate LAION-Natural
-        (120M images) from LAION-2B, filtering billions of images for research-ready datasets.
+        Vision research needs naturalistic images. I scored 2.1B images from ReLAION-2B for
+        "naturalness" using a CLIP-based classifier, identifying ~500M photographic images
+        suitable for vision research.
       </p>
     </div>
   </section>
@@ -141,15 +142,16 @@ import Layout from '../layouts/Layout.astro';
       </div>
     </div>
 
-    <div class="item" id="laion-natural">
-      <h3 class="item-title">LAION-Natural</h3>
-      <p class="item-meta">Dataset • 120M Images</p>
+    <div class="item" id="relaion-natural">
+      <h3 class="item-title">ReLAION-2B Natural</h3>
+      <p class="item-meta">Dataset • 2.1B Scored Images • 167GB</p>
       <p class="item-description">
-        Curated subset of LAION-2B optimized for naturalistic vision studies. Trained a classifier to identify natural images for research use. Pre-computed
-        embeddings for likely-natural images also available.
+        Naturalness scores for 2.1B images from ReLAION-2B, predicting how "photographic" each image looks.
+        Trained a logistic regression classifier on 200k manually labeled images using CLIP ViT-L/14 features.
+        Embeddings dataset includes CLIP ViT-H/14 vectors for ~500M high-scoring natural images.
       </p>
       <div class="publication-links">
-        <a href="https://huggingface.co/datasets/andropar/relaion2b-natural" class="publication-link" target="_blank">Dataset</a>
+        <a href="https://huggingface.co/datasets/andropar/relaion2b-natural" class="publication-link" target="_blank">Scores</a>
         <a href="https://huggingface.co/datasets/andropar/relaion2b-natural-embeddings" class="publication-link" target="_blank">Embeddings</a>
       </div>
     </div>
