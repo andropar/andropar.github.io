@@ -42,4 +42,57 @@ const posts: Array<{slug: string; title: string; date: string; excerpt: string; 
   .empty-state a {
     color: var(--color-text);
   }
+
+  /* Post list with editorial numbering (for when posts are added) */
+  .post-list {
+    counter-reset: posts;
+  }
+
+  .post-item {
+    counter-increment: posts;
+    position: relative;
+    padding-right: var(--space-3xl);
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .post-item::after {
+    content: '0' counter(posts);
+    position: absolute;
+    right: 0;
+    top: var(--space-lg);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.75rem;
+    color: var(--color-border);
+    opacity: 0.5;
+    transition: opacity 0.3s ease, color 0.3s ease;
+    pointer-events: none;
+  }
+
+  .post-item:first-child::after {
+    top: 0;
+  }
+
+  .post-item:hover {
+    transform: translateX(4px);
+    opacity: 1;
+  }
+
+  .post-item:hover::after {
+    opacity: 0.8;
+    color: var(--color-accent);
+  }
+
+  .post-title {
+    transition: color 0.2s ease;
+  }
+
+  .post-item:hover .post-title {
+    color: var(--color-accent);
+  }
+
+  .post-date {
+    font-family: var(--font-serif);
+    font-style: italic;
+  }
 </style>

@@ -525,10 +525,25 @@ nav .container {
   color: var(--color-text-secondary);
 }
 
-/* Footer */
+/* Footer - Editorial Style */
 footer {
   padding: var(--space-xl) 0;
   border-top: 1px solid var(--color-border-subtle);
+  margin-top: var(--space-3xl);
+  position: relative;
+}
+
+footer::before {
+  content: '•';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-serif);
+  font-size: 0.75rem;
+  color: var(--color-border);
+  background: var(--color-bg);
+  padding: 0 var(--space-md);
 }
 
 footer .container {
@@ -540,6 +555,9 @@ footer .container {
 .footer-text {
   font-size: 0.8125rem;
   color: var(--color-text-tertiary);
+  font-family: var(--font-serif);
+  font-style: italic;
+  letter-spacing: 0.02em;
 }
 
 .footer-links {
@@ -597,7 +615,7 @@ footer .container {
   color: var(--color-text);
 }
 
-/* Status indicator */
+/* Status indicator - Refined badge */
 .status {
   display: inline-flex;
   align-items: center;
@@ -605,6 +623,10 @@ footer .container {
   font-size: 0.875rem;
   color: var(--color-text-secondary);
   margin-top: var(--space-xl);
+  padding: var(--space-sm) var(--space-md);
+  background: linear-gradient(135deg, rgba(74, 222, 128, 0.08) 0%, rgba(74, 222, 128, 0.02) 100%);
+  border-radius: 100px;
+  border: 1px solid rgba(74, 222, 128, 0.15);
 }
 
 .status-dot {
@@ -612,12 +634,21 @@ footer .container {
   height: 8px;
   border-radius: 50%;
   background: #4ade80;
-  animation: pulse 2s ease-in-out infinite;
+  position: relative;
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+.status-dot::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1px solid rgba(74, 222, 128, 0.4);
+  animation: statusPulse 2s ease-in-out infinite;
+}
+
+@keyframes statusPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.6); opacity: 0; }
 }
 
 /* Quick Links (Homepage) */

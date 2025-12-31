@@ -215,3 +215,121 @@ import Layout from '../layouts/Layout.astro';
     </div>
   </section>
 </Layout>
+
+<style>
+  /* Publications with editorial numbering */
+  .publication {
+    counter-increment: publications;
+    position: relative;
+    padding-right: var(--space-3xl);
+  }
+
+  .publication::after {
+    content: '0' counter(publications);
+    position: absolute;
+    right: 0;
+    top: var(--space-lg);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.75rem;
+    color: var(--color-border);
+    opacity: 0.5;
+    transition: opacity 0.3s ease, color 0.3s ease;
+    pointer-events: none;
+  }
+
+  .publication:first-child::after {
+    top: 0;
+  }
+
+  .publication:hover::after {
+    opacity: 0.8;
+    color: var(--color-accent);
+  }
+
+  #publications {
+    counter-reset: publications;
+  }
+
+  /* Projects with editorial numbering */
+  #projects {
+    counter-reset: projects;
+  }
+
+  #projects .item {
+    counter-increment: projects;
+    position: relative;
+    padding-right: var(--space-3xl);
+  }
+
+  #projects .item::after {
+    content: '0' counter(projects);
+    position: absolute;
+    right: 0;
+    top: var(--space-lg);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.75rem;
+    color: var(--color-border);
+    opacity: 0.5;
+    transition: opacity 0.3s ease, color 0.3s ease;
+    pointer-events: none;
+  }
+
+  #projects .item:first-child::after {
+    top: 0;
+  }
+
+  #projects .item:hover::after {
+    opacity: 0.8;
+    color: var(--color-accent);
+  }
+
+  /* Current focus cards with left border accent */
+  .card {
+    position: relative;
+    padding-left: var(--space-lg);
+    border-left: 2px solid transparent;
+    transition: border-color 0.3s ease, padding-left 0.3s ease, transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  }
+
+  .card:hover {
+    border-left-color: var(--color-accent);
+    padding-left: calc(var(--space-lg) + var(--space-sm));
+  }
+
+  .card .item-title {
+    transition: color 0.2s ease;
+  }
+
+  .card:hover .item-title {
+    color: var(--color-accent);
+  }
+
+  /* Publication title hover */
+  .publication-title {
+    transition: color 0.2s ease;
+  }
+
+  .publication:hover .publication-title {
+    color: var(--color-accent);
+  }
+
+  /* Item title hover */
+  .item-title {
+    transition: color 0.2s ease;
+  }
+
+  .item:hover .item-title {
+    color: var(--color-accent);
+  }
+
+  /* Awards section - single item, no number */
+  .section:last-child .item::after {
+    display: none;
+  }
+
+  .section:last-child .item {
+    padding-right: 0;
+  }
+</style>
