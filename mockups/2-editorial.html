@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Johannes Roth - Editorial</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Work+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lora', serif;
+            background: #FFFEF9;
+            color: #1A1A1A;
+            line-height: 1.7;
+            font-size: 18px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 100px 50px;
+        }
+
+        header {
+            margin-left: 25%;
+            margin-bottom: 150px;
+            padding-top: 50px;
+        }
+
+        .eyebrow {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #8B6914;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 72px;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        h1::first-letter {
+            font-size: 150px;
+            float: left;
+            line-height: 0.8;
+            margin-right: 15px;
+            margin-top: 10px;
+            color: #8B6914;
+            border: 3px solid #8B6914;
+            padding: 20px 25px;
+        }
+
+        .subtitle {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 14px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #666;
+            font-weight: 300;
+        }
+
+        nav {
+            margin-left: 25%;
+            margin-bottom: 100px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid #D4C5A9;
+        }
+
+        nav a {
+            font-family: 'Work Sans', sans-serif;
+            color: #1A1A1A;
+            text-decoration: none;
+            margin-right: 40px;
+            font-size: 13px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+            font-weight: 400;
+        }
+
+        nav a:hover {
+            color: #8B6914;
+        }
+
+        section {
+            margin-left: 25%;
+            margin-bottom: 150px;
+            max-width: 800px;
+        }
+
+        .section-label {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #8B6914;
+            margin-bottom: 40px;
+            font-weight: 500;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 54px;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            margin-bottom: 50px;
+            font-weight: 400;
+        }
+
+        h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            margin-top: 60px;
+            margin-bottom: 20px;
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        p {
+            margin-bottom: 30px;
+        }
+
+        p.lead {
+            font-size: 22px;
+            line-height: 1.8;
+            color: #2A2A2A;
+        }
+
+        a {
+            color: #8B6914;
+            text-decoration: none;
+            border-bottom: 1px solid #D4C5A9;
+            transition: border-color 0.3s ease;
+        }
+
+        a:hover {
+            border-bottom-color: #8B6914;
+        }
+
+        .divider {
+            width: 60px;
+            height: 1px;
+            background: #D4C5A9;
+            margin: 80px 0;
+        }
+
+        .pub-list {
+            list-style: none;
+            margin-top: 50px;
+        }
+
+        .pub-list li {
+            margin-bottom: 50px;
+            padding-left: 0;
+        }
+
+        .pub-number {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 11px;
+            color: #8B6914;
+            letter-spacing: 0.2em;
+            margin-bottom: 10px;
+            font-variant: small-caps;
+            font-weight: 500;
+        }
+
+        .pub-title {
+            font-size: 20px;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .pub-authors {
+            font-size: 15px;
+            color: #666;
+            font-variant: small-caps;
+            letter-spacing: 0.02em;
+            margin-bottom: 8px;
+        }
+
+        .pub-venue {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 13px;
+            color: #8B6914;
+            font-style: italic;
+        }
+
+        footer {
+            margin-left: 25%;
+            padding-top: 80px;
+            border-top: 1px solid #D4C5A9;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 12px;
+            color: #999;
+            letter-spacing: 0.1em;
+        }
+
+        .pull-quote {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            line-height: 1.4;
+            font-style: italic;
+            margin: 60px 0 60px -100px;
+            padding-left: 100px;
+            border-left: 3px solid #8B6914;
+            color: #2A2A2A;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="eyebrow">Computational Neuroscience</div>
+            <h1>Johannes Roth</h1>
+            <div class="subtitle">Leipzig · Max Planck Institute</div>
+        </header>
+
+        <nav>
+            <a href="#about">About</a>
+            <a href="#research">Research</a>
+            <a href="#publications">Publications</a>
+            <a href="#cv">Curriculum Vitae</a>
+        </nav>
+
+        <section id="about">
+            <div class="section-label">Introduction</div>
+            <p class="lead">I'm pursuing a PhD in computational cognitive neuroscience at the Max Planck Institute for Human Cognition and Brain Science in Leipzig, under the supervision of Martin Hebart.</p>
+            <p>My research focuses on making data acquisition for large-scale deep phenotyping studies in vision science more efficient. This involves exploring whether we can record the human visual system at much higher temporal frequencies than previously thought possible, and developing methods to pre-select the most informative images that maximize the insights gained from each scanning session.</p>
+
+            <div class="divider"></div>
+
+            <h3>Academic Background</h3>
+            <p>I obtained a Master's degree in Computer Science at Leipzig University, with coursework spanning data science, machine learning, medical image processing, and neuroscience. My master's thesis, completed at the MPI CBS under Martin Hebart and Katja Seeliger, explored methods for generating images that elicit high activations in specific brain areas using deep learning models of the human visual system.</p>
+        </section>
+
+        <section id="research">
+            <div class="section-label">Research Focus</div>
+            <h2>Making vision science more efficient</h2>
+
+            <div class="pull-quote">
+                "Can we record the human visual system at frequencies far beyond what's currently believed possible?"
+            </div>
+
+            <p>In my research, I integrate computational modeling and machine learning methods to address fundamental questions about neuroimaging efficiency. I'm particularly interested in how we can optimize both the temporal aspects of data collection and the strategic selection of visual stimuli.</p>
+
+            <h3>Current Projects</h3>
+            <p>My work centers on high-frequency fMRI acquisition and intelligent stimulus selection for the THINGS initiative—a large-scale effort to comprehensively map human visual representations across thousands of object categories.</p>
+        </section>
+
+        <section id="publications">
+            <div class="section-label">Selected Publications</div>
+            <h2>Recent Work</h2>
+
+            <ul class="pub-list">
+                <li>
+                    <div class="pub-number">Publication I</div>
+                    <div class="pub-title">Assessing the feasibility of high stimulus presentation rates for contrasting conditions in functional MRI studies</div>
+                    <div class="pub-authors">Johannes Roth, Yoichi Miyawaki, Martin N. Hebart</div>
+                    <div class="pub-venue">Journal of Vision, 2023</div>
+                </li>
+                <li>
+                    <div class="pub-number">Publication II</div>
+                    <div class="pub-title">The scope and limits of fine-grained image and category information in the ventral visual pathway</div>
+                    <div class="pub-authors">Markus W. Badwal, Johanna Bergmann, Johannes Roth, Christian F. Doeller, Martin N. Hebart</div>
+                    <div class="pub-venue">Journal of Neuroscience, 2025</div>
+                </li>
+                <li>
+                    <div class="pub-number">Publication III</div>
+                    <div class="pub-title">Preferred stimuli for individual voxels in the human visual system</div>
+                    <div class="pub-authors">Johannes Roth, Katja Seeliger, T. Schmid, Martin N. Hebart</div>
+                    <div class="pub-venue">Computational and Systems Neuroscience (Cosyne), 2021</div>
+                </li>
+            </ul>
+        </section>
+
+        <footer>
+            © 2025 Johannes Roth · All rights reserved
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV - Johannes Roth</title>
+    <meta name="description" content="Curriculum Vitae of Johannes Roth - PhD candidate in computational cognitive neuroscience.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lora:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>Johannes Roth</h1>
+                <div class="subtitle">ML Engineer & Researcher - CV</div>
+                <div class="affiliation">Production ML Systems · Large-Scale Vision · PhD Candidate at Max Planck Institute</div>
+                <div class="contact-info">
+                    <a href="mailto:johannes@roth24.de">johannes@roth24.de</a>
+                    <a href="https://linkedin.com/in/johannes-roth-a67baa141" target="_blank" rel="noopener">LinkedIn</a>
+                    <a href="https://github.com/andropar" target="_blank" rel="noopener">GitHub</a>
+                    <a href="http://jroth.space" target="_blank" rel="noopener">jroth.space</a>
+                </div>
+            </div>
+            <nav>
+                <a href="index_new.html">Home</a>
+                <a href="cv_new.html" class="active">CV</a>
+                <a href="publications_new.html">Publications</a>
+            </nav>
+        </header>
+
+        <section id="summary">
+            <div class="section-label">Summary</div>
+            <div class="section-content">
+                <p class="lead">ML engineer with 5+ years building production systems and researching large-scale vision ML. Track record of deploying systems processing 20M+ images, engineering data pipelines handling billions of samples, and improving model accuracy from 50% to 92%. Combining hands-on engineering with deep research expertise.</p>
+            </div>
+        </section>
+
+        <section id="experience">
+            <div class="section-label">Experience</div>
+            <div class="section-content">
+                <h2>Work Experience</h2>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-header">
+                            <div class="timeline-title">PhD Candidate – Computational Cognitive Neuroscience</div>
+                            <div class="timeline-meta">May 2022 – Present (Expected 2026)</div>
+                        </div>
+                        <div class="timeline-desc">
+                            <strong>Max Planck Institute for Human Cognitive and Brain Sciences & University of Gießen</strong><br>
+                            Focus: Large-scale ML systems, data engineering, vision models · Supervisor: <a href="http://martin-hebart.de/" target="_blank" rel="noopener">Martin Hebart</a>
+                            <ul>
+                                <li>Engineered high-throughput data pipeline processing 2 billion images (LAION-2B), curating 120M high-quality samples. Dataset now publicly available and used by ML teams worldwide.</li>
+                                <li>Developed active learning framework optimizing data selection for model training. Maximizes information gain by identifying maximally-informative samples.</li>
+                                <li>Designed and ran large-scale simulations to optimize experimental parameters for data collection efficiency. Proved viability of 10x faster data acquisition rates.</li>
+                                <li>Published 8 peer-reviewed papers on ML systems, computer vision, and model optimization (Nature portfolio, Journal of Vision, Springer).</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-header">
+                            <div class="timeline-title">ML Research Engineer</div>
+                            <div class="timeline-meta">Jun 2021 – May 2022</div>
+                        </div>
+                        <div class="timeline-desc">
+                            <strong>ScaDS.AI Dresden/Leipzig</strong>
+                            <ul>
+                                <li>Built multi-plane UNet++ ensemble for medical image segmentation (BraTS 2021 challenge). Designed custom loss function (Dice + Boundary) achieving 0.90 Dice score on whole tumor segmentation.</li>
+                                <li>Developed attention-based deep learning model for mortality prediction using Transformer architectures (FT-Transformer, SAINT). Implemented Bayesian uncertainty estimation for safer predictions (0.85 AUC-ROC).</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-header">
+                            <div class="timeline-title">Data Scientist</div>
+                            <div class="timeline-meta">Oct 2019 – May 2021</div>
+                        </div>
+                        <div class="timeline-desc">
+                            <strong>CHECK24 (Travel Vertical)</strong>
+                            <ul>
+                                <li>Designed, implemented and deployed a production image-processing microservice (Flask + Redis) enabling fast ML inference over >20 million hotel images.</li>
+                                <li>Improved ranking metrics and conversion rates of the hotel recommendation system using Bayesian hyperparameter optimization.</li>
+                                <li>Built Grafana dashboards and outlier detection systems to monitor product price stability and API health across millions of queries.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-header">
+                            <div class="timeline-title">Full-stack Developer (Freelance)</div>
+                            <div class="timeline-meta">Oct 2020 – May 2021</div>
+                        </div>
+                        <div class="timeline-desc">
+                            <strong>Kimetric UG</strong>
+                            <ul>
+                                <li>Implemented two academic websites using Django, Nginx, and Gunicorn. Configured Linux hosting environments and automated deployment scripts (CI/CD).</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-header">
+                            <div class="timeline-title">Data Scientist</div>
+                            <div class="timeline-meta">Oct 2018 – Oct 2019</div>
+                        </div>
+                        <div class="timeline-desc">
+                            <strong>Webdata Solutions GmbH (now Vistex)</strong>
+                            <ul>
+                                <li>Rebuilt the core product-matching pipeline using a neural-network based approach trained on self-collected web-scraped datasets. Increased matching accuracy from <50% to 92%.</li>
+                                <li>Implemented interpretability techniques (Grad-CAM) to visualize and debug model attention maps, ensuring the network focused on relevant product features rather than background noise.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills">
+            <div class="section-label">Skills</div>
+            <div class="section-content">
+                <h2>Technical Skills</h2>
+
+                <div class="skill-grid">
+                    <div class="skill-box">
+                        <div class="skill-label">Core AI/ML</div>
+                        <div class="skill-text">PyTorch, TensorFlow, LLMs, Transformers (CLIP, ViT), Generative AI (GANs), Contrastive Learning, Metric Learning, Tabular Transformers, Recommendation Systems</div>
+                    </div>
+
+                    <div class="skill-box">
+                        <div class="skill-label">Engineering</div>
+                        <div class="skill-text">Python, Docker, SQL (Postgres), Git, CI/CD, Flask, Redis, Linux, Bash, SLURM (HPC)</div>
+                    </div>
+
+                    <div class="skill-box">
+                        <div class="skill-label">Methodologies</div>
+                        <div class="skill-text">Model Alignment, Explainable AI, Bayesian Uncertainty Estimation, A/B Testing</div>
+                    </div>
+                </div>
+
+                <h3>Languages</h3>
+                <p>German (Native), English (Fluent)</p>
+            </div>
+        </section>
+
+        <section id="education">
+            <div class="section-label">Education</div>
+            <div class="section-content">
+                <h2>Academic Background</h2>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-header">
+                            <div class="timeline-title">M. Sc. Computer Science</div>
+                            <div class="timeline-meta">2017 – 2021</div>
+                        </div>
+                        <div class="timeline-desc">
+                            <strong>Leipzig University</strong><br>
+                            Grade 1.2 / 4.0 (Top 10%). Focus: Machine Learning, Data Science, Deep Learning, Medical Image Processing
+                            <ul>
+                                <li>Master's Thesis (Grade 1.1) - Developed GAN-based system for synthesizing targeted visual stimuli. Successfully recovered known neural response patterns, validating generative modeling approach.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-header">
+                            <div class="timeline-title">B. Sc. Business Information Systems</div>
+                            <div class="timeline-meta">2014 – 2017</div>
+                        </div>
+                        <div class="timeline-desc">
+                            <strong>Leipzig University</strong><br>
+                            Grade 1.5 / 4.0. Focus: Distributed Systems, E-Commerce, Data Management, Software Engineering, Economics
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="leadership">
+            <div class="section-label">Leadership</div>
+            <div class="section-content">
+                <h2>Community & Mentorship</h2>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-header">
+                            <div class="timeline-title">PhD Representative</div>
+                            <div class="timeline-meta">2023–2024</div>
+                        </div>
+                        <div class="timeline-desc">
+                            Elected to represent >180 doctoral researchers at MPI CBS. Advocated for improved working conditions, research infrastructure, and community building initiatives.
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-header">
+                            <div class="timeline-title">Mentoring</div>
+                            <div class="timeline-meta">Ongoing</div>
+                        </div>
+                        <div class="timeline-desc">
+                            Supervised working students and interns in the research group, providing guidance on machine learning projects and research methodology.
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-header">
+                            <div class="timeline-title">Conference Talks</div>
+                            <div class="timeline-meta">Ongoing</div>
+                        </div>
+                        <div class="timeline-desc">
+                            Presented research findings at international conferences (CCN) and internal institute colloquia, communicating complex technical concepts to diverse audiences.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-content">
+                © 2025 Johannes Roth · Max Planck Institute · Leipzig, Germany
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

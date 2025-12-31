@@ -1,0 +1,238 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Research - Johannes Roth">
+  <header class="page-header">
+    <h1 class="page-title">Research</h1>
+    <p class="page-description">
+      Making vision science experiments more efficient with ML.
+    </p>
+  </header>
+
+  <section class="section">
+    <p>
+      My PhD focuses on a practical problem: large-scale vision studies require massive amounts of
+      data, but fMRI time is expensive and limited. I'm developing methods to <strong>get more
+      information from fewer scans</strong> - through smarter stimulus selection and faster
+      experimental designs.
+    </p>
+    <p>
+      Along the way, I build tools and datasets that other researchers can use. I care about
+      <strong>reproducibility</strong> and making research infrastructure that actually works.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Current Focus</h2>
+    <div class="card">
+      <h3 class="item-title">Optimal Stimulus Selection</h3>
+      <p class="item-description">
+        Can we pre-select images that will be most informative for understanding visual processing?
+        I'm developing active learning frameworks that optimize stimuli to maximize what we learn
+        from each scan.
+      </p>
+    </div>
+    <div class="card">
+      <h3 class="item-title">Fast fMRI Designs</h3>
+      <p class="item-description">
+        Traditional fMRI designs present stimuli slowly. I'm testing whether we can push presentation
+        rates much higher while still extracting meaningful signal - enabling richer, condition-dense
+        experiments.
+      </p>
+    </div>
+    <div class="card">
+      <h3 class="item-title">Large-Scale Image Curation</h3>
+      <p class="item-description">
+        Vision research needs naturalistic images. I built pipelines to curate LAION-Natural
+        (120M images) from LAION-2B, filtering billions of images for research-ready datasets.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" id="publications">
+    <h2 class="section-title">Publications</h2>
+
+    <div class="publication">
+      <h3 class="publication-title">
+        How to sample the world for understanding the visual system
+      </h3>
+      <p class="publication-authors">
+        <strong>Roth, J.</strong> & Hebart, M. N.
+      </p>
+      <p class="publication-venue">
+        CCN 2025 Proceedings + Oral Presentation
+      </p>
+    </div>
+
+    <div class="publication">
+      <h3 class="publication-title">
+        Ten principles for reliable, efficient, and adaptable coding
+      </h3>
+      <p class="publication-authors">
+        <strong>Roth, J.</strong> et al.
+      </p>
+      <p class="publication-venue">
+        Communications Psychology, 2025
+      </p>
+    </div>
+
+    <div class="publication">
+      <h3 class="publication-title">
+        The scope and limits of fine-grained image and category information in the ventral visual pathway
+      </h3>
+      <p class="publication-authors">
+        Badwal, M. W., Bergmann, J., <strong>Roth, J.</strong>, Doeller, C. F., & Hebart, M. N.
+      </p>
+      <p class="publication-venue">
+        Journal of Neuroscience, 2025
+      </p>
+    </div>
+
+    <div class="publication">
+      <h3 class="publication-title">
+        Assessing the feasibility of high stimulus presentation rates for contrasting conditions in functional MRI studies
+      </h3>
+      <p class="publication-authors">
+        <strong>Roth, J.</strong>, Miyawaki, Y., & Hebart, M. N.
+      </p>
+      <p class="publication-venue">
+        Poster at Vision Science Society, 2023
+      </p>
+    </div>
+
+    <div class="publication">
+      <h3 class="publication-title">
+        Multi-plane UNet++ Ensemble for Glioblastoma Segmentation
+      </h3>
+      <p class="publication-authors">
+        <strong>Roth, J.</strong>, Keller, J., Franke, S., Neumuth, T., & Schneider, D.
+      </p>
+      <p class="publication-venue">
+        MICCAI BraTS Challenge, 2021
+      </p>
+    </div>
+
+    <div class="publication">
+      <h3 class="publication-title">
+        Preferred stimuli for individual voxels in the human visual system
+      </h3>
+      <p class="publication-authors">
+        <strong>Roth, J.</strong>, Seeliger, K., Schmid, T., & Hebart, M. N.
+      </p>
+      <p class="publication-venue">
+        Poster at Cosyne, 2021
+      </p>
+    </div>
+  </section>
+
+  <section class="section" id="projects">
+    <h2 class="section-title">Projects & Open Source</h2>
+
+    <div class="item">
+      <h3 class="item-title">thingsvision</h3>
+      <p class="item-meta">Core Contributor • Python • PyTorch</p>
+      <p class="item-description">
+        Modular feature extraction library for computer vision models. Extract representations from
+        CLIP, ViT, ResNet, and dozens of other architectures. Used by researchers worldwide.
+      </p>
+      <div class="publication-links">
+        <a href="https://github.com/ViCCo-Group/thingsvision" class="publication-link" target="_blank">GitHub</a>
+      </div>
+    </div>
+
+    <div class="item" id="laion-natural">
+      <h3 class="item-title">LAION-Natural</h3>
+      <p class="item-meta">Dataset • 120M Images</p>
+      <p class="item-description">
+        Curated subset of LAION-2B optimized for naturalistic vision studies. Trained a classifier to identify natural images for research use. Pre-computed
+        embeddings for likely-natural images also available.
+      </p>
+      <div class="publication-links">
+        <a href="https://huggingface.co/datasets/andropar/relaion2b-natural" class="publication-link" target="_blank">Dataset</a>
+        <a href="https://huggingface.co/datasets/andropar/relaion2b-natural-embeddings" class="publication-link" target="_blank">Embeddings</a>
+      </div>
+    </div>
+
+    <div class="item">
+      <h3 class="item-title">CNNvis</h3>
+      <p class="item-meta">Visualization Tool • JavaScript</p>
+      <p class="item-description">
+        Interactive web-based visualization of CNN layer activations. Built for science communication
+        during JLU Gießen Science days.
+      </p>
+      <div class="publication-links">
+        <a href="https://github.com/andropar/CNNvis" class="publication-link" target="_blank">GitHub</a>
+      </div>
+    </div>
+
+    <div class="item">
+      <h3 class="item-title">how-to-sample</h3>
+      <p class="item-meta">Research Code • Python</p>
+      <p class="item-description">
+        Code and experiments for the CCN 2025 paper on sampling strategies for vision research.
+        Analyzes visual-semantic coverage of neuroimaging datasets using CLIP embeddings.
+      </p>
+      <div class="publication-links">
+        <a href="https://github.com/andropar/how-to-sample" class="publication-link" target="_blank">GitHub</a>
+      </div>
+    </div>
+
+    <div class="item">
+      <h3 class="item-title">cvmanova_python</h3>
+      <p class="item-meta">Neuroimaging Tool • Python</p>
+      <p class="item-description">
+        Python port of cvManova for cross-validated multivariate pattern analysis in fMRI.
+        Supports searchlight and ROI analyses with custom contrast definitions.
+      </p>
+      <div class="publication-links">
+        <a href="https://github.com/andropar/cvmanova_python" class="publication-link" target="_blank">GitHub</a>
+      </div>
+    </div>
+
+    <div class="item">
+      <h3 class="item-title">fast_fMRI</h3>
+      <p class="item-meta">Research Code • Python</p>
+      <p class="item-description">
+        Analysis code for fast fMRI experiments. Datasets available on OpenNeuro.
+      </p>
+      <div class="publication-links">
+        <a href="https://github.com/andropar/fast_fMRI" class="publication-link" target="_blank">GitHub</a>
+      </div>
+    </div>
+
+    <div class="item">
+      <h3 class="item-title">pysearchlight</h3>
+      <p class="item-meta">Neuroimaging Tool • Python</p>
+      <p class="item-description">
+        Customizable searchlight analysis for fMRI data. Flexible, fast, and easy to extend.
+      </p>
+      <div class="publication-links">
+        <a href="https://github.com/andropar/pysearchlight" class="publication-link" target="_blank">GitHub</a>
+      </div>
+    </div>
+
+    <div class="item">
+      <h3 class="item-title">slurmboard</h3>
+      <p class="item-meta">DevOps Tool • JavaScript</p>
+      <p class="item-description">
+        Lightweight real-time web dashboard for monitoring Slurm HPC jobs. Because checking job
+        status shouldn't require terminal gymnastics.
+      </p>
+      <div class="publication-links">
+        <a href="https://github.com/andropar/slurmboard" class="publication-link" target="_blank">GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Awards</h2>
+    <div class="item">
+      <h3 class="item-title">CMBB Replication Award</h3>
+      <p class="item-meta">2025</p>
+      <p class="item-description">
+        Recognition for contribution to reliable coding practices in neuroscience.
+      </p>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Johannes Roth - Modern Serif</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Lora:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lora', serif;
+            background: linear-gradient(to bottom, #FFFEF9 0%, #F8F7F2 100%);
+            color: #2B2B2B;
+            line-height: 1.7;
+            font-size: 17px;
+            position: relative;
+        }
+
+        /* Minimal grid guide */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                repeating-linear-gradient(to right, transparent, transparent calc(100% / 12 - 1px), rgba(230, 57, 70, 0.04) calc(100% / 12 - 1px), rgba(230, 57, 70, 0.04) calc(100% / 12));
+            pointer-events: none;
+            opacity: 0.4;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 100px 80px;
+            position: relative;
+            z-index: 2;
+        }
+
+        header {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 32px;
+            margin-bottom: 96px;
+            padding-bottom: 48px;
+            border-bottom: 3px solid #E63946;
+        }
+
+        .header-left {
+            grid-column: 1 / 7;
+        }
+
+        .header-right {
+            grid-column: 8 / 13;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 68px;
+            font-weight: 600;
+            line-height: 1;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+            color: #1A1A1A;
+        }
+
+        .subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #E63946;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .affiliation {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .contact {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            color: #8B6914;
+            text-align: right;
+        }
+
+        .contact a {
+            color: #8B6914;
+            text-decoration: none;
+            border-bottom: 1px solid #D4C5A9;
+            transition: border-color 0.3s ease;
+        }
+
+        .contact a:hover {
+            border-bottom-color: #8B6914;
+        }
+
+        nav {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 32px;
+            margin-bottom: 96px;
+        }
+
+        .nav-content {
+            grid-column: 1 / 13;
+            display: flex;
+            gap: 48px;
+            justify-content: center;
+        }
+
+        nav a {
+            font-family: 'Inter', sans-serif;
+            color: #2B2B2B;
+            text-decoration: none;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-weight: 500;
+            padding-bottom: 4px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            border-bottom-color: #E63946;
+            color: #E63946;
+        }
+
+        section {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 32px;
+            margin-bottom: 96px;
+        }
+
+        .section-label {
+            grid-column: 1 / 3;
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-weight: 600;
+            color: #E63946;
+            padding-top: 8px;
+        }
+
+        .section-content {
+            grid-column: 3 / 12;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 40px;
+            letter-spacing: -0.01em;
+            color: #1A1A1A;
+        }
+
+        h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            font-weight: 600;
+            margin-top: 56px;
+            margin-bottom: 20px;
+            color: #2B2B2B;
+        }
+
+        p {
+            margin-bottom: 28px;
+        }
+
+        p.lead {
+            font-size: 21px;
+            line-height: 1.8;
+            color: #1A1A1A;
+            margin-bottom: 36px;
+        }
+
+        a {
+            color: #E63946;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(230, 57, 70, 0.3);
+            transition: border-color 0.3s ease;
+        }
+
+        a:hover {
+            border-bottom-color: #E63946;
+        }
+
+        .accent-bar {
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, #E63946 0%, #8B6914 100%);
+            margin: 56px 0;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin: 48px 0;
+        }
+
+        .feature-box {
+            padding: 32px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(230, 57, 70, 0.15);
+            border-left: 3px solid #E63946;
+        }
+
+        .feature-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #E63946;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .feature-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #1A1A1A;
+        }
+
+        .feature-text {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #2B2B2B;
+        }
+
+        .pub-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            margin-top: 48px;
+        }
+
+        .pub-item {
+            padding: 32px;
+            background: rgba(255, 255, 255, 0.5);
+            border-left: 3px solid #8B6914;
+            transition: all 0.3s ease;
+        }
+
+        .pub-item:hover {
+            background: rgba(255, 255, 255, 0.8);
+            border-left-color: #E63946;
+        }
+
+        .pub-year {
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #E63946;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .pub-title {
+            font-size: 17px;
+            font-weight: 500;
+            margin-bottom: 14px;
+            line-height: 1.5;
+            color: #1A1A1A;
+        }
+
+        .pub-authors {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .pub-venue {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            color: #8B6914;
+            font-weight: 500;
+        }
+
+        footer {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 32px;
+            padding-top: 64px;
+            border-top: 1px solid rgba(230, 57, 70, 0.2);
+        }
+
+        footer .footer-content {
+            grid-column: 1 / 13;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #999;
+            font-weight: 400;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-left">
+                <div class="subtitle">Computational Cognitive Neuroscience</div>
+                <h1>Johannes Roth</h1>
+                <div class="affiliation">Max Planck Institute for Human Cognition and Brain Sciences</div>
+            </div>
+            <div class="header-right">
+                <div class="contact">
+                    Leipzig, Germany<br>
+                    <a href="mailto:roth@cbs.mpg.de">roth@cbs.mpg.de</a>
+                </div>
+            </div>
+        </header>
+
+        <nav>
+            <div class="nav-content">
+                <a href="#about">About</a>
+                <a href="#research">Research</a>
+                <a href="#publications">Publications</a>
+                <a href="#cv">CV</a>
+            </div>
+        </nav>
+
+        <section id="about">
+            <div class="section-label">01 — About</div>
+            <div class="section-content">
+                <h2>Advancing neuroimaging efficiency</h2>
+
+                <p class="lead">I'm pursuing a PhD in computational cognitive neuroscience at the Max Planck Institute for Human Cognition and Brain Science in Leipzig, under the supervision of Martin Hebart.</p>
+
+                <p>My research is centered on improving the efficiency of data acquisition in large-scale deep phenotyping studies within vision science. I explore two fundamental questions: whether we can record the human visual system at substantially higher temporal frequencies than currently believed feasible, and whether computational methods can intelligently pre-select visual stimuli to maximize information gained from each scanning session.</p>
+
+                <div class="accent-bar"></div>
+
+                <h3>Academic Background</h3>
+                <p>I obtained a Master's degree in Computer Science at Leipzig University, focusing on data science, machine learning, medical image processing, and neuroscience. My master's thesis, completed at the MPI CBS under Martin Hebart and Katja Seeliger, investigated methods for generating images that elicit high activations in specific cortical regions using deep learning models of the visual system.</p>
+            </div>
+        </section>
+
+        <section id="research">
+            <div class="section-label">02 — Research</div>
+            <div class="section-content">
+                <h2>Current Focus</h2>
+
+                <div class="feature-grid">
+                    <div class="feature-box">
+                        <div class="feature-label">Focus Area I</div>
+                        <div class="feature-title">High-frequency fMRI</div>
+                        <div class="feature-text">Exploring temporal limits of neuroimaging to capture rapid visual processing dynamics.</div>
+                    </div>
+
+                    <div class="feature-box">
+                        <div class="feature-label">Focus Area II</div>
+                        <div class="feature-title">Stimulus optimization</div>
+                        <div class="feature-text">Developing computational frameworks for intelligent experimental stimulus selection.</div>
+                    </div>
+
+                    <div class="feature-box">
+                        <div class="feature-label">Focus Area III</div>
+                        <div class="feature-title">Deep phenotyping</div>
+                        <div class="feature-text">Contributing to large-scale vision initiatives mapping human visual representations.</div>
+                    </div>
+                </div>
+
+                <p>In my research, I integrate computational modeling and machine learning methods with functional neuroimaging, specifically fMRI, to address questions about optimizing both the temporal aspects of data collection and the strategic selection of visual stimuli for large-scale studies.</p>
+            </div>
+        </section>
+
+        <section id="publications">
+            <div class="section-label">03 — Publications</div>
+            <div class="section-content">
+                <h2>Selected Work</h2>
+
+                <div class="pub-grid">
+                    <div class="pub-item">
+                        <div class="pub-year">2023</div>
+                        <div class="pub-title">Assessing the feasibility of high stimulus presentation rates for contrasting conditions in functional MRI studies</div>
+                        <div class="pub-authors">Roth, J., Miyawaki, Y., Hebart, M.N.</div>
+                        <div class="pub-venue">Journal of Vision</div>
+                    </div>
+
+                    <div class="pub-item">
+                        <div class="pub-year">2025</div>
+                        <div class="pub-title">The scope and limits of fine-grained image and category information in the ventral visual pathway</div>
+                        <div class="pub-authors">Badwal, M.W., Bergmann, J., Roth, J., Doeller, C.F., Hebart, M.N.</div>
+                        <div class="pub-venue">Journal of Neuroscience</div>
+                    </div>
+
+                    <div class="pub-item">
+                        <div class="pub-year">2021</div>
+                        <div class="pub-title">Preferred stimuli for individual voxels in the human visual system</div>
+                        <div class="pub-authors">Roth, J., Seeliger, K., Schmid, T., Hebart, M.N.</div>
+                        <div class="pub-venue">Computational and Systems Neuroscience (Cosyne)</div>
+                    </div>
+
+                    <div class="pub-item">
+                        <div class="pub-year">2021</div>
+                        <div class="pub-title">Multi-plane UNet++ ensemble for glioblastoma segmentation</div>
+                        <div class="pub-authors">Roth, J., Keller, J., Franke, S., Neumuth, T., Schneider, D.</div>
+                        <div class="pub-venue">International MICCAI Brainlesion Workshop</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-content">
+                © 2025 Johannes Roth — Max Planck Institute — Leipzig, Germany
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

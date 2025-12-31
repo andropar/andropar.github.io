@@ -1,0 +1,45 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+// Empty for now - will add posts later
+const posts: Array<{slug: string; title: string; date: string; excerpt: string; tag: string}> = [];
+---
+
+<Layout title="Blog - Johannes Roth">
+  <header class="page-header">
+    <h1 class="page-title">Blog</h1>
+    <p class="page-description">
+      Technical deep-dives and occasional reflections. Coming soon.
+    </p>
+  </header>
+
+  <section class="section">
+    {posts.length > 0 ? (
+      <div class="post-list">
+        {posts.map(post => (
+          <a href={`/blog/${post.slug}`} class="post-item">
+            <span class="post-date">{post.date}</span>
+            <h3 class="post-title">{post.title}<span class="post-tag">{post.tag}</span></h3>
+            <p class="post-excerpt">{post.excerpt}</p>
+          </a>
+        ))}
+      </div>
+    ) : (
+      <div class="empty-state">
+        <p>Nothing here yet. Check back soon, or follow along on <a href="https://github.com/andropar" target="_blank" rel="noopener">GitHub</a> in the meantime.</p>
+      </div>
+    )}
+  </section>
+</Layout>
+
+<style>
+  .empty-state {
+    padding: var(--space-3xl) 0;
+    text-align: center;
+    color: var(--color-text-secondary);
+  }
+
+  .empty-state a {
+    color: var(--color-text);
+  }
+</style>

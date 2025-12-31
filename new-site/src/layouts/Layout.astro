@@ -1,0 +1,121 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "PhD student in Computational Cognitive Neuroscience. Interested in the intersection of AI, vision science, and human cognition." } = Astro.props;
+
+const currentPath = Astro.url.pathname;
+
+const navLinks = [
+  { href: '/about', label: 'about' },
+  { href: '/research', label: 'research' },
+  { href: '/blog', label: 'blog' },
+  { href: '/now', label: 'now' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="author" content="Johannes Roth" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <nav>
+      <div class="container">
+        <a href="/" class="nav-brand">Johannes Roth</a>
+        <ul class="nav-links">
+          {navLinks.map(link => (
+            <li>
+              <a
+                href={link.href}
+                class:list={['nav-link', { active: currentPath.startsWith(link.href) }]}
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </nav>
+
+    <main>
+      <div class="container">
+        <slot />
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <span class="footer-text">&copy; {new Date().getFullYear()} Johannes Roth</span>
+        <div class="footer-links">
+          <a href="mailto:johannes@roth24.de" class="footer-link">Email</a>
+          <a href="https://github.com/andropar" class="footer-link" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://linkedin.com/in/johannes-roth-a67baa141" class="footer-link" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://huggingface.co/andropar" class="footer-link" target="_blank" rel="noopener">Hugging Face</a>
+          <a href="https://scholar.google.com/citations?user=U3Z3J2gAAAAJ" class="footer-link" target="_blank" rel="noopener">Scholar</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Scroll-triggered reveals with Intersection Observer
+      const revealElements = document.querySelectorAll('.timeline-item, .publication, .item, .card, .now-card');
+
+      if ('IntersectionObserver' in window) {
+        const revealObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+              // Staggered reveal
+              setTimeout(() => {
+                entry.target.classList.add('revealed');
+              }, index * 50);
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        }, {
+          threshold: 0.1,
+          rootMargin: '0px 0px -50px 0px'
+        });
+
+        revealElements.forEach(el => {
+          el.classList.add('reveal');
+          revealObserver.observe(el);
+        });
+      }
+
+      // Smooth scroll offset for sticky nav
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href');
+          if (targetId && targetId !== '#') {
+            const target = document.querySelector(targetId);
+            if (target) {
+              const navHeight = document.querySelector('nav')?.offsetHeight || 64;
+              const targetPosition = target.getBoundingClientRect().top + window.scrollY - navHeight - 20;
+              window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+              });
+            }
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

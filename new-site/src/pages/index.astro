@@ -1,0 +1,186 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Johannes Roth">
+  <section class="intro">
+    <div class="intro-photo">
+      <img src="/prof_pic.png" alt="Johannes Roth" />
+    </div>
+    <p class="intro-greeting">Hi, I'm</p>
+    <h1 class="intro-title">Johannes Roth</h1>
+    <p class="intro-bio">
+      I study how the brain makes sense of what we see - and how we can use AI to understand it better.
+      Currently finishing my <strong>PhD in Computational Cognitive Neuroscience</strong> at the
+      Max Planck Institute in Leipzig.
+    </p>
+    <p class="intro-bio">
+      Before academia, I worked as a data scientist building recommendation systems and ML pipelines.
+      I like problems that sit at the intersection of <strong>neuroscience, machine learning, and
+      building things that work</strong>.
+    </p>
+
+    <div class="status">
+      <span class="status-dot"></span>
+      Open to opportunities starting September 2026
+    </div>
+
+    <div class="quick-links">
+      <a href="/about" class="quick-link">My story</a>
+      <a href="/research" class="quick-link">Research</a>
+      <a href="mailto:johannes@roth24.de" class="quick-link">Get in touch</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">What I Do</h2>
+    <div class="what-i-do">
+      <div class="do-item">
+        <h3>Science</h3>
+        <p>
+          Understanding how the brain processes visual information. I use deep learning models
+          to study perception and develop methods to run more efficient neuroimaging experiments.
+        </p>
+      </div>
+      <div class="do-item">
+        <h3>Engineering</h3>
+        <p>
+          Building things that work at scale. Recommendation systems at CHECK24, ML pipelines
+          in production, and research tools like <a href="https://github.com/ViCCo-Group/thingsvision">thingsvision</a> that
+          thousands of researchers use.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Selected Work</h2>
+    <div class="selected-work">
+      <a href="/research#publications" class="work-item">
+        <span class="work-venue">CCN 2025</span>
+        <h3>How to sample the world for understanding the visual system</h3>
+        <p>Oral presentation on optimal stimulus selection for vision research.</p>
+      </a>
+      <a href="https://github.com/ViCCo-Group/thingsvision" class="work-item" target="_blank">
+        <span class="work-venue">Open Source</span>
+        <h3>thingsvision</h3>
+        <p>Feature extraction library for computer vision models, used by researchers worldwide.</p>
+      </a>
+      <a href="https://huggingface.co/datasets/andropar/relaion2b-natural" class="work-item" target="_blank">
+        <span class="work-venue">Dataset</span>
+        <h3>LAION-Natural</h3>
+        <p>Curated 120M naturalistic images from LAION-2B for vision research. Available on Hugging Face.</p>
+      </a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .intro {
+    margin-bottom: var(--space-4xl);
+  }
+
+  .intro::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+
+  .intro-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--color-bg-subtle);
+    float: right;
+    margin-left: var(--space-xl);
+    margin-bottom: var(--space-md);
+    shape-outside: circle(50%);
+  }
+
+  .intro-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @media (max-width: 480px) {
+    .intro-photo {
+      float: none;
+      margin: 0 auto var(--space-xl);
+    }
+  }
+
+  .what-i-do {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+  }
+
+  @media (max-width: 580px) {
+    .what-i-do {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+  }
+
+  .do-item h3 {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text);
+    margin-bottom: var(--space-xs);
+  }
+
+  .do-item p {
+    color: var(--color-text-secondary);
+    font-size: 0.9375rem;
+    margin: 0;
+  }
+
+  .selected-work {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .work-item {
+    display: block;
+    padding: var(--space-lg) 0;
+    border-bottom: 1px solid var(--color-border-subtle);
+    text-decoration: none;
+    transition: opacity var(--transition-fast);
+  }
+
+  .work-item:first-child {
+    padding-top: 0;
+  }
+
+  .work-item:last-child {
+    border-bottom: none;
+  }
+
+  .work-item:hover {
+    opacity: 0.7;
+  }
+
+  .work-venue {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-accent);
+  }
+
+  .work-item h3 {
+    font-family: var(--font-serif);
+    font-size: 1.125rem;
+    color: var(--color-text);
+    margin: var(--space-xs) 0;
+  }
+
+  .work-item p {
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+</style>

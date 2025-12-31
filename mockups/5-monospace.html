@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>johannes_roth:~$ </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
+            background: #0D1117;
+            color: #C9D1D9;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            border: 1px solid #30363D;
+            padding: 30px;
+            margin-bottom: 30px;
+            background: #161B22;
+        }
+
+        .ascii-art {
+            color: #58A6FF;
+            font-size: 10px;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            white-space: pre;
+        }
+
+        .prompt {
+            color: #58A6FF;
+            margin-bottom: 10px;
+        }
+
+        .prompt::before {
+            content: '$ ';
+            color: #8B949E;
+        }
+
+        h1 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #58A6FF;
+            margin-bottom: 5px;
+        }
+
+        h1::after {
+            content: '█';
+            animation: blink 1s infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        .subtitle {
+            color: #8B949E;
+            font-size: 12px;
+        }
+
+        nav {
+            border: 1px solid #30363D;
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            background: #161B22;
+        }
+
+        nav::before {
+            content: 'navigation/';
+            display: block;
+            color: #8B949E;
+            font-size: 11px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #30363D;
+            padding-bottom: 10px;
+        }
+
+        nav a {
+            color: #58A6FF;
+            text-decoration: none;
+            margin-right: 20px;
+            font-size: 13px;
+        }
+
+        nav a::before {
+            content: '├─ ';
+            color: #30363D;
+        }
+
+        nav a:last-child::before {
+            content: '└─ ';
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        section {
+            border: 1px solid #30363D;
+            margin-bottom: 30px;
+            background: #161B22;
+        }
+
+        .section-header {
+            background: #0D1117;
+            padding: 15px 30px;
+            border-bottom: 1px solid #30363D;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-number {
+            color: #8B949E;
+            font-size: 11px;
+        }
+
+        h2 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #58A6FF;
+        }
+
+        .section-content {
+            padding: 30px;
+        }
+
+        .divider {
+            margin: 25px 0;
+            color: #30363D;
+            text-align: center;
+        }
+
+        h3 {
+            font-size: 13px;
+            font-weight: 700;
+            color: #C9D1D9;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        h3::before {
+            content: '## ';
+            color: #8B949E;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #C9D1D9;
+        }
+
+        a {
+            color: #58A6FF;
+            text-decoration: none;
+            border-bottom: 1px dotted #58A6FF;
+        }
+
+        a:hover {
+            border-bottom-style: solid;
+        }
+
+        .pub-list {
+            list-style: none;
+        }
+
+        .pub-list li {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #0D1117;
+            border-left: 3px solid #30363D;
+        }
+
+        .pub-list li:hover {
+            border-left-color: #58A6FF;
+        }
+
+        .pub-type {
+            font-size: 11px;
+            color: #58A6FF;
+            display: inline-block;
+            padding: 2px 8px;
+            background: rgba(88, 166, 255, 0.1);
+            border: 1px solid #30363D;
+            margin-bottom: 10px;
+        }
+
+        .pub-title {
+            color: #C9D1D9;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .pub-authors {
+            color: #8B949E;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .pub-authors::before {
+            content: '// ';
+        }
+
+        .pub-venue {
+            color: #8B949E;
+            font-size: 12px;
+        }
+
+        .pub-venue::before {
+            content: '→ ';
+            color: #58A6FF;
+        }
+
+        footer {
+            border: 1px solid #30363D;
+            padding: 20px 30px;
+            text-align: center;
+            background: #161B22;
+            color: #8B949E;
+            font-size: 11px;
+        }
+
+        footer::before {
+            content: '───────────────────────────────────────────────────────────';
+            display: block;
+            margin-bottom: 15px;
+            color: #30363D;
+        }
+
+        .status-line {
+            background: #0D1117;
+            border: 1px solid #30363D;
+            padding: 10px 30px;
+            margin-bottom: 30px;
+            font-size: 11px;
+            color: #8B949E;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .status-indicator {
+            color: #3FB950;
+        }
+
+        .status-indicator::before {
+            content: '● ';
+        }
+
+        code {
+            background: #0D1117;
+            padding: 2px 6px;
+            border: 1px solid #30363D;
+            color: #FF7B72;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="ascii-art">     _       _
+    (_) ___ | |__   __ _ _ __  _ __   ___  ___
+    | |/ _ \| '_ \ / _` | '_ \| '_ \ / _ \/ __|
+    | | (_) | | | | (_| | | | | | | |  __/\__ \
+   _/ |\___/|_| |_|\__,_|_| |_|_| |_|\___||___/
+  |__/
+                     _   _
+         _ __ ___  | |_| |__
+        | '__/ _ \ | __| '_ \
+        | | | (_) || |_| | | |
+        |_|  \___/  \__|_| |_|</div>
+            <div class="prompt">cat ~/profile/info.txt</div>
+            <h1>Johannes Roth</h1>
+            <div class="subtitle">computational_cognitive_neuroscience</div>
+        </header>
+
+        <div class="status-line">
+            <div class="status-item">
+                <span class="status-indicator">ACTIVE</span>
+                <span>location: leipzig.de</span>
+                <span>institute: mpi_cbs</span>
+            </div>
+            <div class="status-item">
+                <span>status: phd_candidate</span>
+            </div>
+        </div>
+
+        <nav>
+            <a href="#about">about.md</a>
+            <a href="#research">research/</a>
+            <a href="#publications">publications/</a>
+            <a href="#cv">cv.pdf</a>
+        </nav>
+
+        <section id="about">
+            <div class="section-header">
+                <h2>~/about/README.md</h2>
+                <div class="section-number">001</div>
+            </div>
+            <div class="section-content">
+                <p>I'm pursuing a PhD in computational cognitive neuroscience at the <code>Max Planck Institute</code> for Human Cognition and Brain Science in Leipzig (and the University of Gießen), under the supervision of Martin Hebart.</p>
+
+                <p>My PhD is primarily about making data acquisition for large-scale deep phenotyping studies in vision science more efficient. This involves two primary research questions:</p>
+
+                <p><strong>Q1:</strong> Can we record the human visual system at much higher frequencies than what's believed to be possible?</p>
+
+                <p><strong>Q2:</strong> Is there a way to pre-select the most informative images to maximize how much we can learn from each scan?</p>
+
+                <div class="divider">═══════════════════════════════════════════════════════</div>
+
+                <h3>Academic Background</h3>
+                <p>I obtained a Master in Computer Science at Leipzig University, choosing courses on data science, machine learning, medical image processing and neuroscience. I had the great pleasure of also writing my master's thesis at the MPI CBS under the supervision of Martin and Katja Seeliger, where I researched methods for the generation of images that cause high activations in specific brain areas, using deep learning models of the human visual system.</p>
+            </div>
+        </section>
+
+        <section id="research">
+            <div class="section-header">
+                <h2>~/research/focus_areas.json</h2>
+                <div class="section-number">002</div>
+            </div>
+            <div class="section-content">
+                <h3>High-frequency fMRI</h3>
+                <p>Exploring the temporal limits of functional neuroimaging. Can we push the boundaries of what's currently considered possible in recording neural activity?</p>
+
+                <h3>Stimulus Optimization</h3>
+                <p>Using computational models to intelligently pre-select visual stimuli that maximize information gain. Making every scan count.</p>
+
+                <h3>Deep Phenotyping</h3>
+                <p>Contributing to large-scale vision science initiatives like <a href="https://things-initiative.org/">THINGS</a>, mapping human visual representations across thousands of object categories.</p>
+            </div>
+        </section>
+
+        <section id="publications">
+            <div class="section-header">
+                <h2>~/publications/selected.bib</h2>
+                <div class="section-number">003</div>
+            </div>
+            <div class="section-content">
+                <ul class="pub-list">
+                    <li>
+                        <div class="pub-type">[JOURNAL]</div>
+                        <div class="pub-title">Assessing the feasibility of high stimulus presentation rates for contrasting conditions in functional MRI studies</div>
+                        <div class="pub-authors">Roth, J., Miyawaki, Y., Hebart, M.N.</div>
+                        <div class="pub-venue">Journal of Vision (2023)</div>
+                    </li>
+
+                    <li>
+                        <div class="pub-type">[JOURNAL]</div>
+                        <div class="pub-title">The scope and limits of fine-grained image and category information in the ventral visual pathway</div>
+                        <div class="pub-authors">Badwal, M.W., Bergmann, J., Roth, J., Doeller, C.F., Hebart, M.N.</div>
+                        <div class="pub-venue">Journal of Neuroscience (2025)</div>
+                    </li>
+
+                    <li>
+                        <div class="pub-type">[CONF]</div>
+                        <div class="pub-title">Preferred stimuli for individual voxels in the human visual system</div>
+                        <div class="pub-authors">Roth, J., Seeliger, K., Schmid, T., Hebart, M.N.</div>
+                        <div class="pub-venue">Computational and Systems Neuroscience - Cosyne (2021)</div>
+                    </li>
+
+                    <li>
+                        <div class="pub-type">[CONF]</div>
+                        <div class="pub-title">Multi-plane UNet++ ensemble for glioblastoma segmentation</div>
+                        <div class="pub-authors">Roth, J., Keller, J., Franke, S., Neumuth, T., Schneider, D.</div>
+                        <div class="pub-venue">International MICCAI Brainlesion Workshop (2021)</div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <footer>
+            © 2025 johannes_roth | max_planck_institute | leipzig_germany
+        </footer>
+    </div>
+</body>
+</html>
