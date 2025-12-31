@@ -1,8 +1,11 @@
 ---
+import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 
-// Empty for now - will add posts later
-const posts: Array<{slug: string; title: string; date: string; excerpt: string; tag: string}> = [];
+const allPosts = await getCollection('blog');
+const posts = allPosts
+  .filter(post => import.meta.env.DEV || !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
 <Layout title="Blog - Johannes Roth">
@@ -16,13 +19,28 @@ const posts: Array<{slug: string; title: string; date: string; excerpt: string; 
   <section class="section">
     {posts.length > 0 ? (
       <div class="post-list">
-        {posts.map(post => (
-          <a href={`/blog/${post.slug}`} class="post-item">
-            <span class="post-date">{post.date}</span>
-            <h3 class="post-title">{post.title}<span class="post-tag">{post.tag}</span></h3>
-            <p class="post-excerpt">{post.excerpt}</p>
-          </a>
-        ))}
+        {posts.map(post => {
+          const formattedDate = post.data.date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          });
+          return (
+            <a href={`/blog/${post.slug}`} class="post-item">
+              {post.data.draft && <span class="draft-badge">Draft</span>}
+              <span class="post-date">{formattedDate}</span>
+              <h3 class="post-title">{post.data.title}</h3>
+              <p class="post-excerpt">{post.data.description}</p>
+              {post.data.tags.length > 0 && (
+                <div class="post-tags">
+                  {post.data.tags.map((tag: string) => (
+                    <span class="post-tag">{tag}</span>
+                  ))}
+                </div>
+              )}
+            </a>
+          );
+        })}
       </div>
     ) : (
       <div class="empty-state">
@@ -43,7 +61,38 @@ const posts: Array<{slug: string; title: string; date: string; excerpt: string; 
     color: var(--color-text);
   }
 
-  /* Post list with editorial numbering (for when posts are added) */
+  /* Draft badge */
+  .draft-badge {
+    display: inline-block;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #b45309;
+    background: rgba(180, 83, 9, 0.1);
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: 4px;
+    margin-bottom: var(--space-sm);
+  }
+
+  /* Post tags */
+  .post-tags {
+    display: flex;
+    gap: var(--space-xs);
+    flex-wrap: wrap;
+    margin-top: var(--space-sm);
+  }
+
+  .post-tag {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    color: var(--color-accent);
+    background: rgba(196, 130, 109, 0.1);
+    padding: 2px var(--space-xs);
+    border-radius: 3px;
+  }
+
+  /* Post list with editorial numbering */
   .post-list {
     counter-reset: posts;
   }
