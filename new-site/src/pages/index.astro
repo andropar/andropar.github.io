@@ -3,99 +3,131 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Johannes Roth">
-  <section class="intro">
-    <div class="intro-photo">
-      <img src="/prof_pic.png" alt="Johannes Roth" />
-    </div>
-    <p class="intro-greeting">Hi, I'm</p>
-    <h1 class="intro-title">Johannes Roth</h1>
-    <p class="intro-bio">
-      I study how the brain makes sense of what we see - and how we can use AI to understand it better.
-      Currently finishing my <strong>PhD in Computational Cognitive Neuroscience</strong> at the
-      Max Planck Institute in Leipzig.
-    </p>
-    <p class="intro-bio">
-      Before academia, I worked as a data scientist building recommendation systems and ML pipelines.
-      I like problems that sit at the intersection of <strong>neuroscience, machine learning, and
-      building things that work</strong>.
-    </p>
+  <div class="hero-wrapper">
+    <canvas id="particles-canvas" class="particles-canvas"></canvas>
 
-    <div class="status">
-      <span class="status-dot"></span>
-      Open to opportunities starting September 2026
-    </div>
-
-    <div class="quick-links">
-      <a href="/about" class="quick-link">My story</a>
-      <a href="/research" class="quick-link">Research</a>
-      <a href="mailto:johannes@roth24.de" class="quick-link">Get in touch</a>
-    </div>
-  </section>
-
-  <section class="section">
-    <h2 class="section-title">What I Do</h2>
-    <div class="what-i-do">
-      <div class="do-item">
-        <h3>Science</h3>
-        <p>
-          Understanding how the brain processes visual information. I use deep learning models
-          to study perception and develop methods to run more efficient neuroimaging experiments.
-        </p>
+    <section class="intro">
+      <p class="intro-greeting">Hi, I'm</p>
+      <div class="intro-name-row">
+        <div class="intro-photo">
+          <img src="/prof_pic.png" alt="Johannes Roth" />
+        </div>
+        <h1 class="intro-title">Johannes Roth</h1>
       </div>
-      <div class="do-item">
-        <h3>Engineering</h3>
-        <p>
-          Building things that work at scale. Recommendation systems at CHECK24, ML pipelines
-          in production, and research tools like <a href="https://github.com/ViCCo-Group/thingsvision">thingsvision</a> that
-          thousands of researchers use.
-        </p>
-      </div>
-    </div>
-  </section>
+      <p class="intro-bio">
+        I study how the brain makes sense of what we see - and how we can use AI to understand it better.
+        Currently finishing my <strong>PhD in Computational Cognitive Neuroscience</strong> at the
+        Max Planck Institute in Leipzig.
+      </p>
+      <p class="intro-bio">
+        Before academia, I worked as a data scientist building recommendation systems and ML pipelines.
+        I like problems that sit at the intersection of <strong>neuroscience, machine learning, and
+        building things that work</strong>.
+      </p>
 
-  <section class="section">
-    <h2 class="section-title">Selected Work</h2>
-    <div class="selected-work">
-      <a href="/research#publications" class="work-item">
-        <span class="work-venue">CCN 2025</span>
-        <h3>How to sample the world for understanding the visual system</h3>
-        <p>Oral presentation on optimal stimulus selection for vision research.</p>
-      </a>
-      <a href="https://github.com/ViCCo-Group/thingsvision" class="work-item" target="_blank">
-        <span class="work-venue">Open Source</span>
-        <h3>thingsvision</h3>
-        <p>Feature extraction library for computer vision models, used by researchers worldwide.</p>
-      </a>
-      <a href="https://huggingface.co/datasets/andropar/relaion2b-natural" class="work-item" target="_blank">
-        <span class="work-venue">Dataset</span>
-        <h3>ReLAION-2B Natural</h3>
-        <p>Naturalness scores for 2.1B images + embeddings for ~500M natural photos. On Hugging Face.</p>
-      </a>
-    </div>
-  </section>
+      <div class="status">
+        <span class="status-dot"></span>
+        Open to opportunities starting September 2026
+      </div>
+
+      <div class="quick-links">
+        <a href="/about" class="quick-link">My story</a>
+        <a href="/research" class="quick-link">Research</a>
+        <a href="mailto:johannes@roth24.de" class="quick-link">Get in touch</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">What I Do</h2>
+      <div class="what-i-do">
+        <div class="do-item">
+          <h3>Science</h3>
+          <p>
+            Understanding how the brain processes visual information. I use deep learning models
+            to study perception and develop methods to run more efficient neuroimaging experiments.
+          </p>
+        </div>
+        <div class="do-item">
+          <h3>Engineering</h3>
+          <p>
+            Building things that work at scale. Recommendation systems at CHECK24, ML pipelines
+            in production, and research tools like <a href="https://github.com/ViCCo-Group/thingsvision">thingsvision</a> that
+            thousands of researchers use.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Selected Work</h2>
+      <div class="selected-work">
+        <a href="/research#publications" class="work-item">
+          <span class="work-venue">CCN 2025</span>
+          <h3>How to sample the world for understanding the visual system</h3>
+          <p>Oral presentation on optimal stimulus selection for vision research.</p>
+        </a>
+        <a href="https://github.com/ViCCo-Group/thingsvision" class="work-item" target="_blank">
+          <span class="work-venue">Open Source</span>
+          <h3>thingsvision</h3>
+          <p>Feature extraction library for computer vision models, used by researchers worldwide.</p>
+        </a>
+        <a href="https://huggingface.co/datasets/andropar/relaion2b-natural" class="work-item" target="_blank">
+          <span class="work-venue">Dataset</span>
+          <h3>ReLAION-2B Natural</h3>
+          <p>Naturalness scores for 2.1B images + embeddings for ~500M natural photos. On Hugging Face.</p>
+        </a>
+      </div>
+    </section>
+  </div>
 </Layout>
 
 <style>
+  /* Hero wrapper with particles */
+  .hero-wrapper {
+    position: relative;
+  }
+
+  .particles-canvas {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hero-wrapper > *:not(.particles-canvas) {
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .particles-canvas {
+      display: none;
+    }
+  }
+
+  /* Intro Section */
   .intro {
     margin-bottom: var(--space-4xl);
   }
 
-  .intro::after {
-    content: '';
-    display: table;
-    clear: both;
+  .intro-name-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
   }
 
   .intro-photo {
-    width: 120px;
-    height: 120px;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
     overflow: hidden;
     background: var(--color-bg-subtle);
-    float: right;
-    margin-left: var(--space-xl);
-    margin-bottom: var(--space-md);
-    shape-outside: circle(50%);
+    flex-shrink: 0;
   }
 
   .intro-photo img {
@@ -104,13 +136,11 @@ import Layout from '../layouts/Layout.astro';
     object-fit: cover;
   }
 
-  @media (max-width: 480px) {
-    .intro-photo {
-      float: none;
-      margin: 0 auto var(--space-xl);
-    }
+  .intro-name-row .intro-title {
+    margin: 0;
   }
 
+  /* What I Do */
   .what-i-do {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -138,6 +168,7 @@ import Layout from '../layouts/Layout.astro';
     margin: 0;
   }
 
+  /* Selected Work */
   .selected-work {
     display: flex;
     flex-direction: column;
@@ -184,3 +215,186 @@ import Layout from '../layouts/Layout.astro';
     margin: 0;
   }
 </style>
+
+<script>
+  const canvas = document.getElementById('particles-canvas') as HTMLCanvasElement;
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    const heroWrapper = document.querySelector('.hero-wrapper') as HTMLElement;
+
+    // Content area is 760px max-width, centered
+    const CONTENT_WIDTH = 760;
+    const CONTENT_PADDING = 32;
+
+    // Gradient orb settings
+    const ORBS_PER_SIDE = 2;
+    const CURSOR_INFLUENCE = 150; // How far cursor affects orbs
+    const CURSOR_STRENGTH = 0.15; // How much cursor affects brightness
+
+    interface GradientOrb {
+      x: number;
+      y: number;
+      originX: number;
+      originY: number;
+      radius: number;
+      baseOpacity: number;
+      currentOpacity: number;
+      phase: number;
+      breatheSpeed: number;
+      side: 'left' | 'right';
+    }
+
+    let orbs: GradientOrb[] = [];
+    let mouseX = -1000;
+    let mouseY = -1000;
+    let contentLeft = 0;
+    let contentRight = 0;
+
+    function resize() {
+      if (!heroWrapper || !canvas) return;
+      const rect = heroWrapper.getBoundingClientRect();
+      canvas.width = window.innerWidth;
+      canvas.height = rect.height;
+
+      // Calculate content boundaries
+      const contentAreaWidth = Math.min(CONTENT_WIDTH, canvas.width - CONTENT_PADDING * 2);
+      contentLeft = (canvas.width - contentAreaWidth) / 2;
+      contentRight = contentLeft + contentAreaWidth;
+
+      initOrbs();
+    }
+
+    function initOrbs() {
+      orbs = [];
+
+      // Only create orbs if there's enough margin space
+      const marginWidth = contentLeft;
+      if (marginWidth < 60) return;
+
+      // Left side orbs
+      for (let i = 0; i < ORBS_PER_SIDE; i++) {
+        const y = (canvas.height / (ORBS_PER_SIDE + 1)) * (i + 1);
+        const x = marginWidth * 0.5;
+        orbs.push({
+          x,
+          y,
+          originX: x,
+          originY: y,
+          radius: marginWidth * 0.8 + Math.random() * 40,
+          baseOpacity: 0.06 + Math.random() * 0.04,
+          currentOpacity: 0.06,
+          phase: Math.random() * Math.PI * 2,
+          breatheSpeed: 0.3 + Math.random() * 0.2,
+          side: 'left',
+        });
+      }
+
+      // Right side orbs
+      for (let i = 0; i < ORBS_PER_SIDE; i++) {
+        const y = (canvas.height / (ORBS_PER_SIDE + 1)) * (i + 1);
+        const x = contentRight + marginWidth * 0.5;
+        orbs.push({
+          x,
+          y,
+          originX: x,
+          originY: y,
+          radius: marginWidth * 0.8 + Math.random() * 40,
+          baseOpacity: 0.06 + Math.random() * 0.04,
+          currentOpacity: 0.06,
+          phase: Math.random() * Math.PI * 2,
+          breatheSpeed: 0.3 + Math.random() * 0.2,
+          side: 'right',
+        });
+      }
+    }
+
+    function animate() {
+      if (!ctx) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const time = Date.now() * 0.001;
+
+      orbs.forEach(orb => {
+        // Breathing effect
+        const breathe = Math.sin(time * orb.breatheSpeed + orb.phase) * 0.3 + 1;
+
+        // Calculate cursor influence
+        const dx = mouseX - orb.originX;
+        const dy = mouseY - orb.originY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        // Cursor brightens nearby orbs
+        let cursorBoost = 0;
+        if (distance < CURSOR_INFLUENCE * 2) {
+          cursorBoost = (1 - distance / (CURSOR_INFLUENCE * 2)) * CURSOR_STRENGTH;
+        }
+
+        // Subtle position shift toward cursor
+        if (distance < CURSOR_INFLUENCE * 3 && distance > 0) {
+          const pull = (1 - distance / (CURSOR_INFLUENCE * 3)) * 15;
+          orb.x = orb.originX + (dx / distance) * pull;
+          orb.y = orb.originY + (dy / distance) * pull;
+        } else {
+          orb.x = orb.originX;
+          orb.y = orb.originY;
+        }
+
+        // Update opacity with breathing and cursor
+        orb.currentOpacity = orb.baseOpacity * breathe + cursorBoost;
+
+        // Draw the gradient orb
+        const gradient = ctx.createRadialGradient(
+          orb.x, orb.y, 0,
+          orb.x, orb.y, orb.radius
+        );
+
+        // Terracotta gradient
+        gradient.addColorStop(0, `rgba(196, 130, 109, ${orb.currentOpacity})`);
+        gradient.addColorStop(0.5, `rgba(196, 130, 109, ${orb.currentOpacity * 0.4})`);
+        gradient.addColorStop(1, 'rgba(196, 130, 109, 0)');
+
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(orb.x, orb.y, orb.radius, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    function handleMouseMove(e: MouseEvent) {
+      if (!heroWrapper) return;
+      const canvasRect = canvas.getBoundingClientRect();
+      const heroRect = heroWrapper.getBoundingClientRect();
+      mouseX = e.clientX - canvasRect.left;
+      mouseY = e.clientY - heroRect.top;
+    }
+
+    function handleMouseLeave() {
+      mouseX = -1000;
+      mouseY = -1000;
+    }
+
+    function handleScroll() {
+      if (!heroWrapper) return;
+      const rect = heroWrapper.getBoundingClientRect();
+      if (rect.bottom < 0 || rect.top > window.innerHeight) {
+        mouseX = -1000;
+        mouseY = -1000;
+      }
+    }
+
+    // Check for reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!prefersReducedMotion && ctx) {
+      resize();
+      animate();
+
+      window.addEventListener('resize', resize);
+      document.addEventListener('mousemove', handleMouseMove);
+      heroWrapper?.addEventListener('mouseleave', handleMouseLeave);
+      window.addEventListener('scroll', handleScroll, { passive: true });
+    }
+  }
+</script>

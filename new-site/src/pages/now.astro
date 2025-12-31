@@ -23,7 +23,7 @@ import Layout from '../layouts/Layout.astro';
       </div>
 
       <div class="now-card">
-        <h3 class="now-card-title">Reading</h3>
+        <h3 class="now-card-title">Exploring</h3>
         <div class="now-card-content">
           <p>Papers on optimal experimental design and active learning.</p>
           <p>Keeping up with the LLM/multimodal model space.</p>
@@ -39,4 +39,643 @@ import Layout from '../layouts/Layout.astro';
       </div>
     </div>
   </section>
+
+  <section class="now-section books-section">
+    <h2 class="section-title">Currently Reading</h2>
+    <div class="bookshelf">
+      <div class="book">
+        <div class="book-cover">
+          <img src="https://covers.openlibrary.org/b/isbn/9781501156984-L.jpg" alt="The Mind Illuminated" />
+          <div class="book-spine"></div>
+        </div>
+        <div class="book-info">
+          <span class="book-title">The Mind Illuminated</span>
+          <span class="book-author">Culadasa</span>
+        </div>
+      </div>
+
+      <div class="book">
+        <div class="book-cover">
+          <img src="https://covers.openlibrary.org/b/isbn/9780525533337-L.jpg" alt="The Bullet Journal Method" />
+          <div class="book-spine"></div>
+        </div>
+        <div class="book-info">
+          <span class="book-title">The Bullet Journal Method</span>
+          <span class="book-author">Ryder Carroll</span>
+        </div>
+      </div>
+    </div>
+
+    <details class="books-archive">
+      <summary class="archive-toggle">
+        <span class="archive-icon">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        Books I've Read
+      </summary>
+      <div class="archive-content">
+        <div class="reading-list">
+          <div class="reading-category">
+            <h4 class="category-label loved">Loved</h4>
+
+            <div class="genre-section">
+              <span class="genre-label">Mindfulness & Contemplative</span>
+              <div class="book-grid">
+                <div class="book-card">
+                  <img src="https://covers.openlibrary.org/b/isbn/9781590308387-M.jpg" alt="You Are Here" />
+                  <span class="book-card-title">You Are Here</span>
+                  <span class="book-card-author">Thich Nhat Hanh</span>
+                </div>
+                <div class="book-card">
+                  <img src="https://covers.openlibrary.org/b/isbn/9781937006853-M.jpg" alt="No Mud, No Lotus" />
+                  <span class="book-card-title">No Mud, No Lotus</span>
+                  <span class="book-card-author">Thich Nhat Hanh</span>
+                </div>
+                <div class="book-card">
+                  <img src="https://covers.openlibrary.org/b/isbn/9780553351392-M.jpg" alt="Peace Is Every Step" />
+                  <span class="book-card-title">Peace Is Every Step</span>
+                  <span class="book-card-author">Thich Nhat Hanh</span>
+                </div>
+                <div class="book-card">
+                  <img src="https://covers.openlibrary.org/b/isbn/9780553903713-M.jpg" alt="Full Catastrophe Living" />
+                  <span class="book-card-title">Full Catastrophe Living</span>
+                  <span class="book-card-author">Jon Kabat-Zinn</span>
+                </div>
+                <div class="book-card">
+                  <img src="https://covers.openlibrary.org/b/isbn/9780786880706-M.jpg" alt="Wherever You Go, There You Are" />
+                  <span class="book-card-title">Wherever You Go...</span>
+                  <span class="book-card-author">Jon Kabat-Zinn</span>
+                </div>
+                <div class="book-card">
+                  <img src="https://covers.openlibrary.org/b/isbn/9780060637248-M.jpg" alt="The Art of Living" />
+                  <span class="book-card-title">The Art of Living</span>
+                  <span class="book-card-author">William Hart</span>
+                </div>
+                <div class="book-card">
+                  <img src="https://covers.openlibrary.org/b/isbn/9780517543054-M.jpg" alt="Be Here Now" />
+                  <span class="book-card-title">Be Here Now</span>
+                  <span class="book-card-author">Ram Dass</span>
+                </div>
+                <div class="book-card">
+                  <img src="https://covers.openlibrary.org/b/isbn/9780061729072-M.jpg" alt="The Doors of Perception" />
+                  <span class="book-card-title">Doors of Perception</span>
+                  <span class="book-card-author">Aldous Huxley</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="genre-section">
+              <span class="genre-label">Fiction</span>
+              <div class="book-grid">
+                <div class="book-card">
+                  <img src="https://covers.openlibrary.org/b/isbn/9780756404741-M.jpg" alt="The Name of the Wind" />
+                  <span class="book-card-title">The Name of the Wind</span>
+                  <span class="book-card-author">Patrick Rothfuss</span>
+                </div>
+                <div class="book-card">
+                  <img src="https://covers.openlibrary.org/b/isbn/9780547773742-M.jpg" alt="A Wizard of Earthsea" />
+                  <span class="book-card-title">A Wizard of Earthsea</span>
+                  <span class="book-card-author">Ursula K. Le Guin</span>
+                </div>
+                <div class="book-card">
+                  <img src="https://covers.openlibrary.org/b/isbn/9780765382030-M.jpg" alt="The Three-Body Problem" />
+                  <span class="book-card-title">Three-Body Problem</span>
+                  <span class="book-card-author">Liu Cixin</span>
+                </div>
+                <div class="book-card">
+                  <img src="https://covers.openlibrary.org/b/isbn/9780812550702-M.jpg" alt="Ender's Game" />
+                  <span class="book-card-title">Ender's Game</span>
+                  <span class="book-card-author">Orson Scott Card</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="genre-section">
+              <span class="genre-label">Adventure & Memoir</span>
+              <div class="book-grid">
+                <div class="book-card">
+                  <img src="https://covers.openlibrary.org/b/isbn/9780307476074-M.jpg" alt="Wild" />
+                  <span class="book-card-title">Wild</span>
+                  <span class="book-card-author">Cheryl Strayed</span>
+                </div>
+                <div class="book-card">
+                  <img src="https://covers.openlibrary.org/b/isbn/9780385486804-M.jpg" alt="Into the Wild" />
+                  <span class="book-card-title">Into the Wild</span>
+                  <span class="book-card-author">Jon Krakauer</span>
+                </div>
+                <div class="book-card">
+                  <img src="https://covers.openlibrary.org/b/isbn/9780874778885-M.jpg" alt="Seven Years in Tibet" />
+                  <span class="book-card-title">Seven Years in Tibet</span>
+                  <span class="book-card-author">Heinrich Harrer</span>
+                </div>
+                <div class="book-card">
+                  <img src="https://covers.openlibrary.org/b/isbn/9780307266309-M.jpg" alt="Born to Run" />
+                  <span class="book-card-title">Born to Run</span>
+                  <span class="book-card-author">Christopher McDougall</span>
+                </div>
+                <div class="book-card">
+                  <img src="https://covers.openlibrary.org/b/isbn/9780877285960-M.jpg" alt="A Search in Secret India" />
+                  <span class="book-card-title">Secret India</span>
+                  <span class="book-card-author">Paul Brunton</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="genre-section">
+              <span class="genre-label">Psychology & Growth</span>
+              <div class="book-grid">
+                <div class="book-card">
+                  <img src="https://covers.openlibrary.org/b/isbn/9780380810338-M.jpg" alt="Feeling Good" />
+                  <span class="book-card-title">Feeling Good</span>
+                  <span class="book-card-author">David D. Burns</span>
+                </div>
+                <div class="book-card">
+                  <img src="https://covers.openlibrary.org/b/isbn/9780735214002-M.jpg" alt="A Liberated Mind" />
+                  <span class="book-card-title">A Liberated Mind</span>
+                  <span class="book-card-author">Steven C. Hayes</span>
+                </div>
+                <div class="book-card">
+                  <img src="https://covers.openlibrary.org/b/isbn/9780374159122-M.jpg" alt="Four Thousand Weeks" />
+                  <span class="book-card-title">Four Thousand Weeks</span>
+                  <span class="book-card-author">Oliver Burkeman</span>
+                </div>
+                <div class="book-card">
+                  <img src="https://covers.openlibrary.org/b/isbn/9781455586691-M.jpg" alt="Deep Work" />
+                  <span class="book-card-title">Deep Work</span>
+                  <span class="book-card-author">Cal Newport</span>
+                </div>
+                <div class="book-card">
+                  <img src="https://covers.openlibrary.org/b/isbn/9780593083888-M.jpg" alt="The Myth of Normal" />
+                  <span class="book-card-title">The Myth of Normal</span>
+                  <span class="book-card-author">Gabor Maté</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="genre-section">
+              <span class="genre-label">Health & Body</span>
+              <div class="book-grid">
+                <div class="book-card">
+                  <img src="https://covers.openlibrary.org/b/isbn/9781250066114-M.jpg" alt="How Not to Die" />
+                  <span class="book-card-title">How Not to Die</span>
+                  <span class="book-card-author">Michael Greger</span>
+                </div>
+                <div class="book-card">
+                  <img src="https://covers.openlibrary.org/b/isbn/9780143038580-M.jpg" alt="The Omnivore's Dilemma" />
+                  <span class="book-card-title">Omnivore's Dilemma</span>
+                  <span class="book-card-author">Michael Pollan</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="genre-section">
+              <span class="genre-label">Life & Death</span>
+              <div class="book-grid">
+                <div class="book-card">
+                  <img src="https://covers.openlibrary.org/b/isbn/9780812988406-M.jpg" alt="When Breath Becomes Air" />
+                  <span class="book-card-title">When Breath Becomes Air</span>
+                  <span class="book-card-author">Paul Kalanithi</span>
+                </div>
+                <div class="book-card">
+                  <img src="https://covers.openlibrary.org/b/isbn/9780735223318-M.jpg" alt="That Good Night" />
+                  <span class="book-card-title">That Good Night</span>
+                  <span class="book-card-author">Sunita Puri</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="genre-section">
+              <span class="genre-label">Essays</span>
+              <div class="book-grid">
+                <div class="book-card">
+                  <img src="https://covers.openlibrary.org/b/isbn/9781608464661-M.jpg" alt="Men Explain Things to Me" />
+                  <span class="book-card-title">Men Explain Things...</span>
+                  <span class="book-card-author">Rebecca Solnit</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="reading-category">
+            <h4 class="category-label okay">Found Okay</h4>
+            <div class="book-grid">
+              <div class="book-card">
+                <img src="https://covers.openlibrary.org/b/isbn/9780735211292-M.jpg" alt="Atomic Habits" />
+                <span class="book-card-title">Atomic Habits</span>
+                <span class="book-card-author">James Clear</span>
+              </div>
+              <div class="book-card">
+                <img src="https://covers.openlibrary.org/b/isbn/9781948836531-M.jpg" alt="Indistractable" />
+                <span class="book-card-title">Indistractable</span>
+                <span class="book-card-author">Nir Eyal</span>
+              </div>
+              <div class="book-card">
+                <img src="https://covers.openlibrary.org/b/isbn/9781556438806-M.jpg" alt="In the Realm of Hungry Ghosts" />
+                <span class="book-card-title">Hungry Ghosts</span>
+                <span class="book-card-author">Gabor Maté</span>
+              </div>
+              <div class="book-card">
+                <img src="https://covers.openlibrary.org/b/isbn/9781451636024-M.jpg" alt="Waking Up" />
+                <span class="book-card-title">Waking Up</span>
+                <span class="book-card-author">Sam Harris</span>
+              </div>
+              <div class="book-card">
+                <img src="https://covers.openlibrary.org/b/isbn/9780807014295-M.jpg" alt="Man's Search for Meaning" />
+                <span class="book-card-title">Man's Search...</span>
+                <span class="book-card-author">Viktor Frankl</span>
+              </div>
+              <div class="book-card">
+                <img src="https://covers.openlibrary.org/b/isbn/9780593534809-M.jpg" alt="Built to Move" />
+                <span class="book-card-title">Built to Move</span>
+                <span class="book-card-author">Kelly Starrett</span>
+              </div>
+              <div class="book-card">
+                <img src="https://covers.openlibrary.org/b/isbn/9780553378290-M.jpg" alt="After the Ecstasy, the Laundry" />
+                <span class="book-card-title">After the Ecstasy...</span>
+                <span class="book-card-author">Jack Kornfield</span>
+              </div>
+              <div class="book-card">
+                <img src="https://covers.openlibrary.org/b/isbn/9780060899226-M.jpg" alt="Kitchen Confidential" />
+                <span class="book-card-title">Kitchen Confidential</span>
+                <span class="book-card-author">Anthony Bourdain</span>
+              </div>
+              <div class="book-card">
+                <img src="https://covers.openlibrary.org/b/isbn/9780593138762-M.jpg" alt="The Comfort Crisis" />
+                <span class="book-card-title">The Comfort Crisis</span>
+                <span class="book-card-author">Michael Easter</span>
+              </div>
+              <div class="book-card">
+                <img src="https://covers.openlibrary.org/b/isbn/9780393339758-M.jpg" alt="The Shallows" />
+                <span class="book-card-title">The Shallows</span>
+                <span class="book-card-author">Nicholas Carr</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <section class="now-section music-section">
+    <h2 class="section-title">Listening To</h2>
+    <div class="spotify-container">
+      <div class="spotify-wrapper">
+        <iframe
+          style="border-radius:12px"
+          src="https://open.spotify.com/embed/playlist/37i9dQZEVXcKBQMbsgdSz3?utm_source=generator&theme=0"
+          width="100%"
+          height="352"
+          frameBorder="0"
+          allowfullscreen=""
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy">
+        </iframe>
+      </div>
+    </div>
+  </section>
 </Layout>
+
+<style>
+  /* Books Section */
+  .books-section {
+    margin-top: var(--space-3xl);
+  }
+
+  .bookshelf {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-xl);
+    margin-top: var(--space-lg);
+  }
+
+  @media (max-width: 640px) {
+    .bookshelf {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-lg);
+    }
+  }
+
+  @media (max-width: 400px) {
+    .bookshelf {
+      grid-template-columns: 1fr;
+      max-width: 200px;
+    }
+  }
+
+  .book {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .book:hover {
+    transform: translateY(-8px);
+  }
+
+  .book-cover {
+    position: relative;
+    aspect-ratio: 2 / 3;
+    border-radius: 2px 6px 6px 2px;
+    overflow: hidden;
+    box-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.08),
+      0 8px 16px rgba(0, 0, 0, 0.08),
+      4px 0 8px -2px rgba(0, 0, 0, 0.12);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    background: var(--color-bg-subtle);
+  }
+
+  .book:hover .book-cover {
+    box-shadow:
+      0 4px 8px rgba(0, 0, 0, 0.1),
+      0 16px 32px rgba(0, 0, 0, 0.12),
+      6px 0 12px -2px rgba(0, 0, 0, 0.15);
+    transform: rotateY(-8deg);
+  }
+
+  .book-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: filter 0.3s ease;
+  }
+
+  .book:hover .book-cover img {
+    filter: brightness(1.05) saturate(1.1);
+  }
+
+  /* Spine effect */
+  .book-spine {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.25) 0%,
+      rgba(0, 0, 0, 0.1) 50%,
+      transparent 100%
+    );
+    pointer-events: none;
+  }
+
+  /* Page edge effect */
+  .book-cover::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 2px;
+    bottom: 2px;
+    width: 3px;
+    background: linear-gradient(
+      to right,
+      var(--color-bg-subtle) 0%,
+      #e8e6e1 50%,
+      var(--color-bg-subtle) 100%
+    );
+    border-radius: 0 2px 2px 0;
+  }
+
+  .book-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: var(--space-sm);
+    padding: 0 2px;
+  }
+
+  .book-title {
+    font-family: var(--font-serif);
+    font-size: 0.9375rem;
+    color: var(--color-text);
+    line-height: 1.3;
+    transition: color 0.2s ease;
+  }
+
+  .book:hover .book-title {
+    color: var(--color-accent);
+  }
+
+  .book-author {
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    color: var(--color-text-tertiary);
+  }
+
+  /* Archive Section */
+  .books-archive {
+    margin-top: var(--space-2xl);
+    border-top: 1px solid var(--color-border-subtle);
+    padding-top: var(--space-lg);
+  }
+
+  .archive-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    padding: var(--space-xs) 0;
+    transition: color 0.2s ease;
+    list-style: none;
+  }
+
+  .archive-toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .archive-toggle:hover {
+    color: var(--color-text);
+  }
+
+  .archive-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+  }
+
+  .books-archive[open] .archive-icon {
+    transform: rotate(180deg);
+  }
+
+  .archive-content {
+    margin-top: var(--space-lg);
+  }
+
+  .reading-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xl);
+  }
+
+  .reading-category {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .category-label {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: 4px;
+    width: fit-content;
+  }
+
+  .category-label.loved {
+    color: var(--color-accent);
+    background: rgba(196, 130, 109, 0.1);
+  }
+
+  .category-label.okay {
+    color: var(--color-text-secondary);
+    background: var(--color-bg-subtle);
+  }
+
+  .genre-section {
+    margin-bottom: var(--space-xl);
+  }
+
+  .genre-label {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-tertiary);
+    display: block;
+    margin-bottom: var(--space-sm);
+  }
+
+  .book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: var(--space-md);
+  }
+
+  @media (max-width: 480px) {
+    .book-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-sm);
+    }
+  }
+
+  .book-card {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .book-card img {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    border-radius: 2px 4px 4px 2px;
+    background: var(--color-bg-subtle);
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.08),
+      0 4px 8px rgba(0, 0, 0, 0.06),
+      2px 0 4px -1px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .book-card:hover img {
+    transform: translateY(-4px) rotateY(-5deg);
+    box-shadow:
+      0 2px 6px rgba(0, 0, 0, 0.1),
+      0 8px 16px rgba(0, 0, 0, 0.08),
+      4px 0 8px -2px rgba(0, 0, 0, 0.12);
+  }
+
+  .book-card-title {
+    font-family: var(--font-serif);
+    font-size: 0.75rem;
+    color: var(--color-text);
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .book-card-author {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    color: var(--color-text-tertiary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Music Section */
+  .music-section {
+    margin-top: var(--space-3xl);
+  }
+
+  .spotify-container {
+    margin-top: var(--space-lg);
+  }
+
+  .spotify-wrapper {
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--color-bg-subtle);
+    box-shadow:
+      0 2px 8px rgba(0, 0, 0, 0.04),
+      0 8px 24px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+
+  .spotify-wrapper:hover {
+    box-shadow:
+      0 4px 12px rgba(0, 0, 0, 0.06),
+      0 12px 32px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+  }
+
+  .spotify-wrapper iframe {
+    display: block;
+    background: transparent;
+  }
+
+  /* Subtle decorative elements */
+  .books-section::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, transparent 50%, var(--color-accent) 50%);
+    opacity: 0.08;
+    pointer-events: none;
+  }
+
+  .music-section::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, transparent 50%, var(--color-accent) 50%);
+    opacity: 0.08;
+    pointer-events: none;
+  }
+
+  .books-section,
+  .music-section {
+    position: relative;
+  }
+</style>
