@@ -1565,6 +1565,44 @@ nav,
   display: none;
 }
 
+/* Dark mode: Spotify embed wrapper */
+[data-theme="dark"] .spotify-wrapper {
+  background: #121212;
+}
+
+/* Better mobile nav spacing */
+@media (max-width: 480px) {
+  .nav-link::before {
+    display: none;
+  }
+
+  .nav-links {
+    gap: var(--space-sm);
+  }
+
+  .theme-toggle {
+    margin-left: var(--space-sm);
+  }
+}
+
+/* Skip to main content - accessibility */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--color-accent);
+  color: white;
+  padding: var(--space-sm) var(--space-md);
+  z-index: 1000;
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
 /* Reduce motion for accessibility */
 @media (prefers-reduced-motion: reduce) {
   *,

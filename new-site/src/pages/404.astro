@@ -1,0 +1,92 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="404 - Page Not Found">
+  <div class="not-found">
+    <div class="not-found-content">
+      <span class="not-found-code">404</span>
+      <h1 class="not-found-title">Page not found</h1>
+      <p class="not-found-description">
+        The page you're looking for doesn't exist or has been moved.
+      </p>
+      <a href="/" class="not-found-link">
+        <span class="not-found-arrow">&larr;</span>
+        Back to home
+      </a>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .not-found {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    text-align: center;
+  }
+
+  .not-found-content {
+    max-width: 400px;
+  }
+
+  .not-found-code {
+    font-family: var(--font-serif);
+    font-size: 8rem;
+    font-style: italic;
+    line-height: 1;
+    color: var(--color-border);
+    display: block;
+    margin-bottom: var(--space-md);
+    letter-spacing: -0.05em;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  .not-found-title {
+    font-size: 1.5rem;
+    margin-bottom: var(--space-md);
+  }
+
+  .not-found-description {
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-xl);
+  }
+
+  .not-found-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: 0.9375rem;
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: gap 0.2s ease;
+  }
+
+  .not-found-link:hover {
+    gap: var(--space-md);
+  }
+
+  .not-found-arrow {
+    transition: transform 0.2s ease;
+  }
+
+  .not-found-link:hover .not-found-arrow {
+    transform: translateX(-4px);
+  }
+
+  @media (max-width: 480px) {
+    .not-found-code {
+      font-size: 5rem;
+    }
+  }
+</style>

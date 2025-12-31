@@ -42,8 +42,12 @@ const navLinks = [
         document.documentElement.setAttribute('data-theme', theme);
       })();
     </script>
+
+    <!-- GoatCounter Analytics -->
+    <script data-goatcounter="https://jroth.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
   </head>
   <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <nav>
       <div class="container">
         <a href="/" class="nav-brand">Johannes Roth</a>
@@ -78,7 +82,7 @@ const navLinks = [
       </div>
     </nav>
 
-    <main>
+    <main id="main-content">
       <div class="container">
         <slot />
       </div>
