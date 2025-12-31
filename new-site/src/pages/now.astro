@@ -434,7 +434,7 @@ import Layout from '../layouts/Layout.astro';
     background: linear-gradient(
       to right,
       var(--color-bg-subtle) 0%,
-      #e8e6e1 50%,
+      var(--color-border) 50%,
       var(--color-bg-subtle) 100%
     );
     border-radius: 0 2px 2px 0;
@@ -536,7 +536,7 @@ import Layout from '../layouts/Layout.astro';
 
   .category-label.loved {
     color: var(--color-accent);
-    background: rgba(196, 130, 109, 0.1);
+    background: rgba(var(--orb-color), 0.1);
   }
 
   .category-label.okay {

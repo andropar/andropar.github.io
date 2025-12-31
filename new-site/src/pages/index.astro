@@ -348,10 +348,11 @@ import Layout from '../layouts/Layout.astro';
           orb.x, orb.y, orb.radius
         );
 
-        // Terracotta gradient
-        gradient.addColorStop(0, `rgba(196, 130, 109, ${orb.currentOpacity})`);
-        gradient.addColorStop(0.5, `rgba(196, 130, 109, ${orb.currentOpacity * 0.4})`);
-        gradient.addColorStop(1, 'rgba(196, 130, 109, 0)');
+        // Get orb color from CSS variable for dark mode support
+        const orbColor = getComputedStyle(document.documentElement).getPropertyValue('--orb-color').trim() || '196, 130, 109';
+        gradient.addColorStop(0, `rgba(${orbColor}, ${orb.currentOpacity})`);
+        gradient.addColorStop(0.5, `rgba(${orbColor}, ${orb.currentOpacity * 0.4})`);
+        gradient.addColorStop(1, `rgba(${orbColor}, 0)`);
 
         ctx.fillStyle = gradient;
         ctx.beginPath();

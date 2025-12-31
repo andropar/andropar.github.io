@@ -25,6 +25,9 @@
   --color-border: #e5e3df;
   --color-border-subtle: #eeece8;
 
+  /* For gradient orbs */
+  --orb-color: 196, 130, 109;
+
   /* Typography */
   --font-serif: 'Instrument Serif', Georgia, serif;
   --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -46,6 +49,20 @@
   /* Transitions */
   --transition-fast: 150ms ease;
   --transition-base: 250ms ease;
+}
+
+/* Dark mode colors */
+[data-theme="dark"] {
+  --color-bg: #1a1918;
+  --color-bg-subtle: #252321;
+  --color-text: #f5f3f0;
+  --color-text-secondary: #a8a5a0;
+  --color-text-tertiary: #7a7672;
+  --color-accent: #d4947f;
+  --color-accent-hover: #e0a590;
+  --color-border: #3d3a36;
+  --color-border-subtle: #2e2b28;
+  --orb-color: 212, 148, 127;
 }
 
 html {
@@ -1440,6 +1457,112 @@ a:not(.nav-link):not(.nav-brand):not(.footer-link):not(.quick-link):not(.work-it
     animation: none !important;
     transition: none !important;
   }
+}
+
+/* ==========================================
+   DARK MODE SPECIFIC OVERRIDES
+   ========================================== */
+
+/* Smooth theme transition */
+html {
+  transition: background-color 0.3s ease;
+}
+
+body,
+nav,
+.card,
+.now-card {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Dark mode: card hover states */
+[data-theme="dark"] .card:hover,
+[data-theme="dark"] .now-card:hover {
+  background: #2e2b28;
+}
+
+/* Dark mode: prose code blocks */
+[data-theme="dark"] .prose pre {
+  background: #0f0e0e;
+}
+
+/* Dark mode: prose inline code */
+[data-theme="dark"] .prose code {
+  background: var(--color-bg-subtle);
+}
+
+/* Dark mode: grain texture (lighter) */
+[data-theme="dark"] body::before {
+  opacity: 0.02;
+  filter: invert(1);
+}
+
+/* Dark mode: background gradient warmth */
+[data-theme="dark"] body::after {
+  background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(212, 148, 127, 0.06) 0%, transparent 60%),
+              radial-gradient(ellipse 60% 40% at 100% 100%, rgba(212, 148, 127, 0.04) 0%, transparent 50%);
+}
+
+/* Dark mode: card inner glow */
+[data-theme="dark"] .card::before,
+[data-theme="dark"] .now-card::before {
+  background: radial-gradient(circle at 50% 0%, rgba(212, 148, 127, 0.06) 0%, transparent 70%);
+}
+
+/* Dark mode: selection */
+[data-theme="dark"] ::selection {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
+/* Dark mode: scrollbar */
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+}
+
+/* Theme toggle button */
+.theme-toggle {
+  background: none;
+  border: none;
+  padding: var(--space-xs);
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: color var(--transition-fast), transform var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  margin-left: var(--space-md);
+}
+
+.theme-toggle:hover {
+  color: var(--color-text);
+  transform: rotate(15deg);
+}
+
+.theme-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+.theme-toggle .sun-icon {
+  display: none;
+}
+
+.theme-toggle .moon-icon {
+  display: block;
+}
+
+[data-theme="dark"] .theme-toggle .sun-icon {
+  display: block;
+}
+
+[data-theme="dark"] .theme-toggle .moon-icon {
+  display: none;
 }
 
 /* Reduce motion for accessibility */
