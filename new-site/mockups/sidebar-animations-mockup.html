@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sidebar Animation Mockups</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap');
+
+    :root {
+      --color-bg: #faf9f7;
+      --color-text: #1a1a1a;
+      --color-text-secondary: #6b6b6b;
+      --color-accent: #c4826d;
+      --color-border: #e5e3df;
+      --orb-color: 196, 130, 109;
+      --max-width: 760px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'IBM Plex Sans', sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.7;
+    }
+
+    .controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: white;
+      border: 1px solid var(--color-border);
+      padding: 20px;
+      border-radius: 8px;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      max-width: 280px;
+    }
+
+    .controls h3 {
+      font-family: 'Instrument Serif', serif;
+      margin-bottom: 16px;
+    }
+
+    .control-group {
+      margin-bottom: 16px;
+    }
+
+    .control-group label {
+      display: block;
+      font-size: 0.875rem;
+      color: var(--color-text-secondary);
+      margin-bottom: 6px;
+    }
+
+    .control-group select, .control-group input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      font-size: 0.875rem;
+    }
+
+    .control-group input[type="range"] {
+      padding: 0;
+    }
+
+    .range-value {
+      font-size: 0.75rem;
+      color: var(--color-text-secondary);
+      margin-top: 4px;
+    }
+
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 60px 32px;
+    }
+
+    .page-wrapper {
+      position: relative;
+      min-height: 100vh;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100vw;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      font-family: 'Instrument Serif', serif;
+      font-size: 3rem;
+      margin-bottom: 24px;
+    }
+
+    h2 {
+      font-family: 'Instrument Serif', serif;
+      margin-top: 48px;
+      margin-bottom: 16px;
+    }
+
+    p {
+      color: var(--color-text-secondary);
+      margin-bottom: 16px;
+      max-width: 580px;
+    }
+
+    .item {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .item:last-child {
+      border-bottom: none;
+    }
+
+    .item h3 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="controls">
+    <h3>Animation Style</h3>
+
+    <div class="control-group">
+      <label>Style</label>
+      <select id="style-select">
+        <option value="orbs">Breathing Orbs (current)</option>
+        <option value="particles">Floating Particles</option>
+        <option value="lines">Flowing Lines</option>
+        <option value="dots">Dot Grid</option>
+        <option value="waves">Gentle Waves</option>
+        <option value="noise">Perlin Noise</option>
+      </select>
+    </div>
+
+    <div class="control-group">
+      <label>Opacity</label>
+      <input type="range" id="opacity" min="0.02" max="0.2" step="0.01" value="0.08">
+      <div class="range-value" id="opacity-value">0.08</div>
+    </div>
+
+    <div class="control-group">
+      <label>Speed</label>
+      <input type="range" id="speed" min="0.1" max="2" step="0.1" value="0.5">
+      <div class="range-value" id="speed-value">0.5</div>
+    </div>
+
+    <div class="control-group">
+      <label>Density</label>
+      <input type="range" id="density" min="1" max="10" step="1" value="3">
+      <div class="range-value" id="density-value">3</div>
+    </div>
+
+    <div class="control-group">
+      <label>Cursor Reactivity</label>
+      <input type="range" id="reactivity" min="0" max="1" step="0.1" value="0.5">
+      <div class="range-value" id="reactivity-value">0.5</div>
+    </div>
+  </div>
+
+  <div class="page-wrapper">
+    <canvas id="sidebar-canvas"></canvas>
+    <div class="container">
+      <div class="content">
+        <h1>Johannes Roth</h1>
+        <p>
+          I study how the brain makes sense of what we see - and how we can use AI to understand it better.
+          Currently finishing my PhD in Computational Cognitive Neuroscience at the Max Planck Institute in Leipzig.
+        </p>
+        <p>
+          Before academia, I worked as a data scientist building recommendation systems and ML pipelines.
+          I like problems that sit at the intersection of neuroscience, machine learning, and building things that work.
+        </p>
+
+        <h2>Research</h2>
+        <div class="item">
+          <h3>Optimal Stimulus Selection</h3>
+          <p>Can we pre-select images that will be most informative for understanding visual processing?</p>
+        </div>
+        <div class="item">
+          <h3>Fast fMRI Designs</h3>
+          <p>Testing whether we can push presentation rates much higher while still extracting meaningful signal.</p>
+        </div>
+        <div class="item">
+          <h3>Large-Scale Image Curation</h3>
+          <p>Scored 2.1B images from ReLAION-2B for "naturalness" using a CLIP-based classifier.</p>
+        </div>
+
+        <h2>Projects</h2>
+        <div class="item">
+          <h3>thingsvision</h3>
+          <p>Modular feature extraction library for computer vision models. Used by researchers worldwide.</p>
+        </div>
+        <div class="item">
+          <h3>ReLAION-2B Natural</h3>
+          <p>Naturalness scores for 2.1B images, identifying ~500M photographic images suitable for vision research.</p>
+        </div>
+        <div class="item">
+          <h3>slurmboard</h3>
+          <p>Lightweight real-time web dashboard for monitoring Slurm HPC jobs.</p>
+        </div>
+
+        <h2>About</h2>
+        <p>
+          I'm a PhD candidate studying how the brain processes visual information. My work sits at the
+          intersection of neuroscience, machine learning, and building practical tools - I'm as interested
+          in the science as I am in making research more efficient.
+        </p>
+        <p>
+          When I'm not at a computer, I'm usually bouldering. I also play guitar and have a long-standing
+          interest in meditation.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('sidebar-canvas');
+    const ctx = canvas.getContext('2d');
+    const wrapper = document.querySelector('.page-wrapper');
+
+    // Config
+    let config = {
+      style: 'orbs',
+      opacity: 0.08,
+      speed: 0.5,
+      density: 3,
+      reactivity: 0.5
+    };
+
+    const CONTENT_WIDTH = 760;
+    const CONTENT_PADDING = 32;
+    let contentLeft = 0;
+    let contentRight = 0;
+    let marginWidth = 0;
+    let mouseX = -1000;
+    let mouseY = -1000;
+
+    // Animation state
+    let orbs = [];
+    let particles = [];
+    let time = 0;
+
+    function resize() {
+      const rect = wrapper.getBoundingClientRect();
+      canvas.width = window.innerWidth;
+      canvas.height = rect.height;
+
+      const contentAreaWidth = Math.min(CONTENT_WIDTH, canvas.width - CONTENT_PADDING * 2);
+      contentLeft = (canvas.width - contentAreaWidth) / 2;
+      contentRight = contentLeft + contentAreaWidth;
+      marginWidth = contentLeft;
+
+      initElements();
+    }
+
+    function initElements() {
+      orbs = [];
+      particles = [];
+
+      if (marginWidth < 60) return;
+
+      const count = Math.floor(config.density);
+
+      // Initialize orbs
+      for (let side of ['left', 'right']) {
+        for (let i = 0; i < count; i++) {
+          const y = (canvas.height / (count + 1)) * (i + 1);
+          const x = side === 'left' ? marginWidth * 0.5 : contentRight + marginWidth * 0.5;
+          orbs.push({
+            x, y, originX: x, originY: y,
+            radius: marginWidth * 0.6 + Math.random() * 60,
+            phase: Math.random() * Math.PI * 2,
+            breatheSpeed: 0.3 + Math.random() * 0.3,
+          });
+        }
+      }
+
+      // Initialize particles
+      const particleCount = count * 15;
+      for (let side of ['left', 'right']) {
+        for (let i = 0; i < particleCount; i++) {
+          const x = side === 'left'
+            ? Math.random() * marginWidth
+            : contentRight + Math.random() * marginWidth;
+          particles.push({
+            x, y: Math.random() * canvas.height,
+            originX: x, originY: Math.random() * canvas.height,
+            size: 1 + Math.random() * 3,
+            speed: 0.2 + Math.random() * 0.5,
+            phase: Math.random() * Math.PI * 2,
+          });
+        }
+      }
+    }
+
+    // Animation styles
+    function drawOrbs() {
+      orbs.forEach(orb => {
+        const breathe = Math.sin(time * orb.breatheSpeed * config.speed + orb.phase) * 0.3 + 1;
+
+        const dx = mouseX - orb.originX;
+        const dy = mouseY - orb.originY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        let cursorBoost = 0;
+        if (dist < 300 * config.reactivity && config.reactivity > 0) {
+          cursorBoost = (1 - dist / (300 * config.reactivity)) * 0.15 * config.reactivity;
+        }
+
+        if (dist < 400 * config.reactivity && dist > 0 && config.reactivity > 0) {
+          const pull = (1 - dist / (400 * config.reactivity)) * 20 * config.reactivity;
+          orb.x = orb.originX + (dx / dist) * pull;
+          orb.y = orb.originY + (dy / dist) * pull;
+        } else {
+          orb.x = orb.originX;
+          orb.y = orb.originY;
+        }
+
+        const opacity = config.opacity * breathe + cursorBoost;
+        const gradient = ctx.createRadialGradient(orb.x, orb.y, 0, orb.x, orb.y, orb.radius);
+        gradient.addColorStop(0, `rgba(196, 130, 109, ${opacity})`);
+        gradient.addColorStop(0.5, `rgba(196, 130, 109, ${opacity * 0.4})`);
+        gradient.addColorStop(1, `rgba(196, 130, 109, 0)`);
+
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(orb.x, orb.y, orb.radius, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    }
+
+    function drawParticles() {
+      particles.forEach(p => {
+        p.y -= p.speed * config.speed;
+        if (p.y < -10) p.y = canvas.height + 10;
+
+        const wobble = Math.sin(time * 0.5 + p.phase) * 8;
+        const x = p.originX + wobble;
+
+        const dx = mouseX - x;
+        const dy = mouseY - p.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        let opacity = config.opacity;
+        if (dist < 150 * config.reactivity && config.reactivity > 0) {
+          opacity += (1 - dist / (150 * config.reactivity)) * 0.2 * config.reactivity;
+        }
+
+        ctx.fillStyle = `rgba(196, 130, 109, ${opacity})`;
+        ctx.beginPath();
+        ctx.arc(x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    }
+
+    function drawLines() {
+      const lineCount = Math.floor(config.density * 2);
+
+      for (let side of ['left', 'right']) {
+        for (let i = 0; i < lineCount; i++) {
+          const baseX = side === 'left' ? marginWidth * 0.3 : contentRight + marginWidth * 0.7;
+          const offset = (i / lineCount) * marginWidth * 0.4;
+          const x = side === 'left' ? baseX + offset : baseX - offset;
+
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+
+          for (let y = 0; y < canvas.height; y += 20) {
+            const wave = Math.sin((y * 0.01) + time * config.speed + i) * 15;
+            ctx.lineTo(x + wave, y);
+          }
+
+          const dx = mouseX - x;
+          const dy = mouseY - canvas.height / 2;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          let opacity = config.opacity * 0.5;
+          if (dist < 200 * config.reactivity && config.reactivity > 0) {
+            opacity += (1 - dist / (200 * config.reactivity)) * 0.1 * config.reactivity;
+          }
+
+          ctx.strokeStyle = `rgba(196, 130, 109, ${opacity})`;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+      }
+    }
+
+    function drawDots() {
+      const gridSize = 30 / (config.density * 0.3);
+
+      for (let side of ['left', 'right']) {
+        const startX = side === 'left' ? 0 : contentRight;
+        const endX = side === 'left' ? marginWidth : canvas.width;
+
+        for (let x = startX + gridSize/2; x < endX; x += gridSize) {
+          for (let y = gridSize/2; y < canvas.height; y += gridSize) {
+            const wave = Math.sin(x * 0.02 + y * 0.02 + time * config.speed) * 0.5 + 0.5;
+
+            const dx = mouseX - x;
+            const dy = mouseY - y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            let size = 2 * wave;
+            let opacity = config.opacity * wave;
+
+            if (dist < 100 * config.reactivity && config.reactivity > 0) {
+              const factor = 1 - dist / (100 * config.reactivity);
+              size += factor * 3 * config.reactivity;
+              opacity += factor * 0.15 * config.reactivity;
+            }
+
+            ctx.fillStyle = `rgba(196, 130, 109, ${opacity})`;
+            ctx.beginPath();
+            ctx.arc(x, y, size, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+      }
+    }
+
+    function drawWaves() {
+      const waveCount = Math.floor(config.density * 3);
+
+      for (let side of ['left', 'right']) {
+        for (let i = 0; i < waveCount; i++) {
+          const baseY = (canvas.height / waveCount) * i;
+          const startX = side === 'left' ? 0 : contentRight;
+          const endX = side === 'left' ? marginWidth : canvas.width;
+
+          ctx.beginPath();
+
+          for (let x = startX; x <= endX; x += 5) {
+            const normalizedX = (x - startX) / (endX - startX);
+            const wave = Math.sin(normalizedX * Math.PI * 2 + time * config.speed + i) * 20;
+            const y = baseY + wave;
+
+            if (x === startX) {
+              ctx.moveTo(x, y);
+            } else {
+              ctx.lineTo(x, y);
+            }
+          }
+
+          const dx = mouseX - (startX + endX) / 2;
+          const dy = mouseY - baseY;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          let opacity = config.opacity * 0.4;
+          if (dist < 150 * config.reactivity && config.reactivity > 0) {
+            opacity += (1 - dist / (150 * config.reactivity)) * 0.15 * config.reactivity;
+          }
+
+          ctx.strokeStyle = `rgba(196, 130, 109, ${opacity})`;
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+        }
+      }
+    }
+
+    function drawNoise() {
+      const scale = 50 / config.density;
+
+      for (let side of ['left', 'right']) {
+        const startX = side === 'left' ? 0 : contentRight;
+        const endX = side === 'left' ? marginWidth : canvas.width;
+
+        for (let x = startX; x < endX; x += scale) {
+          for (let y = 0; y < canvas.height; y += scale) {
+            // Simple pseudo-noise
+            const noise = Math.sin(x * 0.05 + time * config.speed) *
+                         Math.cos(y * 0.05 + time * config.speed * 0.7) *
+                         Math.sin((x + y) * 0.03 + time * config.speed * 0.5);
+            const value = (noise + 1) / 2;
+
+            const dx = mouseX - x;
+            const dy = mouseY - y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            let opacity = value * config.opacity;
+            if (dist < 120 * config.reactivity && config.reactivity > 0) {
+              opacity += (1 - dist / (120 * config.reactivity)) * 0.1 * config.reactivity;
+            }
+
+            ctx.fillStyle = `rgba(196, 130, 109, ${opacity})`;
+            ctx.fillRect(x, y, scale * 0.9, scale * 0.9);
+          }
+        }
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      time += 0.016;
+
+      switch (config.style) {
+        case 'orbs': drawOrbs(); break;
+        case 'particles': drawParticles(); break;
+        case 'lines': drawLines(); break;
+        case 'dots': drawDots(); break;
+        case 'waves': drawWaves(); break;
+        case 'noise': drawNoise(); break;
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    // Event listeners
+    document.getElementById('style-select').addEventListener('change', (e) => {
+      config.style = e.target.value;
+      initElements();
+    });
+
+    document.getElementById('opacity').addEventListener('input', (e) => {
+      config.opacity = parseFloat(e.target.value);
+      document.getElementById('opacity-value').textContent = config.opacity.toFixed(2);
+    });
+
+    document.getElementById('speed').addEventListener('input', (e) => {
+      config.speed = parseFloat(e.target.value);
+      document.getElementById('speed-value').textContent = config.speed.toFixed(1);
+    });
+
+    document.getElementById('density').addEventListener('input', (e) => {
+      config.density = parseInt(e.target.value);
+      document.getElementById('density-value').textContent = config.density;
+      initElements();
+    });
+
+    document.getElementById('reactivity').addEventListener('input', (e) => {
+      config.reactivity = parseFloat(e.target.value);
+      document.getElementById('reactivity-value').textContent = config.reactivity.toFixed(1);
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      const wrapperRect = wrapper.getBoundingClientRect();
+      mouseX = e.clientX;
+      mouseY = e.clientY - wrapperRect.top;
+    });
+
+    window.addEventListener('resize', resize);
+
+    // Initialize
+    resize();
+    animate();
+  </script>
+</body>
+</html>

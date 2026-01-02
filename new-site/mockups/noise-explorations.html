@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Noise Explorations - Sidebar Animations</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-bg: #faf9f7;
+      --color-bg-panel: #ffffff;
+      --color-text: #1a1a1a;
+      --color-text-secondary: #6b6b6b;
+      --color-text-muted: #999;
+      --color-accent: rgb(196, 130, 109);
+      --color-accent-rgb: 196, 130, 109;
+      --color-border: #e5e3df;
+      --font-serif: 'Instrument Serif', Georgia, serif;
+      --font-sans: 'IBM Plex Sans', -apple-system, sans-serif;
+      --max-width: 760px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.7;
+      min-height: 200vh;
+    }
+
+    /* Control Panel - Refined Academic Style */
+    .controls {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      background: var(--color-bg-panel);
+      border: 1px solid var(--color-border);
+      padding: 24px;
+      width: 260px;
+      z-index: 100;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    }
+
+    .controls::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 24px;
+      right: 24px;
+      height: 3px;
+      background: var(--color-accent);
+    }
+
+    .controls h3 {
+      font-family: var(--font-serif);
+      font-weight: 400;
+      font-size: 1.125rem;
+      margin-bottom: 20px;
+      color: var(--color-text);
+    }
+
+    .variant-list {
+      list-style: none;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: 20px;
+    }
+
+    .variant-list li {
+      margin-bottom: 8px;
+    }
+
+    .variant-list button {
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      padding: 8px 12px;
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      color: var(--color-text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .variant-list button::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 1px;
+      background: var(--color-accent);
+      transition: width 0.2s ease;
+    }
+
+    .variant-list button:hover {
+      color: var(--color-text);
+      padding-left: 20px;
+    }
+
+    .variant-list button:hover::before {
+      width: 12px;
+    }
+
+    .variant-list button.active {
+      color: var(--color-accent);
+      font-weight: 500;
+      padding-left: 20px;
+    }
+
+    .variant-list button.active::before {
+      width: 12px;
+      background: var(--color-accent);
+    }
+
+    .control-group {
+      margin-bottom: 16px;
+    }
+
+    .control-group label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-text-muted);
+      margin-bottom: 8px;
+    }
+
+    .control-group .value {
+      font-family: var(--font-serif);
+      font-style: italic;
+      text-transform: none;
+      letter-spacing: 0;
+      color: var(--color-text-secondary);
+    }
+
+    .control-group input[type="range"] {
+      width: 100%;
+      height: 2px;
+      -webkit-appearance: none;
+      background: var(--color-border);
+      outline: none;
+    }
+
+    .control-group input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      background: var(--color-accent);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    .control-group input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    /* Main Layout */
+    .page-wrapper {
+      position: relative;
+      min-height: 100%;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 80px 32px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Typography */
+    h1 {
+      font-family: var(--font-serif);
+      font-size: 3rem;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+
+    h2 {
+      font-family: var(--font-serif);
+      font-weight: 400;
+      font-size: 1.5rem;
+      margin-top: 48px;
+      margin-bottom: 16px;
+    }
+
+    p {
+      color: var(--color-text-secondary);
+      margin-bottom: 16px;
+      max-width: 580px;
+    }
+
+    .lead {
+      font-size: 1.125rem;
+      line-height: 1.8;
+    }
+
+    .item {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .item:last-child {
+      border-bottom: none;
+    }
+
+    .item h3 {
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .item-meta {
+      font-size: 0.8125rem;
+      color: var(--color-text-muted);
+      margin-bottom: 8px;
+    }
+
+    /* Variant Description */
+    .variant-description {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      background: var(--color-bg-panel);
+      border: 1px solid var(--color-border);
+      padding: 16px 20px;
+      max-width: 320px;
+      z-index: 100;
+      font-size: 0.875rem;
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+    }
+
+    .variant-description strong {
+      display: block;
+      font-family: var(--font-serif);
+      font-weight: 400;
+      font-size: 1rem;
+      color: var(--color-text);
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="noise-canvas"></canvas>
+
+  <div class="controls">
+    <h3>Noise Explorations</h3>
+
+    <ul class="variant-list">
+      <li><button data-variant="classic" class="active">Classic Noise</button></li>
+      <li><button data-variant="flowing">Flowing Noise</button></li>
+      <li><button data-variant="breathing">Breathing Noise</button></li>
+      <li><button data-variant="lines">Noise Lines</button></li>
+      <li><button data-variant="dots">Noise Dots</button></li>
+      <li><button data-variant="blobs">Organic Blobs</button></li>
+    </ul>
+
+    <div class="control-group">
+      <label>Opacity <span class="value" id="opacity-value">0.06</span></label>
+      <input type="range" id="opacity" min="0.02" max="0.15" step="0.01" value="0.06">
+    </div>
+
+    <div class="control-group">
+      <label>Speed <span class="value" id="speed-value">0.4</span></label>
+      <input type="range" id="speed" min="0.1" max="1.0" step="0.05" value="0.4">
+    </div>
+
+    <div class="control-group">
+      <label>Scale <span class="value" id="scale-value">1.0</span></label>
+      <input type="range" id="scale" min="0.5" max="2.0" step="0.1" value="1.0">
+    </div>
+
+    <div class="control-group">
+      <label>Cursor Reactivity <span class="value" id="reactivity-value">0.6</span></label>
+      <input type="range" id="reactivity" min="0" max="1" step="0.1" value="0.6">
+    </div>
+  </div>
+
+  <div class="variant-description">
+    <strong id="variant-name">Classic Noise</strong>
+    <span id="variant-desc">Soft blocks of simplex noise, gently shifting like watercolor bleeding into paper.</span>
+  </div>
+
+  <div class="page-wrapper">
+    <div class="container">
+      <h1>Johannes Roth</h1>
+      <p class="lead">
+        I study how the brain makes sense of what we see — and how we can use AI to understand it better.
+        Currently finishing my PhD in Computational Cognitive Neuroscience at the Max Planck Institute in Leipzig.
+      </p>
+
+      <h2>Research</h2>
+      <div class="item">
+        <h3>Optimal Stimulus Selection</h3>
+        <p class="item-meta">Active Learning · fMRI · Vision Science</p>
+        <p>Can we pre-select images that will be most informative for understanding visual processing?</p>
+      </div>
+      <div class="item">
+        <h3>Fast fMRI Designs</h3>
+        <p class="item-meta">Methodology · Signal Processing</p>
+        <p>Testing whether we can push presentation rates much higher while still extracting meaningful signal.</p>
+      </div>
+      <div class="item">
+        <h3>Large-Scale Image Curation</h3>
+        <p class="item-meta">Dataset · CLIP · 2.1B Images</p>
+        <p>Scored 2.1B images from ReLAION-2B for "naturalness" using a CLIP-based classifier.</p>
+      </div>
+
+      <h2>Projects</h2>
+      <div class="item">
+        <h3>thingsvision</h3>
+        <p class="item-meta">Python · PyTorch · Open Source</p>
+        <p>Modular feature extraction library for computer vision models. Used by researchers worldwide.</p>
+      </div>
+      <div class="item">
+        <h3>ReLAION-2B Natural</h3>
+        <p class="item-meta">Dataset · Hugging Face · 167GB</p>
+        <p>Naturalness scores for 2.1B images, identifying ~500M photographic images suitable for vision research.</p>
+      </div>
+      <div class="item">
+        <h3>slurmboard</h3>
+        <p class="item-meta">JavaScript · DevOps · HPC</p>
+        <p>Lightweight real-time web dashboard for monitoring Slurm HPC jobs.</p>
+      </div>
+
+      <h2>About</h2>
+      <p>
+        I'm a PhD candidate studying how the brain processes visual information. My work sits at the
+        intersection of neuroscience, machine learning, and building practical tools — I'm as interested
+        in the science as I am in making research more efficient.
+      </p>
+      <p>
+        Before diving into academia, I spent several years as a data scientist in industry, building
+        recommendation systems, image processing pipelines, and ML infrastructure. That experience
+        shaped how I approach research: I care about things that work, scale, and can actually be used.
+      </p>
+      <p>
+        When I'm not at a computer, I'm usually bouldering. I also play guitar and have a long-standing
+        interest in meditation.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Simplex Noise implementation (Stefan Gustavson's algorithm)
+    class SimplexNoise {
+      constructor(seed = Math.random()) {
+        this.p = new Uint8Array(256);
+        this.perm = new Uint8Array(512);
+        this.permMod12 = new Uint8Array(512);
+
+        for (let i = 0; i < 256; i++) this.p[i] = i;
+
+        // Shuffle with seed
+        let n = seed * 256;
+        for (let i = 255; i > 0; i--) {
+          n = (n * 16807) % 2147483647;
+          const j = n % (i + 1);
+          [this.p[i], this.p[j]] = [this.p[j], this.p[i]];
+        }
+
+        for (let i = 0; i < 512; i++) {
+          this.perm[i] = this.p[i & 255];
+          this.permMod12[i] = this.perm[i] % 12;
+        }
+
+        this.grad3 = [
+          [1,1,0],[-1,1,0],[1,-1,0],[-1,-1,0],
+          [1,0,1],[-1,0,1],[1,0,-1],[-1,0,-1],
+          [0,1,1],[0,-1,1],[0,1,-1],[0,-1,-1]
+        ];
+
+        this.F2 = 0.5 * (Math.sqrt(3) - 1);
+        this.G2 = (3 - Math.sqrt(3)) / 6;
+      }
+
+      noise2D(x, y) {
+        const { perm, permMod12, grad3, F2, G2 } = this;
+
+        const s = (x + y) * F2;
+        const i = Math.floor(x + s);
+        const j = Math.floor(y + s);
+        const t = (i + j) * G2;
+
+        const X0 = i - t;
+        const Y0 = j - t;
+        const x0 = x - X0;
+        const y0 = y - Y0;
+
+        const i1 = x0 > y0 ? 1 : 0;
+        const j1 = x0 > y0 ? 0 : 1;
+
+        const x1 = x0 - i1 + G2;
+        const y1 = y0 - j1 + G2;
+        const x2 = x0 - 1 + 2 * G2;
+        const y2 = y0 - 1 + 2 * G2;
+
+        const ii = i & 255;
+        const jj = j & 255;
+
+        let n0 = 0, n1 = 0, n2 = 0;
+
+        let t0 = 0.5 - x0*x0 - y0*y0;
+        if (t0 >= 0) {
+          const gi0 = permMod12[ii + perm[jj]];
+          t0 *= t0;
+          n0 = t0 * t0 * (grad3[gi0][0] * x0 + grad3[gi0][1] * y0);
+        }
+
+        let t1 = 0.5 - x1*x1 - y1*y1;
+        if (t1 >= 0) {
+          const gi1 = permMod12[ii + i1 + perm[jj + j1]];
+          t1 *= t1;
+          n1 = t1 * t1 * (grad3[gi1][0] * x1 + grad3[gi1][1] * y1);
+        }
+
+        let t2 = 0.5 - x2*x2 - y2*y2;
+        if (t2 >= 0) {
+          const gi2 = permMod12[ii + 1 + perm[jj + 1]];
+          t2 *= t2;
+          n2 = t2 * t2 * (grad3[gi2][0] * x2 + grad3[gi2][1] * y2);
+        }
+
+        return 70 * (n0 + n1 + n2);
+      }
+
+      // Fractal Brownian Motion for more natural look
+      fbm(x, y, octaves = 4) {
+        let value = 0;
+        let amplitude = 1;
+        let frequency = 1;
+        let maxValue = 0;
+
+        for (let i = 0; i < octaves; i++) {
+          value += amplitude * this.noise2D(x * frequency, y * frequency);
+          maxValue += amplitude;
+          amplitude *= 0.5;
+          frequency *= 2;
+        }
+
+        return value / maxValue;
+      }
+    }
+
+    const canvas = document.getElementById('noise-canvas');
+    const ctx = canvas.getContext('2d');
+    const noise = new SimplexNoise(42);
+
+    // Configuration
+    const config = {
+      variant: 'classic',
+      opacity: 0.06,
+      speed: 0.4,
+      scale: 1.0,
+      reactivity: 0.6
+    };
+
+    const CONTENT_WIDTH = 760;
+    const CONTENT_PADDING = 32;
+    let contentLeft = 0;
+    let contentRight = 0;
+    let marginWidth = 0;
+    let mouseX = -1000;
+    let mouseY = -1000;
+    let time = 0;
+
+    const variantDescriptions = {
+      classic: { name: 'Classic Noise', desc: 'Soft blocks of simplex noise, gently shifting like watercolor bleeding into paper.' },
+      flowing: { name: 'Flowing Noise', desc: 'Noise that cascades downward like ink in water, creating a subtle sense of movement.' },
+      breathing: { name: 'Breathing Noise', desc: 'The entire margin pulses gently, as if the page itself is alive and breathing.' },
+      lines: { name: 'Noise Lines', desc: 'Delicate horizontal strokes undulating with noise, like wind rippling through tall grass.' },
+      dots: { name: 'Noise Dots', desc: 'Scattered points that fade in and out organically, reminiscent of dust motes in light.' },
+      blobs: { name: 'Organic Blobs', desc: 'Soft, amoeba-like shapes that slowly morph and drift, creating depth in the margins.' }
+    };
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const contentAreaWidth = Math.min(CONTENT_WIDTH, canvas.width - CONTENT_PADDING * 2);
+      contentLeft = (canvas.width - contentAreaWidth) / 2;
+      contentRight = contentLeft + contentAreaWidth;
+      marginWidth = contentLeft;
+    }
+
+    function getCursorInfluence(x, y) {
+      if (config.reactivity === 0) return 0;
+      const dx = mouseX - x;
+      const dy = mouseY - y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const maxDist = 200 * config.reactivity;
+      if (dist > maxDist) return 0;
+      return (1 - dist / maxDist) * config.reactivity;
+    }
+
+    // Variant renderers
+    function drawClassicNoise() {
+      const cellSize = 20 / config.scale;
+
+      for (let side of ['left', 'right']) {
+        const startX = side === 'left' ? 0 : contentRight;
+        const endX = side === 'left' ? marginWidth : canvas.width;
+
+        for (let x = startX; x < endX; x += cellSize) {
+          for (let y = 0; y < canvas.height; y += cellSize) {
+            const nx = x * 0.008 * config.scale;
+            const ny = y * 0.008 * config.scale;
+            const noiseVal = noise.fbm(nx + time * config.speed * 0.3, ny + time * config.speed * 0.2, 3);
+            const normalized = (noiseVal + 1) / 2;
+
+            const cursor = getCursorInfluence(x + cellSize/2, y + cellSize/2);
+            const opacity = normalized * config.opacity + cursor * 0.12;
+
+            ctx.fillStyle = `rgba(196, 130, 109, ${opacity})`;
+            ctx.fillRect(x, y, cellSize - 1, cellSize - 1);
+          }
+        }
+      }
+    }
+
+    function drawFlowingNoise() {
+      const cellSize = 16 / config.scale;
+      const flowOffset = time * config.speed * 80;
+
+      for (let side of ['left', 'right']) {
+        const startX = side === 'left' ? 0 : contentRight;
+        const endX = side === 'left' ? marginWidth : canvas.width;
+
+        for (let x = startX; x < endX; x += cellSize) {
+          for (let y = 0; y < canvas.height; y += cellSize) {
+            const flowY = (y + flowOffset) % (canvas.height + 200) - 100;
+            const nx = x * 0.01 * config.scale;
+            const ny = flowY * 0.005 * config.scale;
+            const noiseVal = noise.fbm(nx, ny, 2);
+            const normalized = (noiseVal + 1) / 2;
+
+            // Fade at edges
+            const edgeFade = Math.min(
+              y / 100,
+              (canvas.height - y) / 100,
+              1
+            );
+
+            const cursor = getCursorInfluence(x + cellSize/2, y + cellSize/2);
+            const opacity = normalized * config.opacity * edgeFade + cursor * 0.1;
+
+            ctx.fillStyle = `rgba(196, 130, 109, ${opacity})`;
+            ctx.fillRect(x, y, cellSize - 1, cellSize - 1);
+          }
+        }
+      }
+    }
+
+    function drawBreathingNoise() {
+      const cellSize = 24 / config.scale;
+      const breathe = (Math.sin(time * config.speed * 0.8) + 1) / 2;
+
+      for (let side of ['left', 'right']) {
+        const startX = side === 'left' ? 0 : contentRight;
+        const endX = side === 'left' ? marginWidth : canvas.width;
+
+        for (let x = startX; x < endX; x += cellSize) {
+          for (let y = 0; y < canvas.height; y += cellSize) {
+            const nx = x * 0.006 * config.scale;
+            const ny = y * 0.006 * config.scale;
+            const noiseVal = noise.fbm(nx + time * 0.1, ny + time * 0.1, 3);
+            const normalized = (noiseVal + 1) / 2;
+
+            // Breathing modulates the base intensity
+            const breatheInfluence = 0.4 + breathe * 0.6;
+
+            const cursor = getCursorInfluence(x + cellSize/2, y + cellSize/2);
+            const opacity = normalized * config.opacity * breatheInfluence + cursor * 0.15;
+
+            ctx.fillStyle = `rgba(196, 130, 109, ${opacity})`;
+            ctx.fillRect(x, y, cellSize - 1, cellSize - 1);
+          }
+        }
+      }
+    }
+
+    function drawNoiseLines() {
+      const lineSpacing = 12 / config.scale;
+      const lineCount = Math.ceil(canvas.height / lineSpacing);
+
+      for (let side of ['left', 'right']) {
+        const startX = side === 'left' ? 0 : contentRight;
+        const endX = side === 'left' ? marginWidth : canvas.width;
+        const width = endX - startX;
+
+        for (let i = 0; i < lineCount; i++) {
+          const baseY = i * lineSpacing;
+
+          ctx.beginPath();
+
+          for (let x = startX; x <= endX; x += 4) {
+            const normalizedX = (x - startX) / width;
+            const noiseVal = noise.noise2D(
+              normalizedX * 3 * config.scale + time * config.speed * 0.5,
+              i * 0.3 + time * config.speed * 0.2
+            );
+            const y = baseY + noiseVal * 8;
+
+            if (x === startX) {
+              ctx.moveTo(x, y);
+            } else {
+              ctx.lineTo(x, y);
+            }
+          }
+
+          const cursor = getCursorInfluence((startX + endX) / 2, baseY);
+          const opacity = config.opacity * 0.8 + cursor * 0.15;
+
+          ctx.strokeStyle = `rgba(196, 130, 109, ${opacity})`;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+      }
+    }
+
+    function drawNoiseDots() {
+      const dotCount = Math.floor(80 * config.scale);
+
+      // Use seeded positions that drift slowly
+      for (let side of ['left', 'right']) {
+        const startX = side === 'left' ? 0 : contentRight;
+        const endX = side === 'left' ? marginWidth : canvas.width;
+        const width = endX - startX;
+
+        for (let i = 0; i < dotCount; i++) {
+          // Seeded position
+          const seed = i * 0.1 + (side === 'left' ? 0 : 100);
+          const baseX = startX + (noise.noise2D(seed, 0) + 1) / 2 * width;
+          const baseY = (noise.noise2D(0, seed) + 1) / 2 * canvas.height;
+
+          // Drift
+          const driftX = noise.noise2D(seed + time * config.speed * 0.2, i * 0.5) * 20;
+          const driftY = noise.noise2D(i * 0.5, seed + time * config.speed * 0.15) * 20;
+
+          const x = baseX + driftX;
+          const y = baseY + driftY;
+
+          // Opacity flicker
+          const flicker = (noise.noise2D(seed + time * config.speed, i) + 1) / 2;
+          const cursor = getCursorInfluence(x, y);
+          const opacity = flicker * config.opacity * 1.5 + cursor * 0.2;
+
+          const size = 2 + flicker * 3;
+
+          ctx.fillStyle = `rgba(196, 130, 109, ${opacity})`;
+          ctx.beginPath();
+          ctx.arc(x, y, size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    }
+
+    function drawOrganicBlobs() {
+      const blobCount = Math.floor(4 * config.scale);
+
+      for (let side of ['left', 'right']) {
+        const startX = side === 'left' ? 0 : contentRight;
+        const endX = side === 'left' ? marginWidth : canvas.width;
+        const centerX = (startX + endX) / 2;
+
+        for (let i = 0; i < blobCount; i++) {
+          const seed = i + (side === 'left' ? 0 : 10);
+          const baseY = (canvas.height / (blobCount + 1)) * (i + 1);
+
+          // Blob center drifts
+          const driftX = noise.noise2D(seed + time * config.speed * 0.1, 0) * marginWidth * 0.3;
+          const driftY = noise.noise2D(0, seed + time * config.speed * 0.08) * 40;
+
+          const blobX = centerX + driftX;
+          const blobY = baseY + driftY;
+          const baseRadius = marginWidth * 0.4;
+
+          // Draw organic blob shape
+          ctx.beginPath();
+          for (let angle = 0; angle <= Math.PI * 2; angle += 0.1) {
+            const radiusNoise = noise.noise2D(
+              Math.cos(angle) * 2 + seed + time * config.speed * 0.3,
+              Math.sin(angle) * 2 + time * config.speed * 0.2
+            );
+            const radius = baseRadius * (0.6 + radiusNoise * 0.4);
+
+            const px = blobX + Math.cos(angle) * radius;
+            const py = blobY + Math.sin(angle) * radius;
+
+            if (angle === 0) {
+              ctx.moveTo(px, py);
+            } else {
+              ctx.lineTo(px, py);
+            }
+          }
+          ctx.closePath();
+
+          const cursor = getCursorInfluence(blobX, blobY);
+          const opacity = config.opacity * 0.8 + cursor * 0.1;
+
+          // Gradient fill
+          const gradient = ctx.createRadialGradient(blobX, blobY, 0, blobX, blobY, baseRadius);
+          gradient.addColorStop(0, `rgba(196, 130, 109, ${opacity})`);
+          gradient.addColorStop(0.6, `rgba(196, 130, 109, ${opacity * 0.5})`);
+          gradient.addColorStop(1, `rgba(196, 130, 109, 0)`);
+
+          ctx.fillStyle = gradient;
+          ctx.fill();
+        }
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      time += 0.016;
+
+      if (marginWidth < 40) {
+        requestAnimationFrame(animate);
+        return;
+      }
+
+      switch (config.variant) {
+        case 'classic': drawClassicNoise(); break;
+        case 'flowing': drawFlowingNoise(); break;
+        case 'breathing': drawBreathingNoise(); break;
+        case 'lines': drawNoiseLines(); break;
+        case 'dots': drawNoiseDots(); break;
+        case 'blobs': drawOrganicBlobs(); break;
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    // Event listeners
+    document.querySelectorAll('.variant-list button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.variant-list button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        config.variant = btn.dataset.variant;
+
+        const desc = variantDescriptions[config.variant];
+        document.getElementById('variant-name').textContent = desc.name;
+        document.getElementById('variant-desc').textContent = desc.desc;
+      });
+    });
+
+    document.getElementById('opacity').addEventListener('input', (e) => {
+      config.opacity = parseFloat(e.target.value);
+      document.getElementById('opacity-value').textContent = config.opacity.toFixed(2);
+    });
+
+    document.getElementById('speed').addEventListener('input', (e) => {
+      config.speed = parseFloat(e.target.value);
+      document.getElementById('speed-value').textContent = config.speed.toFixed(1);
+    });
+
+    document.getElementById('scale').addEventListener('input', (e) => {
+      config.scale = parseFloat(e.target.value);
+      document.getElementById('scale-value').textContent = config.scale.toFixed(1);
+    });
+
+    document.getElementById('reactivity').addEventListener('input', (e) => {
+      config.reactivity = parseFloat(e.target.value);
+      document.getElementById('reactivity-value').textContent = config.reactivity.toFixed(1);
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    document.addEventListener('mouseleave', () => {
+      mouseX = -1000;
+      mouseY = -1000;
+    });
+
+    window.addEventListener('resize', resize);
+    window.addEventListener('scroll', () => {
+      // Keep mouse relative to viewport
+    }, { passive: true });
+
+    // Initialize
+    resize();
+    animate();
+  </script>
+</body>
+</html>
