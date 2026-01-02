@@ -100,6 +100,8 @@ The oldest and simplest approach. You present the same condition for an extended
 
 Blocks are your friend when you care about detection: "Is region X more active for faces than houses?" They're less useful when you care about the shape of responses or trial-by-trial variability.
 
+<img src="/blog/fmri-diagrams/block-design-bold.svg" alt="Block design showing alternating stimulus blocks and the predicted BOLD response after HRF convolution" />
+
 ### Event-Related Designs
 
 Present stimuli as discrete, brief events with substantial gaps between them (typically 10-20 seconds). This lets the hemodynamic response rise and fall for each trial independently.
@@ -130,6 +132,8 @@ The magic is in the jitter. With randomized inter-stimulus intervals (ISIs), ove
 - Use design optimization tools to find efficient sequences
 
 This is the workhorse design for modern cognitive fMRI. It's more complex to analyze but gives you the best of both worlds.
+
+<img src="/blog/fmri-diagrams/jittered-design.svg" alt="Jittered event-related design showing rapidly presented events with variable ISIs and overlapping HRF responses" />
 
 ### Mixed Designs
 
@@ -262,6 +266,24 @@ Motion is the enemy of fMRI data quality. A few practical tips:
 
 Tell participants explicitly: "It's okay to blink. Try not to move your head. If you need to swallow, do it quickly between trials when possible."
 
+### Advanced: Custom HeadCases
+
+For studies requiring minimal motion - longitudinal studies, high-resolution imaging, or participants who struggle to stay still - consider using custom-fitted head restraints called HeadCases.
+
+The idea is simple: 3D scan the participant's head, then 3D print a custom foam case that fits precisely inside the head coil. The participant's head slots into this case like a key in a lock. No pressure points, no wiggle room.
+
+The [Gallant Lab's headcase-pipeline](https://github.com/gallantlab/headcase-pipeline) provides an open-source automated workflow:
+1. Capture a 3D scan of the participant's head (using a Structure Sensor or similar)
+2. Run the pipeline to generate printable STL files
+3. 3D print the case (typically in 2 or 4 pieces that assemble around the coil)
+
+HeadCases are particularly valuable for:
+- **Dense sampling studies** where you scan the same person repeatedly (like NSD)
+- **High-resolution imaging** where even sub-millimeter motion matters
+- **Populations prone to movement** (though extreme cases may need other solutions)
+
+The upfront investment (scanner time, 3D printing) pays off in cleaner data and less motion-related exclusions.
+
 ---
 
 ## Key Takeaways
@@ -283,6 +305,35 @@ Tell participants explicitly: "It's okay to blink. Try not to move your head. If
 ---
 
 With data collected, the next step is preprocessing - preparing the raw data for analysis. That's where we'll head next.
+
+## References
+
+### Experimental Design
+
+- Dale, A.M. (1999). [Optimal experimental design for event-related fMRI](https://pubmed.ncbi.nlm.nih.gov/10524601/). Human Brain Mapping, 8(2-3), 109-114.
+- Petersen, S.E. & Dubis, J.W. (2012). [The mixed block/event-related design](https://pmc.ncbi.nlm.nih.gov/articles/PMC3288695/). NeuroImage, 62(2), 1177-1184.
+
+### Multiband/SMS Acquisition
+
+- Moeller, S., et al. (2010). [Multiband multislice GE-EPI at 7 tesla, with 16-fold acceleration using partial parallel imaging with application to high spatial and temporal whole-brain fMRI](https://pubmed.ncbi.nlm.nih.gov/20027588/). Magnetic Resonance in Medicine, 63(5), 1144-1153.
+- Feinberg, D.A., et al. (2010). [Multiplexed echo planar imaging for sub-second whole brain fMRI and fast diffusion imaging](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0015710). PLoS ONE, 5(12), e15710.
+- Feinberg, D.A. & Setsompop, K. (2013). [Ultra-fast MRI of the human brain with simultaneous multi-slice imaging](https://pubmed.ncbi.nlm.nih.gov/23702822/). Journal of Magnetic Resonance, 229, 90-100.
+
+### Motion Reduction
+
+- [Gallant Lab headcase-pipeline](https://github.com/gallantlab/headcase-pipeline) - An open-source pipeline to generate subject-specific 3D-printed headcases for fMRI scanning.
+
+### Data Organization
+
+- Gorgolewski, K.J., et al. (2016). [The brain imaging data structure, a format for organizing and describing outputs of neuroimaging experiments](https://www.nature.com/articles/sdata201644). Scientific Data, 3, 160044.
+- [BIDS Specification](https://bids-specification.readthedocs.io/) - Official documentation for the Brain Imaging Data Structure.
+- [BIDS Website](https://bids.neuroimaging.io/) - Main website with tutorials and resources.
+
+### Naturalistic Paradigms and Inter-Subject Correlation
+
+- Hasson, U., et al. (2004). [Intersubject synchronization of cortical activity during natural vision](https://www.science.org/doi/10.1126/science.1089506). Science, 303(5664), 1634-1640.
+- Nastase, S.A., et al. (2019). [Measuring shared responses across subjects using intersubject correlation](https://academic.oup.com/scan/article/14/6/667/5489905). Social Cognitive and Affective Neuroscience, 14(6), 667-685.
+- [Naturalistic Data Analysis](https://naturalistic-data.org/) - Tutorial resources for analyzing naturalistic fMRI data, including ISC methods.
 
 **Next:** [Part 5: Preprocessing fMRI data](/blog/fmri-crash-course-5-preprocessing)
 

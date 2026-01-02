@@ -117,6 +117,8 @@ So what's all this worth? Let me try to put some numbers to it:
 - **Value gained?** Hard to measure. My time as a PhD student is worth about €26/hour. On vibes alone, I'd estimate I was 2-3x more productive this month than a typical month without Claude Code. Maybe €5,000 in value?
 - **Token usage:** According to [ccusage](https://github.com/ryoppippi/ccusage), I used about $2,500 worth of tokens - over 3 billion total, though I'm not sure that's accurate.
 
+<img src="/blog/claude-code-future/productivity-roi.svg" alt="Productivity and ROI comparison charts showing 2.5x productivity gain and 25x return on the $200 subscription" />
+
 But the biggest gain is harder to quantify: **a feeling of agency and capability**. What I can achieve now feels limited only by how well I can orchestrate agents. Like being a conductor - I don't play the instruments, but I shape the music.
 
 The path forward seems clear to me:
@@ -128,6 +130,8 @@ The path forward seems clear to me:
 ## What about us?
 
 I won't pretend this doesn't raise difficult questions.
+
+<img src="/blog/claude-code-future/agent-capabilities.svg" alt="Diagram showing current AI agent capabilities - excels at small tasks, full-stack development, and testing; struggles with large codebases, cross-session memory, and novel architecture decisions" />
 
 **Where agents still struggle:** Large systems and codebases overwhelm them. Without persistent memory, they can't build a mental model of what exists - search alone isn't sufficient. They need small task scopes and good context management to be effective.
 

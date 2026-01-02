@@ -36,6 +36,9 @@ There are two key metrics you need to know:
 
 **DVARS** (D for temporal derivative, VARS for variance) measures how much the image intensity changed between consecutive volumes, across the whole brain. High DVARS at the same time points as high FD confirms that the motion actually affected your signal.
 
+![FD and DVARS correlation](/blog/fmri-diagrams/fd-dvars-correlation.svg)
+*FD and DVARS spike together during head motion. When the head moves (high FD), image intensity changes globally (high DVARS). The strong correlation between these metrics confirms that motion is affecting your signal.*
+
 Here's how to compute framewise displacement yourself using nilearn:
 
 ```python
@@ -95,6 +98,11 @@ print(f"Mean FD: {fd.mean():.3f} mm")
 print(f"Max FD: {fd.max():.3f} mm")
 print(f"Volumes with FD > 0.5mm: {(fd > 0.5).sum()}")
 ```
+
+The difference between a low-motion and high-motion subject is stark:
+
+![FD comparison between subjects](/blog/fmri-diagrams/fd-comparison.svg)
+*Comparison of framewise displacement traces. The low-motion subject (top) stays well below the 0.2 mm threshold with only occasional small spikes. The high-motion subject (bottom) has extended motion epochs where FD exceeds 0.5 mm, with several large spikes exceeding 1.5 mm. This subject would likely be flagged for exclusion or heavy censoring.*
 
 ### Signal dropout near air-tissue interfaces
 
@@ -236,6 +244,32 @@ Don't bury exclusions in supplementary materials. Reviewers and readers need to 
 - **When in doubt, throw it out.** Excluding a noisy subject hurts less than including data that adds variance or creates spurious effects.
 
 Quality assessment isn't glamorous, but it's what separates rigorous science from noise. Take it seriously.
+
+## References
+
+### MRIQC
+- Esteban O, Birman D, Schaer M, Koyejo OO, Poldrack RA, Gorgolewski KJ (2017). [MRIQC: Advancing the automatic prediction of image quality in MRI from unseen sites](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0184661). PLOS ONE 12(9): e0184661.
+- [MRIQC Documentation](https://mriqc.readthedocs.io/)
+
+### Framewise Displacement and Motion QC
+- Power JD, Barnes KA, Snyder AZ, Schlaggar BL, Petersen SE (2012). [Spurious but systematic correlations in functional connectivity MRI networks arise from subject motion](https://pmc.ncbi.nlm.nih.gov/articles/PMC3254728/). NeuroImage 59(3):2142-2154.
+- Power JD, Mitra A, Laumann TO, Snyder AZ, Schlaggar BL, Petersen SE (2014). [Methods to detect, characterize, and remove motion artifact in resting state fMRI](https://pmc.ncbi.nlm.nih.gov/articles/PMC3849338/). NeuroImage 84:320-341.
+
+### Carpet Plots (Grayplots)
+- Power JD (2017). [A simple but useful way to assess fMRI scan qualities](https://pmc.ncbi.nlm.nih.gov/articles/PMC5296400/). NeuroImage 154:150-158.
+- [Nilearn carpet plot documentation](https://nilearn.github.io/dev/modules/generated/nilearn.plotting.plot_carpet.html)
+
+### Impact of Motion on fMRI Analysis
+- Van Dijk KRA, Sabuncu MR, Buckner RL (2012). [The influence of head motion on intrinsic functional connectivity MRI](https://www.sciencedirect.com/science/article/abs/pii/S1053811911011815). NeuroImage 59:431-438.
+- Satterthwaite TD, Wolf DH, Loughead J, et al. (2012). [Impact of in-scanner head motion on multiple measures of functional connectivity: Relevance for studies of neurodevelopment in youth](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5483393/). NeuroImage 60:623-632.
+- Ciric R, Wolf DH, Power JD, et al. (2017). [Benchmarking of participant-level confound regression strategies for the control of motion artifact in studies of functional connectivity](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5483393/). NeuroImage 154:174-187.
+- Ciric R, Rosen AFG, Erus G, et al. (2018). [Mitigating head motion artifact in functional connectivity MRI](https://www.nature.com/articles/s41596-018-0065-y). Nature Protocols 13:2801-2826.
+
+### Best Practices and Guidelines
+- Nichols TE, Das S, Eickhoff SB, et al. (2017). [Best Practices in Data Analysis and Sharing in Neuroimaging using MRI](https://pmc.ncbi.nlm.nih.gov/articles/PMC5685169/). Nature Neuroscience 20:299-303. (COBIDAS Report)
+- [COBIDAS Checklist](https://www.humanbrainmapping.org/cobidas/)
+- Williams PA, et al. (2023). [The art and science of using quality control to understand and improve fMRI data](https://www.frontiersin.org/journals/neuroscience/articles/10.3389/fnins.2023.1100544/full). Frontiers in Neuroscience 17:1100544.
+- Provins C, et al. (2023). [Quality control in functional MRI studies with MRIQC and fMRIPrep](https://www.frontiersin.org/journals/neuroimaging/articles/10.3389/fnimg.2022.1073734/full). Frontiers in Neuroimaging 1:1073734.
 
 ---
 

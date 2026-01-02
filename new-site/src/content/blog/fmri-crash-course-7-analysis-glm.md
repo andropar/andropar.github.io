@@ -32,9 +32,9 @@ The goal? Find the beta weights that minimize the error. That's it. That's linea
 
 The magic is in building X - the design matrix. This is where you encode your experimental design, and getting it right is crucial.
 
-<img src="/blog/fmri-diagrams/glm-design-matrix.svg" alt="GLM design matrix with task regressors and the GLM equation" />
+<img src="/blog/fmri-diagrams/design-matrix.svg" alt="Example GLM design matrix showing HRF-convolved task regressors, motion parameters, and intercept" />
 
-*Each column is a regressor; rows are timepoints. Task regressors are convolved with the HRF.*
+*A design matrix for a faces vs. houses experiment. The first two columns show HRF-convolved task regressors (note the smooth peaks). The middle columns are motion nuisance regressors. The final column is the intercept (constant term).*
 
 ## Building the Design Matrix
 
@@ -45,6 +45,10 @@ The design matrix is a table where rows are timepoints (TRs) and columns are dif
 Your primary regressors represent your experimental conditions. But here's the catch - you can't just create a column that's 1 when faces are shown and 0 otherwise. Remember that hemodynamic delay from Part 2? The BOLD response peaks 5-6 seconds after neural activity, not instantly.
 
 So we start with a "boxcar" function - a simple on/off indicator of when each condition occurred - and convolve it with the Hemodynamic Response Function (HRF). Convolution is just a fancy way of saying we smear the boxcar in time according to the shape of the HRF. The result is a smooth, delayed predictor that actually matches what the BOLD signal should look like.
+
+<img src="/blog/fmri-diagrams/hrf-convolution-demo.svg" alt="Three-panel figure showing HRF convolution: (a) boxcar stimulus function with on/off periods, (b) canonical hemodynamic response function with peak and undershoot, (c) resulting convolved regressor that predicts BOLD signal" />
+
+*The convolution process: (a) A boxcar stimulus function marks when stimuli were presented. (b) The canonical HRF captures the delayed, sluggish BOLD response. (c) Convolving them produces a regressor that matches what we expect the brain signal to look like.*
 
 ```python
 import numpy as np
@@ -181,6 +185,10 @@ model.fit(run_imgs=fmri_img, events=events_trials, confounds=confounds)
 
 **The problem**: When trials are close together in time (fast event-related designs), their regressors become highly correlated. The HRF for trial 1 hasn't finished by the time trial 2 starts. This collinearity inflates noise in your beta estimates. Think of it like trying to separate overlapping voices in a crowded room - possible, but noisy.
 
+<img src="/blog/fmri-diagrams/design-matrix-collinearity.svg" alt="Comparison of design matrices: slow design with well-separated regressors and low correlation versus fast design with overlapping regressors and high correlation" />
+
+*The collinearity problem visualized. (a) In slow designs with long inter-trial intervals, regressors are nearly uncorrelated (r = -0.27). (b) In fast designs, the overlapping HRFs create highly correlated regressors (r = 0.74), inflating variance in beta estimates.*
+
 ### LSS: Least Squares Separate
 
 Mumford et al. (2012) proposed a clever solution: fit each trial separately. For trial N, your design matrix has one regressor for trial N and another regressor for "all other trials" combined. Repeat for each trial.
@@ -283,6 +291,30 @@ Let me give you some practical guidance:
 ---
 
 With beta estimates in hand - whether condition-level from a standard GLM or single-trial from GLMsingle - we're ready for the fun part. In the final post, we'll explore multivariate methods that let us decode what people are seeing from their brain activity patterns.
+
+## References
+
+### Foundational GLM Papers
+
+- Friston, K.J., Holmes, A.P., Worsley, K.J., Poline, J.P., Frith, C.D., & Frackowiak, R.S. (1994). Statistical parametric maps in functional imaging: A general linear approach. *Human Brain Mapping*, 2(4), 189-210. [PDF](https://www.fil.ion.ucl.ac.uk/~karl/Statistical%20parametric%20maps%20in%20functional%20imaging.pdf)
+- Worsley, K.J., & Friston, K.J. (1995). Analysis of fMRI time-series revisited - again. *NeuroImage*, 2(3), 173-181. [PubMed](https://pubmed.ncbi.nlm.nih.gov/9343600/)
+
+### Nilearn Documentation
+
+- [First Level Models User Guide](https://nilearn.github.io/stable/glm/first_level_model.html)
+- [FirstLevelModel API Reference](https://nilearn.github.io/stable/modules/generated/nilearn.glm.first_level.FirstLevelModel.html)
+- [GLM First Level Examples](https://nilearn.github.io/stable/auto_examples/04_glm_first_level/index.html)
+
+### Single-Trial Estimation
+
+- Mumford, J.A., Turner, B.O., Ashby, F.G., & Poldrack, R.A. (2012). Deconvolving BOLD activation in event-related designs for multivoxel pattern classification analyses. *NeuroImage*, 59(3), 2636-2643. [PMC](https://pmc.ncbi.nlm.nih.gov/articles/PMC3251697/)
+- Prince, J.S., Charest, I., Kurzawski, J.W., Pyles, J.A., Tarr, M.J., & Kay, K.N. (2022). Improving the accuracy of single-trial fMRI response estimates using GLMsingle. *eLife*, 11, e77599. [Paper](https://elifesciences.org/articles/77599) | [GitHub](https://github.com/cvnlab/GLMsingle) | [Documentation](https://glmsingle.readthedocs.io)
+
+### Multiple Comparisons Correction
+
+- Benjamini, Y., & Hochberg, Y. (1995). Controlling the false discovery rate: A practical and powerful approach to multiple testing. *Journal of the Royal Statistical Society: Series B*, 57(1), 289-300. [Paper](https://rss.onlinelibrary.wiley.com/doi/10.1111/j.2517-6161.1995.tb02031.x)
+- Genovese, C.R., Lazar, N.A., & Nichols, T. (2002). Thresholding of statistical maps in functional neuroimaging using the false discovery rate. *NeuroImage*, 15(4), 870-878. [PubMed](https://pubmed.ncbi.nlm.nih.gov/11906227/)
+- Eklund, A., Nichols, T.E., & Knutsson, H. (2016). Cluster failure: Why fMRI inferences for spatial extent have inflated false-positive rates. *PNAS*, 113(28), 7900-7905. [Paper](https://www.pnas.org/doi/full/10.1073/pnas.1602413113)
 
 **Next:** [Part 8: Multivariate Pattern Analysis](/blog/fmri-crash-course-8-multivariate)
 

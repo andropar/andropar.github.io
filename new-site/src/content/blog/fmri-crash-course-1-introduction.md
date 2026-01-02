@@ -18,6 +18,8 @@ My goal is to provide you with a foundational set of tools and workflows that ca
 
 Throughout the series, we'll use real code examples and reference the kinds of large-scale datasets that are driving modern vision research - particularly the Natural Scenes Dataset (NSD) and THINGS-data, which have become essential resources for computational approaches to visual neuroscience.
 
+![Flowchart showing the 8 parts of the fMRI Crash Course series: Introduction, Neuroimaging for Vision, Basics of MRI and fMRI, Recording and Experiments, Preprocessing, Quality Assessment, GLM Analysis, and Multivariate Analysis](/blog/fmri-diagrams/pipeline-overview.svg)
+
 ## Technical prerequisites
 
 In this series, we'll use Python, an easy-to-learn, general-purpose programming language, and I'll assume some familiarity with programming and working with command line tools. You should be able to follow along even if you don't have much coding experience, but learning to code is more or less a prerequisite for doing research, so I recommend starting sooner rather than later!
@@ -47,3 +49,20 @@ The series is divided into 8 separate posts (including this introduction). These
 My hope is that this series will provide you with a solid intuition for how fMRI data is recorded, processed and analyzed, so that you can easily move on to doing your own research. As we go along, I'll point you to other resources that will allow you to further improve your understanding of the material.
 
 Let's get started with [Part 2: Using neuroimaging for understanding the visual system](/blog/fmri-crash-course-2-neuroimaging-vision).
+
+## References
+
+### Datasets
+
+- **Natural Scenes Dataset (NSD)**: Allen, E.J., St-Yves, G., Wu, Y. et al. (2022). A massive 7T fMRI dataset to bridge cognitive neuroscience and artificial intelligence. *Nature Neuroscience*, 25, 116-126. [DOI: 10.1038/s41593-021-00962-x](https://doi.org/10.1038/s41593-021-00962-x) | [Dataset website](https://naturalscenesdataset.org/)
+- **THINGS-data**: Hebart, M.N., Contier, O., Teichmann, L. et al. (2023). THINGS-data, a multimodal collection of large-scale datasets for investigating object representations in human brain and behavior. *eLife*, 12, e82580. [DOI: 10.7554/eLife.82580](https://doi.org/10.7554/eLife.82580) | [THINGS Initiative](https://things-initiative.org/) | [OpenNeuro](https://openneuro.org/datasets/ds004192)
+
+### Textbooks
+
+- Huettel, S.A., Song, A.W., & McCarthy, G. (2014). *Functional Magnetic Resonance Imaging* (3rd ed.). Sinauer Associates. The standard introduction to fMRI physics, the BOLD response, and experimental design.
+- Poldrack, R.A., Mumford, J.A., & Nichols, T.E. (2011). *Handbook of Functional MRI Data Analysis*. Cambridge University Press. [Book website](https://www.fmri-data-analysis.org/). A practical guide to fMRI analysis methods and software.
+
+### Online tutorials
+
+- [Andy's Brain Book](https://andysbrainbook.readthedocs.io/) - Comprehensive tutorials for fMRI analysis with FSL, SPM, and AFNI, designed for beginners.
+- [Mumford Brain Stats](https://www.youtube.com/@mumaborinstats) - Video tutorials on fMRI statistics and analysis, including mixed models and study design.

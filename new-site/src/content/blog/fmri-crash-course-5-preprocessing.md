@@ -92,9 +92,9 @@ This is arguably the most important preprocessing step. Motion correction aligns
 
 The algorithm treats each volume as a rigid body - meaning it can rotate and translate but not stretch or deform. This gives us 6 motion parameters: translation in X, Y, and Z, plus rotation around each axis (pitch, roll, yaw).
 
-<img src="/blog/fmri-diagrams/motion-parameters.svg" alt="Six motion parameters: translations (X, Y, Z) and rotations (pitch, roll, yaw)" />
+<img src="/blog/fmri-diagrams/motion-traces.svg" alt="Example motion parameter traces showing translations and rotations over time" />
 
-*6 parameters describe any rigid body movement: 3 translations + 3 rotations.*
+*Example motion traces from a real scan. Note the drift and sudden movements - these are typical. 6 parameters describe any rigid body movement: 3 translations + 3 rotations.*
 
 **Here's the key insight:** motion correction uses interpolation, which inevitably smooths your data slightly. More importantly, it can only correct for movement between volumes - not within them. If your subject moved during a volume acquisition, that volume is corrupted in ways motion correction can't fix.
 
@@ -147,6 +147,10 @@ Smoothing convolves your data with a Gaussian kernel, typically 4-8mm FWHM (full
 **Critical point: Don't smooth for MVPA.** Multivariate pattern analysis relies on fine-grained spatial patterns. Smoothing blurs these patterns away. For MVPA, either skip smoothing entirely or use very minimal smoothing (2-3mm).
 
 This is why fMRIPrep doesn't smooth your data by default - it leaves that choice to you, for the analysis step. Different analyses need different levels of smoothing.
+
+<img src="/blog/fmri-diagrams/smoothing-effects.png" alt="Effect of spatial smoothing on brain images at 0mm, 4mm, 6mm, and 8mm FWHM" />
+
+*The effect of Gaussian smoothing at different kernel sizes. Notice how fine anatomical details become progressively blurred as FWHM increases.*
 
 ## fMRIPrep: The modern standard
 
@@ -299,3 +303,37 @@ Preprocessing takes your raw, messy fMRI data and transforms it into something a
 **Next:** [Part 6: Assessing the quality of fMRI data](/blog/fmri-crash-course-6-quality-assessment)
 
 **Previous:** [Part 4: Recording fMRI data and designing experiments](/blog/fmri-crash-course-4-recording-experiments)
+
+## References
+
+### fMRIPrep
+
+- Esteban, O., Markiewicz, C.J., Blair, R.W., et al. (2019). fMRIPrep: a robust preprocessing pipeline for functional MRI. *Nature Methods*, 16, 111-116. [https://doi.org/10.1038/s41592-018-0235-4](https://www.nature.com/articles/s41592-018-0235-4)
+- [fMRIPrep Documentation](https://fmriprep.org/en/stable/)
+
+### Motion Correction
+
+- Power, J.D., Barnes, K.A., Snyder, A.Z., Schlaggar, B.L., & Petersen, S.E. (2012). Spurious but systematic correlations in functional connectivity MRI networks arise from subject motion. *NeuroImage*, 59(3), 2142-2154. [https://doi.org/10.1016/j.neuroimage.2011.10.018](https://pubmed.ncbi.nlm.nih.gov/22019881/)
+- Power, J.D., Mitra, A., Laumann, T.O., Snyder, A.Z., Schlaggar, B.L., & Petersen, S.E. (2014). Methods to detect, characterize, and remove motion artifact in resting state fMRI. *NeuroImage*, 84, 320-341. [https://doi.org/10.1016/j.neuroimage.2013.08.048](https://pmc.ncbi.nlm.nih.gov/articles/PMC3849338/)
+
+### Slice Timing Correction
+
+- Sladky, R., Friston, K.J., Trostl, J., Cunnington, R., Moser, E., & Windischberger, C. (2011). Slice-timing effects and their correction in functional MRI. *NeuroImage*, 58(2), 588-594. [https://doi.org/10.1016/j.neuroimage.2011.06.078](https://pmc.ncbi.nlm.nih.gov/articles/PMC3167249/)
+- Henson, R., Buechel, C., Josephs, O., & Friston, K.J. (1999). The slice-timing problem in event-related fMRI. *NeuroImage*, 9, S125. [PDF](https://www.researchgate.net/publication/32889571_The_slice-timing_problem_in_event-related_fMRI)
+
+### Spatial Normalization
+
+- Avants, B.B., Tustison, N.J., Song, G., et al. (2011). A reproducible evaluation of ANTs similarity metric performance in brain image registration. *NeuroImage*, 54(3), 2033-2044. [ANTs GitHub](https://github.com/ANTsX/ANTs)
+- Tustison, N.J., Cook, P.A., Holbrook, A.J., et al. (2021). The ANTsX ecosystem for quantitative biological and medical imaging. *Scientific Reports*, 11, 9068. [https://doi.org/10.1038/s41598-021-87564-6](https://www.nature.com/articles/s41598-021-87564-6)
+- Lancaster, J.L., Tordesillas-Gutierrez, D., Martinez, M., et al. (2007). Bias between MNI and Talairach coordinates analyzed using the ICBM-152 brain template. *Human Brain Mapping*, 28(11), 1194-1205. [https://doi.org/10.1002/hbm.20345](https://brainmap.org/icbm2tal/)
+
+### Data Organization
+
+- Gorgolewski, K.J., Auer, T., Calhoun, V.D., et al. (2016). The brain imaging data structure, a format for organizing and describing outputs of neuroimaging experiments. *Scientific Data*, 3, 160044. [https://doi.org/10.1038/sdata.2016.44](https://www.nature.com/articles/sdata201644)
+- [BIDS Specification](https://bids-specification.readthedocs.io/)
+
+### Software Documentation
+
+- [FSL - FMRIB Software Library](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/)
+- [FreeSurfer](https://surfer.nmr.mgh.harvard.edu/)
+- [AFNI - Analysis of Functional NeuroImages](https://afni.nimh.nih.gov/)

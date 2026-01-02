@@ -32,7 +32,7 @@ The brilliance of MRI is that different tissues relax at different rates, giving
 
 **T2 relaxation** (transverse relaxation) is how quickly the protons lose their synchrony with each other after the RF pulse. Think of it like a group of runners who start together but gradually spread out. Different tissues lose sync at different rates, giving us T2-weighted images where fluids appear bright.
 
-<img src="/blog/fmri-diagrams/t1-t2-relaxation.svg" alt="T1 and T2 relaxation processes in MRI" />
+<img src="/blog/fmri-diagrams/t1-t2-curves.svg" alt="T1 recovery and T2 decay curves for different brain tissues" />
 
 By adjusting the timing of RF pulses and signal acquisition, we can emphasize either T1 or T2 contrast. This is why radiologists can see different things by running different MRI sequences - the physics is the same, but the timing reveals different tissue properties.
 
@@ -67,7 +67,7 @@ This doesn't invalidate fMRI - the technique remains invaluable. But it's a remi
 
 The BOLD response doesn't happen instantly. The hemodynamic response function (HRF) describes how the BOLD signal changes over time after a brief neural event.
 
-<img src="/blog/fmri-diagrams/hrf-timeline.svg" alt="Hemodynamic response function timeline" />
+<img src="/blog/fmri-diagrams/hrf-curve.svg" alt="Hemodynamic response function showing the characteristic BOLD signal shape over time" />
 
 The typical HRF looks something like this:
 - **Initial dip (0-2 seconds):** A small decrease in signal as local oxygen is consumed before blood flow catches up. This is subtle and not always observed.
@@ -198,3 +198,37 @@ Now that we understand what fMRI measures, the next post will cover how to actua
 **Next:** [Part 4: Recording fMRI data and designing experiments](/blog/fmri-crash-course-4-recording-experiments)
 
 **Previous:** [Part 2: Using neuroimaging for understanding the visual system](/blog/fmri-crash-course-2-neuroimaging-vision)
+
+---
+
+## References
+
+### Foundational MRI Physics Resources
+
+- Brown RW, Cheng YC, Haacke EM, Thompson MR, Venkatesan R. [Magnetic Resonance Imaging: Physical Principles and Sequence Design](https://www.wiley.com/en-us/Magnetic+Resonance+Imaging:+Physical+Principles+and+Sequence+Design,+2nd+Edition-p-9780471720850) (2nd ed). Wiley, 2014. *The definitive technical reference for MRI physics.*
+
+- Huettel SA, Song AW, McCarthy G. [Functional Magnetic Resonance Imaging](https://global.oup.com/academic/product/functional-magnetic-resonance-imaging-9780878936274) (3rd ed). Sinauer Associates/Oxford University Press. *The standard fMRI textbook, accessible yet comprehensive.*
+
+- Poldrack RA, Mumford JA, Nichols TE. [Handbook of Functional MRI Data Analysis](https://www.cambridge.org/core/books/handbook-of-functional-mri-data-analysis/8EDF966C65811FCCC306F7C916228529). Cambridge University Press, 2011. *Practical guide to fMRI analysis methods.*
+
+- [Andy's Brain Book](https://andysbrainbook.readthedocs.io/). *Free online tutorials for learning fMRI analysis with FSL, SPM, and AFNI.*
+
+### BOLD Signal and Hemodynamic Response
+
+- Ogawa S, Lee TM, Kay AR, Tank DW. [Brain magnetic resonance imaging with contrast dependent on blood oxygenation](https://www.pnas.org/doi/10.1073/pnas.87.24.9868). PNAS 1990;87(24):9868-9872. *The original paper introducing BOLD contrast.*
+
+- Kwong KK, Belliveau JW, Chesler DA, et al. [Dynamic magnetic resonance imaging of human brain activity during primary sensory stimulation](https://pubmed.ncbi.nlm.nih.gov/1608978/). PNAS 1992;89(12):5675-5679. *First demonstration of BOLD fMRI in humans.*
+
+- Logothetis NK, Pauls J, Augath M, Trinath T, Oeltermann A. [Neurophysiological investigation of the basis of the fMRI signal](https://www.nature.com/articles/35084005). Nature 2001;412(6843):150-157. *Landmark study linking BOLD to neural activity via simultaneous electrophysiology.*
+
+- Glover GH. Deconvolution of impulse response in event-related BOLD fMRI. NeuroImage 1999;9(4):416-429. *Foundational work on hemodynamic response function estimation.*
+
+### Discordant Voxels and BOLD Interpretation
+
+- Poser BA, et al. [Discordant BOLD responses and oxygen metabolism in the human brain](https://www.nature.com/articles/s41593-025-02132-9). Nature Neuroscience 2025. *Important recent finding about the complexity of BOLD-neural activity relationships.*
+
+### Scanner Field Strength Comparisons
+
+- Barisano G, et al. [7T MRI Versus 3T MRI of the Brain](https://pmc.ncbi.nlm.nih.gov/articles/PMC10240322/). *Comparison of imaging quality and clinical sensitivity at different field strengths.*
+
+- Trattnig S, et al. [Clinical Neuroimaging at 7T](https://www.mri.theclinics.com/article/S1064-9689(20)30066-0/fulltext). Magnetic Resonance Imaging Clinics 2021. *Review of 7T advantages and challenges for brain imaging.*

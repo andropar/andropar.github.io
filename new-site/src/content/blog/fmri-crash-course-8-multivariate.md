@@ -22,6 +22,10 @@ Multivariate methods flip the question. Instead of asking "does this region resp
 
 Here's an analogy I like: univariate analysis is like measuring the overall loudness of an orchestra. Multivariate analysis is like recognizing the melody. The total volume might be the same for two pieces, but the patterns are completely different.
 
+<img src="/blog/fmri-diagrams/univariate-vs-multivariate.svg" alt="Comparison of univariate vs multivariate analysis - univariate shows same mean activation for two conditions, while multivariate reveals distinct patterns across voxels" />
+
+*The key insight: two conditions can have identical mean activation (left) while showing completely different patterns across voxels (right). Univariate analysis misses this distinction entirely.*
+
 This matters enormously for vision research. We want to understand not just where processing happens, but what computational transformations occur at each stage. What features are encoded? How do representations change from early visual cortex to object-selective regions? Multivariate methods let us tackle these questions head-on.
 
 ## MVPA: Multi-Voxel Pattern Analysis
@@ -104,9 +108,15 @@ Decoding tells you whether information is present. RSA, developed by Kriegeskort
 
 The core concept is the Representational Dissimilarity Matrix (RDM). For each pair of conditions, you compute how dissimilar their neural patterns are (usually 1 minus Pearson correlation). Stack these up, and you get a symmetric matrix showing the geometry of the representational space.
 
-<img src="/blog/fmri-diagrams/rsa-workflow.svg" alt="RSA workflow: from stimuli to voxel patterns to representational dissimilarity matrix" />
+<img src="/blog/fmri-diagrams/rdm-matrix.svg" alt="Representational dissimilarity matrix showing category structure - similar items (fruits, vehicles, animals) cluster together" />
 
-*The RDM reveals representational geometry: similar items (apple-banana, car-bus) have low dissimilarity, while dissimilar items (fruits vs. vehicles) have high dissimilarity.*
+*An example RDM. Dark squares along the diagonal show within-category similarity (fruits, vehicles, animals). The lighter off-diagonal blocks reveal between-category dissimilarity. This structure - that apples are more similar to bananas than to cars - is what RSA captures.*
+
+You can also visualize this structure using multidimensional scaling (MDS), which projects the high-dimensional representational geometry into 2D for inspection:
+
+<img src="/blog/fmri-diagrams/mds-representational-space.svg" alt="MDS plot showing category clusters in representational space - fruits, vehicles, animals, tools, and faces form distinct clusters" />
+
+*MDS visualization of representational space. Items from the same category cluster together (fruits near fruits, vehicles near vehicles), while different categories occupy distinct regions. This is the geometry that RSA quantifies.*
 
 Why is this powerful? Because you can compare RDMs. Build an RDM from your neural data. Build another RDM from a computational model (e.g., a semantic model, a CNN layer, human similarity judgments). Correlate them. If they match, your model captures something about how that brain region organizes information.
 
@@ -172,6 +182,10 @@ Modern encoding models often use ridge regression with carefully tuned regulariz
 Here's where things get exciting. Deep convolutional neural networks (CNNs) trained on object recognition turn out to be surprisingly good models of the ventral visual stream.
 
 The discovery, pioneered by researchers like Yamins and DiCarlo around 2014, was striking: layer-by-layer, CNN representations predict neural activity in corresponding brain regions. Early CNN layers predict V1 better than later layers; late CNN layers predict IT cortex better than early layers. The hierarchy matches.
+
+<img src="/blog/fmri-diagrams/dnn-brain-heatmap.svg" alt="Heatmap showing correlations between CNN layers and brain ROIs - early layers correlate with V1/V2, late layers with IT cortex" />
+
+*The signature finding of DNN-brain comparisons. Each cell shows the correlation between a CNN layer's representations and a brain region's activity patterns. The diagonal structure reveals hierarchical correspondence: early CNN layers (conv1-2) best predict early visual cortex (V1-V2), while late layers (fc6-8) best predict higher visual areas (IT). This is RSA applied to model comparison.*
 
 This launched a cottage industry of comparing DNNs to brains. Which architecture best predicts neural activity? Which layer? Does training on different tasks change the correspondence? Tools like [thingsvision](https://github.com/ViCCo-Group/thingsvision) make this easy: specify a model and layer, extract features for your images, and you're ready for encoding or RSA analyses.
 
@@ -286,6 +300,34 @@ A few trends I see shaping the next decade:
 From here, the possibilities are vast. Pick a dataset, pick a question, and dive in. The tools are accessible, the community is active, and there's never been a better time to study how the brain represents the visual world.
 
 Good luck.
+
+---
+
+## References
+
+### Foundational MVPA Papers
+- Haxby, J. V., Gobbini, M. I., Furey, M. L., Ishai, A., Schouten, J. L., & Pietrini, P. (2001). [Distributed and overlapping representations of faces and objects in ventral temporal cortex](https://www.science.org/doi/10.1126/science.1063736). *Science*, 293(5539), 2425-2430.
+
+### Representational Similarity Analysis (RSA)
+- Kriegeskorte, N., Mur, M., & Bandettini, P. (2008). [Representational similarity analysis - connecting the branches of systems neuroscience](https://www.frontiersin.org/journals/systems-neuroscience/articles/10.3389/neuro.06.004.2008/full). *Frontiers in Systems Neuroscience*, 2, 4.
+- [rsatoolbox documentation](https://rsatoolbox.readthedocs.io/) | [GitHub repository](https://github.com/rsagroup/rsatoolbox)
+
+### Searchlight Analysis
+- Kriegeskorte, N., Goebel, R., & Bandettini, P. (2006). [Information-based functional brain mapping](https://www.pnas.org/doi/10.1073/pnas.0600244103). *Proceedings of the National Academy of Sciences*, 103(10), 3863-3868.
+
+### Encoding Models
+- Kay, K. N., Naselaris, T., Prenger, R. J., & Gallant, J. L. (2008). [Identifying natural images from human brain activity](https://www.nature.com/articles/nature06713). *Nature*, 452, 352-355.
+- Naselaris, T., Kay, K. N., Nishimoto, S., & Gallant, J. L. (2011). [Encoding and decoding in fMRI](https://www.sciencedirect.com/science/article/abs/pii/S1053811910010657). *NeuroImage*, 56(2), 400-410.
+
+### DNN-Brain Correspondence
+- Yamins, D. L. K., & DiCarlo, J. J. (2016). [Using goal-driven deep learning models to understand sensory cortex](https://www.nature.com/articles/nn.4244). *Nature Neuroscience*, 19, 356-365.
+- Khaligh-Razavi, S.-M., & Kriegeskorte, N. (2014). [Deep supervised, but not unsupervised, models may explain IT cortical representation](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003915). *PLOS Computational Biology*, 10(11), e1003915.
+
+### Software Documentation
+- [Nilearn: Decoding and MVPA](https://nilearn.github.io/stable/decoding/decoding_intro.html) - Introduction to decoding with nilearn
+- [Nilearn: Decoder class](https://nilearn.github.io/dev/modules/generated/nilearn.decoding.Decoder.html) - API reference for the Decoder wrapper
+- [scikit-learn: Support Vector Machines](https://scikit-learn.org/stable/modules/svm.html) - User guide for SVM classification
+- [scikit-learn: SVC](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html) - API reference for the SVC classifier
 
 ---
 

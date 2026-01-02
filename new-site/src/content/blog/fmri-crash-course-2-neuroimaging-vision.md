@@ -62,6 +62,8 @@ So how do we actually study these brain regions in living, behaving humans? We h
 | **fMRI** | ~1-3mm | ~1-2s | Non-invasive | High | Where processing happens |
 | **Invasive recordings** | Single neurons | <1ms | Very invasive | Very high | Precise neural coding |
 
+<img src="/blog/fmri-diagrams/spatial-temporal-tradeoff.svg" alt="Spatial vs temporal resolution trade-off between EEG, MEG, fMRI, and invasive recordings" />
+
 Let me break these down.
 
 ### EEG (Electroencephalography)
@@ -147,3 +149,29 @@ In the next post, we'll dive into the specifics of how fMRI actually works - how
 **Next:** [Part 3: Basics of (functional) MRI](/blog/fmri-crash-course-3-basics-mri)
 
 **Previous:** [Part 1: Introduction](/blog/fmri-crash-course-1-introduction)
+
+## References
+
+### Visual System Hierarchy
+
+- Hubel, D. H., & Wiesel, T. N. (1962). Receptive fields, binocular interaction and functional architecture in the cat's visual cortex. *The Journal of Physiology*, 160(1), 106-154. [DOI: 10.1113/jphysiol.1962.sp006837](https://doi.org/10.1113/jphysiol.1962.sp006837) | [PMC Free Article](https://pmc.ncbi.nlm.nih.gov/articles/PMC1359523/)
+
+- Felleman, D. J., & Van Essen, D. C. (1991). Distributed hierarchical processing in the primate cerebral cortex. *Cerebral Cortex*, 1(1), 1-47. [DOI: 10.1093/cercor/1.1.1](https://doi.org/10.1093/cercor/1.1.1) | [Oxford Academic](https://academic.oup.com/cercor/article/1/1/1/408896)
+
+- Mishkin, M., Ungerleider, L. G., & Macko, K. A. (1983). Object vision and spatial vision: two cortical pathways. *Trends in Neurosciences*, 6, 414-417. [DOI: 10.1016/0166-2236(83)90190-X](https://doi.org/10.1016/0166-2236(83)90190-X)
+
+- Goodale, M. A., & Milner, A. D. (1992). Separate visual pathways for perception and action. *Trends in Neurosciences*, 15(1), 20-25. [DOI: 10.1016/0166-2236(92)90344-8](https://doi.org/10.1016/0166-2236(92)90344-8) | [PDF](https://cnbc.cmu.edu/braingroup/papers/goodale_milner_1992.pdf)
+
+### Neuroimaging Methods
+
+- Logothetis, N. K. (2008). What we can do and what we cannot do with fMRI. *Nature*, 453, 869-878. [DOI: 10.1038/nature06976](https://doi.org/10.1038/nature06976)
+
+### Datasets
+
+- **Natural Scenes Dataset (NSD):** Allen, E. J., St-Yves, G., Wu, Y., Breedlove, J. L., Prince, J. S., Dowdle, L. T., ... & Kay, K. (2022). A massive 7T fMRI dataset to bridge cognitive neuroscience and artificial intelligence. *Nature Neuroscience*, 25(1), 116-126. [DOI: 10.1038/s41593-021-00962-x](https://doi.org/10.1038/s41593-021-00962-x) | [Dataset Website](https://naturalscenesdataset.org/)
+
+- **THINGS Database:** Hebart, M. N., Dickter, A. H., Kidder, A., Kwok, W. Y., Corriveau, A., Van Wicklin, C., & Baker, C. I. (2019). THINGS: A database of 1,854 object concepts and more than 26,000 naturalistic object images. *PLOS ONE*, 14(10), e0223792. [DOI: 10.1371/journal.pone.0223792](https://doi.org/10.1371/journal.pone.0223792) | [THINGS Initiative](https://things-initiative.org/)
+
+- **THINGS-data:** Hebart, M. N., Contier, O., Teichmann, L., Rockter, A. H., Zheng, C. Y., Kidder, A., ... & Baker, C. I. (2023). THINGS-data, a multimodal collection of large-scale datasets for investigating object representations in human brain and behavior. *eLife*, 12, e82580. [DOI: 10.7554/eLife.82580](https://doi.org/10.7554/eLife.82580) | [GitHub](https://github.com/ViCCo-Group/THINGS-data)
+
+- **BOLD5000:** Chang, N., Pyles, J. A., Marcus, A., Gupta, A., Tarr, M. J., & Aminoff, E. M. (2019). BOLD5000, a public fMRI dataset while viewing 5000 visual images. *Scientific Data*, 6, 49. [DOI: 10.1038/s41597-019-0052-3](https://doi.org/10.1038/s41597-019-0052-3) | [Dataset Website](https://bold5000-dataset.github.io/website/)
