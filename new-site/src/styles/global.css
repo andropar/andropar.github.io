@@ -1703,3 +1703,270 @@ nav,
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ==========================================
+   TERRACOTTA ACCENT REFINEMENTS
+   Editorial touches for warmth and polish
+   ========================================== */
+
+/* Section title - terracotta dot prefix */
+.section-title::before {
+  content: '•';
+  color: var(--color-accent);
+  margin-right: 0.5em;
+  font-size: 0.9em;
+}
+
+/* Strong text - subtle accent underline highlight */
+.prose p strong,
+.intro-bio strong {
+  background: linear-gradient(to bottom, transparent 60%, rgba(196, 130, 109, 0.12) 60%);
+  padding: 0 2px;
+  margin: 0 -2px;
+}
+
+[data-theme="dark"] .prose p strong,
+[data-theme="dark"] .intro-bio strong {
+  background: linear-gradient(to bottom, transparent 60%, rgba(212, 148, 127, 0.15) 60%);
+}
+
+/* Footer bullet - accent color */
+footer::before {
+  color: var(--color-accent);
+}
+
+/* Tags - accent border on hover */
+.tag {
+  border: 1px solid transparent;
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.tag:hover {
+  border-color: rgba(196, 130, 109, 0.3);
+}
+
+[data-theme="dark"] .tag:hover {
+  border-color: rgba(212, 148, 127, 0.3);
+}
+
+/* Blog post date - editorial em-dash styling */
+.post-date::before {
+  content: '—';
+  margin-right: 0.4em;
+  color: var(--color-accent);
+  opacity: 0.6;
+}
+
+/* Publication venue - subtle accent styling */
+.publication-venue {
+  position: relative;
+  padding-left: 0.75em;
+}
+
+.publication-venue::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.35em;
+  bottom: 0.35em;
+  width: 2px;
+  background: var(--color-accent);
+  opacity: 0.4;
+  border-radius: 1px;
+}
+
+/* Now card title - accent dot */
+.now-card-title::after {
+  content: ' •';
+  color: var(--color-accent);
+  opacity: 0.6;
+}
+
+/* Card/now-card - top accent line on hover */
+.card::after,
+.now-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: var(--space-lg);
+  right: var(--space-lg);
+  height: 2px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+  border-radius: 0 0 2px 2px;
+}
+
+.card:hover::after,
+.now-card:hover::after {
+  transform: scaleX(1);
+}
+
+/* Timeline date - accent on hover */
+.timeline-item:hover .timeline-date {
+  color: var(--color-accent);
+}
+
+.timeline-date {
+  transition: color 0.2s ease;
+}
+
+/* Work venue badge - subtle background */
+.work-venue {
+  background: rgba(196, 130, 109, 0.06);
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-left: 0.25em;
+}
+
+[data-theme="dark"] .work-venue {
+  background: rgba(212, 148, 127, 0.08);
+}
+
+/* External link indicator - terracotta arrow */
+a[href^="http"]:not([href*="johannesroth.com"])::after {
+  content: ' ↗';
+  font-size: 0.75em;
+  color: var(--color-accent);
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+a[href^="http"]:not([href*="johannesroth.com"]):hover::after {
+  opacity: 1;
+}
+
+/* Exclude certain link types from external indicator */
+a.nav-link[href^="http"]::after,
+a.nav-brand[href^="http"]::after,
+a.footer-link[href^="http"]::after,
+a.quick-link[href^="http"]::after,
+a.work-item[href^="http"]::after,
+a.publication-link[href^="http"]::after,
+a.post-item[href^="http"]::after {
+  content: none;
+}
+
+/* First paragraph left border accent (prose) */
+.prose > p:first-of-type {
+  position: relative;
+  padding-left: 1rem;
+}
+
+.prose > p:first-of-type::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  bottom: 0.5em;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--color-accent), transparent);
+  border-radius: 1px;
+}
+
+/* Page description - subtle accent treatment */
+.page-description {
+  position: relative;
+}
+
+.page-description::first-letter {
+  color: var(--color-accent);
+  font-weight: 500;
+}
+
+/* Quick link hover - accent color */
+.quick-link:hover {
+  color: var(--color-accent);
+}
+
+/* Post tag - already accent but enhance */
+.post-tag {
+  position: relative;
+}
+
+.post-tag::before {
+  content: '';
+  position: absolute;
+  left: -0.5em;
+  top: 50%;
+  width: 3px;
+  height: 3px;
+  background: var(--color-accent);
+  border-radius: 50%;
+  transform: translateY(-50%);
+  opacity: 0.6;
+}
+
+/* Nav link active state - accent underline */
+.nav-link.active {
+  color: var(--color-accent);
+}
+
+/* Intro greeting - accent line */
+.intro-greeting::before {
+  background: var(--color-accent);
+  opacity: 0.5;
+}
+
+/* Table header - subtle accent border */
+.prose th {
+  border-bottom: 2px solid var(--color-accent);
+  border-bottom-color: rgba(196, 130, 109, 0.3);
+}
+
+[data-theme="dark"] .prose th {
+  border-bottom-color: rgba(212, 148, 127, 0.3);
+}
+
+/* Blockquote - enhanced accent styling */
+.prose blockquote {
+  background: rgba(196, 130, 109, 0.03);
+  padding: var(--space-md) var(--space-lg);
+  border-radius: 0 4px 4px 0;
+}
+
+[data-theme="dark"] .prose blockquote {
+  background: rgba(212, 148, 127, 0.04);
+}
+
+/* Code block - accent top border */
+.prose pre {
+  border-top: 2px solid var(--color-accent);
+}
+
+/* Publication number counter with accent */
+.publication {
+  counter-increment: pub-counter;
+}
+
+.publication-list {
+  counter-reset: pub-counter;
+}
+
+/* Item meta - accent separator */
+.item-meta::before {
+  content: '—';
+  margin-right: 0.5em;
+  color: var(--color-accent);
+  opacity: 0.4;
+}
+
+/* Horizontal rule / divider accent */
+hr,
+.divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--color-accent), transparent);
+  opacity: 0.3;
+  margin: var(--space-2xl) 0;
+}
+
+/* List markers - accent bullets */
+.prose ul li::marker {
+  color: var(--color-accent);
+}
+
+.prose ol li::marker {
+  color: var(--color-accent);
+  font-weight: 500;
+}
