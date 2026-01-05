@@ -1,0 +1,495 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Projects - Johannes Roth">
+  <header class="page-header">
+    <h1 class="page-title">Projects</h1>
+    <p class="page-description">Research tools, publications, and software</p>
+  </header>
+
+  <div class="projects-page">
+
+    <!-- Section 01: Datasets & Research Tools -->
+    <section class="proj-section" data-section="01">
+      <div class="section-header">
+        <span class="section-number">01</span>
+        <h2 class="section-label">Datasets & Research Tools</h2>
+      </div>
+
+      <div class="featured-grid">
+        <a href="https://huggingface.co/datasets/andropar/relaion2b-natural" class="featured-item" target="_blank">
+          <span class="item-badge">Dataset</span>
+          <h3 class="item-name">ReLAION-2B Natural</h3>
+          <p class="item-desc">Naturalness scores for 2.1B images from ReLAION-2B, identifying ~500M photographic images suitable for vision research.</p>
+          <span class="featured-meta">167GB • CLIP ViT-H/14</span>
+        </a>
+
+        <a href="https://github.com/ViCCo-Group/thingsvision" class="featured-item" target="_blank">
+          <span class="item-badge">Library</span>
+          <h3 class="item-name">thingsvision</h3>
+          <p class="item-desc">Feature extraction for 50+ vision models with a unified API. CLIP, ViT, ResNet, and more.</p>
+          <span class="featured-meta">Contributor • Python</span>
+        </a>
+
+        <a href="https://github.com/andropar/cvmanova_python" class="featured-item featured-item--compact" target="_blank">
+          <span class="item-badge">Tool</span>
+          <h3 class="item-name">cvmanova_python</h3>
+          <p class="item-desc">Cross-validated MANOVA for multivariate pattern analysis in fMRI.</p>
+          <span class="featured-meta">Python</span>
+        </a>
+
+        <a href="https://github.com/andropar/pysearchlight" class="featured-item featured-item--compact" target="_blank">
+          <span class="item-badge">Tool</span>
+          <h3 class="item-name">pysearchlight</h3>
+          <p class="item-desc">Customizable searchlight analysis for fMRI data.</p>
+          <span class="featured-meta">Python</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Section 02: Papers & Conferences -->
+    <section class="proj-section" data-section="02">
+      <div class="section-header">
+        <span class="section-number">02</span>
+        <h2 class="section-label">Papers & Conferences</h2>
+      </div>
+
+      <div class="papers-index">
+        <a href="#" class="paper-entry">
+          <span class="paper-venue">CCN 2025 · Oral</span>
+          <h3 class="paper-title">How to sample the world for understanding the visual system</h3>
+          <span class="paper-authors">Roth & Hebart</span>
+        </a>
+
+        <a href="https://doi.org/10.1038/s44271-025-00236-3" class="paper-entry" target="_blank">
+          <span class="paper-venue">Comms Psych 2025</span>
+          <h3 class="paper-title">Ten principles for reliable, efficient, and adaptable coding</h3>
+          <span class="paper-authors">Roth et al.</span>
+        </a>
+
+        <a href="https://doi.org/10.1523/JNEUROSCI.0936-24.2024" class="paper-entry" target="_blank">
+          <span class="paper-venue">J Neurosci 2025</span>
+          <h3 class="paper-title">Fine-grained image and category information in ventral visual pathway</h3>
+          <span class="paper-authors">Badwal, Bergmann, Roth et al.</span>
+        </a>
+
+        <a href="#" class="paper-entry">
+          <span class="paper-venue">VSS 2023 · Poster</span>
+          <h3 class="paper-title">High stimulus presentation rates for fMRI</h3>
+          <span class="paper-authors">Roth, Miyawaki & Hebart</span>
+        </a>
+
+        <a href="#" class="paper-entry">
+          <span class="paper-venue">Cosyne 2021 · Poster</span>
+          <h3 class="paper-title">Preferred stimuli for individual voxels in the human visual system</h3>
+          <span class="paper-authors">Roth, Seeliger, Schmid & Hebart</span>
+        </a>
+
+        <a href="#" class="paper-entry">
+          <span class="paper-venue">MICCAI BraTS 2021</span>
+          <h3 class="paper-title">Multi-plane UNet++ Ensemble for Glioblastoma Segmentation</h3>
+          <span class="paper-authors">Roth, Keller et al.</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Section 03: Developer Tools -->
+    <section class="proj-section" data-section="03">
+      <div class="section-header">
+        <span class="section-number">03</span>
+        <h2 class="section-label">Developer Tools</h2>
+      </div>
+
+      <div class="tools-grid">
+        <a href="https://github.com/andropar/prettymd" class="tool-item" target="_blank">
+          <h3 class="tool-name">prettymd</h3>
+          <p class="tool-desc">Beautiful markdown previews for VS Code</p>
+          <span class="tool-tech">TypeScript</span>
+        </a>
+
+        <a href="https://github.com/andropar/AskClaude" class="tool-item" target="_blank">
+          <h3 class="tool-name">AskClaude</h3>
+          <p class="tool-desc">Claude Code in Finder's context menu</p>
+          <span class="tool-tech">Swift</span>
+        </a>
+
+        <a href="https://github.com/andropar/slurmboard" class="tool-item" target="_blank">
+          <h3 class="tool-name">slurmboard</h3>
+          <p class="tool-desc">Web dashboard for Slurm HPC jobs</p>
+          <span class="tool-tech">JavaScript</span>
+        </a>
+
+        <a href="https://github.com/andropar/CNNvis" class="tool-item" target="_blank">
+          <h3 class="tool-name">CNNvis</h3>
+          <p class="tool-desc">Interactive CNN activation visualizer</p>
+          <span class="tool-tech">JavaScript</span>
+        </a>
+
+        <a href="https://github.com/andropar/Timer" class="tool-item" target="_blank">
+          <h3 class="tool-name">Timer</h3>
+          <p class="tool-desc">Simple meditation timer</p>
+          <span class="tool-tech">Django</span>
+        </a>
+
+        <a href="https://github.com/andropar/MensaCash" class="tool-item" target="_blank">
+          <h3 class="tool-name">MensaCash</h3>
+          <p class="tool-desc">Check your mensa card balance</p>
+          <span class="tool-tech">Java</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Recognition (coda) -->
+    <section class="proj-section proj-section--coda">
+      <div class="recognition-line">
+        <span class="recognition-marker">•</span>
+        <span class="recognition-year">2025</span>
+        <span class="recognition-award">CMBB Replication Award</span>
+        <span class="recognition-note">— for reliable coding practices in neuroscience</span>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .projects-page {
+    width: 100%;
+  }
+
+  /* Section Structure */
+  .proj-section {
+    margin-bottom: var(--space-3xl);
+    position: relative;
+  }
+
+  .proj-section--coda {
+    margin-bottom: 0;
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+  }
+
+  .section-number {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 2.5rem;
+    color: var(--color-border);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    transition: color 0.3s ease;
+  }
+
+  .proj-section:hover .section-number {
+    color: var(--color-accent);
+  }
+
+  .section-label {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-secondary);
+    margin: 0;
+    padding-bottom: 0.2em;
+  }
+
+  /* Featured Grid (Section 01) */
+  .featured-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+  }
+
+  .featured-item {
+    display: block;
+    padding: var(--space-lg);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border-subtle);
+    text-decoration: none;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+    position: relative;
+  }
+
+  .featured-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 0;
+    background: var(--color-accent);
+    transition: height 0.3s ease;
+  }
+
+  .featured-item:hover {
+    border-color: var(--color-accent);
+    transform: translateX(4px);
+  }
+
+  .featured-item:hover::before {
+    height: 100%;
+  }
+
+  .featured-item::after {
+    display: none;
+  }
+
+  .featured-item--compact {
+    padding: var(--space-md);
+  }
+
+  .featured-item--compact .item-desc {
+    font-size: 0.8125rem;
+  }
+
+  .item-badge {
+    display: inline-block;
+    font-size: 0.625rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-accent);
+    margin-bottom: var(--space-sm);
+  }
+
+  .item-name {
+    font-family: var(--font-serif);
+    font-size: 1.125rem;
+    font-weight: 400;
+    color: var(--color-text);
+    margin: 0 0 var(--space-xs);
+    line-height: 1.3;
+    transition: color 0.2s ease;
+  }
+
+  .featured-item:hover .item-name {
+    color: var(--color-accent);
+  }
+
+  .item-desc {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    margin: 0 0 var(--space-md);
+  }
+
+  .featured-meta {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--color-text-tertiary);
+    padding-top: var(--space-sm);
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  /* Papers Index (Section 02) */
+  .papers-index {
+    display: flex;
+    flex-direction: column;
+    counter-reset: papers;
+  }
+
+  .paper-entry {
+    display: grid;
+    grid-template-columns: 140px 1fr auto;
+    gap: var(--space-md);
+    align-items: baseline;
+    padding: var(--space-md) 0;
+    border-bottom: 1px solid var(--color-border-subtle);
+    text-decoration: none;
+    counter-increment: papers;
+    position: relative;
+    transition: background 0.2s ease;
+  }
+
+  .paper-entry::before {
+    content: '0' counter(papers);
+    position: absolute;
+    right: 0;
+    top: var(--space-md);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.875rem;
+    color: var(--color-border);
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease;
+  }
+
+  .paper-entry:hover::before {
+    opacity: 1;
+    transform: translateX(0);
+    color: var(--color-accent);
+  }
+
+  .paper-entry::after {
+    display: none;
+  }
+
+  .paper-entry:first-child {
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .paper-entry:hover {
+    background: var(--color-bg-subtle);
+    margin-left: calc(-1 * var(--space-md));
+    margin-right: calc(-1 * var(--space-md));
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
+  }
+
+  .paper-venue {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-accent);
+    white-space: nowrap;
+  }
+
+  .paper-title {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--color-text);
+    margin: 0;
+    line-height: 1.4;
+    transition: color 0.2s ease;
+  }
+
+  .paper-entry:hover .paper-title {
+    color: var(--color-accent);
+  }
+
+  .paper-authors {
+    font-size: 0.8125rem;
+    color: var(--color-text-tertiary);
+    white-space: nowrap;
+    justify-self: end;
+  }
+
+  /* Tools Grid (Section 03) */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--color-border-subtle);
+    border: 1px solid var(--color-border-subtle);
+  }
+
+  .tool-item {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-md);
+    background: var(--color-bg);
+    text-decoration: none;
+    transition: background 0.2s ease;
+    position: relative;
+  }
+
+  .tool-item::after {
+    display: none;
+  }
+
+  .tool-item:hover {
+    background: var(--color-bg-subtle);
+  }
+
+  .tool-name {
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--color-text);
+    margin: 0 0 var(--space-xs);
+    transition: color 0.2s ease;
+  }
+
+  .tool-item:hover .tool-name {
+    color: var(--color-accent);
+  }
+
+  .tool-desc {
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+    line-height: 1.4;
+    margin: 0;
+    flex: 1;
+  }
+
+  .tool-tech {
+    font-size: 0.6875rem;
+    color: var(--color-text-tertiary);
+    margin-top: var(--space-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Recognition (coda) */
+  .recognition-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-sm);
+    font-size: 0.9375rem;
+  }
+
+  .recognition-marker {
+    color: var(--color-accent);
+  }
+
+  .recognition-year {
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--color-text-tertiary);
+  }
+
+  .recognition-award {
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .recognition-note {
+    color: var(--color-text-secondary);
+  }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .featured-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .paper-entry {
+      grid-template-columns: 1fr;
+      gap: var(--space-xs);
+    }
+
+    .paper-authors {
+      justify-self: start;
+    }
+
+    .paper-entry::before {
+      display: none;
+    }
+
+    .tools-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 500px) {
+    .tools-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .section-number {
+      font-size: 2rem;
+    }
+  }
+</style>
