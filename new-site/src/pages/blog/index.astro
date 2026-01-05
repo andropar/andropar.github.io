@@ -87,49 +87,21 @@ const posts = allPosts
     font-size: 0.6875rem;
     font-weight: 500;
     color: var(--color-accent);
-    background: rgba(196, 130, 109, 0.1);
+    background: rgba(90, 90, 90, 0.1);
     padding: 2px var(--space-xs);
     border-radius: 3px;
   }
 
-  /* Post list with editorial numbering */
-  .post-list {
-    counter-reset: posts;
+  [data-theme="dark"] .post-tag {
+    background: rgba(150, 150, 150, 0.15);
   }
 
   .post-item {
-    counter-increment: posts;
-    position: relative;
-    padding-right: var(--space-3xl);
-    transition: transform 0.2s ease, opacity 0.2s ease;
-  }
-
-  .post-item::after {
-    content: '0' counter(posts);
-    position: absolute;
-    right: 0;
-    top: var(--space-lg);
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: 1.75rem;
-    color: var(--color-border);
-    opacity: 0.5;
-    transition: opacity 0.3s ease, color 0.3s ease;
-    pointer-events: none;
-  }
-
-  .post-item:first-child::after {
-    top: 0;
+    transition: opacity 0.2s ease;
   }
 
   .post-item:hover {
-    transform: translateX(4px);
-    opacity: 1;
-  }
-
-  .post-item:hover::after {
-    opacity: 0.8;
-    color: var(--color-accent);
+    opacity: 0.7;
   }
 
   .post-title {

@@ -1,10 +1,10 @@
 /*
   Johannes Roth - Personal Website
-  Aesthetic: Refined minimalism with warmth
+  Aesthetic: Refined editorial minimalism
 */
 
 /* Fonts */
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Instrument+Serif:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap');
 
 /* CSS Reset & Base */
 *, *::before, *::after {
@@ -14,23 +14,23 @@
 }
 
 :root {
-  /* Colors - Warm monochrome with terracotta accent */
+  /* Colors - Warm monochrome with neutral accent */
   --color-bg: #faf9f7;
   --color-bg-subtle: #f3f1ed;
   --color-text: #1a1a1a;
   --color-text-secondary: #6b6b6b;
   --color-text-tertiary: #999999;
-  --color-accent: #c4826d;
-  --color-accent-hover: #b37460;
+  --color-accent: #5a5a5a;
+  --color-accent-hover: #4a4a4a;
   --color-border: #e5e3df;
   --color-border-subtle: #eeece8;
 
   /* For gradient orbs */
-  --orb-color: 196, 130, 109;
+  --orb-color: 90, 90, 90;
 
   /* Typography */
-  --font-serif: 'Instrument Serif', Georgia, serif;
-  --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'Newsreader', Georgia, serif;
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
   /* Spacing */
   --space-xs: 0.25rem;
@@ -58,11 +58,11 @@
   --color-text: #f5f3f0;
   --color-text-secondary: #a8a5a0;
   --color-text-tertiary: #7a7672;
-  --color-accent: #d4947f;
-  --color-accent-hover: #e0a590;
+  --color-accent: #9a9a9a;
+  --color-accent-hover: #ababab;
   --color-border: #3d3a36;
   --color-border-subtle: #2e2b28;
-  --orb-color: 212, 148, 127;
+  --orb-color: 150, 150, 150;
 }
 
 html {
@@ -246,12 +246,13 @@ nav .container {
 }
 
 .section-title {
-  font-family: var(--font-sans);
-  font-size: 0.75rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-text-tertiary);
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 400;
+  font-style: italic;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--color-text-secondary);
   margin-bottom: var(--space-lg);
 }
 
@@ -588,25 +589,25 @@ footer .container {
 
 .intro-greeting {
   font-family: var(--font-sans);
-  font-size: 0.875rem;
-  color: var(--color-text-secondary);
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
   margin-bottom: var(--space-md);
   display: flex;
   align-items: center;
   gap: var(--space-sm);
 }
 
-.intro-greeting::before {
-  content: '';
-  width: 24px;
-  height: 1px;
-  background: var(--color-border);
+.intro-greeting .coordinates {
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  letter-spacing: 0.03em;
 }
 
 .intro-title {
+  font-family: var(--font-serif);
   font-size: 3rem;
+  font-weight: 400;
   margin-bottom: var(--space-lg);
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
 }
 
 .intro-bio {
@@ -897,15 +898,6 @@ main {
 .section:nth-child(3) { animation-delay: 0.3s; }
 .section:nth-child(4) { animation-delay: 0.4s; }
 
-/* Nav brand - subtle italic on hover */
-.nav-brand {
-  transition: font-style 0.2s ease, letter-spacing 0.2s ease;
-}
-
-.nav-brand:hover {
-  font-style: italic;
-  letter-spacing: 0.02em;
-}
 
 /* Nav links - animated underline */
 .nav-link {
@@ -928,94 +920,42 @@ main {
   width: 100%;
 }
 
-/* Card hover - subtle lift */
+/* Card hover - tilt effect */
 .card {
-  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-  background: #efede8;
+  background: var(--color-border-subtle);
+  transform: rotate(-0.5deg);
 }
 
-/* Now cards - same lift effect */
+/* Now cards - tilt effect */
 .now-card {
-  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .now-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-  background: #efede8;
+  background: var(--color-border-subtle);
+  transform: rotate(-0.5deg);
 }
 
-/* Timeline item - accent line glow on hover */
-.timeline-item {
-  transition: transform 0.2s ease;
-}
-
-.timeline-item::before {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.timeline-item:hover::before {
-  transform: scale(1.3);
-  box-shadow: 0 0 0 3px rgba(196, 130, 109, 0.2);
+/* Timeline item */
+.timeline-title {
+  transition: color 0.2s ease;
 }
 
 .timeline-item:hover .timeline-title {
   color: var(--color-accent);
 }
 
-.timeline-title {
-  transition: color 0.2s ease;
-}
 
-/* Publication/Item - left border accent on hover */
-.publication,
-.item {
-  position: relative;
-  transition: padding-left 0.2s ease;
-}
-
-.publication::before,
-.item::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: var(--color-accent);
-  transform: scaleY(0);
-  transform-origin: top;
-  transition: transform 0.25s ease;
-}
-
-.publication:hover,
-.item:hover {
-  padding-left: var(--space-md);
-}
-
-.publication:hover::before,
-.item:hover::before {
-  transform: scaleY(1);
-}
-
-.publication:first-child::before,
-.item:first-child::before {
-  top: 0;
-}
-
-/* Publication link - scale on hover */
+/* Publication link */
 .publication-link {
-  transition: color 0.15s ease, transform 0.15s ease;
-  display: inline-block;
+  transition: color 0.15s ease;
 }
 
 .publication-link:hover {
-  transform: translateX(2px);
   color: var(--color-accent-hover);
 }
 
@@ -1044,115 +984,40 @@ main {
   }
 }
 
-/* Footer links - underline slide in */
+/* Footer links */
 .footer-link {
-  position: relative;
-  overflow: hidden;
+  transition: color 0.15s ease;
 }
 
-.footer-link::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 1px;
-  background: var(--color-text-tertiary);
-  transform: translateX(-101%);
-  transition: transform 0.3s ease;
+.footer-link:hover {
+  color: var(--color-text);
 }
 
-.footer-link:hover::after {
-  transform: translateX(0);
-}
 
-/* Quick link - enhanced arrow animation */
-.quick-link {
-  position: relative;
-}
 
-.quick-link::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 0;
-  height: 1px;
-  background: var(--color-accent);
-  transition: width 0.3s ease;
-}
 
-.quick-link:hover::before {
-  width: calc(100% - 24px);
-}
-
-/* Work item - refined hover */
-.work-item {
-  position: relative;
-  transition: transform 0.2s ease, opacity 0.2s ease;
-}
-
-.work-item:hover {
-  opacity: 1 !important;
-  transform: translateX(4px);
-}
-
-.work-item .work-venue {
-  transition: letter-spacing 0.2s ease;
-}
-
-.work-item:hover .work-venue {
-  letter-spacing: 0.08em;
-}
-
-/* Section title - subtle animation on scroll into view */
-.section-title {
-  transition: letter-spacing 0.3s ease;
-}
-
-.section:hover .section-title {
-  letter-spacing: 0.14em;
-}
-
-/* Intro title - subtle letter spacing on load */
+/* Intro title - subtle reveal on load */
 .intro-title {
   animation: titleReveal 0.8s ease-out;
 }
 
 @keyframes titleReveal {
   from {
-    letter-spacing: 0.05em;
     opacity: 0;
+    transform: translateY(8px);
   }
   to {
-    letter-spacing: -0.03em;
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
-/* Intro greeting line animation */
-.intro-greeting::before {
-  animation: lineGrow 0.6s ease-out 0.3s backwards;
-}
-
-@keyframes lineGrow {
-  from {
-    width: 0;
-  }
-  to {
-    width: 24px;
-  }
+/* Intro greeting animation */
+.intro-greeting {
+  animation: fadeInUp 0.6s ease-out 0.2s backwards;
 }
 
 /* Do-item hover */
-.do-item {
-  transition: transform 0.2s ease;
-}
-
-.do-item:hover {
-  transform: translateY(-2px);
-}
-
 .do-item h3 {
   transition: color 0.2s ease;
 }
@@ -1165,59 +1030,6 @@ main {
    ADVANCED ENHANCEMENTS - DISTINCTIVE TOUCHES
    ========================================== */
 
-/* Profile photo - creative hover with terracotta ring reveal */
-.intro-photo {
-  position: relative;
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.intro-photo::before {
-  content: '';
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  border: 2px solid transparent;
-  transition: border-color 0.3s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.intro-photo::after {
-  content: '';
-  position: absolute;
-  inset: -8px;
-  border-radius: 50%;
-  border: 1px dashed var(--color-border);
-  opacity: 0;
-  transform: rotate(0deg);
-  transition: opacity 0.3s ease;
-}
-
-.intro-photo:hover {
-  transform: scale(1.05) rotate(3deg);
-}
-
-.intro-photo:hover::before {
-  border-color: var(--color-accent);
-  transform: scale(1.08);
-}
-
-.intro-photo:hover::after {
-  opacity: 0.5;
-  animation: photoRingSpin 8s linear infinite;
-}
-
-@keyframes photoRingSpin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.intro-photo img {
-  transition: filter 0.3s ease;
-}
-
-.intro-photo:hover img {
-  filter: saturate(1.1) contrast(1.05);
-}
 
 /* Subtle background gradient - warm depth */
 body::after {
@@ -1228,138 +1040,16 @@ body::after {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(196, 130, 109, 0.04) 0%, transparent 60%),
-              radial-gradient(ellipse 60% 40% at 100% 100%, rgba(196, 130, 109, 0.03) 0%, transparent 50%);
+  background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(90, 90, 90, 0.04) 0%, transparent 60%),
+              radial-gradient(ellipse 60% 40% at 100% 100%, rgba(90, 90, 90, 0.03) 0%, transparent 50%);
   z-index: -1;
 }
 
-/* Typography - elegant drop cap for first paragraph in sections */
-.intro-bio:first-of-type::first-letter {
-  font-family: var(--font-serif);
-  font-size: 3.5em;
-  float: left;
-  line-height: 0.8;
-  margin-right: 0.1em;
-  margin-top: 0.1em;
-  color: var(--color-accent);
-  font-style: italic;
-}
 
-/* Prose drop caps */
-.prose > p:first-of-type::first-letter {
-  font-family: var(--font-serif);
-  font-size: 3.5em;
-  float: left;
-  line-height: 0.8;
-  margin-right: 0.1em;
-  margin-top: 0.1em;
-  color: var(--color-accent);
-  font-style: italic;
-}
+/* Links - simple underline */
 
-/* Creative link hover - wavy underline */
-a:not(.nav-link):not(.nav-brand):not(.footer-link):not(.quick-link):not(.work-item):not(.publication-link):not(.post-item):not(.skip-link) {
-  position: relative;
-  text-decoration: none;
-  background-image: linear-gradient(
-    to right,
-    var(--color-accent) 0%,
-    var(--color-accent) 100%
-  );
-  background-size: 100% 1px;
-  background-position: 0 100%;
-  background-repeat: no-repeat;
-  transition: background-size 0.3s ease;
-}
 
-a:not(.nav-link):not(.nav-brand):not(.footer-link):not(.quick-link):not(.work-item):not(.publication-link):not(.post-item):not(.skip-link):hover {
-  background-size: 0% 1px;
-}
 
-a:not(.nav-link):not(.nav-brand):not(.footer-link):not(.quick-link):not(.work-item):not(.publication-link):not(.post-item):not(.skip-link)::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 100%;
-  height: 4px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 4'%3E%3Cpath d='M0 2 Q5 0 10 2 T20 2' stroke='%23c4826d' fill='none' stroke-width='1'/%3E%3C/svg%3E") repeat-x;
-  background-size: 20px 4px;
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.3s ease;
-}
-
-a:not(.nav-link):not(.nav-brand):not(.footer-link):not(.quick-link):not(.work-item):not(.publication-link):not(.post-item):not(.skip-link):hover::after {
-  transform: scaleX(1);
-  transform-origin: left;
-}
-
-/* Enhanced section titles with decorative line */
-.section-title {
-  position: relative;
-  display: inline-block;
-}
-
-.section-title::after {
-  content: '';
-  position: absolute;
-  right: -40px;
-  top: 50%;
-  width: 24px;
-  height: 1px;
-  background: var(--color-border);
-  transition: width 0.3s ease, background 0.3s ease;
-}
-
-.section:hover .section-title::after {
-  width: 40px;
-  background: var(--color-accent);
-}
-
-/* Page title - subtle hover shimmer */
-.page-title {
-  position: relative;
-  display: inline-block;
-}
-
-.page-title::before {
-  content: attr(data-text);
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 0;
-  overflow: hidden;
-  color: var(--color-accent);
-  transition: width 0.6s ease;
-}
-
-/* Intro title - accent color peek on hover */
-.intro-title {
-  position: relative;
-  display: inline-block;
-  transition: transform 0.3s ease;
-}
-
-.intro-title:hover {
-  transform: translateX(4px);
-}
-
-.intro-title::after {
-  content: '';
-  position: absolute;
-  left: -12px;
-  top: 50%;
-  width: 4px;
-  height: 0;
-  background: var(--color-accent);
-  transform: translateY(-50%);
-  transition: height 0.3s ease;
-}
-
-.intro-title:hover::after {
-  height: 60%;
-}
 
 /* Status badge - more engaging with shimmer */
 .status {
@@ -1387,33 +1077,6 @@ a:not(.nav-link):not(.nav-brand):not(.footer-link):not(.quick-link):not(.work-it
   }
 }
 
-/* Work items - number indicator on hover */
-.work-item {
-  counter-increment: work-counter;
-}
-
-.selected-work {
-  counter-reset: work-counter;
-}
-
-.work-item::after {
-  content: '0' counter(work-counter);
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%) translateX(10px);
-  font-family: var(--font-serif);
-  font-size: 2rem;
-  font-style: italic;
-  color: var(--color-border);
-  opacity: 0;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.work-item:hover::after {
-  opacity: 1;
-  transform: translateY(-50%) translateX(0);
-}
 
 /* Timeline - connecting line animation */
 .timeline::before {
@@ -1435,64 +1098,13 @@ a:not(.nav-link):not(.nav-brand):not(.footer-link):not(.quick-link):not(.work-it
   }
 }
 
-/* Cards - subtle inner glow on hover */
-.card::before,
-.now-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 8px;
-  opacity: 0;
-  background: radial-gradient(circle at 50% 0%, rgba(196, 130, 109, 0.08) 0%, transparent 70%);
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-}
 
-.card:hover::before,
-.now-card:hover::before {
-  opacity: 1;
-}
-
-.card,
-.now-card {
-  position: relative;
-  overflow: hidden;
-}
-
-/* Nav brand - decorative flourish */
-.nav-brand::after {
-  content: '•';
-  display: inline-block;
-  margin-left: 0.3em;
-  color: var(--color-accent);
-  opacity: 0;
-  transform: scale(0);
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-.nav-brand:hover::after {
-  opacity: 1;
-  transform: scale(1);
-}
 
 /* Footer - year highlight */
 .footer-text {
   position: relative;
 }
 
-/* Quick links - staggered hover effect */
-.quick-links {
-  perspective: 500px;
-}
-
-.quick-link {
-  transition: transform 0.3s ease, color 0.3s ease;
-  transform-style: preserve-3d;
-}
-
-.quick-link:hover {
-  transform: translateZ(10px);
-}
 
 /* Scroll-triggered fade-in for elements (use with JS Intersection Observer) */
 .reveal {
@@ -1603,15 +1215,10 @@ nav,
 
 /* Dark mode: background gradient warmth */
 [data-theme="dark"] body::after {
-  background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(212, 148, 127, 0.06) 0%, transparent 60%),
-              radial-gradient(ellipse 60% 40% at 100% 100%, rgba(212, 148, 127, 0.04) 0%, transparent 50%);
+  background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(150, 150, 150, 0.06) 0%, transparent 60%),
+              radial-gradient(ellipse 60% 40% at 100% 100%, rgba(150, 150, 150, 0.04) 0%, transparent 50%);
 }
 
-/* Dark mode: card inner glow */
-[data-theme="dark"] .card::before,
-[data-theme="dark"] .now-card::before {
-  background: radial-gradient(circle at 50% 0%, rgba(212, 148, 127, 0.06) 0%, transparent 70%);
-}
 
 /* Dark mode: selection */
 [data-theme="dark"] ::selection {
@@ -1727,29 +1334,22 @@ nav,
 }
 
 /* ==========================================
-   TERRACOTTA ACCENT REFINEMENTS
-   Editorial touches for warmth and polish
+   ACCENT REFINEMENTS
+   Editorial touches for polish
    ========================================== */
 
-/* Section title - terracotta dot prefix */
-.section-title::before {
-  content: '•';
-  color: var(--color-accent);
-  margin-right: 0.5em;
-  font-size: 0.9em;
-}
 
 /* Strong text - subtle accent underline highlight */
 .prose p strong,
 .intro-bio strong {
-  background: linear-gradient(to bottom, transparent 60%, rgba(196, 130, 109, 0.12) 60%);
+  background: linear-gradient(to bottom, transparent 60%, rgba(90, 90, 90, 0.12) 60%);
   padding: 0 2px;
   margin: 0 -2px;
 }
 
 [data-theme="dark"] .prose p strong,
 [data-theme="dark"] .intro-bio strong {
-  background: linear-gradient(to bottom, transparent 60%, rgba(212, 148, 127, 0.15) 60%);
+  background: linear-gradient(to bottom, transparent 60%, rgba(150, 150, 150, 0.15) 60%);
 }
 
 /* Footer bullet - accent color */
@@ -1764,65 +1364,16 @@ footer::before {
 }
 
 .tag:hover {
-  border-color: rgba(196, 130, 109, 0.3);
+  border-color: rgba(90, 90, 90, 0.3);
 }
 
 [data-theme="dark"] .tag:hover {
-  border-color: rgba(212, 148, 127, 0.3);
+  border-color: rgba(150, 150, 150, 0.3);
 }
 
-/* Blog post date - editorial em-dash styling */
-.post-date::before {
-  content: '—';
-  margin-right: 0.4em;
-  color: var(--color-accent);
-  opacity: 0.6;
-}
 
-/* Publication venue - subtle accent styling */
-.publication-venue {
-  position: relative;
-  padding-left: 0.75em;
-}
 
-.publication-venue::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0.35em;
-  bottom: 0.35em;
-  width: 2px;
-  background: var(--color-accent);
-  opacity: 0.4;
-  border-radius: 1px;
-}
 
-/* Now card title - accent dot */
-.now-card-title::after {
-  content: ' •';
-  color: var(--color-accent);
-  opacity: 0.6;
-}
-
-/* Card/now-card - top accent line on hover */
-.card::after,
-.now-card::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: var(--space-lg);
-  right: var(--space-lg);
-  height: 2px;
-  background: var(--color-accent);
-  transform: scaleX(0);
-  transition: transform 0.3s ease;
-  border-radius: 0 0 2px 2px;
-}
-
-.card:hover::after,
-.now-card:hover::after {
-  transform: scaleX(1);
-}
 
 /* Timeline date - accent on hover */
 .timeline-item:hover .timeline-date {
@@ -1835,14 +1386,14 @@ footer::before {
 
 /* Work venue badge - subtle background */
 .work-venue {
-  background: rgba(196, 130, 109, 0.06);
+  background: rgba(90, 90, 90, 0.06);
   padding: 2px 6px;
   border-radius: 3px;
   margin-left: 0.25em;
 }
 
 [data-theme="dark"] .work-venue {
-  background: rgba(212, 148, 127, 0.08);
+  background: rgba(150, 150, 150, 0.08);
 }
 
 /* External link indicator - terracotta arrow */
@@ -1909,49 +1460,36 @@ a.tool-item[href^="http"]::after {
   position: relative;
 }
 
-.post-tag::before {
-  content: '';
-  position: absolute;
-  left: -0.5em;
-  top: 50%;
-  width: 3px;
-  height: 3px;
-  background: var(--color-accent);
-  border-radius: 50%;
-  transform: translateY(-50%);
-  opacity: 0.6;
-}
 
 /* Nav link active state - accent underline */
 .nav-link.active {
   color: var(--color-accent);
 }
 
-/* Intro greeting - accent line */
-.intro-greeting::before {
-  background: var(--color-accent);
-  opacity: 0.5;
+/* Intro greeting - coordinates styling */
+.intro-greeting .coordinates {
+  color: var(--color-text-tertiary);
 }
 
 /* Table header - subtle accent border */
 .prose th {
   border-bottom: 2px solid var(--color-accent);
-  border-bottom-color: rgba(196, 130, 109, 0.3);
+  border-bottom-color: rgba(90, 90, 90, 0.3);
 }
 
 [data-theme="dark"] .prose th {
-  border-bottom-color: rgba(212, 148, 127, 0.3);
+  border-bottom-color: rgba(150, 150, 150, 0.3);
 }
 
 /* Blockquote - enhanced accent styling */
 .prose blockquote {
-  background: rgba(196, 130, 109, 0.03);
+  background: rgba(90, 90, 90, 0.03);
   padding: var(--space-md) var(--space-lg);
   border-radius: 0 4px 4px 0;
 }
 
 [data-theme="dark"] .prose blockquote {
-  background: rgba(212, 148, 127, 0.04);
+  background: rgba(150, 150, 150, 0.04);
 }
 
 /* Code block - accent top border */
@@ -1959,22 +1497,7 @@ a.tool-item[href^="http"]::after {
   border-top: 2px solid var(--color-accent);
 }
 
-/* Publication number counter with accent */
-.publication {
-  counter-increment: pub-counter;
-}
 
-.publication-list {
-  counter-reset: pub-counter;
-}
-
-/* Item meta - accent separator */
-.item-meta::before {
-  content: '—';
-  margin-right: 0.5em;
-  color: var(--color-accent);
-  opacity: 0.4;
-}
 
 /* Horizontal rule / divider accent */
 hr,
