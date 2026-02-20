@@ -13,9 +13,7 @@ const currentPath = Astro.url.pathname;
 const navLinks = [
   { href: '/about', label: 'about' },
   { href: '/projects', label: 'projects' },
-  { href: '/blog', label: 'blog' },
   { href: '/now', label: 'now' },
-  { href: 'https://routines.jroth.space', label: 'routines', external: true },
 ];
 ---
 
@@ -32,7 +30,7 @@ const navLinks = [
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
 
-    <link rel="icon" type="image/png" href="/prof_pic.png" />
+    <link rel="icon" type="image/jpeg" href="/prof_pic.jpg" />
     <title>{title}</title>
 
     <!-- Prevent flash of wrong theme -->

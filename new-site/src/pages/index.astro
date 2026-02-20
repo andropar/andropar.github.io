@@ -7,7 +7,7 @@ import Layout from '../layouts/Layout.astro';
       <p class="intro-greeting"><span class="coordinates">51.3397° N, 12.3731° E</span></p>
       <div class="intro-name-row">
         <div class="intro-photo">
-          <img src="/prof_pic.png" alt="Johannes Roth" />
+          <img src="/prof_pic.jpg" alt="Johannes Roth" />
         </div>
         <h1 class="intro-title">Johannes Roth</h1>
       </div>
@@ -32,46 +32,26 @@ import Layout from '../layouts/Layout.astro';
         <a href="/projects" class="quick-link">Projects</a>
         <a href="mailto:johannes@roth24.de" class="quick-link">Get in touch</a>
       </div>
-    </section>
 
-    <section class="section">
-      <h2 class="section-title">What I Do</h2>
-      <div class="what-i-do">
-        <div class="do-item">
-          <h3>Science</h3>
-          <p>
-            Understanding how the brain processes visual information. I use deep learning models
-            to study perception and develop methods to run more efficient neuroimaging experiments.
-          </p>
-        </div>
-        <div class="do-item">
-          <h3>Engineering</h3>
-          <p>
-            Building things that work at scale. Recommendation systems at CHECK24, ML pipelines
-            in production, and research tools like <a href="https://github.com/ViCCo-Group/thingsvision">thingsvision</a> that
-            thousands of researchers use.
-          </p>
-        </div>
-      </div>
     </section>
 
     <section class="section">
       <h2 class="section-title">Selected Work</h2>
       <div class="selected-work">
-        <a href="/projects#publications" class="work-item">
-          <span class="work-venue">CCN 2025</span>
+        <a href="/projects" class="work-item">
+          <span class="work-venue">CCN 2025 · Oral</span>
           <h3>How to sample the world for understanding the visual system</h3>
-          <p>Oral presentation on optimal stimulus selection for vision research.</p>
-        </a>
-        <a href="https://github.com/ViCCo-Group/thingsvision" class="work-item" target="_blank">
-          <span class="work-venue">Open Source</span>
-          <h3>thingsvision</h3>
-          <p>Feature extraction library for computer vision models, used by researchers worldwide.</p>
+          <p>A framework for choosing which images to show in neuroimaging experiments — so we can learn more from fewer trials.</p>
         </a>
         <a href="https://huggingface.co/datasets/andropar/relaion2b-natural" class="work-item" target="_blank">
           <span class="work-venue">Dataset</span>
           <h3>ReLAION-2B Natural</h3>
-          <p>Naturalness scores for 2.1B images + embeddings for ~500M natural photos. On Hugging Face.</p>
+          <p>Scored 2.1 billion images for naturalness and extracted embeddings for the ~500M most photographic ones. 167GB on Hugging Face.</p>
+        </a>
+        <a href="https://doi.org/10.1038/s44271-025-00236-3" class="work-item" target="_blank">
+          <span class="work-venue">Comms Psychology 2025</span>
+          <h3>Ten principles for reliable, efficient, and adaptable coding</h3>
+          <p>A practical guide for scientists who code — covering everything from version control to testing to writing reusable pipelines.</p>
         </a>
       </div>
     </section>
@@ -106,40 +86,6 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .intro-name-row .intro-title {
-    margin: 0;
-  }
-
-  /* What I Do */
-  .what-i-do {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-xl);
-  }
-
-  @media (max-width: 580px) {
-    .what-i-do {
-      grid-template-columns: 1fr;
-      gap: var(--space-lg);
-    }
-  }
-
-  /* Do-item */
-  .do-item h3 {
-    font-family: var(--font-sans);
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: var(--color-text);
-    margin-bottom: var(--space-xs);
-    transition: color 0.2s ease;
-  }
-
-  .do-item:hover h3 {
-    color: var(--color-accent);
-  }
-
-  .do-item p {
-    color: var(--color-text-secondary);
-    font-size: 0.9375rem;
     margin: 0;
   }
 
@@ -190,4 +136,5 @@ import Layout from '../layouts/Layout.astro';
     color: var(--color-text-secondary);
     margin: 0;
   }
+
 </style>
