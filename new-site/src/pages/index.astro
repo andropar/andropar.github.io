@@ -60,29 +60,36 @@ import Layout from '../layouts/Layout.astro';
 <style>
   /* Intro Section */
   .intro {
-    margin-bottom: var(--space-4xl);
+    margin-bottom: var(--space-5xl);
   }
 
   .intro-name-row {
     display: flex;
     align-items: center;
-    gap: var(--space-md);
-    margin-bottom: var(--space-lg);
+    gap: var(--space-lg);
+    margin-bottom: var(--space-xl);
   }
 
   .intro-photo {
-    width: 56px;
-    height: 56px;
-    border-radius: 12px;
+    width: 100px;
+    height: 100px;
+    border-radius: 16px;
     overflow: hidden;
     background: var(--color-bg-subtle);
     flex-shrink: 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   }
 
   .intro-photo img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    filter: grayscale(15%);
+    transition: filter 0.3s ease;
+  }
+
+  .intro-photo:hover img {
+    filter: grayscale(0%);
   }
 
   .intro-name-row .intro-title {
@@ -97,10 +104,10 @@ import Layout from '../layouts/Layout.astro';
 
   .work-item {
     display: block;
-    padding: var(--space-lg) 0;
-    border-bottom: 1px solid var(--color-border-subtle);
+    padding: var(--space-xl) 0;
+    border-bottom: 1px solid var(--color-border);
     text-decoration: none;
-    transition: opacity 0.2s ease;
+    transition: padding-left 0.25s ease;
     position: relative;
   }
 
@@ -113,28 +120,35 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .work-item:hover {
-    opacity: 0.7;
+    padding-left: var(--space-md);
   }
 
   .work-venue {
-    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
     font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--color-accent);
+    letter-spacing: 0.08em;
+    color: var(--color-text-tertiary);
   }
 
   .work-item h3 {
     font-family: var(--font-serif);
-    font-size: 1.125rem;
+    font-size: 1.375rem;
     color: var(--color-text);
     margin: var(--space-xs) 0;
+    transition: color 0.2s ease;
+  }
+
+  .work-item:hover h3 {
+    color: var(--color-accent);
   }
 
   .work-item p {
     font-size: 0.9375rem;
     color: var(--color-text-secondary);
     margin: 0;
+    max-width: 560px;
   }
 
 </style>

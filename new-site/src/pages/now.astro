@@ -478,8 +478,8 @@ import Layout from '../layouts/Layout.astro';
     display: inline-flex;
     align-items: center;
     gap: var(--space-sm);
-    font-family: var(--font-sans);
-    font-size: 0.875rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
     font-weight: 500;
     color: var(--color-text-secondary);
     cursor: pointer;
@@ -524,8 +524,8 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .category-label {
-    font-family: var(--font-sans);
-    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -550,8 +550,8 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .genre-label {
-    font-family: var(--font-sans);
-    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -650,31 +650,6 @@ import Layout from '../layouts/Layout.astro';
     background: transparent;
   }
 
-  /* Subtle decorative elements */
-  .books-section::before {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 40px;
-    height: 40px;
-    background: linear-gradient(135deg, transparent 50%, var(--color-accent) 50%);
-    opacity: 0.08;
-    pointer-events: none;
-  }
-
-  .music-section::before {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 40px;
-    height: 40px;
-    background: linear-gradient(135deg, transparent 50%, var(--color-accent) 50%);
-    opacity: 0.08;
-    pointer-events: none;
-  }
-
   .books-section,
   .music-section {
     position: relative;
@@ -682,29 +657,17 @@ import Layout from '../layouts/Layout.astro';
 
   /* Now cards - enhanced title with accent */
   .now-card-title {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
     position: relative;
     display: inline-block;
     transition: color 0.2s ease;
   }
 
-  .now-card-title::before {
-    content: '';
-    position: absolute;
-    left: calc(-1 * var(--space-lg));
-    top: 50%;
-    transform: translateY(-50%);
-    width: 0;
-    height: 2px;
-    background: var(--color-accent);
-    transition: width 0.3s ease;
-  }
-
   .now-card:hover .now-card-title {
     color: var(--color-accent);
-  }
-
-  .now-card:hover .now-card-title::before {
-    width: 8px;
   }
 
   /* Now grid with subtle numbering */
@@ -722,9 +685,8 @@ import Layout from '../layouts/Layout.astro';
     position: absolute;
     bottom: var(--space-sm);
     right: var(--space-md);
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
     color: var(--color-border);
     opacity: 0;
     transform: translateY(4px);
@@ -739,40 +701,14 @@ import Layout from '../layouts/Layout.astro';
 
   /* Updated timestamp styling */
   .now-updated {
-    font-family: var(--font-serif);
-    font-style: italic;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-tertiary);
     position: relative;
     display: inline-block;
   }
 
-  .now-updated::before {
-    content: '—';
-    margin-right: var(--space-sm);
-    color: var(--color-border);
-  }
-
-  /* Section titles with decorative line extension */
-  .books-section .section-title,
-  .music-section .section-title {
-    position: relative;
-  }
-
-  .books-section .section-title::after,
-  .music-section .section-title::after {
-    content: '';
-    position: absolute;
-    right: -40px;
-    top: 50%;
-    width: 24px;
-    height: 1px;
-    background: var(--color-border);
-    transition: width 0.3s ease, background 0.3s ease;
-  }
-
-  .books-section:hover .section-title::after,
-  .music-section:hover .section-title::after {
-    width: 40px;
-    background: var(--color-accent);
-  }
 
 </style>

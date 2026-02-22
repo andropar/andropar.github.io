@@ -177,9 +177,9 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .section-number {
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: 2.5rem;
+    font-family: var(--font-mono);
+    font-size: 4rem;
+    font-weight: 300;
     color: var(--color-border);
     line-height: 1;
     letter-spacing: -0.03em;
@@ -187,19 +187,17 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .proj-section:hover .section-number {
-    color: var(--color-accent);
+    color: var(--color-text);
   }
 
   .section-label {
-    font-family: var(--font-serif);
-    font-size: 1rem;
-    font-weight: 400;
-    font-style: italic;
-    text-transform: none;
-    letter-spacing: 0;
-    color: var(--color-text-secondary);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-tertiary);
     margin: 0;
-    padding-bottom: 0.2em;
   }
 
   /* Featured Grid (Section 01) */
@@ -213,30 +211,14 @@ import Layout from '../layouts/Layout.astro';
     display: block;
     padding: var(--space-lg);
     background: var(--color-bg);
-    border: 1px solid var(--color-border-subtle);
+    border: 1px solid var(--color-border);
     text-decoration: none;
-    transition: border-color 0.2s ease, transform 0.2s ease;
+    transition: border-color 0.2s ease;
     position: relative;
   }
 
-  .featured-item::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 2px;
-    height: 0;
-    background: var(--color-accent);
-    transition: height 0.3s ease;
-  }
-
   .featured-item:hover {
-    border-color: var(--color-accent);
-    transform: rotate(-0.5deg);
-  }
-
-  .featured-item:hover::before {
-    height: 100%;
+    border-color: var(--color-text);
   }
 
   .featured-item::after {
@@ -253,11 +235,14 @@ import Layout from '../layouts/Layout.astro';
 
   .item-badge {
     display: inline-block;
+    font-family: var(--font-mono);
     font-size: 0.625rem;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: var(--color-accent);
+    color: var(--color-text-tertiary);
+    border: 1px solid var(--color-border);
+    padding: 2px 8px;
     margin-bottom: var(--space-sm);
   }
 
@@ -284,7 +269,8 @@ import Layout from '../layouts/Layout.astro';
 
   .featured-meta {
     display: block;
-    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
     color: var(--color-text-tertiary);
     padding-top: var(--space-sm);
     border-top: 1px solid var(--color-border-subtle);
@@ -328,11 +314,12 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .paper-venue {
+    font-family: var(--font-mono);
     font-size: 0.6875rem;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: var(--color-accent);
+    color: var(--color-text-tertiary);
     white-space: nowrap;
   }
 
@@ -351,7 +338,8 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .paper-authors {
-    font-size: 0.8125rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
     color: var(--color-text-tertiary);
     white-space: nowrap;
     justify-self: end;
@@ -382,12 +370,11 @@ import Layout from '../layouts/Layout.astro';
 
   .tool-item:hover {
     background: var(--color-bg-subtle);
-    transform: rotate(-0.5deg);
   }
 
   .tool-name {
-    font-family: var(--font-sans);
-    font-size: 0.9375rem;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
     font-weight: 500;
     color: var(--color-text);
     margin: 0 0 var(--space-xs);
@@ -407,6 +394,7 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .tool-tech {
+    font-family: var(--font-mono);
     font-size: 0.6875rem;
     color: var(--color-text-tertiary);
     margin-top: var(--space-sm);
@@ -428,8 +416,8 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .recognition-year {
-    font-family: var(--font-serif);
-    font-style: italic;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
     color: var(--color-text-tertiary);
   }
 
@@ -472,7 +460,7 @@ import Layout from '../layouts/Layout.astro';
     }
 
     .section-number {
-      font-size: 2rem;
+      font-size: 3rem;
     }
   }
 </style>
