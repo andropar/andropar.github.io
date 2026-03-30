@@ -162,6 +162,13 @@ import Layout from '../layouts/Layout.astro';
           </span>
           <svg class="pub-arrow" width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3.5 12.5L12.5 3.5M12.5 3.5H5.5M12.5 3.5V10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
+        <details class="pub-writeup">
+          <summary></summary>
+          <div class="pub-writeup-content">
+            <p>You can't show the brain every possible image, so how do you figure out what a specific patch of visual cortex actually responds to? We trained a convolutional neural network end-to-end on fMRI data from a subject watching naturalistic movies - no ImageNet pretraining, just raw stimulus-response pairs. Then we used BigGAN to synthesize images that maximally activate individual voxels via gradient ascent through the model.</p>
+            <p>Early visual areas (V1-V3) preferred gratings in small receptive fields, as expected. More interesting: FFA showed preference for faces but also oval shapes and vertical symmetry, while PPA preferred places plus horizontal lines and high spatial frequencies. An SVM classifier could distinguish FFA vs. PPA preferred stimuli from their GAN latent vectors at 87% accuracy, confirming the approach produces meaningfully different outputs per region. This was one of the first demonstrations of GAN-based preferred stimulus synthesis for the human visual system.</p>
+          </div>
+        </details>
       </li>
       <li class="pub">
         <a href="https://doi.org/10.1007/978-3-031-08999-2_23" class="pub-link" target="_blank" rel="noopener">
