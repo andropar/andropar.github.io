@@ -3,9 +3,6 @@
   Aesthetic: Refined editorial minimalism
 */
 
-/* Fonts */
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap');
-
 /* CSS Reset & Base */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -19,7 +16,7 @@
   --color-bg-subtle: #f0f0f0;
   --color-text: #111111;
   --color-text-secondary: #555555;
-  --color-text-tertiary: #888888;
+  --color-text-tertiary: #757575;
   --color-accent: #333333;
   --color-accent-hover: #111111;
   --color-border: #d4d4d4;
@@ -30,7 +27,7 @@
 
   /* Typography */
   --font-serif: 'Newsreader', Georgia, serif;
-  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 
   /* Spacing - More generous scale */
@@ -59,7 +56,7 @@
   --color-bg-subtle: #1a1a1a;
   --color-text: #eeeeee;
   --color-text-secondary: #999999;
-  --color-text-tertiary: #666666;
+  --color-text-tertiary: #a3a3a3;
   --color-accent: #aaaaaa;
   --color-accent-hover: #cccccc;
   --color-border: #2a2a2a;
@@ -87,24 +84,11 @@ body {
   padding: 0;
 }
 
-/* Subtle grain texture overlay */
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  opacity: 0.05;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  z-index: 1000;
-}
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-serif);
-  font-weight: 400;
+  font-family: var(--font-sans);
+  font-weight: 500;
   line-height: 1.15;
   letter-spacing: -0.02em;
 }
@@ -544,8 +528,9 @@ nav .container {
 }
 
 .timeline-title {
-  font-family: var(--font-serif);
-  font-size: 1.375rem;
+  font-family: var(--font-sans);
+  font-size: 1.125rem;
+  font-weight: 500;
   margin-bottom: var(--space-xs);
 }
 
@@ -608,37 +593,19 @@ footer .container {
   margin-bottom: var(--space-5xl);
 }
 
-.intro-greeting {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  color: var(--color-text-tertiary);
-  margin-bottom: var(--space-lg);
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-.intro-greeting .coordinates {
-  font-family: var(--font-mono);
-  letter-spacing: 0.03em;
-}
-
 .intro-title {
-  font-family: var(--font-serif);
-  font-size: 4rem;
-  font-weight: 400;
+  font-family: var(--font-sans);
+  font-size: 3.5rem;
+  font-weight: 500;
   margin-bottom: var(--space-xl);
-  letter-spacing: -0.03em;
-  line-height: 1.0;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
 }
 
 .intro-bio {
   font-size: 1.125rem;
   color: var(--color-text-secondary);
   line-height: 1.75;
-  max-width: 600px;
 }
 
 .intro-bio strong {
@@ -837,6 +804,12 @@ footer .container {
 
 /* Responsive */
 @media (max-width: 640px) {
+  :root {
+    --space-3xl: 3rem;
+    --space-4xl: 4rem;
+    --space-5xl: 5rem;
+  }
+
   html {
     font-size: 16px;
   }
@@ -994,30 +967,6 @@ main {
   color: var(--color-accent-hover);
 }
 
-/* Status indicator - enhanced pulse with ring */
-.status-dot {
-  position: relative;
-}
-
-.status-dot::before {
-  content: '';
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  background: rgba(74, 222, 128, 0.3);
-  animation: statusRing 2s ease-in-out infinite;
-}
-
-@keyframes statusRing {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.4;
-  }
-  50% {
-    transform: scale(1.5);
-    opacity: 0;
-  }
-}
 
 /* Footer links */
 .footer-link {
@@ -1047,10 +996,6 @@ main {
   }
 }
 
-/* Intro greeting animation */
-.intro-greeting {
-  animation: fadeInUp 0.6s ease-out 0.2s backwards;
-}
 
 
 /* ==========================================
@@ -1058,19 +1003,6 @@ main {
    ========================================== */
 
 
-/* Subtle background gradient - warm depth */
-body::after {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(90, 90, 90, 0.04) 0%, transparent 60%),
-              radial-gradient(ellipse 60% 40% at 100% 100%, rgba(90, 90, 90, 0.03) 0%, transparent 50%);
-  z-index: -1;
-}
 
 
 /* Links - simple underline */
@@ -1078,31 +1010,6 @@ body::after {
 
 
 
-/* Status badge - more engaging with shimmer */
-.status {
-  position: relative;
-  overflow: hidden;
-}
-
-.status::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(74, 222, 128, 0.1), transparent);
-  animation: statusShimmer 3s ease-in-out infinite;
-}
-
-@keyframes statusShimmer {
-  0% {
-    left: -100%;
-  }
-  50%, 100% {
-    left: 100%;
-  }
-}
 
 
 /* Timeline - connecting line animation */
@@ -1191,11 +1098,6 @@ body::after {
 
 /* Print styles - clean output */
 @media print {
-  body::before,
-  body::after {
-    display: none !important;
-  }
-
   * {
     animation: none !important;
     transition: none !important;
@@ -1234,17 +1136,6 @@ nav,
   background: var(--color-bg-subtle);
 }
 
-/* Dark mode: grain texture (lighter) */
-[data-theme="dark"] body::before {
-  opacity: 0.03;
-  filter: invert(1);
-}
-
-/* Dark mode: background gradient warmth */
-[data-theme="dark"] body::after {
-  background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(150, 150, 150, 0.06) 0%, transparent 60%),
-              radial-gradient(ellipse 60% 40% at 100% 100%, rgba(150, 150, 150, 0.04) 0%, transparent 50%);
-}
 
 
 /* Dark mode: selection */
@@ -1366,18 +1257,6 @@ nav,
    ========================================== */
 
 
-/* Strong text - subtle accent underline highlight */
-.prose p strong,
-.intro-bio strong {
-  background: linear-gradient(to bottom, transparent 60%, rgba(90, 90, 90, 0.12) 60%);
-  padding: 0 2px;
-  margin: 0 -2px;
-}
-
-[data-theme="dark"] .prose p strong,
-[data-theme="dark"] .intro-bio strong {
-  background: linear-gradient(to bottom, transparent 60%, rgba(150, 150, 150, 0.15) 60%);
-}
 
 /* Footer - no bullet */
 
@@ -1435,12 +1314,9 @@ a.nav-link[href^="http"]::after,
 a.nav-brand[href^="http"]::after,
 a.footer-link[href^="http"]::after,
 a.quick-link[href^="http"]::after,
-a.work-item[href^="http"]::after,
-a.publication-link[href^="http"]::after,
-a.post-item[href^="http"]::after,
-a.featured-item[href^="http"]::after,
-a.paper-entry[href^="http"]::after,
-a.tool-item[href^="http"]::after {
+a.pub-link[href^="http"]::after,
+a.tool-row[href^="http"]::after,
+a.download-cv::after {
   content: none;
 }
 
@@ -1479,15 +1355,6 @@ a.tool-item[href^="http"]::after {
 }
 
 
-/* Nav link active state - accent underline */
-.nav-link.active {
-  color: var(--color-accent);
-}
-
-/* Intro greeting - coordinates styling */
-.intro-greeting .coordinates {
-  color: var(--color-text-tertiary);
-}
 
 /* Table header - subtle accent border */
 .prose th {

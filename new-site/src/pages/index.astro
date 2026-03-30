@@ -3,64 +3,253 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Johannes Roth">
+  <!-- Intro -->
   <section class="intro">
-      <p class="intro-greeting"><span class="coordinates">51.3397° N, 12.3731° E</span></p>
-      <div class="intro-name-row">
-        <div class="intro-photo">
-          <img src="/prof_pic.jpg" alt="Johannes Roth" />
-        </div>
-        <h1 class="intro-title">Johannes Roth</h1>
+    <div class="intro-name-row">
+      <div class="intro-photo">
+        <img src="/prof_pic.jpg" alt="Johannes Roth" />
       </div>
-      <p class="intro-bio">
-        I study how the brain makes sense of what we see - and how we can use AI to understand it better.
-        Currently finishing my <strong>PhD in Computational Cognitive Neuroscience</strong> at the
-        Max Planck Institute in Leipzig.
-      </p>
-      <p class="intro-bio">
-        Before academia, I worked as a data scientist building recommendation systems and ML pipelines.
-        I like problems that sit at the intersection of <strong>neuroscience, machine learning, and
-        building things that work</strong>.
-      </p>
+      <h1 class="intro-title">Johannes Roth</h1>
+    </div>
+    <p class="intro-bio">
+      I'm finishing my <strong>PhD in Computational Cognitive Neuroscience</strong> at the
+      Max Planck Institute in Leipzig, where I build ML systems that help us understand
+      how the brain processes what we see.
+    </p>
+    <p class="intro-bio">
+      Before academia, I spent several years as a data scientist - building recommendation systems,
+      image processing pipelines, and ML infrastructure in production. What drives me is
+      <strong>solving hard technical problems that actually matter</strong>: whether that's making
+      neuroimaging experiments 10x more efficient or shipping a model that changes how a product works.
+    </p>
 
-      <div class="status">
-        <span class="status-dot"></span>
-        Open to opportunities starting September 2026
+    <div class="status">
+      <span class="status-dot"></span>
+      Open to opportunities starting September 2026
+    </div>
+
+    <a href="/cv.pdf" download="Johannes_Roth_CV.pdf" class="download-cv">Download CV &darr;</a>
+  </section>
+
+  <!-- Experience -->
+  <section class="section" id="experience">
+    <h2 class="section-title">Experience</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <span class="timeline-date">2022 - Present</span>
+        <h3 class="timeline-title">PhD in Computational Cognitive Neuroscience</h3>
+        <p class="timeline-org">Max Planck Institute for Human Cognition and Brain Sciences & University of Gießen</p>
+        <p class="timeline-description">
+          Working with Martin Hebart on making vision science experiments more efficient. Built pipelines
+          to process massive fMRI datasets, developed active learning frameworks for optimal stimulus selection, and contributed to open-source tools and datasets used by the research community.
+        </p>
       </div>
-
-      <div class="quick-links">
-        <a href="/about" class="quick-link">My story</a>
-        <a href="/projects" class="quick-link">Projects</a>
-        <a href="mailto:johannes@roth24.de" class="quick-link">Get in touch</a>
+      <div class="timeline-item">
+        <span class="timeline-date">2021 - 2022</span>
+        <h3 class="timeline-title">Research Assistant - ML in Medicine</h3>
+        <p class="timeline-org">ScaDS.AI Dresden/Leipzig</p>
+        <p class="timeline-description">
+          Built deep learning models for medical imaging - automatic brain region segmentation and
+          uncertainty-aware prostate cancer mortality prediction.
+        </p>
       </div>
+      <div class="timeline-item">
+        <span class="timeline-date">2020 - 2021</span>
+        <h3 class="timeline-title">Full-Stack Developer</h3>
+        <p class="timeline-org">Kimetric UG (Freelance)</p>
+        <p class="timeline-description">
+          Built <a href="https://hebartlab.com" target="_blank" rel="noopener">hebartlab.com</a> and
+          <a href="https://things-initiative.org" target="_blank" rel="noopener">things-initiative.org</a>.
+          Django backend, JS frontend, Linux hosting with NGINX.
+        </p>
+      </div>
+      <div class="timeline-item">
+        <span class="timeline-date">2019 - 2021</span>
+        <h3 class="timeline-title">Data Scientist (Working student)</h3>
+        <p class="timeline-org">CHECK24</p>
+        <p class="timeline-description">
+          Led development of an image processing microservice - deduplication, retrieval, classification,
+          quality assessment. Optimized recommender systems with Bayesian hyperparameter tuning, trained
+          ranking models. Also worked on backend (PHP, Go).
+        </p>
+      </div>
+      <div class="timeline-item">
+        <span class="timeline-date">2018 - 2019</span>
+        <h3 class="timeline-title">Data Scientist & Analyst (Working student)</h3>
+        <p class="timeline-org">Webdata Solutions (now Vistex) · Mercateo (now Unite)</p>
+        <p class="timeline-description">
+          Image retrieval pipelines, product classification models, cloud data warehousing (AWS).
+          First exposure to building ML systems from scratch.
+        </p>
+      </div>
+      <div class="timeline-item">
+        <span class="timeline-date">2014 - 2021</span>
+        <h3 class="timeline-title">B.Sc. Business Information Systems & M.Sc. Computer Science</h3>
+        <p class="timeline-org">Leipzig University</p>
+        <p class="timeline-description">
+          M.Sc. grade 1.2 (Distinction). Focused on ML, data analysis, and medical image processing.
+          Thesis on using GANs to synthesize images that maximally activate specific brain regions.
+        </p>
+      </div>
+    </div>
+  </section>
 
-    </section>
-
-    <section class="section">
-      <h2 class="section-title">Selected Work</h2>
-      <div class="selected-work">
-        <a href="/projects" class="work-item">
-          <span class="work-venue">CCN 2025 · Oral</span>
-          <h3>How to sample the world for understanding the visual system</h3>
-          <p>A framework for choosing which images to show in neuroimaging experiments — so we can learn more from fewer trials.</p>
+  <!-- Work: Papers, Tools & Datasets -->
+  <section class="section" id="work">
+    <h2 class="section-title">Publications</h2>
+    <ul class="pub-list" role="list">
+      <li class="pub">
+        <a href="https://openreview.net/forum?id=T9k6KkZoca" class="pub-link" target="_blank" rel="noopener">
+          <span class="pub-year">2025</span>
+          <span class="pub-body">
+            <span class="pub-title">How to sample the world for understanding the visual system</span>
+            <span class="pub-meta">Roth & Hebart <span class="pub-sep">/</span> CCN <span class="pub-type">Oral</span></span>
+          </span>
+          <svg class="pub-arrow" width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3.5 12.5L12.5 3.5M12.5 3.5H5.5M12.5 3.5V10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
-        <a href="https://huggingface.co/datasets/andropar/relaion2b-natural" class="work-item" target="_blank">
-          <span class="work-venue">Dataset</span>
-          <h3>ReLAION-2B Natural</h3>
-          <p>Scored 2.1 billion images for naturalness and extracted embeddings for the ~500M most photographic ones. 167GB on Hugging Face.</p>
+        <details class="pub-writeup">
+          <summary></summary>
+          <div class="pub-writeup-content">
+            <p>Vision neuroscience runs on large fMRI datasets, but nobody had checked whether the stimulus images in these datasets actually cover what humans see in the real world. We built LAION-natural -a reference distribution of ~120M naturalistic photographs filtered from 2 billion LAION images using a CLIP-based classifier trained on 25k actively sampled labels. Then we measured coverage: ~50% of the visual-semantic space is missing from the two most widely used datasets (NSD and THINGS).</p>
+            <p>The good news: you don't need millions of images to fix this. In both simulations and real fMRI data, out-of-distribution generalization saturates at 5-10k samples - as long as you draw them from a diverse enough pool. We compared seven sampling strategies (random, stratified, k-Means, Core-Set, effective dimensionality optimization, active learning) and found that pool diversity matters far more than which algorithm you use to sample from it.</p>
+            <p>The pipeline processes billions of images using CLIP embeddings, Annoy indices for nearest-neighbor search, mini-batch k-Means clustering, and Ridge regression encoding models - all at a scale that runs on a university HPC cluster, not a cloud budget.</p>
+          </div>
+        </details>
+      </li>
+      <li class="pub">
+        <a href="https://doi.org/10.1038/s44271-025-00236-3" class="pub-link" target="_blank" rel="noopener">
+          <span class="pub-year">2025</span>
+          <span class="pub-body">
+            <span class="pub-title">Ten principles for reliable, efficient, and adaptable coding</span>
+            <span class="pub-meta">Roth et al. <span class="pub-sep">/</span> Communications Psychology</span>
+          </span>
+          <svg class="pub-arrow" width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3.5 12.5L12.5 3.5M12.5 3.5H5.5M12.5 3.5V10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
-        <a href="https://doi.org/10.1038/s44271-025-00236-3" class="work-item" target="_blank">
-          <span class="work-venue">Comms Psychology 2025</span>
-          <h3>Ten principles for reliable, efficient, and adaptable coding</h3>
-          <p>A practical guide for scientists who code — covering everything from version control to testing to writing reusable pipelines.</p>
+        <details class="pub-writeup">
+          <summary></summary>
+          <div class="pub-writeup-content">
+            <p>Most scientists learn to code informally - picking things up as they go, optimizing for "does it run?" over "will anyone else understand this?" This paper introduces a structured framework for writing better research code, built around the idea that researchers naturally switch between quick prototyping and careful development - and that being deliberate about which mode you're in makes all the difference.</p>
+            <p>The ten principles span three tiers: organizing code (standardized project structures, version control, automation), writing reusable code (testing, documentation, clean interfaces), and collaborating (code review systems, shared knowledge bases, lab-wide standards). Already at 22k+ accesses, it clearly hit a nerve - these are problems every computational lab deals with but rarely talks about explicitly.</p>
+          </div>
+        </details>
+      </li>
+      <li class="pub">
+        <a href="https://doi.org/10.1523/JNEUROSCI.0936-24.2024" class="pub-link" target="_blank" rel="noopener">
+          <span class="pub-year">2025</span>
+          <span class="pub-body">
+            <span class="pub-title">Fine-grained image and category information in ventral visual pathway</span>
+            <span class="pub-meta">Badwal, Bergmann, Roth et al. <span class="pub-sep">/</span> J Neuroscience</span>
+          </span>
+          <svg class="pub-arrow" width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3.5 12.5L12.5 3.5M12.5 3.5H5.5M12.5 3.5V10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </li>
+      <li class="pub">
+        <a href="https://jov.arvojournals.org/article.aspx?articleid=2791453" class="pub-link" target="_blank" rel="noopener">
+          <span class="pub-year">2023</span>
+          <span class="pub-body">
+            <span class="pub-title">High stimulus presentation rates for fMRI</span>
+            <span class="pub-meta">Roth, Miyawaki & Hebart <span class="pub-sep">/</span> VSS <span class="pub-type">Poster</span></span>
+          </span>
+          <svg class="pub-arrow" width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3.5 12.5L12.5 3.5M12.5 3.5H5.5M12.5 3.5V10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </li>
+      <li class="pub">
+        <a href="https://jov.arvojournals.org/article.aspx?articleid=2777378" class="pub-link" target="_blank" rel="noopener">
+          <span class="pub-year">2021</span>
+          <span class="pub-body">
+            <span class="pub-title">Preferred stimuli for individual voxels in the human visual system</span>
+            <span class="pub-meta">Roth, Seeliger, Schmid & Hebart <span class="pub-sep">/</span> Cosyne <span class="pub-type">Poster</span></span>
+          </span>
+          <svg class="pub-arrow" width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3.5 12.5L12.5 3.5M12.5 3.5H5.5M12.5 3.5V10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </li>
+      <li class="pub">
+        <a href="https://doi.org/10.1007/978-3-031-08999-2_23" class="pub-link" target="_blank" rel="noopener">
+          <span class="pub-year">2021</span>
+          <span class="pub-body">
+            <span class="pub-title">Multi-plane UNet++ Ensemble for Glioblastoma Segmentation</span>
+            <span class="pub-meta">Roth, Keller et al. <span class="pub-sep">/</span> MICCAI BraTS</span>
+          </span>
+          <svg class="pub-arrow" width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3.5 12.5L12.5 3.5M12.5 3.5H5.5M12.5 3.5V10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </li>
+    </ul>
+
+    <h2 class="section-title tools-heading">Datasets & Tools</h2>
+    <div class="tools-list">
+      <div class="tool-entry">
+        <a href="https://huggingface.co/datasets/andropar/relaion2b-natural" class="tool-row" target="_blank" rel="noopener">
+          <span class="tool-label">Dataset</span>
+          <span class="tool-info">
+            <span class="tool-name">ReLAION-2B Natural</span>
+            <span class="tool-desc">Naturalness scores for 2.1B images, identifying ~500M photographic images for vision research</span>
+          </span>
+          <span class="tool-tech">167 GB · CLIP ViT-H/14</span>
+        </a>
+        <details class="pub-writeup">
+          <summary></summary>
+          <div class="pub-writeup-content">
+            <p>Vision research needs naturalistic photographs, but web-scraped datasets like LAION are full of screenshots, memes, ads, and generated images. We scored all 2.1 billion images in ReLAION-2B for "naturalness" using a CLIP-based classifier, then extracted and published ViT-H/14 embeddings for the ~500M most photographic ones. The result is a 167GB dataset on Hugging Face that lets researchers query half a billion images by visual similarity without downloading a single pixel.</p>
+          </div>
+        </details>
+      </div>
+      <div class="tool-entry">
+        <a href="https://github.com/ViCCo-Group/thingsvision" class="tool-row" target="_blank" rel="noopener">
+          <span class="tool-label">Library</span>
+          <span class="tool-info">
+            <span class="tool-name">thingsvision</span>
+            <span class="tool-desc">Unified feature extraction API for 50+ vision models</span>
+          </span>
+          <span class="tool-tech">Contributor · Python</span>
         </a>
       </div>
-    </section>
+      <div class="tool-entry">
+        <a href="https://github.com/andropar/cvmanova_python" class="tool-row" target="_blank" rel="noopener">
+          <span class="tool-label">Tool</span>
+          <span class="tool-info">
+            <span class="tool-name">cvmanova_python</span>
+            <span class="tool-desc">Cross-validated MANOVA for fMRI pattern analysis</span>
+          </span>
+          <span class="tool-tech">Python</span>
+        </a>
+      </div>
+      <div class="tool-entry">
+        <a href="https://github.com/andropar/pysearchlight" class="tool-row" target="_blank" rel="noopener">
+          <span class="tool-label">Tool</span>
+          <span class="tool-info">
+            <span class="tool-name">pysearchlight</span>
+            <span class="tool-desc">Customizable searchlight analysis for fMRI data</span>
+          </span>
+          <span class="tool-tech">Python</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="recognition-line">
+      <span class="recognition-year">2025</span>
+      <span class="recognition-award">CMBB Replication Award</span>
+      <span class="recognition-note">for reliable coding practices in neuroscience</span>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="section" id="contact">
+    <h2 class="section-title">Get in Touch</h2>
+    <p>
+      Happy to chat about research, potential collaborations, or opportunities.
+      <a href="mailto:johannes@roth24.de">Email</a> is best. Also on
+      <a href="https://linkedin.com/in/johannes-roth-a67baa141" target="_blank" rel="noopener">LinkedIn</a>,
+      <a href="https://github.com/andropar" target="_blank" rel="noopener">GitHub</a>,
+      <a href="https://huggingface.co/andropar" target="_blank" rel="noopener">Hugging Face</a>, and
+      <a href="https://scholar.google.com/citations?user=U3Z3J2gAAAAJ" target="_blank" rel="noopener">Google Scholar</a>.
+    </p>
+  </section>
 </Layout>
 
 <style>
   /* Intro Section */
   .intro {
-    margin-bottom: var(--space-5xl);
+    margin-bottom: var(--space-3xl);
   }
 
   .intro-name-row {
@@ -96,59 +285,317 @@ import Layout from '../layouts/Layout.astro';
     margin: 0;
   }
 
-  /* Selected Work */
-  .selected-work {
+  .download-cv {
+    display: inline-block;
+    margin-top: var(--space-xl);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 400;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .download-cv:hover {
+    color: var(--color-text);
+  }
+
+  /* ── Publications ── */
+  .pub-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .pub + .pub {
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .pub-link,
+  .pub-link:hover,
+  .pub-link:focus {
+    display: grid;
+    grid-template-columns: 3rem 1fr auto;
+    gap: 0 var(--space-md);
+    align-items: start;
+    padding: var(--space-lg) 0;
+    color: inherit;
+    text-decoration: none;
+    -webkit-text-decoration: none;
+    text-decoration-line: none;
+    text-decoration-color: transparent;
+    border: none;
+    outline-offset: 4px;
+  }
+
+  /* Nuke every pseudo the global CSS might inject */
+  .pub-link::after,
+  .pub-link::before,
+  .tool-row::after,
+  .tool-row::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  .pub-year {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--color-text-tertiary);
+    padding-top: 0.2em;
+    line-height: 1;
+  }
+
+  .pub-body {
+    display: block;
+  }
+
+  .pub-title {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    font-weight: 400;
+    color: var(--color-text);
+    line-height: 1.5;
+    margin: 0 0 3px;
+    transition: color 0.15s ease;
+  }
+
+  .pub-link:hover .pub-title {
+    color: var(--color-accent);
+  }
+
+  .pub-meta {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 400;
+    color: var(--color-text-tertiary);
+    line-height: 1.4;
+  }
+
+  .pub-sep {
+    opacity: 0.3;
+    margin: 0 0.2em;
+  }
+
+  .pub-type {
+    display: inline-block;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.5625rem;
+    letter-spacing: 0.05em;
+    background: var(--color-bg-subtle);
+    border: 1px solid var(--color-border-subtle);
+    padding: 1px 5px;
+    border-radius: 2px;
+    margin-left: 0.3em;
+    vertical-align: 1px;
+  }
+
+  .pub-arrow {
+    color: var(--color-border);
+    transition: color 0.15s ease, transform 0.2s ease;
+    margin-top: 0.25em;
+  }
+
+  .pub-link:hover .pub-arrow {
+    color: var(--color-text-tertiary);
+    transform: translate(2px, -2px);
+  }
+
+  /* ── Datasets & Tools ── */
+  .tools-heading {
+    margin-top: var(--space-3xl);
+  }
+
+  .tools-list {
     display: flex;
     flex-direction: column;
   }
 
-  .work-item {
-    display: block;
-    padding: var(--space-xl) 0;
-    border-bottom: 1px solid var(--color-border);
+  .tool-entry + .tool-entry {
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .tool-row,
+  .tool-row:hover,
+  .tool-row:focus {
+    display: grid;
+    grid-template-columns: 4rem 1fr auto;
+    gap: 0 var(--space-md);
+    align-items: start;
+    padding: var(--space-md) 0;
+    color: inherit;
     text-decoration: none;
-    transition: padding-left 0.25s ease;
-    position: relative;
-  }
-
-  .work-item:first-child {
-    padding-top: 0;
-  }
-
-  .work-item:last-child {
+    -webkit-text-decoration: none;
+    text-decoration-line: none;
+    text-decoration-color: transparent;
     border-bottom: none;
+    outline-offset: 4px;
   }
 
-  .work-item:hover {
-    padding-left: var(--space-md);
-  }
-
-  .work-venue {
+  .tool-label {
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
+    font-size: 0.625rem;
     font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.04em;
     color: var(--color-text-tertiary);
+    padding-top: 0.15em;
   }
 
-  .work-item h3 {
-    font-family: var(--font-serif);
-    font-size: 1.375rem;
+  .tool-info {
+    display: block;
+  }
+
+  .tool-name {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 500;
     color: var(--color-text);
-    margin: var(--space-xs) 0;
-    transition: color 0.2s ease;
+    line-height: 1.35;
+    margin: 0 0 2px;
+    transition: color 0.15s ease;
   }
 
-  .work-item:hover h3 {
+  .tool-row:hover .tool-name {
     color: var(--color-accent);
   }
 
-  .work-item p {
-    font-size: 0.9375rem;
+  .tool-desc {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 400;
     color: var(--color-text-secondary);
+    line-height: 1.45;
     margin: 0;
-    max-width: 560px;
   }
 
+  .tool-tech {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 400;
+    color: var(--color-text-tertiary);
+    white-space: nowrap;
+    padding-top: 0.15em;
+  }
+
+  /* ── Publication write-ups ── */
+  .pub-writeup {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: 0;
+  }
+
+  .pub-writeup summary {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--color-text-tertiary);
+    cursor: pointer;
+    padding: var(--space-xs) 0 var(--space-md) 0;
+    list-style: none;
+    transition: color 0.15s ease;
+    user-select: none;
+    text-align: center;
+  }
+
+  .pub-writeup summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .pub-writeup summary::before {
+    content: '+ Read more';
+  }
+
+  .pub-writeup[open] summary::before {
+    content: '- Less';
+  }
+
+  .pub-writeup summary:hover {
+    color: var(--color-text-secondary);
+  }
+
+  .pub-writeup[open] summary {
+    padding-bottom: 0;
+  }
+
+  .pub-writeup-content {
+    padding: var(--space-md) 0 var(--space-lg) 0;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    line-height: 1.65;
+    max-width: 580px;
+    margin: 0 auto;
+  }
+
+  .pub-writeup-content p {
+    margin-bottom: var(--space-md);
+  }
+
+  .pub-writeup-content p:last-child {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 640px) {
+    .pub-writeup summary {
+      padding-left: 0;
+    }
+    .pub-writeup-content {
+      padding-left: 0;
+    }
+  }
+
+  /* ── Recognition ── */
+  .recognition-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-sm);
+    font-size: 0.875rem;
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .recognition-year {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-tertiary);
+  }
+
+  .recognition-award {
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .recognition-note {
+    color: var(--color-text-secondary);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .pub-link,
+    .pub-link:hover {
+      grid-template-columns: 1fr;
+      gap: var(--space-xs);
+    }
+
+    .pub-arrow {
+      display: none;
+    }
+
+    .tool-row,
+    .tool-row:hover {
+      grid-template-columns: 1fr;
+      gap: var(--space-xs);
+    }
+
+    .tool-tech {
+      white-space: normal;
+    }
+  }
 </style>
