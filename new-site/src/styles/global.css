@@ -545,6 +545,14 @@ nav .container {
   color: var(--color-text-secondary);
 }
 
+.timeline-tech {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--color-text-tertiary);
+  margin-top: var(--space-sm);
+  letter-spacing: 0.01em;
+}
+
 /* Footer */
 footer {
   padding: var(--space-xl) 0;

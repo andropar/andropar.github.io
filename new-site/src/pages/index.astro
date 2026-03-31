@@ -13,14 +13,14 @@ import Layout from '../layouts/Layout.astro';
     </div>
     <p class="intro-bio">
       I'm finishing my <strong>PhD in Computational Cognitive Neuroscience</strong> at the
-      Max Planck Institute in Leipzig, where I build ML systems that help us understand
-      how the brain processes what we see.
+      Max Planck Institute in Leipzig, where my research focuses on making vision neuroscience
+      experiments more efficient using ML and large-scale image datasets.
     </p>
     <p class="intro-bio">
       Before academia, I spent several years as a data scientist - building recommendation systems,
       image processing pipelines, and ML infrastructure in production. What drives me is
       <strong>solving hard technical problems that actually matter</strong>: whether that's making
-      neuroimaging experiments 10x more efficient or shipping a model that changes how a product works.
+      neuroimaging experiments more efficient or providing a model that changes how a product works.
     </p>
 
     <div class="status">
@@ -40,47 +40,48 @@ import Layout from '../layouts/Layout.astro';
         <h3 class="timeline-title">PhD in Computational Cognitive Neuroscience</h3>
         <p class="timeline-org">Max Planck Institute for Human Cognition and Brain Sciences & University of Gießen</p>
         <p class="timeline-description">
-          Working with Martin Hebart on making vision science experiments more efficient. Built pipelines
-          to process massive fMRI datasets, developed active learning frameworks for optimal stimulus selection, and contributed to open-source tools and datasets used by the research community.
+          Built a high-throughput filtering pipeline to curate 120M naturalistic images from a pool of 2 billion (LAION-2B). Developed an active learning framework for optimal stimulus selection in neuroimaging experiments. Contributed to open-source tools and datasets used across the research community.
         </p>
+        <p class="timeline-tech">Python · PyTorch · CLIP · scikit-learn · SLURM · Docker</p>
       </div>
       <div class="timeline-item">
         <span class="timeline-date">2021 - 2022</span>
         <h3 class="timeline-title">Research Assistant - ML in Medicine</h3>
         <p class="timeline-org">ScaDS.AI Dresden/Leipzig</p>
         <p class="timeline-description">
-          Built deep learning models for medical imaging - automatic brain region segmentation and
-          uncertainty-aware prostate cancer mortality prediction.
+          Engineered a multi-plane UNet++ ensemble for brain tumor segmentation (0.90 Dice score). Built an attention-based mortality prediction model with epistemic uncertainty estimation (0.85 AUC-ROC).
         </p>
+        <p class="timeline-tech">PyTorch · FT-Transformer · SAINT · UNet++</p>
       </div>
       <div class="timeline-item">
         <span class="timeline-date">2020 - 2021</span>
-        <h3 class="timeline-title">Full-Stack Developer</h3>
-        <p class="timeline-org">Kimetric UG (Freelance)</p>
+        <h3 class="timeline-title">Software Developer (Freelance)</h3>
+        <p class="timeline-org">Hebart Lab / MPI CBS</p>
         <p class="timeline-description">
-          Built <a href="https://hebartlab.com" target="_blank" rel="noopener">hebartlab.com</a> and
-          <a href="https://things-initiative.org" target="_blank" rel="noopener">things-initiative.org</a>.
-          Django backend, JS frontend, Linux hosting with NGINX.
+          Built <a href="https://hebartlab.com" target="_blank" rel="noopener">hebartlab.com</a>,
+          <a href="https://things-initiative.org" target="_blank" rel="noopener">things-initiative.org</a>, and
+          <a href="https://re-vision-initiative.org" target="_blank" rel="noopener">re-vision-initiative.org</a>.
+          Full-stack development, Linux hosting, automated deployments.
         </p>
+        <p class="timeline-tech">Django · JavaScript · Nginx · Linux · CI/CD</p>
       </div>
       <div class="timeline-item">
         <span class="timeline-date">2019 - 2021</span>
         <h3 class="timeline-title">Data Scientist (Working student)</h3>
         <p class="timeline-org">CHECK24</p>
         <p class="timeline-description">
-          Led development of an image processing microservice - deduplication, retrieval, classification,
-          quality assessment. Optimized recommender systems with Bayesian hyperparameter tuning, trained
-          ranking models. Also worked on backend (PHP, Go).
+          Designed and deployed an image processing microservice handling 20M+ images - deduplication, retrieval, classification, quality scoring. Optimized the hotel recommendation system using Implicit and Bayesian hyperparameter tuning (Hyperopt). Built monitoring dashboards and outlier detection for API health.
         </p>
+        <p class="timeline-tech">Python · PyTorch · Implicit · Hyperopt · Flask · Redis · BigQuery · Grafana</p>
       </div>
       <div class="timeline-item">
         <span class="timeline-date">2018 - 2019</span>
-        <h3 class="timeline-title">Data Scientist & Analyst (Working student)</h3>
+        <h3 class="timeline-title">Data Scientist (Working student)</h3>
         <p class="timeline-org">Webdata Solutions (now Vistex) · Mercateo (now Unite)</p>
         <p class="timeline-description">
-          Image retrieval pipelines, product classification models, cloud data warehousing (AWS).
-          First exposure to building ML systems from scratch.
+          Revamped a product-matching pipeline with a neural network approach, improving accuracy from &lt;50% to 92%. Implemented Grad-CAM interpretability to verify model attention on relevant product features. Work formed the basis for an approved research grant.
         </p>
+        <p class="timeline-tech">Python · TensorFlow · PostgreSQL · AWS</p>
       </div>
       <div class="timeline-item">
         <span class="timeline-date">2014 - 2021</span>
@@ -205,10 +206,16 @@ import Layout from '../layouts/Layout.astro';
           <span class="tool-label">Library</span>
           <span class="tool-info">
             <span class="tool-name">thingsvision</span>
-            <span class="tool-desc">Unified feature extraction API for 50+ vision models</span>
+            <span class="tool-desc">Unified feature extraction API for 100+ vision models</span>
           </span>
-          <span class="tool-tech">Contributor · Python</span>
+          <span class="tool-tech">Core contributor · Python · 460k+ downloads</span>
         </a>
+        <details class="pub-writeup">
+          <summary></summary>
+          <div class="pub-writeup-content">
+            <p>An open-source Python toolbox for extracting and comparing image representations from deep neural networks. Supports 100+ models across torchvision, timm, CLIP, self-supervised models (DINO, MAE, SimCLR), and more. Also includes tools for aligning DNN representations with human similarity judgments via RSA and CKA. I'm the third-largest contributor to the project, which has 460k+ PyPI downloads and is used across vision and cognitive neuroscience labs.</p>
+          </div>
+        </details>
       </div>
       <div class="tool-entry">
         <a href="https://github.com/andropar/cvmanova_python" class="tool-row" target="_blank" rel="noopener">
