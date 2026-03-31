@@ -603,7 +603,7 @@ footer .container {
 
 .intro-title {
   font-family: var(--font-sans);
-  font-size: 3.5rem;
+  font-size: 2.75rem;
   font-weight: 500;
   margin-bottom: var(--space-xl);
   letter-spacing: -0.04em;
@@ -611,7 +611,7 @@ footer .container {
 }
 
 .intro-bio {
-  font-size: 1.125rem;
+  font-size: 1rem;
   color: var(--color-text-secondary);
   line-height: 1.75;
 }
@@ -623,6 +623,7 @@ footer .container {
 /* Status indicator */
 .status {
   display: inline-flex;
+  margin-right: var(--space-md);
   align-items: center;
   gap: var(--space-sm);
   font-family: var(--font-mono);
@@ -831,7 +832,7 @@ footer .container {
   }
 
   .intro-title {
-    font-size: 2.75rem;
+    font-size: 2.25rem;
   }
 
   .section {
