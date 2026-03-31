@@ -10,6 +10,9 @@ import Layout from '../layouts/Layout.astro';
         <img src="/prof_pic.jpg" alt="Johannes Roth" />
       </div>
       <h1 class="intro-title">Johannes Roth</h1>
+      <div class="ascii-accent" aria-hidden="true">
+        <pre id="asciiHero"></pre>
+      </div>
     </div>
     <p class="intro-bio">
       I'm finishing my <strong>PhD in Computational Cognitive Neuroscience</strong> at the
@@ -44,45 +47,65 @@ import Layout from '../layouts/Layout.astro';
         </p>
         <p class="timeline-tech">Python · PyTorch · CLIP · scikit-learn · SLURM · Docker</p>
       </div>
-      <div class="timeline-item">
-        <span class="timeline-date">2021 - 2022</span>
-        <h3 class="timeline-title">Research Assistant - ML in Medicine</h3>
-        <p class="timeline-org">ScaDS.AI Dresden/Leipzig</p>
-        <p class="timeline-description">
-          Engineered a multi-plane UNet++ ensemble for brain tumor segmentation (0.90 Dice score). Built an attention-based mortality prediction model with epistemic uncertainty estimation (0.85 AUC-ROC).
-        </p>
-        <p class="timeline-tech">PyTorch · FT-Transformer · SAINT · UNet++</p>
-      </div>
-      <div class="timeline-item">
-        <span class="timeline-date">2020 - 2021</span>
-        <h3 class="timeline-title">Software Developer (Freelance)</h3>
-        <p class="timeline-org">Hebart Lab / MPI CBS</p>
-        <p class="timeline-description">
-          Built <a href="https://hebartlab.com" target="_blank" rel="noopener">hebartlab.com</a>,
-          <a href="https://things-initiative.org" target="_blank" rel="noopener">things-initiative.org</a>, and
-          <a href="https://re-vision-initiative.org" target="_blank" rel="noopener">re-vision-initiative.org</a>.
-          Full-stack development, Linux hosting, automated deployments.
-        </p>
-        <p class="timeline-tech">Django · JavaScript · Nginx · Linux · CI/CD</p>
-      </div>
-      <div class="timeline-item">
-        <span class="timeline-date">2019 - 2021</span>
-        <h3 class="timeline-title">Data Scientist (Working student)</h3>
-        <p class="timeline-org">CHECK24</p>
-        <p class="timeline-description">
-          Designed and deployed an image processing microservice handling 20M+ images - deduplication, retrieval, classification, quality scoring. Optimized the hotel recommendation system using Implicit and Bayesian hyperparameter tuning (Hyperopt). Built monitoring dashboards and outlier detection for API health.
-        </p>
-        <p class="timeline-tech">Python · PyTorch · Implicit · Hyperopt · Flask · Redis · BigQuery · Grafana</p>
-      </div>
-      <div class="timeline-item">
-        <span class="timeline-date">2018 - 2019</span>
-        <h3 class="timeline-title">Data Scientist (Working student)</h3>
-        <p class="timeline-org">Webdata Solutions (now Vistex) · Mercateo (now Unite)</p>
-        <p class="timeline-description">
-          Revamped a product-matching pipeline with a neural network approach, improving accuracy from &lt;50% to 92%. Implemented Grad-CAM interpretability to verify model attention on relevant product features. Work formed the basis for an approved research grant.
-        </p>
-        <p class="timeline-tech">Python · TensorFlow · PostgreSQL · AWS</p>
-      </div>
+
+      <details class="timeline-toggle" id="experienceToggle">
+        <summary class="timeline-toggle-cta">
+          <span class="timeline-toggle-line"></span>
+          <span class="timeline-toggle-text">+ 4 more roles — ML research, full-stack dev, data science at CHECK24 & others</span>
+          <span class="timeline-toggle-line"></span>
+        </summary>
+        <div class="timeline-hidden">
+          <div class="timeline-item">
+            <span class="timeline-date">2021 - 2022</span>
+            <h3 class="timeline-title">Research Assistant - ML in Medicine</h3>
+            <p class="timeline-org">ScaDS.AI Dresden/Leipzig</p>
+            <p class="timeline-description">
+              Engineered a multi-plane UNet++ ensemble for brain tumor segmentation (0.90 Dice score). Built an attention-based mortality prediction model with epistemic uncertainty estimation (0.85 AUC-ROC).
+            </p>
+            <p class="timeline-tech">PyTorch · FT-Transformer · SAINT · UNet++</p>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-date">2020 - 2021</span>
+            <h3 class="timeline-title">Software Developer (Freelance)</h3>
+            <p class="timeline-org">Hebart Lab / MPI CBS</p>
+            <p class="timeline-description">
+              Built <a href="https://hebartlab.com" target="_blank" rel="noopener">hebartlab.com</a>,
+              <a href="https://things-initiative.org" target="_blank" rel="noopener">things-initiative.org</a>, and
+              <a href="https://re-vision-initiative.org" target="_blank" rel="noopener">re-vision-initiative.org</a>.
+              Full-stack development, Linux hosting, automated deployments.
+            </p>
+            <p class="timeline-tech">Django · JavaScript · Nginx · Linux · CI/CD</p>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-date">2019 - 2021</span>
+            <h3 class="timeline-title">Data Scientist (Working student)</h3>
+            <p class="timeline-org">CHECK24</p>
+            <p class="timeline-description">
+              Designed and deployed an image processing microservice handling 20M+ images - deduplication, retrieval, classification, quality scoring. Optimized the hotel recommendation system using Implicit and Bayesian hyperparameter tuning (Hyperopt). Built monitoring dashboards and outlier detection for API health.
+            </p>
+            <p class="timeline-tech">Python · PyTorch · Implicit · Hyperopt · Flask · Redis · BigQuery · Grafana</p>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-date">2018 - 2019</span>
+            <h3 class="timeline-title">Data Scientist (Working student)</h3>
+            <p class="timeline-org">Webdata Solutions (now Vistex)</p>
+            <p class="timeline-description">
+              Revamped a product-matching pipeline with a neural network approach, improving accuracy from &lt;50% to 92%. Implemented Grad-CAM interpretability to verify model attention on relevant product features. Work formed the basis for an approved research grant.
+            </p>
+            <p class="timeline-tech">Python · TensorFlow · PostgreSQL · AWS</p>
+          </div>
+          <div class="timeline-item">
+            <span class="timeline-date">2018</span>
+            <h3 class="timeline-title">Data Scientist (Working student)</h3>
+            <p class="timeline-org">Mercateo (now Unite)</p>
+            <p class="timeline-description">
+              Built product classification and matching models for B2B procurement marketplace.
+            </p>
+            <p class="timeline-tech">Python · TensorFlow · PostgreSQL</p>
+          </div>
+        </div>
+      </details>
+
       <div class="timeline-item">
         <span class="timeline-date">2014 - 2021</span>
         <h3 class="timeline-title">B.Sc. Business Information Systems & M.Sc. Computer Science</h3>
@@ -187,7 +210,10 @@ import Layout from '../layouts/Layout.astro';
     <div class="tools-list">
       <div class="tool-entry">
         <a href="https://huggingface.co/datasets/andropar/relaion2b-natural" class="tool-row" target="_blank" rel="noopener">
-          <span class="tool-label">Dataset</span>
+          <span class="tool-label-col">
+            <span class="tool-label">Dataset</span>
+            <canvas class="tool-anim" data-anim="sift" width="48" height="32"></canvas>
+          </span>
           <span class="tool-info">
             <span class="tool-name">ReLAION-2B Natural</span>
             <span class="tool-desc">Naturalness scores for 2.1B images, identifying ~500M photographic images for vision research</span>
@@ -203,7 +229,10 @@ import Layout from '../layouts/Layout.astro';
       </div>
       <div class="tool-entry">
         <a href="https://github.com/ViCCo-Group/thingsvision" class="tool-row" target="_blank" rel="noopener">
-          <span class="tool-label">Library</span>
+          <span class="tool-label-col">
+            <span class="tool-label">Library</span>
+            <canvas class="tool-anim" data-anim="hub" width="48" height="32"></canvas>
+          </span>
           <span class="tool-info">
             <span class="tool-name">thingsvision</span>
             <span class="tool-desc">Unified feature extraction API for 100+ vision models</span>
@@ -219,7 +248,10 @@ import Layout from '../layouts/Layout.astro';
       </div>
       <div class="tool-entry">
         <a href="https://github.com/andropar/cvmanova_python" class="tool-row" target="_blank" rel="noopener">
-          <span class="tool-label">Tool</span>
+          <span class="tool-label-col">
+            <span class="tool-label">Tool</span>
+            <canvas class="tool-anim" data-anim="matrix" width="48" height="32"></canvas>
+          </span>
           <span class="tool-info">
             <span class="tool-name">cvmanova_python</span>
             <span class="tool-desc">Cross-validated MANOVA for fMRI pattern analysis</span>
@@ -229,7 +261,10 @@ import Layout from '../layouts/Layout.astro';
       </div>
       <div class="tool-entry">
         <a href="https://github.com/andropar/pysearchlight" class="tool-row" target="_blank" rel="noopener">
-          <span class="tool-label">Tool</span>
+          <span class="tool-label-col">
+            <span class="tool-label">Tool</span>
+            <canvas class="tool-anim" data-anim="scan" width="48" height="32"></canvas>
+          </span>
           <span class="tool-info">
             <span class="tool-name">pysearchlight</span>
             <span class="tool-desc">Customizable searchlight analysis for fMRI data</span>
@@ -264,6 +299,23 @@ import Layout from '../layouts/Layout.astro';
   /* Intro Section */
   .intro {
     margin-bottom: var(--space-3xl);
+  }
+
+  .ascii-accent {
+    flex-shrink: 0;
+    overflow: hidden;
+    pointer-events: none;
+    user-select: none;
+    margin-left: auto;
+  }
+
+  .ascii-accent pre {
+    font-family: var(--font-mono);
+    font-size: 7px;
+    line-height: 8.5px;
+    letter-spacing: 0.8px;
+    color: var(--color-border);
+    white-space: pre;
   }
 
   .intro-name-row {
@@ -418,6 +470,65 @@ import Layout from '../layouts/Layout.astro';
     transform: translate(2px, -2px);
   }
 
+  /* ── Experience toggle ── */
+  .timeline-toggle {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    border: none;
+  }
+
+  .timeline-toggle-cta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-lg) 0;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+  }
+
+  .timeline-toggle-cta::-webkit-details-marker {
+    display: none;
+  }
+
+  .timeline-toggle-line {
+    flex: 1;
+    height: 1px;
+    background: var(--color-border-subtle);
+  }
+
+  .timeline-toggle-text {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 400;
+    color: var(--color-text-tertiary);
+    white-space: nowrap;
+    transition: color 0.15s ease;
+  }
+
+  .timeline-toggle-cta:hover .timeline-toggle-text {
+    color: var(--color-text-secondary);
+  }
+
+  .timeline-toggle[open] .timeline-toggle-text {
+    display: none;
+  }
+
+  .timeline-toggle[open] .timeline-toggle-line {
+    display: none;
+  }
+
+  .timeline-toggle[open] .timeline-toggle-cta {
+    padding: 0;
+    height: 0;
+    overflow: hidden;
+  }
+
+  .timeline-hidden {
+    animation: fadeInUp 0.3s ease-out;
+  }
+
   /* ── Datasets & Tools ── */
   .tools-heading {
     margin-top: var(--space-3xl);
@@ -456,7 +567,6 @@ import Layout from '../layouts/Layout.astro';
     text-transform: uppercase;
     letter-spacing: 0.04em;
     color: var(--color-text-tertiary);
-    padding-top: 0.15em;
   }
 
   .tool-info {
@@ -590,7 +700,26 @@ import Layout from '../layouts/Layout.astro';
     color: var(--color-text-secondary);
   }
 
-  /* ── Responsive ── */
+  /* ── Tool label column with animation ── */
+  .tool-label-col {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-top: 0.15em;
+  }
+
+  .tool-anim {
+    display: block;
+    width: 48px;
+    height: 32px;
+    opacity: 0.35;
+    transition: opacity 0.3s ease;
+  }
+
+  .tool-entry:hover .tool-anim {
+    opacity: 0.6;
+  }
+
   @media (max-width: 640px) {
     .pub-link,
     .pub-link:hover {
@@ -611,5 +740,212 @@ import Layout from '../layouts/Layout.astro';
     .tool-tech {
       white-space: normal;
     }
+
+    .tool-anim {
+      width: 36px;
+      height: 24px;
+    }
+
+    .ascii-accent {
+      display: none;
+    }
   }
 </style>
+
+<script>
+  // Tiny metaphorical animations for each tool type
+  document.querySelectorAll('.tool-anim').forEach((canvas) => {
+    const ctx = canvas.getContext('2d');
+    const type = canvas.dataset.anim;
+    const dpr = window.devicePixelRatio || 1;
+    const w = canvas.width;
+    const h = canvas.height;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    ctx.scale(dpr, dpr);
+
+    function getColor(alpha) {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      return isDark ? `rgba(170,170,170,${alpha})` : `rgba(80,80,80,${alpha})`;
+    }
+
+    // Sift: particles falling, some drift left (rejected), some land right (kept)
+    if (type === 'sift') {
+      const particles = [];
+      for (let i = 0; i < 14; i++) {
+        particles.push({
+          x: 8 + Math.random() * 32,
+          y: Math.random() * h,
+          speed: 0.15 + Math.random() * 0.25,
+          keep: Math.random() < 0.3,
+          phase: Math.random() * Math.PI * 2,
+          size: 1 + Math.random() * 1.2,
+        });
+      }
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        for (const p of particles) {
+          p.y += p.speed;
+          if (p.y > h * 0.5 && !p.keep) p.x -= 0.12;
+          if (p.y > h + 4) { p.y = -2; p.x = 8 + Math.random() * 32; }
+          const alpha = p.keep ? 0.7 : Math.max(0, 0.5 - (p.y / h) * 0.5);
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = getColor(alpha);
+          ctx.fill();
+        }
+        requestAnimationFrame(draw);
+      }
+      draw();
+    }
+
+    // Hub: center dot with orbiting satellites connected by lines
+    if (type === 'hub') {
+      const satellites = [];
+      for (let i = 0; i < 6; i++) {
+        const angle = (i / 6) * Math.PI * 2;
+        satellites.push({
+          angle,
+          dist: 8 + Math.random() * 5,
+          speed: 0.2 + Math.random() * 0.3,
+          size: 1 + Math.random() * 0.8,
+        });
+      }
+      function draw() {
+        const t = performance.now() * 0.001;
+        ctx.clearRect(0, 0, w, h);
+        const cx = w / 2, cy = h / 2;
+
+        for (const s of satellites) {
+          const a = s.angle + t * s.speed;
+          const sx = cx + Math.cos(a) * s.dist;
+          const sy = cy + Math.sin(a) * s.dist;
+          ctx.beginPath();
+          ctx.moveTo(cx, cy);
+          ctx.lineTo(sx, sy);
+          ctx.strokeStyle = getColor(0.25);
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(sx, sy, s.size, 0, Math.PI * 2);
+          ctx.fillStyle = getColor(0.6);
+          ctx.fill();
+        }
+        ctx.beginPath();
+        ctx.arc(cx, cy, 2, 0, Math.PI * 2);
+        ctx.fillStyle = getColor(0.8);
+        ctx.fill();
+
+        requestAnimationFrame(draw);
+      }
+      draw();
+    }
+
+    // Matrix: small grid of cells that light up in cross-validated patterns
+    if (type === 'matrix') {
+      const cols = 6, rows = 4;
+      const cellW = (w - 8) / cols, cellH = (h - 4) / rows;
+      function draw() {
+        const t = performance.now() * 0.001;
+        ctx.clearRect(0, 0, w, h);
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            const val = Math.sin(t * 1.2 + c * 0.9 + r * 1.3) * 0.5 + 0.5;
+            const x = 4 + c * cellW, y = 2 + r * cellH;
+            ctx.fillStyle = getColor(0.08 + val * 0.45);
+            ctx.fillRect(x + 0.5, y + 0.5, cellW - 1, cellH - 1);
+          }
+        }
+        requestAnimationFrame(draw);
+      }
+      draw();
+    }
+
+    // Scan: dots in a grid with a spotlight sweeping across
+    if (type === 'scan') {
+      const dots = [];
+      for (let r = 0; r < 4; r++) {
+        for (let c = 0; c < 6; c++) {
+          dots.push({ x: 6 + c * 7, y: 4 + r * 7, base: 0.15 });
+        }
+      }
+      function draw() {
+        const t = performance.now() * 0.001;
+        ctx.clearRect(0, 0, w, h);
+        const spotX = (Math.sin(t * 0.8) * 0.5 + 0.5) * w;
+        const spotY = (Math.cos(t * 0.5) * 0.5 + 0.5) * h;
+        for (const d of dots) {
+          const dx = d.x - spotX, dy = d.y - spotY;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          const boost = Math.max(0, 1 - dist / 16);
+          const alpha = d.base + boost * 0.65;
+          const size = 1.2 + boost * 1.2;
+          ctx.beginPath();
+          ctx.arc(d.x, d.y, size, 0, Math.PI * 2);
+          ctx.fillStyle = getColor(alpha);
+          ctx.fill();
+        }
+        requestAnimationFrame(draw);
+      }
+      draw();
+    }
+  });
+
+  // ── Animated ASCII hero background ──
+  (function() {
+    const el = document.getElementById('asciiHero');
+    if (!el) return;
+
+    function gabor(x, y, lambda, theta, sigma, phase) {
+      const xp = x * Math.cos(theta) + y * Math.sin(theta);
+      const yp = -x * Math.sin(theta) + y * Math.cos(theta);
+      return Math.exp(-(xp * xp + yp * yp) / (2 * sigma * sigma))
+           * Math.cos(2 * Math.PI * xp / lambda + phase);
+    }
+
+    const chars = ' .\u00b7:;+=*#%@';
+    const cols = 32, rows = 14;
+    const filters = [];
+    for (let i = 0; i < 2; i++) {
+      filters.push({
+        theta: (i / 2) * Math.PI + Math.random() * 0.5,
+        lambda: 3 + Math.random() * 3,
+        sigma: 4 + Math.random() * 3,
+        cx: cols * (0.3 + i * 0.4) + (Math.random() - 0.5) * 5,
+        cy: rows * 0.5 + (Math.random() - 0.5) * 3,
+        weight: 0.5 + Math.random() * 0.5,
+        phaseSpeed: 0.2 + Math.random() * 0.3,
+        driftSpeed: 0.05 + Math.random() * 0.08,
+      });
+    }
+
+    let lastFrame = 0;
+    function animate(now) {
+      if (now - lastFrame > 50) {
+        const t = now * 0.001;
+        let out = '';
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            let val = 0;
+            for (const f of filters) {
+              const x = (c - f.cx) * 0.3;
+              const y = (r - f.cy) * 0.6;
+              val += gabor(x, y, f.lambda, f.theta + Math.sin(t * f.driftSpeed) * 0.4,
+                           f.sigma, t * f.phaseSpeed) * f.weight;
+            }
+            val = val / filters.length;
+            const norm = Math.max(0, Math.min(1, (val + 1) / 2));
+            out += chars[Math.floor(norm * (chars.length - 1))];
+          }
+          out += '\n';
+        }
+        el.textContent = out;
+        lastFrame = now;
+      }
+      requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+  })();
+</script>
