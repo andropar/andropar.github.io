@@ -167,44 +167,54 @@ import Layout from '../layouts/Layout.astro';
           <svg class="pub-arrow" width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3.5 12.5L12.5 3.5M12.5 3.5H5.5M12.5 3.5V10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
       </li>
-      <li class="pub">
-        <a href="https://jov.arvojournals.org/article.aspx?articleid=2791453" class="pub-link" target="_blank" rel="noopener">
-          <span class="pub-year">2023</span>
-          <span class="pub-body">
-            <span class="pub-title">High stimulus presentation rates for fMRI</span>
-            <span class="pub-meta">Roth, Miyawaki & Hebart <span class="pub-sep">/</span> VSS <span class="pub-type">Poster</span></span>
-          </span>
-          <svg class="pub-arrow" width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3.5 12.5L12.5 3.5M12.5 3.5H5.5M12.5 3.5V10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-      </li>
-      <li class="pub">
-        <a href="https://jov.arvojournals.org/article.aspx?articleid=2777378" class="pub-link" target="_blank" rel="noopener">
-          <span class="pub-year">2021</span>
-          <span class="pub-body">
-            <span class="pub-title">Preferred stimuli for individual voxels in the human visual system</span>
-            <span class="pub-meta">Roth, Seeliger, Schmid & Hebart <span class="pub-sep">/</span> Cosyne <span class="pub-type">Poster</span></span>
-          </span>
-          <svg class="pub-arrow" width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3.5 12.5L12.5 3.5M12.5 3.5H5.5M12.5 3.5V10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-        <details class="pub-writeup">
-          <summary></summary>
-          <div class="pub-writeup-content">
-            <p>You can't show the brain every possible image, so how do you figure out what a specific patch of visual cortex actually responds to? We trained a convolutional neural network end-to-end on fMRI data from a subject watching naturalistic movies - no ImageNet pretraining, just raw stimulus-response pairs. Then we used BigGAN to synthesize images that maximally activate individual voxels via gradient ascent through the model.</p>
-            <p>Early visual areas (V1-V3) preferred gratings in small receptive fields, as expected. More interesting: FFA showed preference for faces but also oval shapes and vertical symmetry, while PPA preferred places plus horizontal lines and high spatial frequencies. An SVM classifier could distinguish FFA vs. PPA preferred stimuli from their GAN latent vectors at 87% accuracy, confirming the approach produces meaningfully different outputs per region. This was one of the first demonstrations of GAN-based preferred stimulus synthesis for the human visual system.</p>
-          </div>
-        </details>
-      </li>
-      <li class="pub">
-        <a href="https://doi.org/10.1007/978-3-031-08999-2_23" class="pub-link" target="_blank" rel="noopener">
-          <span class="pub-year">2021</span>
-          <span class="pub-body">
-            <span class="pub-title">Multi-plane UNet++ Ensemble for Glioblastoma Segmentation</span>
-            <span class="pub-meta">Roth, Keller et al. <span class="pub-sep">/</span> MICCAI BraTS</span>
-          </span>
-          <svg class="pub-arrow" width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3.5 12.5L12.5 3.5M12.5 3.5H5.5M12.5 3.5V10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-      </li>
     </ul>
+
+    <details class="pub-toggle">
+      <summary class="pub-toggle-cta">
+        <span class="pub-toggle-line"></span>
+        <span class="pub-toggle-text">+ 3 more — fMRI methods, GAN-based neuroscience, brain tumor segmentation</span>
+        <span class="pub-toggle-line"></span>
+      </summary>
+      <ul class="pub-list pub-list--hidden" role="list">
+        <li class="pub">
+          <a href="https://jov.arvojournals.org/article.aspx?articleid=2791453" class="pub-link" target="_blank" rel="noopener">
+            <span class="pub-year">2023</span>
+            <span class="pub-body">
+              <span class="pub-title">High stimulus presentation rates for fMRI</span>
+              <span class="pub-meta">Roth, Miyawaki & Hebart <span class="pub-sep">/</span> VSS <span class="pub-type">Poster</span></span>
+            </span>
+            <svg class="pub-arrow" width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3.5 12.5L12.5 3.5M12.5 3.5H5.5M12.5 3.5V10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </li>
+        <li class="pub">
+          <a href="https://jov.arvojournals.org/article.aspx?articleid=2777378" class="pub-link" target="_blank" rel="noopener">
+            <span class="pub-year">2021</span>
+            <span class="pub-body">
+              <span class="pub-title">Preferred stimuli for individual voxels in the human visual system</span>
+              <span class="pub-meta">Roth, Seeliger, Schmid & Hebart <span class="pub-sep">/</span> Cosyne <span class="pub-type">Poster</span></span>
+            </span>
+            <svg class="pub-arrow" width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3.5 12.5L12.5 3.5M12.5 3.5H5.5M12.5 3.5V10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <details class="pub-writeup">
+            <summary></summary>
+            <div class="pub-writeup-content">
+              <p>You can't show the brain every possible image, so how do you figure out what a specific patch of visual cortex actually responds to? We trained a convolutional neural network end-to-end on fMRI data from a subject watching naturalistic movies - no ImageNet pretraining, just raw stimulus-response pairs. Then we used BigGAN to synthesize images that maximally activate individual voxels via gradient ascent through the model.</p>
+              <p>Early visual areas (V1-V3) preferred gratings in small receptive fields, as expected. More interesting: FFA showed preference for faces but also oval shapes and vertical symmetry, while PPA preferred places plus horizontal lines and high spatial frequencies. An SVM classifier could distinguish FFA vs. PPA preferred stimuli from their GAN latent vectors at 87% accuracy, confirming the approach produces meaningfully different outputs per region. This was one of the first demonstrations of GAN-based preferred stimulus synthesis for the human visual system.</p>
+            </div>
+          </details>
+        </li>
+        <li class="pub">
+          <a href="https://doi.org/10.1007/978-3-031-08999-2_23" class="pub-link" target="_blank" rel="noopener">
+            <span class="pub-year">2021</span>
+            <span class="pub-body">
+              <span class="pub-title">Multi-plane UNet++ Ensemble for Glioblastoma Segmentation</span>
+              <span class="pub-meta">Roth, Keller et al. <span class="pub-sep">/</span> MICCAI BraTS</span>
+            </span>
+            <svg class="pub-arrow" width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3.5 12.5L12.5 3.5M12.5 3.5H5.5M12.5 3.5V10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </li>
+      </ul>
+    </details>
 
     <h2 class="section-title tools-heading">Datasets & Tools</h2>
     <div class="tools-list">
@@ -527,6 +537,68 @@ import Layout from '../layouts/Layout.astro';
 
   .timeline-hidden {
     animation: fadeInUp 0.3s ease-out;
+  }
+
+  /* ── Publications toggle ── */
+  .pub-toggle {
+    margin: 0;
+    padding: 0;
+    border: none;
+  }
+
+  .pub-toggle-cta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-lg) 0;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+  }
+
+  .pub-toggle-cta::-webkit-details-marker {
+    display: none;
+  }
+
+  .pub-toggle-line {
+    flex: 1;
+    height: 1px;
+    background: var(--color-border-subtle);
+  }
+
+  .pub-toggle-text {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 400;
+    color: var(--color-text-tertiary);
+    white-space: nowrap;
+    transition: color 0.15s ease;
+  }
+
+  .pub-toggle-cta:hover .pub-toggle-text {
+    color: var(--color-text-secondary);
+  }
+
+  .pub-toggle[open] .pub-toggle-text {
+    display: none;
+  }
+
+  .pub-toggle[open] .pub-toggle-line {
+    display: none;
+  }
+
+  .pub-toggle[open] .pub-toggle-cta {
+    padding: 0;
+    height: 0;
+    overflow: hidden;
+  }
+
+  .pub-list--hidden {
+    animation: fadeInUp 0.3s ease-out;
+  }
+
+  .pub-list--hidden .pub:first-child {
+    border-top: 1px solid var(--color-border-subtle);
   }
 
   /* ── Datasets & Tools ── */
