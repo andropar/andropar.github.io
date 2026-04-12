@@ -513,8 +513,9 @@ import Layout from '../layouts/Layout.astro';
     font-size: 0.6875rem;
     font-weight: 400;
     color: var(--color-text-tertiary);
-    white-space: nowrap;
     transition: color 0.15s ease;
+    text-align: center;
+    line-height: 1.4;
   }
 
   .timeline-toggle-cta:hover .timeline-toggle-text {
@@ -571,8 +572,9 @@ import Layout from '../layouts/Layout.astro';
     font-size: 0.6875rem;
     font-weight: 400;
     color: var(--color-text-tertiary);
-    white-space: nowrap;
     transition: color 0.15s ease;
+    text-align: center;
+    line-height: 1.4;
   }
 
   .pub-toggle-cta:hover .pub-toggle-text {
@@ -820,6 +822,22 @@ import Layout from '../layouts/Layout.astro';
 
     .ascii-accent {
       display: none;
+    }
+
+    .timeline-toggle-cta,
+    .pub-toggle-cta {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .timeline-toggle-line,
+    .pub-toggle-line {
+      display: none;
+    }
+
+    .timeline-toggle-text,
+    .pub-toggle-text {
+      font-size: 0.625rem;
     }
   }
 </style>
