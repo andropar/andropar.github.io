@@ -71,7 +71,7 @@ import Layout from '../layouts/Layout.astro';
             <p class="timeline-description">
               Built <a href="https://hebartlab.com" target="_blank" rel="noopener">hebartlab.com</a>,
               <a href="https://things-initiative.org" target="_blank" rel="noopener">things-initiative.org</a>, and
-              <a href="https://re-vision-initiative.org" target="_blank" rel="noopener">re-vision-initiative.org</a>.
+              <a href="https://re-vision-initiative.org" target="_blank" rel="noopener">re:vision</a>.
               Full-stack development, Linux hosting, automated deployments.
             </p>
             <p class="timeline-tech">Django · JavaScript · Nginx · Linux · CI/CD</p>
@@ -284,10 +284,23 @@ import Layout from '../layouts/Layout.astro';
       </div>
     </div>
 
-    <div class="recognition-line">
-      <span class="recognition-year">2025</span>
-      <span class="recognition-award">CMBB Replication Award</span>
-      <span class="recognition-note">for reliable coding practices in neuroscience</span>
+    <div class="recognition-block">
+      <div class="recognition-line">
+        <span class="recognition-year">2025</span>
+        <span class="recognition-award">CMBB Replication Award</span>
+        <span class="recognition-note">for reliable coding practices in neuroscience</span>
+      </div>
+      <div class="recognition-line">
+        <span class="recognition-award">PhD student representative</span>
+        <span class="recognition-note">graduate program, MPI CBS & University of Gießen</span>
+      </div>
+      <div class="recognition-line">
+        <span class="recognition-award">re:vision</span>
+        <span class="recognition-note">
+          <a href="https://re-vision-initiative.org" target="_blank" rel="noopener">Replication initiative</a>
+          for image-related neuroscience — LAION-fMRI consortium replications · infrastructure
+        </span>
+      </div>
     </div>
   </section>
 
@@ -748,21 +761,28 @@ import Layout from '../layouts/Layout.astro';
   }
 
   /* ── Recognition ── */
+  .recognition-block {
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--color-border-subtle);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
   .recognition-line {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
     gap: var(--space-sm);
     font-size: 0.875rem;
-    margin-top: var(--space-2xl);
-    padding-top: var(--space-lg);
-    border-top: 1px solid var(--color-border-subtle);
   }
 
   .recognition-year {
     font-family: var(--font-mono);
     font-size: 0.75rem;
     color: var(--color-text-tertiary);
+    flex-shrink: 0;
   }
 
   .recognition-award {
@@ -772,6 +792,19 @@ import Layout from '../layouts/Layout.astro';
 
   .recognition-note {
     color: var(--color-text-secondary);
+  }
+
+  .recognition-note a {
+    color: var(--color-text-secondary);
+    text-decoration: underline;
+    text-decoration-color: var(--color-border);
+    text-underline-offset: 0.15em;
+    transition: color 0.15s ease, text-decoration-color 0.15s ease;
+  }
+
+  .recognition-note a:hover {
+    color: var(--color-text);
+    text-decoration-color: var(--color-accent);
   }
 
   /* ── Tool label column with animation ── */
