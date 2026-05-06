@@ -3732,3 +3732,9 @@ nav[data-menu-open="true"] .nav-menu-lines::after {
     transform: translateX(2%) !important;
   }
 }
+
+@media (min-width: 761px) and (max-height: 849px) {
+  main {
+    padding-top: clamp(32px, 5svh, 42px) !important;
+  }
+}
