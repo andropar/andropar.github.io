@@ -1626,6 +1626,60 @@ nav .container {
   display: none;
 }
 
+.scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  width: 24px;
+  height: 38px;
+  padding-top: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  opacity: 0.62;
+  transform: translateX(-50%);
+  transition: opacity 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.scroll-cue::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: currentColor;
+  animation: scroll-cue-drift 1.8s ease-in-out infinite;
+}
+
+.scroll-cue:hover,
+.scroll-cue:focus-visible {
+  border-color: rgba(255, 255, 255, 0.48);
+  color: rgba(255, 255, 255, 0.82);
+  opacity: 0.9;
+}
+
+@keyframes scroll-cue-drift {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.35;
+  }
+
+  48% {
+    transform: translateY(13px);
+    opacity: 0.9;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue::before {
+    animation: none;
+  }
+}
+
 .intro-eyebrow {
   width: fit-content;
   margin: 0;
@@ -3163,6 +3217,17 @@ html[data-theme="light"] {
   opacity: 0.18;
 }
 
+[data-theme="light"] .scroll-cue {
+  border-color: rgba(16, 20, 15, 0.18);
+  color: rgba(16, 20, 15, 0.44);
+}
+
+[data-theme="light"] .scroll-cue:hover,
+[data-theme="light"] .scroll-cue:focus-visible {
+  border-color: rgba(16, 20, 15, 0.36);
+  color: rgba(16, 20, 15, 0.68);
+}
+
 [data-theme="light"] .status {
   border-color: rgba(86, 146, 101, 0.34) !important;
   background: rgba(255, 255, 255, 0.34) !important;
@@ -3455,6 +3520,10 @@ nav[data-menu-open="true"] .nav-menu-lines::after {
 
   .section {
     scroll-margin-top: 96px !important;
+  }
+
+  .scroll-cue {
+    display: none;
   }
 
   .section::before {
