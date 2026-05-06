@@ -9,9 +9,9 @@ interface Props {
 const { title, description = "PhD student in Computational Cognitive Neuroscience. Interested in the intersection of AI, vision science, and human cognition." } = Astro.props;
 
 const navLinks = [
-  { href: '#experience', label: 'experience' },
-  { href: '#work', label: 'work' },
-  { href: '#contact', label: 'contact' },
+  { href: '/#experience', label: 'experience' },
+  { href: '/#work', label: 'work' },
+  { href: '/#contact', label: 'contact' },
 ];
 ---
 
@@ -30,15 +30,23 @@ const navLinks = [
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/jpeg" href="/prof_pic.jpg" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;500&family=Raleway:wght@400&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
     <title>{title}</title>
 
-    <!-- Prevent flash of wrong theme -->
+    <!-- Set the saved theme before paint; light is the default. -->
     <script is:inline>
       (function() {
-        const theme = localStorage.getItem('theme') ||
-          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        var theme = 'light';
+        try {
+          var storedTheme = localStorage.getItem('theme');
+          if (storedTheme === 'light' || storedTheme === 'dark') {
+            theme = storedTheme;
+          }
+        } catch (error) {
+          theme = 'light';
+        }
         document.documentElement.setAttribute('data-theme', theme);
       })();
     </script>
@@ -51,7 +59,7 @@ const navLinks = [
     <nav>
       <div class="container">
         <a href="/" class="nav-brand">Johannes Roth</a>
-        <ul class="nav-links">
+        <ul class="nav-links" id="site-navigation">
           {navLinks.map(link => (
             <li>
               <a href={link.href} class="nav-link">
@@ -60,22 +68,21 @@ const navLinks = [
             </li>
           ))}
         </ul>
-        <button class="theme-toggle" aria-label="Toggle dark mode" title="Toggle theme">
-          <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-          </svg>
-          <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <circle cx="12" cy="12" r="5" />
-            <line x1="12" y1="1" x2="12" y2="3" />
-            <line x1="12" y1="21" x2="12" y2="23" />
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-            <line x1="1" y1="12" x2="3" y2="12" />
-            <line x1="21" y1="12" x2="23" y2="12" />
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-          </svg>
-        </button>
+        <div class="nav-actions">
+          <button class="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
+            <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.8 6.8 0 0 0 9.8 9.8z" />
+            </svg>
+            <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <circle cx="12" cy="12" r="4.5" />
+              <path d="M12 2v2.5M12 19.5V22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M2 12h2.5M19.5 12H22M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" />
+            </svg>
+          </button>
+          <button class="nav-menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="site-navigation">
+            <span class="nav-menu-lines" aria-hidden="true"></span>
+          </button>
+          <a href="/cv.pdf" download="Johannes_Roth_CV.pdf" class="nav-cv">cv</a>
+        </div>
       </div>
     </nav>
 
@@ -143,23 +150,57 @@ const navLinks = [
         });
       });
 
-      // Theme toggle
-      const themeToggle = document.querySelector('.theme-toggle');
-      if (themeToggle) {
-        themeToggle.addEventListener('click', () => {
-          const currentTheme = document.documentElement.getAttribute('data-theme');
-          const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-          document.documentElement.setAttribute('data-theme', newTheme);
-          localStorage.setItem('theme', newTheme);
+      // Mobile navigation
+      const nav = document.querySelector('nav');
+      const navMenuToggle = document.querySelector('.nav-menu-toggle');
+      const closeNavMenu = () => {
+        if (!nav || !navMenuToggle) return;
+        nav.removeAttribute('data-menu-open');
+        navMenuToggle.setAttribute('aria-expanded', 'false');
+        navMenuToggle.setAttribute('aria-label', 'Open navigation');
+      };
+
+      if (nav && navMenuToggle) {
+        navMenuToggle.addEventListener('click', () => {
+          const isOpen = nav.getAttribute('data-menu-open') === 'true';
+          if (isOpen) {
+            closeNavMenu();
+          } else {
+            nav.setAttribute('data-menu-open', 'true');
+            navMenuToggle.setAttribute('aria-expanded', 'true');
+            navMenuToggle.setAttribute('aria-label', 'Close navigation');
+          }
+        });
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+          link.addEventListener('click', closeNavMenu);
         });
       }
 
-      // Listen for system theme changes
-      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-        if (!localStorage.getItem('theme')) {
-          document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
-        }
-      });
+      // Theme toggle
+      const themeToggle = document.querySelector('.theme-toggle');
+      const getTheme = () => document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+      const updateThemeToggle = (theme) => {
+        if (!themeToggle) return;
+        const nextTheme = theme === 'dark' ? 'light' : 'dark';
+        themeToggle.setAttribute('aria-label', `Switch to ${nextTheme} mode`);
+        themeToggle.setAttribute('title', `Switch to ${nextTheme} mode`);
+        themeToggle.setAttribute('aria-pressed', String(theme === 'dark'));
+      };
+
+      if (themeToggle) {
+        updateThemeToggle(getTheme());
+        themeToggle.addEventListener('click', () => {
+          const nextTheme = getTheme() === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', nextTheme);
+          try {
+            localStorage.setItem('theme', nextTheme);
+          } catch (error) {
+            // Ignore storage failures; the active page can still switch themes.
+          }
+          updateThemeToggle(nextTheme);
+        });
+      }
 
     </script>
 

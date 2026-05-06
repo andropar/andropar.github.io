@@ -5,33 +5,39 @@ import Layout from '../layouts/Layout.astro';
 <Layout title="Johannes Roth">
   <!-- Intro -->
   <section class="intro">
-    <div class="intro-name-row">
-      <div class="intro-photo">
-        <img src="/prof_pic.jpg" alt="Johannes Roth" />
+    <div class="intro-copy">
+      <p class="intro-eyebrow">Computational cognitive neuroscience / ML systems</p>
+      <div class="intro-name-row">
+        <h1 class="intro-title">Johannes Roth</h1>
+        <div class="ascii-accent" aria-hidden="true">
+          <pre id="asciiHero"></pre>
+        </div>
       </div>
-      <h1 class="intro-title">Johannes Roth</h1>
-      <div class="ascii-accent" aria-hidden="true">
-        <pre id="asciiHero"></pre>
+      <p class="intro-bio">
+        I'm finishing my <strong>PhD in Computational Cognitive Neuroscience</strong> at the
+        Max Planck Institute in Leipzig, where my research focuses on datasets used for comparing
+        neural network models with the human brain.
+      </p>
+      <p class="intro-bio">
+        Before academia, I spent several years as a data scientist - building recommendation systems,
+        image processing pipelines, and ML infrastructure in production. What drives me is
+        <strong>solving hard technical problems that actually matter</strong>: whether that's making
+        neuroimaging experiments more efficient or providing a model that changes how a product works.
+      </p>
+
+      <div class="intro-actions">
+        <div class="status">
+          <span class="status-dot"></span>
+          Open to opportunities starting September 2026
+        </div>
+
+        <a href="/cv.pdf" download="Johannes_Roth_CV.pdf" class="download-cv">Download CV &darr;</a>
       </div>
     </div>
-    <p class="intro-bio">
-      I'm finishing my <strong>PhD in Computational Cognitive Neuroscience</strong> at the
-      Max Planck Institute in Leipzig, where my research focuses on making vision neuroscience
-      experiments more efficient using ML and large-scale image datasets.
-    </p>
-    <p class="intro-bio">
-      Before academia, I spent several years as a data scientist - building recommendation systems,
-      image processing pipelines, and ML infrastructure in production. What drives me is
-      <strong>solving hard technical problems that actually matter</strong>: whether that's making
-      neuroimaging experiments more efficient or providing a model that changes how a product works.
-    </p>
 
-    <div class="status">
-      <span class="status-dot"></span>
-      Open to opportunities starting September 2026
+    <div class="intro-photo">
+      <img src="/portrait-professional-hero-clean.png" alt="Black-and-white portrait of Johannes Roth" />
     </div>
-
-    <a href="/cv.pdf" download="Johannes_Roth_CV.pdf" class="download-cv">Download CV &darr;</a>
   </section>
 
   <!-- Experience -->
@@ -43,7 +49,7 @@ import Layout from '../layouts/Layout.astro';
         <h3 class="timeline-title">PhD in Computational Cognitive Neuroscience</h3>
         <p class="timeline-org">Max Planck Institute for Human Cognition and Brain Sciences & University of Gießen</p>
         <p class="timeline-description">
-          Built a high-throughput filtering pipeline to curate 120M naturalistic images from a pool of 2 billion (LAION-2B). Developed an active learning framework for optimal stimulus selection in neuroimaging experiments. Contributed to open-source tools and datasets used across the research community.
+          Built a high-throughput filtering pipeline to curate 120M naturalistic images from a pool of 2 billion (LAION-2B). Developed an active learning framework for optimal stimulus selection in neuroimaging experiments. Built infrastructure for the <a href="https://re-vision-initiative.org" target="_blank" rel="noopener">re:vision initiative</a>, including the LAION-fMRI consortium replication challenge for image-related neuroscience.
         </p>
         <p class="timeline-tech">Python · PyTorch · CLIP · scikit-learn · SLURM · Docker</p>
       </div>
@@ -257,19 +263,6 @@ import Layout from '../layouts/Layout.astro';
         </details>
       </div>
       <div class="tool-entry">
-        <a href="https://github.com/andropar/cvmanova_python" class="tool-row" target="_blank" rel="noopener">
-          <span class="tool-label-col">
-            <span class="tool-label">Tool</span>
-            <canvas class="tool-anim" data-anim="matrix" width="48" height="32"></canvas>
-          </span>
-          <span class="tool-info">
-            <span class="tool-name">cvmanova_python</span>
-            <span class="tool-desc">Cross-validated MANOVA for fMRI pattern analysis</span>
-          </span>
-          <span class="tool-tech">Python</span>
-        </a>
-      </div>
-      <div class="tool-entry">
         <a href="https://github.com/andropar/pysearchlight" class="tool-row" target="_blank" rel="noopener">
           <span class="tool-label-col">
             <span class="tool-label">Tool</span>
@@ -284,22 +277,29 @@ import Layout from '../layouts/Layout.astro';
       </div>
     </div>
 
-    <div class="recognition-block">
-      <div class="recognition-line">
-        <span class="recognition-year">2025</span>
-        <span class="recognition-award">CMBB Replication Award</span>
-        <span class="recognition-note">for reliable coding practices in neuroscience</span>
-      </div>
-      <div class="recognition-line">
-        <span class="recognition-award">PhD student representative</span>
-        <span class="recognition-note">graduate program, MPI CBS & University of Gießen</span>
-      </div>
-      <div class="recognition-line">
-        <span class="recognition-award">re:vision</span>
-        <span class="recognition-note">
-          <a href="https://re-vision-initiative.org" target="_blank" rel="noopener">Replication initiative</a>
-          for image-related neuroscience — LAION-fMRI consortium replications · infrastructure
-        </span>
+    <div class="recognition-block" aria-label="Recognition and service">
+      <p class="recognition-kicker">Recognition / service</p>
+      <div class="recognition-grid">
+        <a class="recognition-line recognition-line--featured" href="https://re-vision-initiative.org" target="_blank" rel="noopener">
+          <span class="recognition-year">2025</span>
+          <span class="recognition-award">re:vision initiative</span>
+          <span class="recognition-note">LAION-fMRI consortium replication challenge · infrastructure for image-related neuroscience</span>
+        </a>
+        <div class="recognition-line">
+          <span class="recognition-year">2025</span>
+          <span class="recognition-award">CMBB Replication Award</span>
+          <span class="recognition-note">for reliable coding practices in neuroscience</span>
+        </div>
+        <div class="recognition-line">
+          <span class="recognition-year">MPI CBS</span>
+          <span class="recognition-award">PhD student representative</span>
+          <span class="recognition-note">graduate program, MPI CBS & University of Gießen</span>
+        </div>
+        <a class="recognition-line" href="https://github.com/andropar/CNNvis" target="_blank" rel="noopener">
+          <span class="recognition-year">2024/25</span>
+          <span class="recognition-award">CNNvis</span>
+          <span class="recognition-note">interactive CNN visualization used for public ML outreach at Gießen Science Days</span>
+        </a>
       </div>
     </div>
   </section>
@@ -855,6 +855,23 @@ import Layout from '../layouts/Layout.astro';
 
     .ascii-accent {
       display: none;
+    }
+
+    .intro .intro-bio {
+      margin: 0 !important;
+    }
+
+    .intro .intro-bio + .intro-bio {
+      margin-top: 10px !important;
+    }
+
+    .intro .intro-actions {
+      margin-top: 14px !important;
+    }
+
+    .intro .status,
+    .intro .download-cv {
+      margin-top: 0 !important;
     }
 
     .timeline-toggle-cta,
