@@ -3711,3 +3711,24 @@ nav[data-menu-open="true"] .nav-menu-lines::after {
     transform: translateX(2%) !important;
   }
 }
+
+@media (min-width: 1280px) and (max-width: 1599px) and (max-height: 849px) {
+  .intro {
+    overflow: visible !important;
+  }
+
+  .intro .intro-photo {
+    width: min(100%, 500px) !important;
+    overflow: visible;
+  }
+
+  .intro .intro-photo img {
+    width: auto !important;
+    height: 100% !important;
+    min-height: 0;
+    max-width: none !important;
+    object-fit: contain !important;
+    object-position: center bottom !important;
+    transform: translateX(2%) !important;
+  }
+}
