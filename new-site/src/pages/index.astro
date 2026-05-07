@@ -9,6 +9,7 @@ import Layout from '../layouts/Layout.astro';
       <p class="intro-eyebrow">Computational cognitive neuroscience / ML systems</p>
       <div class="intro-name-row">
         <h1 class="intro-title">Johannes Roth</h1>
+        <img class="intro-mobile-headshot" src="/profile-mobile-headshot.png?v=5" alt="Black-and-white portrait of Johannes Roth" />
         <div class="ascii-accent" aria-hidden="true">
           <pre id="asciiHero"></pre>
         </div>
@@ -46,82 +47,93 @@ import Layout from '../layouts/Layout.astro';
   <section class="section" id="experience">
     <h2 class="section-title">Experience</h2>
     <div class="timeline">
-      <div class="timeline-item">
-        <span class="timeline-date">2022 - Present</span>
+      <div class="timeline-item timeline-item--research">
+        <div class="timeline-meta">
+          <span class="timeline-date">2022 - Present</span>
+          <span class="timeline-kind">Research</span>
+        </div>
         <h3 class="timeline-title">PhD in Computational Cognitive Neuroscience</h3>
         <p class="timeline-org">Max Planck Institute for Human Cognition and Brain Sciences & University of Gießen</p>
         <p class="timeline-description">
-          Built a high-throughput filtering pipeline to curate 120M naturalistic images from a pool of 2 billion (LAION-2B). Developed an active learning framework for optimal stimulus selection in neuroimaging experiments. Built infrastructure for the <a href="https://re-vision-initiative.org" target="_blank" rel="noopener">re:vision initiative</a>, including the LAION-fMRI consortium replication challenge for image-related neuroscience.
+          Researching efficient experimental design for visual neuroscience: using modern computer vision models and large-scale naturalistic image spaces to choose better stimuli, compare model and brain representations, and improve fMRI dataset coverage. Built the ML/data infrastructure behind these workflows, including public datasets and <a href="https://re-vision-initiative.org" target="_blank" rel="noopener">re:vision</a> challenge infrastructure.
         </p>
         <p class="timeline-tech">Python · PyTorch · CLIP · scikit-learn · SLURM · Docker</p>
       </div>
 
-      <details class="timeline-toggle" id="experienceToggle">
-        <summary class="timeline-toggle-cta">
-          <span class="timeline-toggle-line"></span>
-          <span class="timeline-toggle-text">+ 4 more roles — ML research, full-stack dev, data science at CHECK24 & others</span>
-          <span class="timeline-toggle-line"></span>
-        </summary>
-        <div class="timeline-hidden">
-          <div class="timeline-item">
-            <span class="timeline-date">2021 - 2022</span>
-            <h3 class="timeline-title">Research Assistant - ML in Medicine</h3>
-            <p class="timeline-org">ScaDS.AI Dresden/Leipzig</p>
-            <p class="timeline-description">
-              Engineered a multi-plane UNet++ ensemble for brain tumor segmentation (0.90 Dice score). Built an attention-based mortality prediction model with epistemic uncertainty estimation (0.85 AUC-ROC).
-            </p>
-            <p class="timeline-tech">PyTorch · FT-Transformer · SAINT · UNet++</p>
-          </div>
-          <div class="timeline-item">
-            <span class="timeline-date">2020 - 2021</span>
-            <h3 class="timeline-title">Software Developer (Freelance)</h3>
-            <p class="timeline-org">Hebart Lab / MPI CBS</p>
-            <p class="timeline-description">
-              Built <a href="https://hebartlab.com" target="_blank" rel="noopener">hebartlab.com</a>,
-              <a href="https://things-initiative.org" target="_blank" rel="noopener">things-initiative.org</a>, and
-              <a href="https://re-vision-initiative.org" target="_blank" rel="noopener">re:vision</a>.
-              Full-stack development, Linux hosting, automated deployments.
-            </p>
-            <p class="timeline-tech">Django · JavaScript · Nginx · Linux · CI/CD</p>
-          </div>
-          <div class="timeline-item">
-            <span class="timeline-date">2019 - 2021</span>
-            <h3 class="timeline-title">Data Scientist (Working student)</h3>
-            <p class="timeline-org">CHECK24</p>
-            <p class="timeline-description">
-              Designed and deployed an image processing microservice handling 20M+ images - deduplication, retrieval, classification, quality scoring. Optimized the hotel recommendation system using Implicit and Bayesian hyperparameter tuning (Hyperopt). Built monitoring dashboards and outlier detection for API health.
-            </p>
-            <p class="timeline-tech">Python · PyTorch · Implicit · Hyperopt · Flask · Redis · BigQuery · Grafana</p>
-          </div>
-          <div class="timeline-item">
-            <span class="timeline-date">2018 - 2019</span>
-            <h3 class="timeline-title">Data Scientist (Working student)</h3>
-            <p class="timeline-org">Webdata Solutions (now Vistex)</p>
-            <p class="timeline-description">
-              Revamped a product-matching pipeline with a neural network approach, improving accuracy from &lt;50% to 92%. Implemented Grad-CAM interpretability to verify model attention on relevant product features. Work formed the basis for an approved research grant.
-            </p>
-            <p class="timeline-tech">Python · TensorFlow · PostgreSQL · AWS</p>
-          </div>
-          <div class="timeline-item">
-            <span class="timeline-date">2018</span>
-            <h3 class="timeline-title">Data Scientist (Working student)</h3>
-            <p class="timeline-org">Mercateo (now Unite)</p>
-            <p class="timeline-description">
-              Built product classification and matching models for B2B procurement marketplace.
-            </p>
-            <p class="timeline-tech">Python · TensorFlow · PostgreSQL</p>
-          </div>
+      <div class="timeline-item timeline-item--research">
+        <div class="timeline-meta">
+          <span class="timeline-date">Jun 2021 - May 2022</span>
+          <span class="timeline-kind">Research</span>
         </div>
+        <h3 class="timeline-title">Research Assistant - ML in Medicine</h3>
+        <p class="timeline-org">ScaDS.AI Dresden/Leipzig</p>
+        <p class="timeline-description">
+          Engineered a multi-plane UNet++ ensemble for Glioblastoma segmentation (BraTS 2021), reaching 0.90 Dice for whole tumor. Developed attention-based mortality prediction models with epistemic uncertainty estimation.
+        </p>
+        <p class="timeline-tech">PyTorch · FT-Transformer · SAINT · UNet++</p>
+      </div>
+
+      <div class="timeline-item timeline-item--industry">
+        <div class="timeline-meta">
+          <span class="timeline-date">Oct 2019 - May 2021</span>
+          <span class="timeline-kind">Industry</span>
+        </div>
+        <h3 class="timeline-title">Data Scientist / ML Engineer <span class="role-meta">(Working student)</span></h3>
+        <p class="timeline-org">CHECK24 (Travel Vertical)</p>
+        <p class="timeline-description">
+          Designed and deployed a Flask + Redis image-processing microservice for fast ML inference over 20M+ hotel images. Built deduplication, retrieval, classification, quality scoring, recommender tuning, and Grafana monitoring workflows.
+        </p>
+        <p class="timeline-tech">Python · PyTorch · Flask · Redis · Hyperopt · BigQuery · Grafana</p>
+      </div>
+
+      <details class="timeline-toggle experience-toggle">
+        <summary class="timeline-toggle-cta">
+          <span class="toggle-icon" aria-hidden="true"></span>
+          <span class="toggle-copy">
+            <span class="toggle-label toggle-label--closed">Show other experience</span>
+            <span class="toggle-label toggle-label--open">Hide other experience</span>
+            <span class="toggle-note">education, freelance, earlier ML roles</span>
+          </span>
+        </summary>
       </details>
 
-      <div class="timeline-item">
-        <span class="timeline-date">2014 - 2021</span>
+      <div class="timeline-item timeline-item--education">
+        <div class="timeline-meta">
+          <span class="timeline-date">2014 - 2021</span>
+          <span class="timeline-kind">Education</span>
+        </div>
         <h3 class="timeline-title">B.Sc. Business Information Systems & M.Sc. Computer Science</h3>
         <p class="timeline-org">Leipzig University</p>
         <p class="timeline-description">
           M.Sc. grade 1.2 (Distinction). Focused on ML, data analysis, and medical image processing.
           Thesis on using GANs to synthesize images that maximally activate specific brain regions.
         </p>
+      </div>
+
+      <div class="timeline-item timeline-item--industry">
+        <div class="timeline-meta">
+          <span class="timeline-date">Oct 2020 - May 2021</span>
+          <span class="timeline-kind">Industry</span>
+        </div>
+        <h3 class="timeline-title">Full-stack Developer <span class="role-meta">(Freelance)</span></h3>
+        <p class="timeline-org">Kimetric UG</p>
+        <p class="timeline-description">
+          Implemented two academic websites using Django, Nginx, and Gunicorn. Configured Linux hosting environments and automated deployment scripts.
+        </p>
+        <p class="timeline-tech">Django · Nginx · Gunicorn · Linux · CI/CD</p>
+      </div>
+
+      <div class="timeline-item timeline-item--industry">
+        <div class="timeline-meta">
+          <span class="timeline-date">Oct 2018 - Oct 2019</span>
+          <span class="timeline-kind">Industry</span>
+        </div>
+        <h3 class="timeline-title">Data Scientist <span class="role-meta">(Working student)</span></h3>
+        <p class="timeline-org">Webdata Solutions GmbH (now Vistex)</p>
+        <p class="timeline-description">
+          Revamped a product-matching pipeline with a neural-network approach trained on self-collected web-scraped datasets, increasing matching accuracy from &lt;50% to 92%. Built data collection, training, evaluation, and interpretability workflows.
+        </p>
+        <p class="timeline-tech">Python · TensorFlow · PostgreSQL · AWS</p>
       </div>
     </div>
   </section>
@@ -179,9 +191,12 @@ import Layout from '../layouts/Layout.astro';
 
     <details class="pub-toggle">
       <summary class="pub-toggle-cta">
-        <span class="pub-toggle-line"></span>
-        <span class="pub-toggle-text">+ 3 more — fMRI methods, GAN-based neuroscience, brain tumor segmentation</span>
-        <span class="pub-toggle-line"></span>
+        <span class="toggle-icon" aria-hidden="true"></span>
+        <span class="toggle-copy">
+          <span class="toggle-label toggle-label--closed">Show older publications</span>
+          <span class="toggle-label toggle-label--open">Hide older publications</span>
+          <span class="toggle-note">fMRI methods, GAN-based neuroscience, brain tumor segmentation</span>
+        </span>
       </summary>
       <ul class="pub-list pub-list--hidden" role="list">
         <li class="pub">
