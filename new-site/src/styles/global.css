@@ -3839,6 +3839,30 @@ nav[data-menu-open="true"] .nav-menu-lines::after {
   border-top: 0 !important;
 }
 
+#experience .timeline-group-label {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 6px 0 -2px;
+  color: var(--color-text-tertiary);
+  font-size: 10px;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.075em;
+}
+
+#experience .timeline-group-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--section-card-border);
+}
+
+#experience .timeline-group-label--education {
+  margin-top: 10px;
+}
+
 #experience .timeline > .timeline-item,
 #experience .timeline-hidden .timeline-item {
   position: relative;
@@ -4378,7 +4402,15 @@ details[open] .toggle-label--open {
     display: none !important;
   }
 
+  #experience .experience-toggle ~ .timeline-group-label {
+    display: none !important;
+  }
+
   #experience .timeline:has(.experience-toggle[open]) > .experience-toggle ~ .timeline-item {
+    display: flex !important;
+  }
+
+  #experience .timeline:has(.experience-toggle[open]) > .experience-toggle ~ .timeline-group-label {
     display: flex !important;
   }
 

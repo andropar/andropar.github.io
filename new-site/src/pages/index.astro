@@ -47,6 +47,8 @@ import Layout from '../layouts/Layout.astro';
   <section class="section" id="experience">
     <h2 class="section-title">Experience</h2>
     <div class="timeline">
+      <div class="timeline-group-label">Professional Experience</div>
+
       <div class="timeline-item timeline-item--research">
         <div class="timeline-meta">
           <span class="timeline-date">2022 - Present</span>
@@ -97,19 +99,6 @@ import Layout from '../layouts/Layout.astro';
         </summary>
       </details>
 
-      <div class="timeline-item timeline-item--education">
-        <div class="timeline-meta">
-          <span class="timeline-date">2014 - 2021</span>
-          <span class="timeline-kind">Education</span>
-        </div>
-        <h3 class="timeline-title">B.Sc. Business Information Systems & M.Sc. Computer Science</h3>
-        <p class="timeline-org">Leipzig University</p>
-        <p class="timeline-description">
-          M.Sc. grade 1.2 (Distinction). Focused on ML, data analysis, and medical image processing.
-          Thesis on using GANs to synthesize images that maximally activate specific brain regions.
-        </p>
-      </div>
-
       <div class="timeline-item timeline-item--industry">
         <div class="timeline-meta">
           <span class="timeline-date">Oct 2020 - May 2021</span>
@@ -134,6 +123,35 @@ import Layout from '../layouts/Layout.astro';
           Revamped a product-matching pipeline with a neural-network approach trained on self-collected web-scraped datasets, increasing matching accuracy from &lt;50% to 92%. Built data collection, training, evaluation, and interpretability workflows.
         </p>
         <p class="timeline-tech">Python · TensorFlow · PostgreSQL · AWS</p>
+      </div>
+
+      <div class="timeline-group-label timeline-group-label--education">Education</div>
+
+      <div class="timeline-item timeline-item--education">
+        <div class="timeline-meta">
+          <span class="timeline-date">2018 - 2021</span>
+          <span class="timeline-kind">Education</span>
+        </div>
+        <h3 class="timeline-title">M.Sc. Computer Science</h3>
+        <p class="timeline-org">Leipzig University</p>
+        <p class="timeline-description">
+          Graduated with grade 1.2 (Distinction). Focused on ML, data analysis, and medical image processing.
+          Thesis on using GANs to synthesize images that maximally activate specific brain regions.
+        </p>
+        <p class="timeline-tech">Machine learning · Data analysis · Medical image processing</p>
+      </div>
+
+      <div class="timeline-item timeline-item--education">
+        <div class="timeline-meta">
+          <span class="timeline-date">2014 - 2018</span>
+          <span class="timeline-kind">Education</span>
+        </div>
+        <h3 class="timeline-title">B.Sc. Business Information Systems</h3>
+        <p class="timeline-org">Leipzig University</p>
+        <p class="timeline-description">
+          Built a foundation across computer science, data systems, software engineering, and business-facing analytics.
+        </p>
+        <p class="timeline-tech">Software engineering · Databases · Analytics</p>
       </div>
     </div>
   </section>
@@ -280,17 +298,23 @@ import Layout from '../layouts/Layout.astro';
         </details>
       </div>
       <div class="tool-entry">
-        <a href="https://github.com/andropar/pysearchlight" class="tool-row" target="_blank" rel="noopener">
+        <a href="https://laion-fmri.hebartlab.com" class="tool-row" target="_blank" rel="noopener">
           <span class="tool-label-col">
-            <span class="tool-label">Tool</span>
+            <span class="tool-label">Dataset</span>
             <canvas class="tool-anim" data-anim="scan" width="48" height="32"></canvas>
           </span>
           <span class="tool-info">
-            <span class="tool-name">pysearchlight</span>
-            <span class="tool-desc">Customizable searchlight analysis for fMRI data</span>
+            <span class="tool-name">LAION-fMRI</span>
+            <span class="tool-desc">Deeply sampled 7T fMRI responses to 25k natural images for NeuroAI and visual neuroscience</span>
           </span>
-          <span class="tool-tech">Python</span>
+          <span class="tool-tech">5 subjects · 165 sessions · GLMsingle betas</span>
         </a>
+        <details class="pub-writeup">
+          <summary></summary>
+          <div class="pub-writeup-content">
+            <p>LAION-fMRI is a deeply sampled 7T fMRI dataset for studying human visual representations with naturalistic images. It contains brain responses to 25,052 LAION-derived images across 5 subjects and 165 acquired scanning sessions, including single-trial GLMsingle betas, retinotopy, localizers, and diffusion data. The dataset supports work on model-brain comparison, stimulus selection, and replication through the re:vision initiative.</p>
+          </div>
+        </details>
       </div>
     </div>
 
