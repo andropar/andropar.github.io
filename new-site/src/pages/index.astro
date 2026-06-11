@@ -441,7 +441,7 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
       <div class="intro-name-row">
         <h1 class="intro-title">Johannes Roth</h1>
         <span class="intro-mobile-headshot-stack" aria-hidden="true">
-          <img class="intro-mobile-headshot hero-portrait--professional" src="/portrait-professional-hero-clean.png?v=4" alt="" style="opacity: 1;" />
+          <img class="intro-mobile-headshot hero-portrait--professional" src="/generated-lighting/portrait-professional-relit-balanced.png?v=1" alt="" style="opacity: 1;" />
           <img class="intro-mobile-headshot hero-portrait--personal" src="/portrait-casual-hero.png?v=2" alt="" style="opacity: 0;" />
         </span>
         <div class="ascii-accent" aria-hidden="true">
@@ -490,7 +490,7 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
     </div>
 
     <div class="intro-photo">
-      <img class="hero-portrait hero-portrait--professional" src="/portrait-professional-hero-clean.png?v=4" alt="Black-and-white portrait of Johannes Roth in a suit" style="opacity: 1;" />
+      <img class="hero-portrait hero-portrait--professional" src="/generated-lighting/portrait-professional-relit-balanced.png?v=1" alt="Black-and-white portrait of Johannes Roth in a suit" style="opacity: 1;" />
       <img class="hero-portrait hero-portrait--personal" src="/portrait-casual-hero.png?v=2" alt="Casual portrait of Johannes Roth in climbing gear" aria-hidden="true" style="opacity: 0;" />
     </div>
 
@@ -884,7 +884,7 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
           {currentBooks.map((book) => (
             <article class="personal-book-feature">
               <div class="personal-book-cover">
-                <img src={book.cover} alt={`${book.title} cover`} loading="lazy" />
+                <img src={book.cover} alt={`${book.title} cover`} loading="eager" decoding="async" fetchpriority="high" data-current-book-cover />
                 <span class="personal-book-spine" aria-hidden="true"></span>
               </div>
               <div class="personal-book-info">
@@ -936,6 +936,7 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
         <p class="personal-copy">
           Once a month, my wife and I do a horror movie night with friends - here are the last three
           movies we watched (pulled from my <a href={letterboxdProfileUrl} target="_blank" rel="noopener">Letterboxd</a> account).
+          Also, check out the <a href="https://horrorverse.jroth.space/app/movie-night" target="_blank" rel="noopener">recommender I built for us</a>.
         </p>
         <div class="personal-film-list" aria-label="Recently watched films from Letterboxd">
           {recentLetterboxdFilms.map((film) => (
@@ -965,7 +966,7 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
                     <article class="personal-book-card">
                       <span class={`personal-book-card-cover${coverRef ? '' : ' personal-book-card-cover--fallback'}`}>
                         {coverRef ? (
-                          <img src={openLibraryCover(coverRef)} alt={`${title} cover`} loading="lazy" decoding="async" data-prefetch-book-cover />
+                          <img src={openLibraryCover(coverRef)} alt={`${title} cover`} loading="lazy" decoding="async" fetchpriority="low" data-prefetch-book-cover />
                         ) : (
                           <span class="personal-book-card-placeholder" aria-hidden="true">
                             <span>{title}</span>
@@ -989,7 +990,7 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
                 <article class="personal-book-card">
                   <span class={`personal-book-card-cover${coverRef ? '' : ' personal-book-card-cover--fallback'}`}>
                     {coverRef ? (
-                      <img src={openLibraryCover(coverRef)} alt={`${title} cover`} loading="lazy" decoding="async" data-prefetch-book-cover />
+                      <img src={openLibraryCover(coverRef)} alt={`${title} cover`} loading="lazy" decoding="async" fetchpriority="low" data-prefetch-book-cover />
                     ) : (
                       <span class="personal-book-card-placeholder" aria-hidden="true">
                         <span>{title}</span>
@@ -1815,6 +1816,7 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
   }
 
   .personal-ascii-hero {
+    --personal-cat-color: rgba(214, 154, 61, 0.58);
     position: absolute;
     left: 0;
     bottom: clamp(150px, 12vh, 180px);
@@ -1832,14 +1834,23 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
     background: transparent;
   }
 
+  :global([data-theme="light"]) .personal-ascii-hero {
+    --personal-cat-color: rgba(43, 69, 45, 0.5);
+  }
+
+  :global([data-theme="dark"]) .personal-ascii-hero {
+    --personal-cat-color: rgba(214, 154, 61, 0.58);
+  }
+
   .personal-ascii-hero pre {
     margin: 0;
-    color: rgba(43, 69, 45, 0.48);
+    color: var(--personal-cat-color);
     font-family: var(--font-mono);
     font-size: clamp(29px, 3.2vw, 42px);
     line-height: 0.92;
     letter-spacing: 0;
     white-space: pre;
+    transition: color var(--transition-base);
   }
 
   .intro-actions {
@@ -2996,7 +3007,6 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
     }
 
     .personal-ascii-hero pre {
-      color: rgba(43, 69, 45, 0.46);
       font-size: clamp(23px, 7.2vw, 32px);
       line-height: 0.92;
     }
@@ -3289,6 +3299,25 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
     const archive = document.getElementById('personal-books-archive-panel');
     if (!toggle || !archive) return;
     let hasStartedCoverPrefetch = false;
+    let currentCoverReadyPromise;
+
+    function waitForCurrentBookCovers() {
+      if (currentCoverReadyPromise) return currentCoverReadyPromise;
+      const currentCovers = Array.from(document.querySelectorAll('[data-current-book-cover]'));
+      const pendingCovers = currentCovers.filter((image) => !image.complete);
+      if (!pendingCovers.length) {
+        currentCoverReadyPromise = Promise.resolve();
+        return currentCoverReadyPromise;
+      }
+
+      currentCoverReadyPromise = Promise.all(
+        pendingCovers.map((image) => new Promise((resolve) => {
+          image.addEventListener('load', resolve, { once: true });
+          image.addEventListener('error', resolve, { once: true });
+        })),
+      ).then(() => undefined);
+      return currentCoverReadyPromise;
+    }
 
     function prefetchArchiveCovers() {
       if (hasStartedCoverPrefetch) return;
@@ -3306,6 +3335,9 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
           const image = new Image();
           active += 1;
           image.decoding = 'async';
+          if ('fetchPriority' in image) {
+            image.fetchPriority = 'low';
+          }
           image.onload = image.onerror = () => {
             active -= 1;
             loadNext();
@@ -3318,7 +3350,7 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
     }
 
     const scheduleCoverPrefetch = () => {
-      const start = () => prefetchArchiveCovers();
+      const start = () => waitForCurrentBookCovers().then(prefetchArchiveCovers);
       if ('requestIdleCallback' in window) {
         window.requestIdleCallback(start, { timeout: 2500 });
       } else {
@@ -3328,13 +3360,13 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
 
     toggle.addEventListener('click', () => {
       const isOpen = toggle.getAttribute('aria-expanded') === 'true';
-      if (!isOpen) prefetchArchiveCovers();
+      if (!isOpen) waitForCurrentBookCovers().then(prefetchArchiveCovers);
       toggle.setAttribute('aria-expanded', String(!isOpen));
       archive.hidden = isOpen;
     });
 
-    toggle.addEventListener('pointerenter', prefetchArchiveCovers);
-    toggle.addEventListener('focus', prefetchArchiveCovers);
+    toggle.addEventListener('pointerenter', () => waitForCurrentBookCovers().then(prefetchArchiveCovers));
+    toggle.addEventListener('focus', () => waitForCurrentBookCovers().then(prefetchArchiveCovers));
     scheduleCoverPrefetch();
   })();
 
