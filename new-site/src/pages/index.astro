@@ -1,50 +1,504 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { personalCatAsciiDelays, personalCatAsciiFrames } from '../data/personal-cat-ascii';
+
+const blogPosts = (await getCollection('blog'))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const featuredPersonalPosts = blogPosts.slice(0, 3);
+
+const currentBooks = [
+  {
+    title: 'Art & Fear',
+    author: 'David Bayles & Ted Orland',
+    cover: 'https://covers.openlibrary.org/b/id/683054-L.jpg',
+  },
+  {
+    title: 'The Mind Illuminated',
+    author: 'Culadasa',
+    cover: 'https://covers.openlibrary.org/b/isbn/9781501156984-L.jpg',
+  },
+];
+
+const lovedBookGroups = [
+  {
+    label: 'Mindfulness & Contemplative',
+    books: [
+      ['Silence', 'Thich Nhat Hanh', 'id:12193426'],
+      ['Old Path White Clouds', 'Thich Nhat Hanh', 'id:715886'],
+      ['You Are Here', 'Thich Nhat Hanh', '9781590308387'],
+      ['No Mud, No Lotus', 'Thich Nhat Hanh', '9781937006853'],
+      ['Peace Is Every Step', 'Thich Nhat Hanh', '9780553351392'],
+      ['When Things Fall Apart', 'Pema Chodron', 'id:817114'],
+      ['Full Catastrophe Living', 'Jon Kabat-Zinn', 'id:10829194'],
+      ['Wherever You Go...', 'Jon Kabat-Zinn', '9780786880706'],
+      ['Why We Meditate', 'Daniel Goleman & Tsoknyi Rinpoche', 'id:13873464'],
+      ['The Art of Living', 'William Hart', '9780060637248'],
+      ['Be Here Now', 'Ram Dass', '9780517543054'],
+      ['After the Ecstasy, the Laundry', 'Jack Kornfield', 'id:368040'],
+      ['The Attention Revolution', 'B. Alan Wallace', 'id:652646'],
+      ['The Book: On the Taboo', 'Alan Watts', 'id:6620702'],
+      ['The Wisdom of Insecurity', 'Alan Watts', 'id:254059'],
+      ['Autobiography of a Yogi', 'Paramahansa Yogananda', 'id:805448'],
+      ['Doors of Perception', 'Aldous Huxley', '9780061729072'],
+      ["The Psychedelic Explorer's Guide", 'James Fadiman', 'id:8802468'],
+      ['Food of the Gods', 'Terence McKenna', 'id:12899833'],
+    ],
+  },
+  {
+    label: 'Fantasy, Sci-Fi & Horror',
+    books: [
+      ['Red Rising series', 'Pierce Brown', 'id:12372343'],
+      ['The Kingkiller Chronicle', 'Patrick Rothfuss', 'id:11480483'],
+      ['A Song of Ice and Fire series', 'George R.R. Martin', 'id:8595260'],
+      ['The Expanse series', 'James S.A. Corey', 'id:13788795'],
+      ['The Belgariad series', 'David Eddings', 'id:12475466'],
+      ['Mistborn series', 'Brandon Sanderson', 'id:11329782'],
+      ['The 13th Paladin series', 'Torsten Weitze', 'id:13183674'],
+      ['The Three-Body Problem', 'Cixin Liu', '9780765382030'],
+      ['Dune', 'Frank Herbert', 'id:11481354'],
+      ['It', 'Stephen King', 'id:8569284'],
+      ['Island', 'Aldous Huxley', 'id:6517573'],
+      ['Malice', 'John Gwynne', 'id:8458717'],
+      ['Of Blood and Fire', 'Ryan Cahill', 'id:10724154'],
+      ['Gods of the Wyrdwood', 'R.J. Barker', 'id:14620294'],
+      ['Magician', 'Raymond E. Feist', 'id:1005965'],
+      ['The Dwarves', 'Markus Heitz', 'id:13296257'],
+      ['Uldart: Die dunkle Zeit', 'Markus Heitz', '9783492285285'],
+      ['Der Turm der Bettler', 'Thorsten Weitze', ''],
+      ['A Wizard of Earthsea', 'Ursula K. Le Guin', '9780547773742'],
+      ["Ender's Game", 'Orson Scott Card', '9780812550702'],
+    ],
+  },
+  {
+    label: 'Nature & Adventure',
+    books: [
+      ['Braiding Sweetgrass', 'Robin Wall Kimmerer', '9781571313560'],
+      ['Wild', 'Cheryl Strayed', '9780307476074'],
+      ['Into the Wild', 'Jon Krakauer', '9780385486804'],
+      ['Into Thin Air', 'Jon Krakauer', 'id:241603'],
+      ['Seven Years in Tibet', 'Heinrich Harrer', '9780874778885'],
+      ['Born to Run', 'Christopher McDougall', '9780307266309'],
+      ['A Search in Secret India', 'Paul Brunton', 'id:894082'],
+    ],
+  },
+  {
+    label: 'Psychology & Growth',
+    books: [
+      ['Adult Children of Emotionally Immature Parents', 'Lindsay C. Gibson', 'id:11301956'],
+      ['How to Do the Work', 'Nicole LePera', 'id:10363237'],
+      ['Why Has Nobody Told Me This Before?', 'Julie Smith', 'id:12821544'],
+      ["Why Zebras Don't Get Ulcers", 'Robert M. Sapolsky', 'id:581148'],
+      ['Maybe You Should Talk to Someone', 'Lori Gottlieb', 'id:8596019'],
+      ['In the Realm of Hungry Ghosts', 'Gabor Mate', 'id:4653016'],
+      ['How to Change Your Mind', 'Michael Pollan', 'id:8805168'],
+      ['DARE', 'Barry McDonagh', 'id:14851341'],
+      ['Feeling Good', 'David D. Burns', '9780380810338'],
+      ['A Liberated Mind', 'Steven C. Hayes', '9780735214002'],
+      ['Four Thousand Weeks', 'Oliver Burkeman', '9780374159122'],
+      ['Deep Work', 'Cal Newport', '9781455586691'],
+      ['The Myth of Normal', 'Gabor Mate', '9780593083888'],
+    ],
+  },
+  {
+    label: 'Health & Body',
+    books: [
+      ['How Not to Die', 'Michael Greger', '9781250066114'],
+      ['How Not to Age', 'Michael Greger', 'id:12554611'],
+      ['Food Rules', 'Michael Pollan', 'id:6305235'],
+      ["Omnivore's Dilemma", 'Michael Pollan', '9780143038580'],
+      ['Deep Medicine', 'Eric Topol', 'id:9167490'],
+      ['Total Immersion', 'Terry Laughlin', 'id:6804011'],
+    ],
+  },
+  {
+    label: 'Essays, Work & Society',
+    books: [
+      ['24/6', 'Tiffany Shlain', 'id:8908150'],
+      ['Smartphone Nation', 'Kaitlyn Regehr', 'id:15174652'],
+      ["It Doesn't Have to Be Crazy at Work", 'Jason Fried & David Heinemeier Hansson', 'id:8359215'],
+      ['The Age of Surveillance Capitalism', 'Shoshana Zuboff', 'id:8353262'],
+      ['How to Break Up with Your Phone', 'Catherine Price', 'id:9269461'],
+      ['Make Time', 'Jake Knapp & John Zeratsky', 'id:10132460'],
+      ['We Should All Be Feminists', 'Chimamanda Ngozi Adichie', 'id:11324542'],
+      ['Men Explain Things to Me', 'Rebecca Solnit', '9781608464661'],
+    ],
+  },
+  {
+    label: 'Science, Ideas & Practical Life',
+    books: [
+      ['The Road to Reality', 'Roger Penrose', 'id:8427776'],
+      ["Surely You're Joking, Mr. Feynman!", 'Richard P. Feynman', 'id:9274698'],
+      ['Tools of Titans', 'Tim Ferriss', '9781328683786'],
+      ['How to Win Friends and Influence People', 'Dale Carnegie', 'id:13314878'],
+      ['The Life-Changing Magic of Tidying Up', 'Marie Kondo', 'id:7367218'],
+    ],
+  },
+  {
+    label: 'Life & Death',
+    books: [
+      ['When Breath Becomes Air', 'Paul Kalanithi', '9780812988406'],
+      ["Man's Search for Meaning", 'Viktor Frankl', '9780807014295'],
+      ['That Good Night', 'Sunita Puri', '9780735223318'],
+    ],
+  },
+];
+
+const okayBooks = [
+  ['The Obstacle Is the Way', 'Ryan Holiday', 'id:14428233'],
+  ['Stolen Focus', 'Johann Hari', 'id:12664855'],
+  ['The Wim Hof Method', 'Wim Hof', 'id:10389858'],
+  ['Atomic Habits', 'James Clear', '9780735211292'],
+  ['Indistractable', 'Nir Eyal', '9781948836531'],
+  ['Waking Up', 'Sam Harris', '9781451636024'],
+  ['Built to Move', 'Kelly Starrett', '9780593534809'],
+  ['Kitchen Confidential', 'Anthony Bourdain', '9780060899226'],
+  ['The Comfort Crisis', 'Michael Easter', '9780593138762'],
+  ['The Shallows', 'Nicholas Carr', '9780393339758'],
+];
+
+type LetterboxdFilm = {
+  title: string;
+  year: string;
+  href: string;
+  poster: string;
+  rating: number;
+  ratingStars: string;
+  ratedDate: string;
+  ratedLabel: string;
+};
+
+const letterboxdBaseUrl = 'https://letterboxd.com';
+const letterboxdRssUrl = 'https://letterboxd.com/haukeman/rss/';
+const letterboxdProfileUrl = 'https://letterboxd.com/haukeman/';
+const letterboxdFilmsUrl = 'https://letterboxd.com/haukeman/films/';
+const letterboxdRequestHeaders = {
+  'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+  'User-Agent': 'Mozilla/5.0 (compatible; johannesroth.dev build)',
+};
+
+const fallbackLetterboxdFilms: LetterboxdFilm[] = [
+  {
+    title: 'Christine',
+    year: '1983',
+    href: 'https://letterboxd.com/film/christine-1983/',
+    poster: 'https://a.ltrbxd.com/resized/film-poster/4/7/6/1/5/47615-christine-0-230-0-345-crop.jpg?v=368af14bb5',
+    rating: 3.5,
+    ratingStars: '★★★½',
+    ratedDate: '2026-06-07',
+    ratedLabel: 'Rated Jun 7, 2026',
+  },
+  {
+    title: 'Hokum',
+    year: '2026',
+    href: 'https://letterboxd.com/film/hokum/',
+    poster: 'https://a.ltrbxd.com/resized/film-poster/1/3/0/8/5/8/7/1308587-hokum-0-230-0-345-crop.jpg?v=29deb57767',
+    rating: 2.5,
+    ratingStars: '★★½',
+    ratedDate: '2026-06-07',
+    ratedLabel: 'Rated Jun 7, 2026',
+  },
+  {
+    title: 'Zodiac',
+    year: '2007',
+    href: 'https://letterboxd.com/film/zodiac/',
+    poster: 'https://a.ltrbxd.com/resized/sm/upload/58/tf/z6/gw/qKQIjErYaN149hZRP5Vgf8RoC7S-0-230-0-345-crop.jpg?v=72ee5db942',
+    rating: 4.5,
+    ratingStars: '★★★★½',
+    ratedDate: '2026-06-07',
+    ratedLabel: 'Rated Jun 7, 2026',
+  },
+];
+
+const decodeHtml = (value: string) => value
+  .replace(/<!\[CDATA\[|\]\]>/g, '')
+  .replace(/&(#x[\da-f]+|#\d+|amp|apos|quot|lt|gt|#039);/gi, (match, entity) => {
+    const normalized = entity.toLowerCase();
+    if (normalized.startsWith('#x')) {
+      return String.fromCharCode(Number.parseInt(normalized.slice(2), 16));
+    }
+    if (normalized.startsWith('#')) {
+      return String.fromCharCode(Number.parseInt(normalized.slice(1), 10));
+    }
+    const namedEntities: Record<string, string> = {
+      amp: '&',
+      apos: "'",
+      quot: '"',
+      lt: '<',
+      gt: '>',
+      '#039': "'",
+    };
+    return namedEntities[normalized] ?? match;
+  });
+
+const extractRssTag = (item: string, tag: string) => {
+  const escapedTag = tag.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const match = item.match(new RegExp(`<${escapedTag}>([\\s\\S]*?)</${escapedTag}>`));
+  return match ? decodeHtml(match[1].trim()) : '';
+};
+
+const formatLetterboxdRating = (rating: number) => {
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating % 1 >= 0.5;
+  return `${'★'.repeat(fullStars)}${hasHalfStar ? '½' : ''}`;
+};
+
+const formatLetterboxdDate = (dateString: string) => {
+  if (!dateString) return '';
+  const normalizedDate = dateString.replace(/^on\s+/i, '').trim();
+  const date = new Date(
+    /^\d{4}-\d{2}-\d{2}$/.test(normalizedDate)
+      ? `${normalizedDate}T12:00:00Z`
+      : normalizedDate,
+  );
+  if (Number.isNaN(date.valueOf())) return 'Recently';
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+};
+
+const extractPosterFromDescription = (description: string) => {
+  const match = description.match(/<img[^>]+src="([^"]+)"/);
+  return match ? decodeHtml(match[1]) : '';
+};
+
+const absoluteLetterboxdUrl = (path: string) => new URL(decodeHtml(path), letterboxdBaseUrl).toString();
+
+const fetchLetterboxdText = async (url: string, timeoutMs = 6000) => {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const response = await fetch(url, {
+      headers: letterboxdRequestHeaders,
+      signal: controller.signal,
+    });
+
+    if (!response.ok) {
+      throw new Error(`${url} returned ${response.status}`);
+    }
+
+    return await response.text();
+  } finally {
+    clearTimeout(timeoutId);
+  }
+};
+
+const parseLetterboxdActivity = (html: string): LetterboxdFilm[] => {
+  const ratedActivityPattern = /<span class="activity-summary">[\s\S]*?\srated\s+<a href="([^"]+)" class="target">([\s\S]*?)<\/a>\s*<span class="rating[^"]*rated-(\d+)[^"]*">\s*([^<]+?)\s*<\/span>[\s\S]*?<time datetime="([^"]+)"[^>]*>([\s\S]*?)<\/time>/g;
+
+  return Array.from(html.matchAll(ratedActivityPattern))
+    .map(([, href, title, ratingValue, ratingStars, ratedDate, visibleDate]) => {
+      const rating = Number.parseInt(ratingValue, 10) / 2;
+      const formattedDate = formatLetterboxdDate(decodeHtml(visibleDate));
+
+      if (!Number.isFinite(rating) || !title || !href) return null;
+
+      return {
+        title: decodeHtml(title),
+        year: '',
+        href: absoluteLetterboxdUrl(href),
+        poster: '',
+        rating,
+        ratingStars: decodeHtml(ratingStars.trim()) || formatLetterboxdRating(rating),
+        ratedDate,
+        ratedLabel: formattedDate ? `Rated ${formattedDate}` : '',
+      };
+    })
+    .filter((film): film is LetterboxdFilm => Boolean(film))
+    .slice(0, 3);
+};
+
+const parseLetterboxdFilmsGrid = (html: string): LetterboxdFilm[] => {
+  const filmGridPattern = /data-component-class="LazyPoster"[^>]*data-item-name="([^"]+)"[^>]*data-item-link="([^"]+)"[^>]*data-poster-url="([^"]+)"[\s\S]*?<p class="poster-viewingdata"[\s\S]*?<span class="rating[^"]*rated-(\d+)[^"]*">\s*([^<]+?)\s*<\/span>/g;
+
+  return Array.from(html.matchAll(filmGridPattern))
+    .map(([, itemName, href, posterPath, ratingValue, ratingStars]) => {
+      const decodedName = decodeHtml(itemName);
+      const titleMatch = decodedName.match(/^(.*)\s+\((\d{4})\)$/);
+      const rating = Number.parseInt(ratingValue, 10) / 2;
+
+      if (!Number.isFinite(rating) || !href) return null;
+
+      return {
+        title: titleMatch?.[1] ?? decodedName,
+        year: titleMatch?.[2] ?? '',
+        href: absoluteLetterboxdUrl(href),
+        poster: posterPath ? absoluteLetterboxdUrl(posterPath) : '',
+        rating,
+        ratingStars: decodeHtml(ratingStars.trim()) || formatLetterboxdRating(rating),
+        ratedDate: '',
+        ratedLabel: '',
+      };
+    })
+    .filter((film): film is LetterboxdFilm => Boolean(film))
+    .slice(0, 3);
+};
+
+const enrichLetterboxdFilm = async (film: LetterboxdFilm): Promise<LetterboxdFilm> => {
+  if (film.poster.startsWith('https://a.ltrbxd.com') && film.year) return film;
+
+  try {
+    const html = await fetchLetterboxdText(film.href, 5000);
+    const poster = html.match(/"image":"([^"]+)"/)?.[1] ?? film.poster;
+    const year = html.match(/"releasedEvent":\[\{"@type":"PublicationEvent","startDate":"(\d{4})/)?.[1] ?? film.year;
+
+    return {
+      ...film,
+      year,
+      poster: decodeHtml(poster),
+    };
+  } catch {
+    return film;
+  }
+};
+
+const enrichLetterboxdFilms = async (films: LetterboxdFilm[]) => Promise.all(
+  films.map((film) => enrichLetterboxdFilm(film)),
+);
+
+const parseLetterboxdFeed = (rss: string): LetterboxdFilm[] => {
+  return Array.from(rss.matchAll(/<item>\s*([\s\S]*?)\s*<\/item>/g))
+    .map(([, item]) => {
+      const rating = Number.parseFloat(extractRssTag(item, 'letterboxd:memberRating'));
+      const title = extractRssTag(item, 'letterboxd:filmTitle');
+      const year = extractRssTag(item, 'letterboxd:filmYear');
+      const href = extractRssTag(item, 'link');
+      const watchedDate = extractRssTag(item, 'letterboxd:watchedDate');
+      const formattedDate = formatLetterboxdDate(watchedDate);
+      const description = extractRssTag(item, 'description');
+      const poster = extractPosterFromDescription(description);
+
+      if (!Number.isFinite(rating) || !title || !href) return null;
+
+      return {
+        title,
+        year,
+        href,
+        poster,
+        rating,
+        ratingStars: formatLetterboxdRating(rating),
+        ratedDate: watchedDate,
+        ratedLabel: formattedDate ? `Rated ${formattedDate}` : '',
+      };
+    })
+    .filter((film): film is LetterboxdFilm => Boolean(film))
+    .slice(0, 3);
+};
+
+const getRecentLetterboxdFilms = async () => {
+  try {
+    const films = parseLetterboxdActivity(await fetchLetterboxdText(letterboxdProfileUrl));
+    if (films.length >= 3) return await enrichLetterboxdFilms(films);
+  } catch (error) {
+    console.warn('Letterboxd profile activity unavailable:', error);
+  }
+
+  try {
+    const films = parseLetterboxdFilmsGrid(await fetchLetterboxdText(letterboxdFilmsUrl));
+    if (films.length >= 3) return await enrichLetterboxdFilms(films);
+  } catch (error) {
+    console.warn('Letterboxd films grid unavailable:', error);
+  }
+
+  try {
+    const films = parseLetterboxdFeed(await fetchLetterboxdText(letterboxdRssUrl));
+    if (films.length >= 3) return films;
+  } catch (error) {
+    console.warn('Letterboxd RSS unavailable:', error);
+  }
+
+  return fallbackLetterboxdFilms;
+};
+
+const recentLetterboxdFilms = await getRecentLetterboxdFilms();
+
+const openLibraryCover = (coverRef: string) => {
+  const [kind, value] = coverRef.includes(':') ? coverRef.split(':') : ['isbn', coverRef];
+  const endpoint = kind === 'id' ? 'id' : 'isbn';
+  return `https://covers.openlibrary.org/b/${endpoint}/${value}-M.jpg`;
+};
+const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
 ---
 
 <Layout title="Johannes Roth">
+  <script
+    id="personalCatAsciiData"
+    type="application/json"
+    set:html={JSON.stringify({ frames: personalCatAsciiFrames, delays: personalCatAsciiDelays })}
+  />
+  <div class="mode-shell" data-site-mode="professional">
   <!-- Intro -->
   <section class="intro">
     <div class="intro-copy">
-      <p class="intro-eyebrow">NeuroAI / computational cognitive neuroscience / ML systems</p>
       <div class="intro-name-row">
         <h1 class="intro-title">Johannes Roth</h1>
-        <img class="intro-mobile-headshot" src="/profile-mobile-headshot.png?v=5" alt="Black-and-white portrait of Johannes Roth" />
+        <span class="intro-mobile-headshot-stack" aria-hidden="true">
+          <img class="intro-mobile-headshot hero-portrait--professional" src="/portrait-professional-hero-clean.png?v=4" alt="" style="opacity: 1;" />
+          <img class="intro-mobile-headshot hero-portrait--personal" src="/portrait-casual-hero.png?v=2" alt="" style="opacity: 0;" />
+        </span>
         <div class="ascii-accent" aria-hidden="true">
           <pre id="asciiHero"></pre>
         </div>
       </div>
-      <p class="intro-bio">
-        I'm finishing my <strong>PhD at the intersection of NeuroAI and Computational Cognitive Neuroscience</strong> at the
-        Max Planck Institute in Leipzig, where my research focuses on datasets used for comparing
-        neural network models with the human brain.
-      </p>
-      <p class="intro-bio">
-        Before academia, I spent several years working on applied data and ML problems - building
-        recommendation systems, image processing pipelines, and ML infrastructure in production. What drives me is
-        <strong>solving hard technical problems that actually matter</strong>: whether that's making
-        neuroimaging experiments more efficient or providing a model that changes how a product works.
-      </p>
+      <div class="intro-bio-stack">
+        <div class="intro-bio-group intro-bio-group--professional">
+          <p class="intro-bio">
+            I'm finishing my <strong>PhD at the intersection of NeuroAI and Computational Cognitive Neuroscience</strong> at the
+            Max Planck Institute in Leipzig, where my research focuses on datasets used for comparing
+            neural network models with the human brain.
+          </p>
+          <p class="intro-bio">
+            Before academia, I spent several years working on applied data and ML problems - building
+            recommendation systems, image processing pipelines, and ML infrastructure in production. What drives me is
+            <strong>solving hard technical problems that actually matter</strong>: whether that's making
+            neuroimaging experiments more efficient or providing a model that changes how a product works.
+          </p>
+        </div>
+        <div class="intro-bio-group intro-bio-group--personal">
+          <p class="intro-bio">
+            Hello from the other side! If you're here, it means you want to learn more about me personally -
+            so I'll keep things more casual!
+          </p>
+          <p class="intro-bio">
+            Here you'll find some info about me and my hobbies, my taste in music, movies and
+            books, and some notes on things I'm thinking about.
+          </p>
+          <div class="personal-ascii-hero" aria-hidden="true">
+            <pre id="personalAsciiHero" aria-hidden="true"></pre>
+          </div>
+        </div>
+      </div>
 
       <div class="intro-actions">
-        <div class="status">
-          <span class="status-dot"></span>
-          Open to opportunities starting September 2026
-        </div>
-
-        <a href="/cv.pdf" download="Johannes_Roth_CV.pdf" class="download-cv">Download CV &darr;</a>
+        <span class="mode-toggle-prompt" aria-hidden="true">
+          <span class="mode-toggle-prompt-text mode-toggle-prompt-text--professional">Learn more about my</span>
+          <span class="mode-toggle-prompt-text mode-toggle-prompt-text--personal">Back to my</span>
+        </span>
+        <button class="mode-toggle" type="button" aria-pressed="false" aria-label="Learn more about my life outside work">
+          <span class="mode-toggle-label mode-toggle-label--professional">life outside work</span>
+          <span class="mode-toggle-label mode-toggle-label--personal">professional work</span>
+        </button>
       </div>
     </div>
 
     <div class="intro-photo">
-      <img src="/portrait-professional-hero-clean.png" alt="Black-and-white portrait of Johannes Roth" />
+      <img class="hero-portrait hero-portrait--professional" src="/portrait-professional-hero-clean.png?v=4" alt="Black-and-white portrait of Johannes Roth in a suit" style="opacity: 1;" />
+      <img class="hero-portrait hero-portrait--personal" src="/portrait-casual-hero.png?v=2" alt="Casual portrait of Johannes Roth in climbing gear" aria-hidden="true" style="opacity: 0;" />
     </div>
 
     <a href="#experience" class="scroll-cue" aria-label="Scroll to experience"></a>
   </section>
 
   <!-- Experience -->
-  <section class="section" id="experience">
+  <section class="section mode-section mode-section--professional" id="experience">
     <h2 class="section-title">Experience</h2>
     <div class="timeline">
       <div class="timeline-group-label">Professional Experience</div>
@@ -157,7 +611,7 @@ import Layout from '../layouts/Layout.astro';
   </section>
 
   <!-- Work: Papers, Tools & Datasets -->
-  <section class="section" id="work">
+  <section class="section mode-section mode-section--professional" id="work">
     <h2 class="section-title">Publications</h2>
     <ul class="pub-list" role="list">
       <li class="pub">
@@ -271,12 +725,10 @@ import Layout from '../layouts/Layout.astro';
           </span>
           <span class="tool-tech">167 GB · CLIP ViT-H/14</span>
         </a>
-        <details class="pub-writeup">
-          <summary></summary>
-          <div class="pub-writeup-content">
-            <p>Vision research needs naturalistic photographs, but web-scraped datasets like LAION are full of screenshots, memes, ads, and generated images. We scored all 2.1 billion images in ReLAION-2B for "naturalness" using a CLIP-based classifier, then extracted and published ViT-H/14 embeddings for the ~500M most photographic ones. The result is a 167GB dataset on Hugging Face that lets researchers query half a billion images by visual similarity without downloading a single pixel.</p>
-          </div>
-        </details>
+        <button class="tool-notes-toggle" type="button" aria-expanded="false" aria-controls="tool-notes-relaion" data-tool-notes-toggle="tool-notes-relaion">
+          <span class="tool-notes-label tool-notes-label--closed">+ notes</span>
+          <span class="tool-notes-label tool-notes-label--open">- close notes</span>
+        </button>
       </div>
       <div class="tool-entry">
         <a href="https://github.com/ViCCo-Group/thingsvision" class="tool-row" target="_blank" rel="noopener">
@@ -290,12 +742,10 @@ import Layout from '../layouts/Layout.astro';
           </span>
           <span class="tool-tech">Core contributor · Python · 460k+ downloads</span>
         </a>
-        <details class="pub-writeup">
-          <summary></summary>
-          <div class="pub-writeup-content">
-            <p>An open-source Python toolbox for extracting and comparing image representations from deep neural networks. Supports 100+ models across torchvision, timm, CLIP, self-supervised models (DINO, MAE, SimCLR), and more. Also includes tools for aligning DNN representations with human similarity judgments via RSA and CKA. I'm the third-largest contributor to the project, which has 460k+ PyPI downloads and is used across vision and cognitive neuroscience labs.</p>
-          </div>
-        </details>
+        <button class="tool-notes-toggle" type="button" aria-expanded="false" aria-controls="tool-notes-thingsvision" data-tool-notes-toggle="tool-notes-thingsvision">
+          <span class="tool-notes-label tool-notes-label--closed">+ notes</span>
+          <span class="tool-notes-label tool-notes-label--open">- close notes</span>
+        </button>
       </div>
       <div class="tool-entry">
         <a href="https://laion-fmri.hebartlab.com" class="tool-row" target="_blank" rel="noopener">
@@ -309,12 +759,31 @@ import Layout from '../layouts/Layout.astro';
           </span>
           <span class="tool-tech">5 subjects · 165 sessions · GLMsingle betas</span>
         </a>
-        <details class="pub-writeup">
-          <summary></summary>
-          <div class="pub-writeup-content">
-            <p>LAION-fMRI is a deeply sampled 7T fMRI dataset for studying human visual representations with naturalistic images. It contains brain responses to 25,052 LAION-derived images across 5 subjects and 165 acquired scanning sessions, including single-trial GLMsingle betas, retinotopy, localizers, and diffusion data. The dataset supports work on model-brain comparison, stimulus selection, and replication through the re:vision initiative.</p>
-          </div>
-        </details>
+        <button class="tool-notes-toggle" type="button" aria-expanded="false" aria-controls="tool-notes-laion-fmri" data-tool-notes-toggle="tool-notes-laion-fmri">
+          <span class="tool-notes-label tool-notes-label--closed">+ notes</span>
+          <span class="tool-notes-label tool-notes-label--open">- close notes</span>
+        </button>
+      </div>
+      <div class="tool-notes-panel" id="tool-notes-relaion" data-tool-notes-panel hidden>
+        <p class="tool-notes-kicker">Dataset notes</p>
+        <h3 class="tool-notes-title">ReLAION-2B Natural</h3>
+        <div class="tool-notes-content">
+          <p>Vision research needs naturalistic photographs, but web-scraped datasets like LAION are full of screenshots, memes, ads, and generated images. We scored all 2.1 billion images in ReLAION-2B for "naturalness" using a CLIP-based classifier, then extracted and published ViT-H/14 embeddings for the ~500M most photographic ones. The result is a 167GB dataset on Hugging Face that lets researchers query half a billion images by visual similarity without downloading a single pixel.</p>
+        </div>
+      </div>
+      <div class="tool-notes-panel" id="tool-notes-thingsvision" data-tool-notes-panel hidden>
+        <p class="tool-notes-kicker">Library notes</p>
+        <h3 class="tool-notes-title">thingsvision</h3>
+        <div class="tool-notes-content">
+          <p>An open-source Python toolbox for extracting and comparing image representations from deep neural networks. Supports 100+ models across torchvision, timm, CLIP, self-supervised models (DINO, MAE, SimCLR), and more. Also includes tools for aligning DNN representations with human similarity judgments via RSA and CKA. I'm the third-largest contributor to the project, which has 460k+ PyPI downloads and is used across vision and cognitive neuroscience labs.</p>
+        </div>
+      </div>
+      <div class="tool-notes-panel" id="tool-notes-laion-fmri" data-tool-notes-panel hidden>
+        <p class="tool-notes-kicker">Dataset notes</p>
+        <h3 class="tool-notes-title">LAION-fMRI</h3>
+        <div class="tool-notes-content">
+          <p>LAION-fMRI is a deeply sampled 7T fMRI dataset for studying human visual representations with naturalistic images. It contains brain responses to 25,052 LAION-derived images across 5 subjects and 165 acquired scanning sessions, including single-trial GLMsingle betas, retinotopy, localizers, and diffusion data. The dataset supports work on model-brain comparison, stimulus selection, and replication through the re:vision initiative.</p>
+        </div>
       </div>
     </div>
 
@@ -345,8 +814,230 @@ import Layout from '../layouts/Layout.astro';
     </div>
   </section>
 
+  <!-- Personal: About -->
+  <section class="section mode-section mode-section--personal" id="personal-life">
+    <h2 class="section-title">About Me</h2>
+    <div class="personal-grid personal-grid--life">
+      <article class="personal-card personal-card--with-media personal-card--landscape personal-card--bouldering">
+        <img class="personal-card-media" src="/personal/about-bouldering.webp" width="1600" height="1066" alt="Johannes bouldering on a rock face in a mountain valley" loading="lazy" decoding="async" />
+        <div class="personal-card-body">
+          <h3 class="personal-title">Movement</h3>
+          <p class="personal-copy">
+            My love for moving my body started with joining a breakdance crew at the age of 17.
+            Since then I've dabbled in all kinds of
+            movement disciplines. Today, I really enjoy bouldering, but I also do resistance
+            training, yoga and more recently Qi Gong (good way to wake up the body in the morning!).
+            I also love hiking in nature (and combining it with climbing is the best way to spend a
+            day, see above).
+          </p>
+        </div>
+      </article>
+      <article class="personal-card personal-card--with-media personal-card--side personal-card--band">
+        <img class="personal-card-media" src="/personal/about-band.webp" width="1050" height="1400" alt="Johannes holding an electric guitar" loading="lazy" decoding="async" />
+        <div class="personal-card-body">
+          <h3 class="personal-title">Music</h3>
+          <p class="personal-copy">
+            A couple of years ago, I asked a bunch of friends, "Hey, want to start a band?" To my
+            surprise, everyone said yes! We had to drag our front singer into it, but now he
+            regularly screams his heart out. We mostly play pop punk covers for friends' birthday
+            parties, but the dream of writing our own songs is still alive and kicking.
+          </p>
+        </div>
+      </article>
+      <article class="personal-card personal-card--with-media personal-card--side personal-card--food">
+        <img class="personal-card-media" src="/personal/about-good-food.webp" width="1050" height="1400" alt="A colorful plate of food on a wooden table" loading="lazy" decoding="async" />
+        <div class="personal-card-body">
+          <h3 class="personal-title">Food</h3>
+          <p class="personal-copy">
+            As a kid, one of my teachers would say "Johannes lives off plain air", because I refused
+            to eat food from the school kitchen. Either I was very picky, or the food was just plain
+            bad. Today I eat almost anything - but I love throwing together a plate of whole food
+            ingredients into something delicious. Lately, I enjoyed hosting friends for dinner nights,
+            which have been a blast (but surprisingly stressful!).
+          </p>
+        </div>
+      </article>
+      <article class="personal-card personal-card--with-media personal-card--landscape personal-card--meditation">
+        <img class="personal-card-media" src="/personal/about-meditation.webp" width="1400" height="1050" alt="A quiet forest path" loading="lazy" decoding="async" />
+        <div class="personal-card-body">
+          <h3 class="personal-title">Meditation</h3>
+          <p class="personal-copy">
+            I've been meditating for over a decade now - although it's an on-off relationship. I even
+            attended a 10-day silent meditation retreat in 2024, which has been pretty life changing
+            for me! This is an image from the forest near the meditation hall - I walked that path
+            probably 100 times and discovered something new every time.
+          </p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Personal: Shelves -->
+  <section class="section mode-section mode-section--personal" id="personal-shelves">
+    <h2 class="section-title">Shelves</h2>
+    <div class="personal-shelves">
+      <article class="personal-shelf personal-shelf--books">
+        <div class="personal-shelf-header">
+          <h3 class="personal-title">Currently reading</h3>
+        </div>
+        <div class="personal-bookshelf" aria-label="Currently reading">
+          {currentBooks.map((book) => (
+            <article class="personal-book-feature">
+              <div class="personal-book-cover">
+                <img src={book.cover} alt={`${book.title} cover`} loading="lazy" />
+                <span class="personal-book-spine" aria-hidden="true"></span>
+              </div>
+              <div class="personal-book-info">
+                <span class="personal-book-title">{book.title}</span>
+                <span class="personal-book-author">{book.author}</span>
+              </div>
+            </article>
+          ))}
+        </div>
+        <button class="personal-archive-toggle" type="button" aria-expanded="false" aria-controls="personal-books-archive-panel" data-books-archive-toggle>
+            <span class="personal-archive-icon" aria-hidden="true"></span>
+            <span class="personal-archive-label personal-archive-label--closed">Books I've read</span>
+            <span class="personal-archive-label personal-archive-label--open">Hide books I've read</span>
+        </button>
+      </article>
+
+      <article class="personal-shelf personal-shelf--music">
+        <h3 class="personal-title">Music</h3>
+        <p class="personal-copy">
+          I listen to lots of stuff - but Spotify knows me best, so here is my weekly discovery
+          playlist for your perusal.
+        </p>
+        <div class="personal-spotify">
+          <iframe
+            title="Johannes Roth Discover Weekly playlist"
+            src="https://open.spotify.com/embed/playlist/37i9dQZEVXcKBQMbsgdSz3?utm_source=generator&theme=0"
+            width="100%"
+            height="152"
+            frameBorder="0"
+            allowfullscreen=""
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy">
+          </iframe>
+        </div>
+        <div class="personal-sound-strip" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </article>
+
+      <article class="personal-shelf personal-shelf--films">
+        <h3 class="personal-title">Movies</h3>
+        <p class="personal-copy">
+          Once a month, my wife and I do a horror movie night with friends - here are the last three
+          movies we watched (pulled from my <a href={letterboxdProfileUrl} target="_blank" rel="noopener">Letterboxd</a> account).
+        </p>
+        <div class="personal-film-list" aria-label="Recently watched films from Letterboxd">
+          {recentLetterboxdFilms.map((film) => (
+            <a class="personal-film-card" href={film.href} target="_blank" rel="noopener">
+              {film.poster && (
+                <img class="personal-film-poster" src={film.poster} alt={`${film.title} poster`} loading="lazy" />
+              )}
+              <span class="personal-film-info">
+                <span class="personal-film-title">{film.title}</span>
+                <span class="personal-film-meta">{film.year} / {film.ratingStars}</span>
+                {film.ratedLabel && <span class="personal-film-date">{film.ratedLabel}</span>}
+              </span>
+            </a>
+          ))}
+        </div>
+      </article>
+
+      <div class="personal-books-archive personal-books-archive--full" id="personal-books-archive-panel" hidden>
+        <div class="personal-reading-list">
+          <div class="personal-reading-category">
+            <h4 class="personal-category-label personal-category-label--loved">Loved</h4>
+            {lovedBookGroups.map((group) => (
+              <section class="personal-genre">
+                <span class="personal-genre-label">{group.label}</span>
+                <div class="personal-book-grid">
+                  {group.books.map(([title, author, coverRef]) => (
+                    <article class="personal-book-card">
+                      <span class={`personal-book-card-cover${coverRef ? '' : ' personal-book-card-cover--fallback'}`}>
+                        {coverRef ? (
+                          <img src={openLibraryCover(coverRef)} alt={`${title} cover`} loading="lazy" decoding="async" data-prefetch-book-cover />
+                        ) : (
+                          <span class="personal-book-card-placeholder" aria-hidden="true">
+                            <span>{title}</span>
+                            <small>{author}</small>
+                          </span>
+                        )}
+                      </span>
+                      <span class="personal-book-card-title">{title}</span>
+                      <span class="personal-book-card-author">{author}</span>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            ))}
+          </div>
+
+          <div class="personal-reading-category">
+            <h4 class="personal-category-label personal-category-label--okay">Found Okay</h4>
+            <div class="personal-book-grid">
+              {okayBooks.map(([title, author, coverRef]) => (
+                <article class="personal-book-card">
+                  <span class={`personal-book-card-cover${coverRef ? '' : ' personal-book-card-cover--fallback'}`}>
+                    {coverRef ? (
+                      <img src={openLibraryCover(coverRef)} alt={`${title} cover`} loading="lazy" decoding="async" data-prefetch-book-cover />
+                    ) : (
+                      <span class="personal-book-card-placeholder" aria-hidden="true">
+                        <span>{title}</span>
+                        <small>{author}</small>
+                      </span>
+                    )}
+                  </span>
+                  <span class="personal-book-card-title">{title}</span>
+                  <span class="personal-book-card-author">{author}</span>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Personal: Notes -->
+  <section class="section mode-section mode-section--personal" id="personal-notes">
+    <div class="personal-section-heading">
+      <h2 class="section-title">Notes</h2>
+      <a class="personal-section-cta" href="/blog">See all posts</a>
+    </div>
+    <div class="personal-notes">
+      {featuredPersonalPosts.map((post) => (
+        <a class="personal-note" href={`/blog/${post.slug}`}>
+          <span class="personal-note-meta">
+            {post.data.draft ? 'Draft' : 'Post'} / {formatPostDate(post.data.date)}
+          </span>
+          <h3 class="personal-note-title">{post.data.title}</h3>
+          <p class="personal-copy">{post.data.description}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Personal Contact -->
+  <section class="section mode-section mode-section--personal" id="personal-contact">
+    <h2 class="section-title">Say Hi</h2>
+    <p>
+      Happy to hear from friends, collaborators, future coworkers, or people who want to talk about
+      brains, tools, climbing, books, or dinner. <a href="mailto:johannes@roth24.de">Email</a> is best.
+    </p>
+  </section>
+
   <!-- Contact -->
-  <section class="section" id="contact">
+  <section class="section mode-section mode-section--professional" id="contact">
     <h2 class="section-title">Get in Touch</h2>
     <p>
       Happy to chat about research, potential collaborations, or opportunities.
@@ -357,6 +1048,7 @@ import Layout from '../layouts/Layout.astro';
       <a href="https://scholar.google.com/citations?user=U3Z3J2gAAAAJ" target="_blank" rel="noopener">Google Scholar</a>.
     </p>
   </section>
+  </div>
 </Layout>
 
 <style>
@@ -792,6 +1484,83 @@ import Layout from '../layouts/Layout.astro';
     margin-bottom: 0;
   }
 
+  .tool-notes-toggle {
+    align-self: flex-start;
+    width: fit-content;
+    margin: -6px 18px 18px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--color-text-tertiary);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    line-height: 1.45;
+    cursor: pointer;
+    transition: color 0.15s ease;
+  }
+
+  .tool-notes-toggle:hover,
+  .tool-notes-toggle[aria-expanded="true"] {
+    color: var(--color-text-secondary);
+  }
+
+  .tool-notes-label--open {
+    display: none;
+  }
+
+  .tool-notes-toggle[aria-expanded="true"] .tool-notes-label--closed {
+    display: none;
+  }
+
+  .tool-notes-toggle[aria-expanded="true"] .tool-notes-label--open {
+    display: inline;
+  }
+
+  .tool-notes-panel {
+    grid-column: 1 / -1;
+    padding: 24px;
+    border: 1px solid var(--section-card-border);
+    border-radius: 8px;
+    background:
+      linear-gradient(112deg, rgba(160, 224, 171, 0.065), rgba(255, 172, 46, 0.035) 46%, rgba(165, 45, 37, 0.07)),
+      var(--section-card-bg);
+    animation: fadeInUp 0.22s ease-out;
+  }
+
+  .tool-notes-panel[hidden] {
+    display: none !important;
+  }
+
+  .tool-notes-kicker {
+    margin: 0 0 8px;
+    color: var(--color-text-tertiary);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    line-height: 1.35;
+    text-transform: uppercase;
+    letter-spacing: 0.075em;
+  }
+
+  .tool-notes-title {
+    margin: 0 0 14px !important;
+    color: var(--color-text);
+    font-size: clamp(20px, 2vw, 24px) !important;
+    line-height: 1.12 !important;
+    font-weight: 400 !important;
+    letter-spacing: normal !important;
+  }
+
+  .tool-notes-content {
+    max-width: 760px;
+    color: var(--color-text-secondary);
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+
+  .tool-notes-content p {
+    margin: 0;
+  }
+
   @media (max-width: 640px) {
     .pub-writeup summary {
       padding-left: 0;
@@ -931,9 +1700,1717 @@ import Layout from '../layouts/Layout.astro';
       font-size: 0.625rem;
     }
   }
+
+  /* ── Professional / personal flip ── */
+  .mode-shell {
+    --personal-card-bg: rgba(255, 255, 255, 0.026);
+    --personal-card-bg-hover: rgba(255, 255, 255, 0.044);
+    --personal-card-border: var(--color-border-subtle);
+    --personal-card-border-strong: var(--color-border);
+    --personal-warm: #d69a3d;
+    --personal-green: #7ea36b;
+    --personal-rose: #c7725f;
+  }
+
+  .mode-shell[data-site-mode="professional"] .mode-content--personal,
+  .mode-shell[data-site-mode="personal"] .mode-content--professional,
+  .mode-shell[data-site-mode="professional"] .mode-section--personal,
+  .mode-shell[data-site-mode="personal"] .mode-section--professional {
+    display: none !important;
+  }
+
+  .mode-shell[data-site-mode="personal"] .intro {
+    background:
+      linear-gradient(98deg, rgba(86, 146, 101, 0.16), rgba(218, 155, 50, 0.08) 48%, rgba(178, 70, 58, 0.12)),
+      rgba(255, 255, 255, 0.026) !important;
+  }
+
+  .mode-content,
+  .mode-section {
+    animation: fadeInUp 0.36s ease-out;
+  }
+
+  @media (min-width: 761px) {
+    .mode-section {
+      padding-inline: clamp(28px, 3.3vw, 42px);
+    }
+
+    .mode-section::before {
+      inset-inline: 0 !important;
+    }
+
+    .intro {
+      grid-template-columns: minmax(0, 0.56fr) minmax(320px, 0.44fr);
+      align-items: stretch;
+    }
+
+    .intro-copy {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      min-height: 100%;
+      padding-top: clamp(18px, 2.4vw, 34px);
+      padding-bottom: clamp(50px, 8vh, 92px);
+    }
+
+    .intro .intro-title {
+      line-height: 0.94 !important;
+    }
+
+    .intro .intro-name-row,
+    .intro .intro-bio-stack,
+    .intro .intro-actions {
+      width: 100%;
+      max-width: 620px;
+    }
+
+    .intro .intro-actions {
+      margin-top: auto !important;
+      padding-top: clamp(28px, 5vh, 56px);
+    }
+
+    .intro .intro-photo {
+      grid-column: 2;
+      grid-row: 1;
+      align-self: stretch;
+    }
+  }
+
+  .intro-bio-stack {
+    display: grid;
+  }
+
+  .intro-bio-group {
+    grid-area: 1 / 1;
+    transition: opacity 0.24s ease, visibility 0.24s ease;
+  }
+
+  .intro-bio-group--professional {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .intro-bio-group--personal {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .mode-shell[data-site-mode="personal"] .intro-bio-group--professional {
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .mode-shell[data-site-mode="personal"] .intro-bio-group--personal {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .mode-shell[data-site-mode="professional"] .intro-bio-group--personal {
+    display: none;
+  }
+
+  .personal-ascii-hero {
+    position: absolute;
+    left: 0;
+    bottom: clamp(150px, 12vh, 180px);
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: min(100%, 620px);
+    height: clamp(94px, 14vh, 138px);
+    min-height: 0;
+    margin-top: 0;
+    padding: 0;
+    overflow: hidden;
+    pointer-events: none;
+    background: transparent;
+  }
+
+  .personal-ascii-hero pre {
+    margin: 0;
+    color: rgba(43, 69, 45, 0.48);
+    font-family: var(--font-mono);
+    font-size: clamp(29px, 3.2vw, 42px);
+    line-height: 0.92;
+    letter-spacing: 0;
+    white-space: pre;
+  }
+
+  .intro-actions {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    min-height: 42px;
+  }
+
+  .mode-toggle-prompt {
+    display: inline;
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.2;
+  }
+
+  .mode-toggle-prompt-text {
+    white-space: nowrap;
+  }
+
+  .mode-toggle-prompt-text--professional {
+    display: inline;
+  }
+
+  .mode-toggle-prompt-text--personal {
+    display: none;
+  }
+
+  .mode-shell[data-site-mode="personal"] .mode-toggle-prompt-text--professional {
+    display: none;
+  }
+
+  .mode-shell[data-site-mode="personal"] .mode-toggle-prompt-text--personal {
+    display: inline;
+  }
+
+  .mode-toggle {
+    position: relative;
+    display: inline-grid;
+    grid-template-areas: "label";
+    align-items: center;
+    justify-content: center;
+    min-height: auto;
+    padding: 0 1px;
+    border: 0;
+    border-radius: 0;
+    color: transparent;
+    background: transparent;
+    font: inherit;
+    line-height: 1.2;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+
+  .mode-toggle:hover {
+    transform: translateY(-0.5px);
+  }
+
+  .mode-toggle::after {
+    content: "";
+    position: absolute;
+    left: 1px;
+    right: 1px;
+    bottom: -3px;
+    height: 1px;
+    border-radius: 999px;
+    background: linear-gradient(98deg, #8fbe91 0%, #d6a14a 48%, #cf7b6a 100%);
+    opacity: 0.46;
+    transform: scaleX(0.92);
+    transform-origin: center;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .mode-toggle:hover::after {
+    opacity: 0.86;
+    transform: scaleX(1);
+  }
+
+  .mode-toggle:focus-visible {
+    outline: 1px solid rgba(214, 161, 74, 0.52);
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+
+  .mode-toggle-label {
+    display: block !important;
+    grid-area: label;
+    white-space: nowrap;
+    background: linear-gradient(98deg, #8fbe91 0%, #d6a14a 48%, #cf7b6a 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    transition: opacity 0.18s ease, visibility 0.18s ease;
+  }
+
+  .mode-toggle-label--professional {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .mode-toggle-label--personal {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .mode-shell[data-site-mode="personal"] .mode-toggle-label--professional {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .mode-shell[data-site-mode="personal"] .mode-toggle-label--personal {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .intro .intro-photo {
+    isolation: isolate;
+  }
+
+  .intro .intro-photo::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  .intro::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  .intro .intro-photo .hero-portrait {
+    position: absolute !important;
+    left: 50% !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: 0 !important;
+    width: auto !important;
+    max-width: none !important;
+    object-fit: contain !important;
+    object-position: center bottom !important;
+    pointer-events: none;
+    transition:
+      transform 0.72s cubic-bezier(0.22, 1, 0.36, 1),
+      filter 0.72s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .intro .intro-photo .hero-portrait--professional {
+    z-index: 1;
+    height: min(calc(100% - 24px), calc(100vh - 168px)) !important;
+    min-height: 540px;
+    max-height: 760px;
+    transform: translate(-50%, 8px) scale(1) !important;
+    filter: grayscale(4%) contrast(1.02) !important;
+  }
+
+  .intro .intro-photo .hero-portrait--personal {
+    z-index: 2;
+    height: min(calc(100% - 24px), calc(100vh - 168px)) !important;
+    min-height: 540px;
+    max-height: 760px;
+    transform: translate(-50%, 8px) scale(1) !important;
+    filter: blur(7px) grayscale(22%) saturate(0.72) drop-shadow(0 34px 58px rgba(0, 0, 0, 0.24)) !important;
+  }
+
+  .mode-shell[data-site-mode="personal"] .intro .intro-photo .hero-portrait--professional {
+    transform: translate(-50%, 8px) scale(1) !important;
+    filter: blur(8px) grayscale(100%) drop-shadow(0 24px 42px rgba(0, 0, 0, 0.2)) !important;
+  }
+
+  .mode-shell[data-site-mode="personal"] .intro .intro-photo .hero-portrait--personal {
+    transform: translate(-50%, 8px) scale(1) !important;
+    filter: saturate(0.98) contrast(1.02) !important;
+  }
+
+  .intro-mobile-headshot-stack {
+    display: none;
+    position: relative;
+  }
+
+  .intro-mobile-headshot-stack .intro-mobile-headshot {
+    transition:
+      transform 0.58s cubic-bezier(0.22, 1, 0.36, 1),
+      filter 0.58s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .intro-mobile-headshot-stack .hero-portrait--professional {
+    transform: translate(0, 0) scale(1);
+  }
+
+  .intro-mobile-headshot-stack .hero-portrait--personal {
+    transform: translate(0, 0) scale(1);
+    filter: blur(5px) saturate(0.8);
+  }
+
+  .mode-shell[data-site-mode="personal"] .intro-mobile-headshot-stack .hero-portrait--professional {
+    transform: translate(0, 0) scale(1);
+    filter: blur(5px) grayscale(1);
+  }
+
+  .mode-shell[data-site-mode="personal"] .intro-mobile-headshot-stack .hero-portrait--personal {
+    transform: translate(0, 0) scale(1);
+    filter: saturate(0.96);
+  }
+
+  .personal-grid,
+  .personal-shelves,
+  .personal-notes {
+    display: grid;
+    gap: 14px;
+  }
+
+  .personal-section-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .personal-section-heading .section-title {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .personal-section-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    flex-shrink: 0;
+    margin-bottom: 0.28em;
+    color: var(--color-text-secondary);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.2;
+    text-decoration: none;
+    transition: color 0.18s ease, transform 0.18s ease;
+  }
+
+  .personal-section-cta::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-top: 1px solid currentColor;
+    border-right: 1px solid currentColor;
+    transform: rotate(45deg);
+    opacity: 0.75;
+    transition: transform 0.18s ease;
+  }
+
+  .personal-section-cta:hover {
+    color: var(--color-accent);
+    transform: translateX(1px);
+  }
+
+  .personal-section-cta:hover::after {
+    transform: translateX(2px) rotate(45deg);
+  }
+
+  .personal-notes {
+    grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  }
+
+  .personal-grid--life {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .personal-shelves {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .personal-card,
+  .personal-shelf,
+  .personal-note {
+    min-height: 214px;
+    padding: 18px;
+    border: 1px solid var(--personal-card-border);
+    border-radius: 8px;
+    background: var(--personal-card-bg);
+    transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .personal-note {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .personal-card:hover,
+  .personal-shelf:hover,
+  .personal-note:hover {
+    border-color: var(--personal-card-border-strong);
+    background: var(--personal-card-bg-hover);
+    transform: translateY(-1px);
+  }
+
+  .personal-card--with-media {
+    min-height: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .personal-card-media {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    object-fit: cover;
+    object-position: center;
+    filter: saturate(0.92) contrast(0.98);
+    transition: filter 0.2s ease, transform 0.2s ease;
+  }
+
+  .personal-card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 18px;
+  }
+
+  .personal-card:hover .personal-card-media {
+    filter: saturate(1.04) contrast(1.01);
+  }
+
+  .personal-card--landscape {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .personal-card--landscape .personal-card-media {
+    aspect-ratio: var(--personal-card-media-ratio, 4 / 3);
+    border-bottom: 1px solid var(--personal-card-border);
+  }
+
+  .personal-card--bouldering {
+    --personal-card-media-ratio: 3 / 2;
+  }
+
+  .personal-card--meditation {
+    --personal-card-media-ratio: 16 / 9;
+  }
+
+  .personal-card--side {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.62fr) minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  .personal-card--side .personal-card-media {
+    height: 100%;
+    min-height: 320px;
+    object-position: 50% 38%;
+    border-right: 1px solid var(--personal-card-border);
+  }
+
+  .personal-card--band .personal-card-media {
+    object-position: 52% 36%;
+  }
+
+  .personal-card--food .personal-card-media {
+    object-position: 50% 50%;
+  }
+
+  .personal-card--bouldering .personal-card-media {
+    object-position: center center;
+  }
+
+  .personal-card--meditation .personal-card-media {
+    object-position: center center;
+  }
+
+  @media (min-width: 901px) {
+    .personal-grid--life {
+      align-items: stretch;
+    }
+
+    .personal-grid--life .personal-card--side {
+      display: grid;
+      grid-template-columns: minmax(205px, 0.42fr) minmax(0, 1fr);
+      min-height: 0;
+    }
+
+    .personal-grid--life .personal-card--landscape {
+      display: grid;
+      grid-template-columns: minmax(250px, 0.62fr) minmax(0, 1fr);
+      min-height: 0;
+    }
+
+    .personal-grid--life .personal-card-media {
+      height: 100%;
+      min-height: 300px;
+      aspect-ratio: auto;
+      border-right: 1px solid var(--personal-card-border);
+      border-bottom: 0;
+    }
+
+    .personal-card--bouldering .personal-card-media {
+      object-position: 34% center;
+    }
+
+    .personal-card--band .personal-card-media {
+      object-position: 52% 34%;
+    }
+
+    .personal-card--food .personal-card-media {
+      object-position: 50% 50%;
+    }
+
+    .personal-card--meditation {
+      grid-template-columns: minmax(0, 1fr) minmax(250px, 0.62fr) !important;
+    }
+
+    .personal-card--meditation .personal-card-media {
+      grid-column: 2;
+      grid-row: 1;
+      border-right: 0;
+      border-left: 1px solid var(--personal-card-border);
+      object-position: center center;
+    }
+
+    .personal-card--meditation .personal-card-body {
+      grid-column: 1;
+      grid-row: 1;
+    }
+  }
+
+  .personal-card--wide {
+    grid-column: span 2;
+    background:
+      linear-gradient(138deg, rgba(218, 155, 50, 0.08), rgba(255, 255, 255, 0.018) 56%),
+      var(--personal-card-bg);
+  }
+
+  .personal-kicker,
+  .personal-note-meta {
+    margin: 0 0 14px;
+    color: var(--color-text-tertiary);
+    font-size: 10.5px;
+    line-height: 1.35;
+    text-transform: uppercase;
+    letter-spacing: 0.075em;
+  }
+
+  .personal-title,
+  .personal-note-title {
+    margin: 0 0 12px !important;
+    font-size: clamp(19px, 2vw, 24px) !important;
+    line-height: 1.12 !important;
+    font-weight: 400 !important;
+    letter-spacing: normal !important;
+  }
+
+  .personal-copy {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 14px;
+    line-height: 1.46;
+  }
+
+  .personal-shelf {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .personal-shelf--books {
+    min-height: 0;
+  }
+
+  .personal-bookshelf {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(82px, 1fr));
+    gap: 14px;
+    align-items: start;
+    margin-top: 8px;
+  }
+
+  .personal-book-feature,
+  .personal-book-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .personal-book-feature {
+    gap: 9px;
+  }
+
+  .personal-book-cover {
+    position: relative;
+    aspect-ratio: 2 / 3;
+    overflow: hidden;
+    border-radius: 2px 6px 6px 2px;
+    background: var(--color-bg-subtle);
+    box-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.08),
+      0 12px 24px rgba(0, 0, 0, 0.14),
+      5px 0 12px -3px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+
+  .personal-book-feature:hover .personal-book-cover {
+    transform: translateY(-6px) rotateY(-7deg);
+    box-shadow:
+      0 4px 8px rgba(0, 0, 0, 0.12),
+      0 18px 34px rgba(0, 0, 0, 0.18),
+      7px 0 14px -3px rgba(0, 0, 0, 0.24);
+  }
+
+  .personal-book-cover img,
+  .personal-book-card-cover img {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    display: block;
+    background: var(--color-bg-subtle);
+  }
+
+  .personal-book-cover img {
+    height: 100%;
+    transition: filter 0.3s ease;
+  }
+
+  .personal-book-feature:hover .personal-book-cover img {
+    filter: brightness(1.05) saturate(1.08);
+  }
+
+  .personal-book-spine {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 5px;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0.08), transparent);
+    pointer-events: none;
+  }
+
+  .personal-book-cover::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    right: 0;
+    bottom: 2px;
+    width: 3px;
+    border-radius: 0 2px 2px 0;
+    background: linear-gradient(to right, var(--color-bg-subtle), var(--color-border), var(--color-bg-subtle));
+  }
+
+  .personal-book-info,
+  .personal-book-card-title,
+  .personal-book-card-author {
+    min-width: 0;
+  }
+
+  .personal-book-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .personal-book-title,
+  .personal-book-card-title {
+    color: var(--color-text);
+    font-size: 13px;
+    line-height: 1.25;
+  }
+
+  .personal-book-author,
+  .personal-book-card-author {
+    color: var(--color-text-tertiary);
+    font-size: 11px;
+    line-height: 1.25;
+  }
+
+  .personal-books-archive {
+    grid-column: 1 / -1;
+    padding: 18px;
+    border: 1px solid var(--personal-card-border);
+    border-radius: 8px;
+    background: var(--personal-card-bg);
+  }
+
+  .personal-books-archive[hidden] {
+    display: none;
+  }
+
+  .personal-archive-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    width: fit-content;
+    margin: auto 0 0;
+    padding: 18px 0 0;
+    border: 0;
+    background: transparent;
+    color: var(--color-text-secondary);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.2;
+    cursor: pointer;
+    list-style: none;
+    transition: color 0.2s ease;
+    appearance: none;
+  }
+
+  .personal-archive-toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .personal-archive-toggle:hover {
+    color: var(--color-accent);
+  }
+
+  .personal-archive-icon {
+    width: 7px;
+    height: 7px;
+    border-right: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
+    transform: rotate(45deg) translateY(-1px);
+    transition: transform 0.2s ease;
+  }
+
+  .personal-archive-toggle[aria-expanded="true"] .personal-archive-icon {
+    transform: rotate(225deg) translate(-1px, -1px);
+  }
+
+  .personal-archive-label--open {
+    display: none;
+  }
+
+  .personal-archive-toggle[aria-expanded="true"] .personal-archive-label--closed {
+    display: none;
+  }
+
+  .personal-archive-toggle[aria-expanded="true"] .personal-archive-label--open {
+    display: inline;
+  }
+
+  .personal-reading-list {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+  }
+
+  .personal-reading-category {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .personal-category-label {
+    width: fit-content;
+    margin: 0;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .personal-category-label--loved {
+    color: var(--color-accent);
+    background: rgba(214, 154, 61, 0.13);
+  }
+
+  .personal-category-label--okay {
+    color: var(--color-text-secondary);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .personal-genre {
+    display: grid;
+    gap: 9px;
+  }
+
+  .personal-genre-label {
+    color: var(--color-text-tertiary);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .personal-book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
+    gap: 14px;
+  }
+
+  .personal-book-card {
+    position: relative;
+    gap: 5px;
+  }
+
+  .personal-book-card-cover {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    overflow: hidden;
+    border-radius: 2px 5px 5px 2px;
+    background:
+      linear-gradient(148deg, rgba(86, 146, 101, 0.28), rgba(218, 155, 50, 0.16) 55%, rgba(178, 70, 58, 0.18)),
+      var(--color-bg-subtle);
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.08),
+      0 6px 12px rgba(0, 0, 0, 0.1),
+      3px 0 6px -2px rgba(0, 0, 0, 0.16);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  }
+
+  .personal-book-card-cover img {
+    height: 100%;
+  }
+
+  .personal-book-card-cover::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    z-index: 2;
+    width: 5px;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.24), rgba(0, 0, 0, 0.08), transparent);
+    pointer-events: none;
+  }
+
+  .personal-book-card-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 14px 10px 12px 13px;
+    color: rgba(255, 255, 255, 0.9);
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.045em;
+  }
+
+  .personal-book-card-placeholder span {
+    font-size: clamp(10px, 1.5vw, 13px);
+    line-height: 1.15;
+  }
+
+  .personal-book-card-placeholder small {
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 9px;
+    line-height: 1.2;
+  }
+
+  .personal-book-card:hover .personal-book-card-cover {
+    transform: translateY(-4px) rotateY(-5deg);
+    box-shadow:
+      0 2px 6px rgba(0, 0, 0, 0.12),
+      0 10px 18px rgba(0, 0, 0, 0.12),
+      4px 0 8px -2px rgba(0, 0, 0, 0.18);
+  }
+
+  .personal-book-card:hover .personal-book-card-cover img {
+    filter: brightness(1.05) saturate(1.08);
+  }
+
+  .personal-book-card-title,
+  .personal-book-card-author {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .personal-shelf--music {
+    gap: 0;
+    min-height: 100%;
+  }
+
+  .personal-sound-strip {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    align-items: end;
+    gap: 6px;
+    flex-shrink: 0;
+    height: 46px;
+    margin-top: 0;
+    padding: 10px 12px;
+    border: 1px solid var(--personal-card-border);
+    border-radius: 8px;
+    background:
+      linear-gradient(98deg, rgba(86, 146, 101, 0.08), rgba(218, 155, 50, 0.07) 54%, rgba(178, 70, 58, 0.06)),
+      rgba(255, 255, 255, 0.035);
+  }
+
+  .personal-sound-strip span {
+    display: block;
+    min-height: 8px;
+    border-radius: 999px 999px 3px 3px;
+    background: linear-gradient(to top, var(--personal-warm), rgba(86, 146, 101, 0.66));
+    opacity: 0.7;
+  }
+
+  .personal-sound-strip span:nth-child(1) { height: 24%; }
+  .personal-sound-strip span:nth-child(2) { height: 68%; }
+  .personal-sound-strip span:nth-child(3) { height: 42%; }
+  .personal-sound-strip span:nth-child(4) { height: 86%; }
+  .personal-sound-strip span:nth-child(5) { height: 56%; }
+  .personal-sound-strip span:nth-child(6) { height: 34%; }
+  .personal-sound-strip span:nth-child(7) { height: 74%; }
+  .personal-sound-strip span:nth-child(8) { height: 48%; }
+
+  .personal-spotify {
+    margin-block: auto;
+    padding-block: 20px;
+  }
+
+  .personal-spotify iframe {
+    display: block;
+    border: 0;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  .personal-film-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: auto;
+    padding-top: 18px;
+  }
+
+  .personal-film-card {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .personal-film-poster {
+    display: block;
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    border-radius: 4px;
+    background: var(--color-bg-subtle);
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.1),
+      0 8px 18px rgba(0, 0, 0, 0.12);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  }
+
+  .personal-film-card:hover .personal-film-poster {
+    transform: translateY(-4px);
+    filter: brightness(1.04) saturate(1.06);
+    box-shadow:
+      0 2px 6px rgba(0, 0, 0, 0.12),
+      0 12px 24px rgba(0, 0, 0, 0.16);
+  }
+
+  .personal-film-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .personal-film-title {
+    display: -webkit-box;
+    min-height: 2.4em;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    color: var(--color-text);
+    font-size: 11.5px;
+    line-height: 1.2;
+  }
+
+  .personal-film-meta,
+  .personal-film-date {
+    color: var(--color-text-tertiary);
+    font-size: 10px;
+    line-height: 1.2;
+  }
+
+  .personal-film-meta {
+    color: var(--personal-warm);
+  }
+
+  #personal-contact {
+    padding: clamp(36px, 7vw, 76px);
+    border-radius: 10px;
+    background:
+      linear-gradient(98deg, rgba(218, 155, 50, 0.075), rgba(86, 146, 101, 0.06) 48%, rgba(178, 70, 58, 0.075)),
+      rgba(255, 255, 255, 0.014);
+  }
+
+  #personal-contact::before,
+  #contact::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  #personal-contact .section-title {
+    margin-bottom: 32px !important;
+  }
+
+  #personal-contact p {
+    max-width: 760px;
+    font-size: 18px;
+    line-height: 1.36;
+  }
+
+  [data-theme="light"] .mode-shell {
+    --personal-card-bg: rgba(255, 255, 255, 0.28);
+    --personal-card-bg-hover: rgba(255, 255, 255, 0.42);
+    --personal-card-border: var(--color-border-subtle);
+    --personal-card-border-strong: var(--color-border);
+  }
+
+  [data-theme="light"] .mode-shell[data-site-mode="personal"] .intro {
+    background:
+      linear-gradient(98deg, rgba(86, 146, 101, 0.16), rgba(218, 155, 50, 0.08) 48%, rgba(178, 70, 58, 0.1)),
+      rgba(255, 255, 255, 0.38) !important;
+  }
+
+  :global([data-theme="light"]) .mode-toggle {
+    background: transparent;
+  }
+
+  :global([data-theme="light"]) .mode-toggle:hover {
+    background: transparent;
+  }
+
+  :global([data-theme="light"]) .mode-toggle-label {
+    background-image: linear-gradient(98deg, #5f9a67 0%, #bb7d22 48%, #b86557 100%);
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+  }
+
+  [data-theme="light"] .personal-category-label--okay {
+    background: rgba(16, 20, 15, 0.06);
+  }
+
+  [data-theme="light"] .personal-book-cover,
+  [data-theme="light"] .personal-book-card-cover {
+    box-shadow:
+      0 2px 4px rgba(16, 20, 15, 0.08),
+      0 10px 20px rgba(16, 20, 15, 0.1),
+      4px 0 8px -2px rgba(16, 20, 15, 0.14);
+  }
+
+  [data-theme="light"] #personal-contact {
+    background:
+      linear-gradient(98deg, rgba(218, 155, 50, 0.075), rgba(86, 146, 101, 0.075) 48%, rgba(178, 70, 58, 0.055)),
+      rgba(255, 255, 255, 0.32) !important;
+  }
+
+  @media (min-width: 761px) and (max-width: 1100px) {
+    .intro {
+      grid-template-columns: minmax(0, 0.55fr) minmax(220px, 0.45fr) !important;
+      min-height: 620px !important;
+      overflow: hidden !important;
+    }
+
+    .intro-copy {
+      padding: clamp(28px, 5vw, 48px) 0 clamp(40px, 7vw, 64px) !important;
+    }
+
+    .intro .intro-title {
+      font-size: clamp(54px, 9vw, 82px) !important;
+      line-height: 0.94 !important;
+    }
+
+    .intro .intro-photo {
+      align-self: stretch;
+      min-height: 0 !important;
+      overflow: hidden !important;
+    }
+
+    .intro .intro-photo .hero-portrait {
+      left: 50% !important;
+      top: 50% !important;
+      bottom: auto !important;
+      height: min(78%, 520px) !important;
+      min-height: 0 !important;
+      max-height: none !important;
+      transform: translate(-50%, -46%) scale(1) !important;
+      object-position: center center !important;
+    }
+
+    .mode-shell[data-site-mode="personal"] .intro .intro-photo .hero-portrait--professional,
+    .mode-shell[data-site-mode="personal"] .intro .intro-photo .hero-portrait--personal,
+    .mode-shell[data-site-mode="professional"] .intro .intro-photo .hero-portrait--professional,
+    .mode-shell[data-site-mode="professional"] .intro .intro-photo .hero-portrait--personal {
+      transform: translate(-50%, -46%) scale(1) !important;
+    }
+
+    #work .tools-list {
+      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+      gap: 10px !important;
+    }
+
+    #work .tool-entry {
+      min-height: 250px;
+    }
+
+    #work .tool-row,
+    #work .tool-row:hover,
+    #work .tool-row:focus {
+      padding: 14px !important;
+    }
+
+    #work .tool-label-col {
+      margin-bottom: 14px;
+    }
+
+    #work .tool-anim {
+      display: none;
+    }
+
+    #work .tool-name {
+      font-size: clamp(16px, 2.2vw, 18px) !important;
+      line-height: 1.15 !important;
+    }
+
+    #work .tool-desc {
+      font-size: 12.5px !important;
+      line-height: 1.38 !important;
+    }
+
+    #work .tool-tech {
+      white-space: normal;
+      font-size: 10px !important;
+      line-height: 1.35 !important;
+    }
+
+    #work .tool-notes-toggle {
+      margin: -2px 14px 14px;
+    }
+
+    #work .tool-notes-panel {
+      padding: 20px;
+    }
+
+    .personal-grid--life,
+    .personal-shelves,
+    .personal-notes {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .personal-grid--life {
+      align-items: stretch;
+      gap: 12px;
+    }
+
+    .personal-grid--life .personal-card--landscape,
+    .personal-grid--life .personal-card--side {
+      display: grid !important;
+      grid-template-columns: minmax(0, 1fr) !important;
+      grid-template-rows: var(--about-card-media-height, clamp(180px, 25vw, 260px)) auto;
+      align-content: start;
+      min-height: 0 !important;
+    }
+
+    .personal-grid--life .personal-card {
+      border-color: rgba(86, 146, 101, 0.22);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.44), rgba(255, 255, 255, 0.3)),
+        var(--personal-card-bg);
+      box-shadow: 0 12px 28px rgba(16, 20, 15, 0.045);
+    }
+
+    .personal-grid--life .personal-card-media {
+      grid-column: 1 !important;
+      grid-row: 1 !important;
+      width: 100% !important;
+      height: 100% !important;
+      max-height: var(--about-card-media-max-height, 280px) !important;
+      min-height: 0 !important;
+      aspect-ratio: auto !important;
+      border-right: 0 !important;
+      border-left: 0 !important;
+      border-bottom: 1px solid var(--personal-card-border) !important;
+      object-fit: cover !important;
+      object-position: center center !important;
+      filter: saturate(0.98) contrast(0.99) !important;
+    }
+
+    .personal-card--bouldering {
+      --about-card-media-ratio: 16 / 8.2;
+      --about-card-media-height: clamp(190px, 25vw, 270px);
+      --about-card-media-max-height: 270px;
+    }
+
+    .personal-card--band {
+      --about-card-media-ratio: 16 / 7.4;
+      --about-card-media-height: clamp(190px, 25vw, 270px);
+      --about-card-media-max-height: 270px;
+    }
+
+    .personal-card--food {
+      --about-card-media-ratio: 16 / 8.6;
+      --about-card-media-height: clamp(200px, 26vw, 280px);
+      --about-card-media-max-height: 280px;
+    }
+
+    .personal-card--meditation {
+      --about-card-media-ratio: 16 / 8.1;
+      --about-card-media-height: clamp(200px, 26vw, 280px);
+      --about-card-media-max-height: 280px;
+    }
+
+    .personal-card--band .personal-card-media {
+      object-position: center 34% !important;
+    }
+
+    .personal-card--food .personal-card-media {
+      object-position: center 50% !important;
+    }
+
+    .personal-card--meditation .personal-card-media,
+    .personal-card--meditation .personal-card-body {
+      grid-column: auto !important;
+      grid-row: auto !important;
+    }
+
+    .personal-card-body {
+      grid-column: 1 !important;
+      grid-row: 2 !important;
+      padding: 16px 18px 18px !important;
+    }
+
+    .personal-grid--life .personal-title {
+      margin-bottom: 10px !important;
+      font-size: clamp(20px, 2.6vw, 23px) !important;
+      line-height: 1.08 !important;
+    }
+
+    .personal-grid--life .personal-copy {
+      color: rgba(48, 54, 46, 0.76);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .personal-ascii-hero {
+      position: static;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      height: auto;
+      margin-top: 16px;
+      padding: 0;
+      overflow: visible;
+      pointer-events: none;
+    }
+
+    .personal-ascii-hero pre {
+      color: rgba(43, 69, 45, 0.46);
+      font-size: clamp(23px, 7.2vw, 32px);
+      line-height: 0.92;
+    }
+
+    .personal-section-heading {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .personal-section-cta {
+      margin-bottom: 0;
+    }
+
+    .mode-toggle {
+      min-height: auto;
+      padding: 0 1px;
+    }
+
+    .intro .intro-bio-stack {
+      order: 4;
+      grid-column: 1 / -1 !important;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .personal-grid--life,
+    .personal-shelves,
+    .personal-notes {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .personal-shelf--books {
+      order: 1;
+    }
+
+    .personal-books-archive--full {
+      order: 2;
+    }
+
+    .personal-shelf--music {
+      order: 3;
+    }
+
+    .personal-shelf--films {
+      order: 4;
+    }
+
+    .personal-card,
+    .personal-shelf,
+    .personal-note {
+      min-height: 0;
+      padding: 15px;
+    }
+
+    .personal-card--with-media {
+      padding: 0;
+    }
+
+    .personal-card-body {
+      padding: 15px 16px 17px;
+    }
+
+    .personal-card--side {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .personal-card--side .personal-card-media {
+      height: clamp(170px, 45vw, 260px);
+      max-height: 260px;
+      min-height: 0;
+      aspect-ratio: var(--about-card-media-ratio, 16 / 7.6);
+      border-right: 0;
+      border-bottom: 1px solid var(--personal-card-border);
+      object-fit: cover;
+    }
+
+    .personal-card--landscape .personal-card-media {
+      aspect-ratio: var(--about-card-media-ratio, 16 / 7.6);
+      height: clamp(170px, 45vw, 260px);
+      max-height: 260px;
+      object-fit: cover;
+    }
+
+    .personal-card--wide {
+      grid-column: auto;
+    }
+
+    .personal-title,
+    .personal-note-title {
+      font-size: clamp(18px, 5.2vw, 22px) !important;
+      line-height: 1.16 !important;
+    }
+
+    .personal-copy {
+      font-size: 13.5px;
+      line-height: 1.44;
+    }
+
+    .personal-bookshelf {
+      grid-template-columns: repeat(auto-fit, minmax(82px, 1fr));
+      max-width: 360px;
+      gap: 14px;
+    }
+
+    .personal-books-archive {
+      margin-top: 20px;
+      padding-top: 16px;
+    }
+
+    .personal-book-grid {
+      grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+      gap: 12px;
+    }
+
+    .personal-film-list {
+      max-width: 420px;
+    }
+
+    .personal-book-title,
+    .personal-book-card-title {
+      font-size: 12px;
+    }
+
+    .personal-book-author,
+    .personal-book-card-author {
+      font-size: 10.5px;
+    }
+
+    #personal-contact {
+      padding: 32px 24px;
+    }
+
+    #personal-contact p {
+      font-size: 16px;
+      line-height: 1.42;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .intro-mobile-headshot-stack {
+      position: relative;
+      display: block !important;
+      width: 112px !important;
+      height: 138px !important;
+      overflow: hidden;
+    }
+
+    .intro-mobile-headshot-stack .intro-mobile-headshot {
+      position: absolute !important;
+      inset: 0 !important;
+      display: block !important;
+      width: 112px !important;
+      height: 138px !important;
+      max-width: none !important;
+      object-fit: cover !important;
+      object-position: center top !important;
+    }
+
+    .intro-mobile-headshot-stack .hero-portrait--professional {
+      position: relative !important;
+    }
+
+    .intro-mobile-headshot-stack .hero-portrait--personal {
+      object-position: center 8% !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mode-content,
+    .mode-section,
+    .mode-toggle,
+    .intro .intro-photo .hero-portrait,
+    .intro-mobile-headshot-stack .intro-mobile-headshot {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
 </style>
 
 <script>
+  // ── Professional / personal page flip ──
+  (function() {
+    const shell = document.querySelector('.mode-shell');
+    const toggle = document.querySelector('.mode-toggle');
+    const scrollCue = document.querySelector('.scroll-cue');
+    const navLinks = Array.from(document.querySelectorAll('#site-navigation .nav-link'));
+    if (!shell || !toggle) return;
+
+    const storageKey = 'johannes-site-mode-v3';
+    const onHome = window.location.pathname === '/' || window.location.pathname.endsWith('/index.html');
+    const navSets = {
+      professional: [
+        { href: 'experience', label: 'experience' },
+        { href: 'work', label: 'work' },
+        { href: 'contact', label: 'contact' },
+      ],
+      personal: [
+        { href: 'personal-life', label: 'about' },
+        { href: 'personal-shelves', label: 'shelves' },
+        { href: 'personal-notes', label: 'notes' },
+      ],
+    };
+
+    function sectionHref(id) {
+      return onHome ? `#${id}` : `/#${id}`;
+    }
+
+    function syncThemeForMode(mode) {
+      const theme = mode === 'personal' ? 'light' : 'dark';
+      const nextTheme = theme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+      try {
+        localStorage.setItem('theme', theme);
+      } catch (error) {
+        // The active page can still switch themes without local storage.
+      }
+
+      const themeToggle = document.querySelector('.theme-toggle');
+      if (themeToggle) {
+        themeToggle.setAttribute('aria-label', `Switch to ${nextTheme} mode`);
+        themeToggle.setAttribute('title', `Switch to ${nextTheme} mode`);
+        themeToggle.setAttribute('aria-pressed', String(theme === 'dark'));
+      }
+    }
+
+    function setMode(mode, persist = true) {
+      const nextMode = mode === 'personal' ? 'personal' : 'professional';
+      const isPersonal = nextMode === 'personal';
+      shell.dataset.siteMode = nextMode;
+      document.documentElement.dataset.siteMode = nextMode;
+      syncThemeForMode(nextMode);
+      toggle.setAttribute('aria-pressed', String(isPersonal));
+      toggle.setAttribute('aria-label', isPersonal ? 'Back to my professional work' : 'Learn more about my life outside work');
+
+      document.querySelectorAll('.hero-portrait--professional').forEach((portrait) => {
+        portrait.setAttribute('aria-hidden', String(isPersonal));
+        portrait.style.opacity = isPersonal ? '0' : '1';
+      });
+      document.querySelectorAll('.hero-portrait--personal').forEach((portrait) => {
+        portrait.setAttribute('aria-hidden', String(!isPersonal));
+        portrait.style.opacity = isPersonal ? '1' : '0';
+      });
+
+      const activeNav = navSets[nextMode];
+      navLinks.forEach((link, index) => {
+        const item = activeNav[index];
+        if (!item) return;
+        link.setAttribute('href', sectionHref(item.href));
+        link.textContent = item.label;
+      });
+
+      if (scrollCue) {
+        const target = isPersonal ? 'personal-life' : 'experience';
+        scrollCue.setAttribute('href', sectionHref(target));
+        scrollCue.setAttribute('aria-label', isPersonal ? 'Scroll to about me' : 'Scroll to experience');
+      }
+
+      if (persist) {
+        try {
+          localStorage.setItem(storageKey, nextMode);
+        } catch (error) {
+          // The page can still switch modes without local storage.
+        }
+      }
+    }
+
+    let savedMode = 'professional';
+    try {
+      const storedMode = localStorage.getItem(storageKey);
+      if (storedMode === 'personal' || storedMode === 'professional') {
+        savedMode = storedMode;
+      }
+    } catch (error) {
+      savedMode = 'professional';
+    }
+    setMode(savedMode, false);
+
+    toggle.addEventListener('click', () => {
+      const nextMode = shell.dataset.siteMode === 'personal' ? 'professional' : 'personal';
+      setMode(nextMode);
+    });
+  })();
+
+  // Expand the personal reading archive under the shelf grid.
+  (function() {
+    const toggle = document.querySelector('[data-books-archive-toggle]');
+    const archive = document.getElementById('personal-books-archive-panel');
+    if (!toggle || !archive) return;
+    let hasStartedCoverPrefetch = false;
+
+    function prefetchArchiveCovers() {
+      if (hasStartedCoverPrefetch) return;
+      hasStartedCoverPrefetch = true;
+      const coverUrls = Array.from(archive.querySelectorAll('[data-prefetch-book-cover]'))
+        .map((image) => image.getAttribute('src'))
+        .filter(Boolean);
+      const queue = [...new Set(coverUrls)];
+      const maxConcurrent = 4;
+      let active = 0;
+
+      function loadNext() {
+        while (active < maxConcurrent && queue.length) {
+          const url = queue.shift();
+          const image = new Image();
+          active += 1;
+          image.decoding = 'async';
+          image.onload = image.onerror = () => {
+            active -= 1;
+            loadNext();
+          };
+          image.src = url;
+        }
+      }
+
+      loadNext();
+    }
+
+    const scheduleCoverPrefetch = () => {
+      const start = () => prefetchArchiveCovers();
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(start, { timeout: 2500 });
+      } else {
+        window.setTimeout(start, 900);
+      }
+    };
+
+    toggle.addEventListener('click', () => {
+      const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+      if (!isOpen) prefetchArchiveCovers();
+      toggle.setAttribute('aria-expanded', String(!isOpen));
+      archive.hidden = isOpen;
+    });
+
+    toggle.addEventListener('pointerenter', prefetchArchiveCovers);
+    toggle.addEventListener('focus', prefetchArchiveCovers);
+    scheduleCoverPrefetch();
+  })();
+
+  // Expand Datasets & Tools notes below the full tools grid.
+  (function() {
+    const toggles = Array.from(document.querySelectorAll('[data-tool-notes-toggle]'));
+    const panels = Array.from(document.querySelectorAll('[data-tool-notes-panel]'));
+    if (!toggles.length || !panels.length) return;
+
+    function setActivePanel(panelId) {
+      toggles.forEach((toggle) => {
+        const isActive = toggle.dataset.toolNotesToggle === panelId;
+        toggle.setAttribute('aria-expanded', String(isActive));
+      });
+
+      panels.forEach((panel) => {
+        panel.hidden = panel.id !== panelId;
+      });
+    }
+
+    function closePanels() {
+      toggles.forEach((toggle) => toggle.setAttribute('aria-expanded', 'false'));
+      panels.forEach((panel) => {
+        panel.hidden = true;
+      });
+    }
+
+    toggles.forEach((toggle) => {
+      toggle.addEventListener('click', () => {
+        const panelId = toggle.dataset.toolNotesToggle;
+        const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+        if (!panelId || isOpen) {
+          closePanels();
+          return;
+        }
+        setActivePanel(panelId);
+      });
+    });
+  })();
+
+  // ── Personal hero ASCII cat ──
+  (function() {
+    const el = document.getElementById('personalAsciiHero');
+    if (!el) return;
+
+    const dataEl = document.getElementById('personalCatAsciiData');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let frameData = { frames: [], delays: [] };
+    try {
+      frameData = JSON.parse(dataEl?.textContent || '{}');
+    } catch (error) {
+      frameData = { frames: [], delays: [] };
+    }
+
+    const catFrames = Array.isArray(frameData.frames) ? frameData.frames : [];
+    const catDelays = Array.isArray(frameData.delays) ? frameData.delays : [];
+    if (!catFrames.length) return;
+
+    let frameIndex = 0;
+
+    function render() {
+      el.textContent = catFrames[frameIndex] || catFrames[0];
+    }
+
+    render();
+    if (reduceMotion || catFrames.length < 2) return;
+
+    function advance() {
+      frameIndex = (frameIndex + 1) % catFrames.length;
+      render();
+      window.setTimeout(advance, catDelays[frameIndex] || 550);
+    }
+
+    window.setTimeout(advance, catDelays[0] || 550);
+  })();
+
   // Tiny metaphorical animations for each tool type
   document.querySelectorAll('.tool-anim').forEach((canvas) => {
     const ctx = canvas.getContext('2d');

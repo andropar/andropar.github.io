@@ -35,13 +35,19 @@ const navLinks = [
     <link rel="apple-touch-icon" href="/favicon.png" />
     <title>{title}</title>
 
-    <!-- Set the saved theme before paint; light is the default. -->
+    <!-- Set the saved theme before paint; the homepage side chooses its default theme. -->
     <script is:inline>
       (function() {
         var theme = 'light';
         try {
+          var isHome = window.location.pathname === '/' || window.location.pathname.endsWith('/index.html');
+          var storedSiteMode = localStorage.getItem('johannes-site-mode-v3');
           var storedTheme = localStorage.getItem('theme');
-          if (storedTheme === 'light' || storedTheme === 'dark') {
+          if (isHome && (storedSiteMode === 'professional' || !storedSiteMode)) {
+            theme = 'dark';
+          } else if (isHome && storedSiteMode === 'personal') {
+            theme = 'light';
+          } else if (storedTheme === 'light' || storedTheme === 'dark') {
             theme = storedTheme;
           }
         } catch (error) {

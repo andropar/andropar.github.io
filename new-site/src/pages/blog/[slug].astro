@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
+  const posts = (await getCollection('blog')).filter((post) => !post.data.draft);
   return posts.map((post) => ({
     params: { slug: post.slug },
     props: { post },
@@ -23,9 +23,10 @@ const formattedDate = post.data.date.toLocaleDateString('en-US', {
 <Layout title={`${post.data.title} - Johannes Roth`} description={post.data.description}>
   <article class="blog-post">
     <header class="post-header">
-      {post.data.draft && <span class="draft-badge">Draft</span>}
+      <a href="/blog" class="back-link">Back to blog</a>
       <time class="post-date" datetime={post.data.date.toISOString()}>{formattedDate}</time>
       <h1 class="post-title">{post.data.title}</h1>
+      {post.data.draft && <span class="draft-badge">Draft</span>}
       {post.data.tags.length > 0 && (
         <div class="post-tags">
           {post.data.tags.map((tag: string) => (
@@ -40,14 +41,10 @@ const formattedDate = post.data.date.toLocaleDateString('en-US', {
     </div>
 
     <footer class="post-footer">
-      <a href="/blog" class="back-link">
-        <span class="back-arrow">&larr;</span>
-        Back to all posts
-      </a>
+      <a href="/blog" class="back-link">Back to all posts</a>
     </footer>
   </article>
 
-  <!-- Image lightbox -->
   <div class="lightbox" id="lightbox">
     <button class="lightbox-close" aria-label="Close">&times;</button>
     <img class="lightbox-img" id="lightbox-img" src="" alt="" />
@@ -55,59 +52,42 @@ const formattedDate = post.data.date.toLocaleDateString('en-US', {
 </Layout>
 
 <script>
-  // Image zoom lightbox
   const lightbox = document.getElementById('lightbox');
-  const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+  const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement | null;
   const proseImages = document.querySelectorAll('.prose img');
 
-  proseImages.forEach(img => {
-    img.style.cursor = 'zoom-in';
+  proseImages.forEach((img) => {
+    img.setAttribute('role', 'button');
+    img.setAttribute('tabindex', '0');
     img.addEventListener('click', () => {
-      if (lightboxImg && lightbox) {
-        lightboxImg.src = (img as HTMLImageElement).src;
-        lightboxImg.alt = (img as HTMLImageElement).alt;
-        lightbox.classList.add('active');
-        document.body.style.overflow = 'hidden';
-      }
+      if (!lightboxImg || !lightbox) return;
+      lightboxImg.src = (img as HTMLImageElement).src;
+      lightboxImg.alt = (img as HTMLImageElement).alt;
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
     });
   });
 
-  lightbox?.addEventListener('click', (e) => {
-    if (e.target === lightbox || (e.target as HTMLElement).classList.contains('lightbox-close')) {
+  lightbox?.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement;
+    if (target === lightbox || target.classList.contains('lightbox-close')) {
       lightbox.classList.remove('active');
       document.body.style.overflow = '';
     }
   });
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && lightbox?.classList.contains('active')) {
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && lightbox?.classList.contains('active')) {
       lightbox.classList.remove('active');
       document.body.style.overflow = '';
     }
   });
 
-  // Mermaid diagram rendering
   import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs').then((mermaid) => {
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
     mermaid.default.initialize({
       startOnLoad: false,
       theme: isDark ? 'dark' : 'default',
-      themeVariables: isDark ? {
-        primaryColor: '#c4826d',
-        primaryTextColor: '#faf9f7',
-        primaryBorderColor: '#c4826d',
-        lineColor: '#888',
-        secondaryColor: '#3a3a3a',
-        tertiaryColor: '#2a2a2a',
-        background: '#1a1a1a',
-      } : {
-        primaryColor: '#c4826d',
-        primaryTextColor: '#2c2c2c',
-        primaryBorderColor: '#c4826d',
-        lineColor: '#666',
-        secondaryColor: '#faf9f7',
-        tertiaryColor: '#f0eeec',
-      },
       flowchart: {
         useMaxWidth: true,
         htmlLabels: true,
@@ -115,7 +95,6 @@ const formattedDate = post.data.date.toLocaleDateString('en-US', {
       },
     });
 
-    // Find all mermaid code blocks and render them
     const mermaidBlocks = document.querySelectorAll('pre code.language-mermaid');
     mermaidBlocks.forEach(async (block, index) => {
       const pre = block.parentElement;
@@ -129,8 +108,8 @@ const formattedDate = post.data.date.toLocaleDateString('en-US', {
         const { svg } = await mermaid.default.render(`mermaid-${index}`, code);
         container.innerHTML = svg;
         pre.replaceWith(container);
-      } catch (e) {
-        console.error('Mermaid rendering failed:', e);
+      } catch (error) {
+        console.error('Mermaid rendering failed:', error);
       }
     });
   });
@@ -138,187 +117,119 @@ const formattedDate = post.data.date.toLocaleDateString('en-US', {
 
 <style>
   .blog-post {
-    max-width: 680px;
+    max-width: 720px;
   }
 
   .post-header {
     margin-bottom: var(--space-3xl);
   }
 
-  .draft-badge {
-    display: inline-block;
-    font-size: 0.75rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #b45309;
-    background: rgba(180, 83, 9, 0.1);
-    padding: var(--space-xs) var(--space-sm);
-    border-radius: 4px;
-    margin-bottom: var(--space-md);
+  .back-link {
+    display: inline-flex;
+    margin-bottom: var(--space-lg);
+    color: var(--color-text-secondary);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    text-decoration: none;
+  }
+
+  .back-link:hover {
+    color: var(--color-accent);
   }
 
   .post-date {
     display: block;
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: 0.9375rem;
-    color: var(--color-text-tertiary);
     margin-bottom: var(--space-md);
   }
 
   .post-title {
-    font-size: 2.5rem;
+    margin-bottom: var(--space-md);
+    font-size: clamp(2rem, 7vw, 3.75rem);
+    line-height: 0.98;
+    letter-spacing: -0.04em;
+  }
+
+  .draft-badge,
+  .post-tag {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
     line-height: 1.2;
-    letter-spacing: -0.02em;
-    margin-bottom: var(--space-lg);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .draft-badge {
+    color: var(--color-text-tertiary);
+    background: var(--color-bg-subtle);
+    padding: 3px 7px;
+    margin-bottom: var(--space-md);
   }
 
   .post-tags {
     display: flex;
-    gap: var(--space-sm);
+    gap: var(--space-xs);
     flex-wrap: wrap;
+    margin-top: var(--space-md);
   }
 
   .post-tag {
-    font-size: 0.75rem;
-    font-weight: 500;
     color: var(--color-accent);
-    background: rgba(196, 130, 109, 0.1);
-    padding: var(--space-xs) var(--space-sm);
-    border-radius: 4px;
+    background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+    padding: 3px 6px;
   }
 
-  /* Prose styles for blog content */
   .prose {
     font-size: 1.0625rem;
     line-height: 1.8;
   }
 
   .prose :global(h2) {
-    font-size: 1.75rem;
     margin-top: var(--space-3xl);
     margin-bottom: var(--space-lg);
+    font-size: 1.75rem;
   }
 
   .prose :global(h3) {
-    font-size: 1.25rem;
     margin-top: var(--space-2xl);
     margin-bottom: var(--space-md);
+    font-size: 1.25rem;
   }
 
-  .prose :global(p) {
+  .prose :global(p),
+  .prose :global(ul),
+  .prose :global(ol) {
     margin-bottom: var(--space-lg);
-  }
-
-  .prose :global(img) {
-    width: calc(100% + 60px);
-    max-width: calc(100% + 60px);
-    margin-left: -30px;
-    height: auto;
-    border-radius: 8px;
-    margin-top: var(--space-lg);
-    margin-bottom: var(--space-lg);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  }
-
-  @media (max-width: 740px) {
-    .prose :global(img) {
-      width: 100%;
-      max-width: 100%;
-      margin-left: 0;
-    }
-  }
-
-  .prose :global(a) {
-    color: var(--color-accent);
-    text-decoration: underline;
-    text-decoration-color: rgba(196, 130, 109, 0.4);
-    text-underline-offset: 3px;
-    transition: text-decoration-color 0.2s ease;
-  }
-
-  .prose :global(a:hover) {
-    text-decoration-color: var(--color-accent);
   }
 
   .prose :global(ul),
   .prose :global(ol) {
-    margin-bottom: var(--space-lg);
     padding-left: var(--space-xl);
   }
 
-  .prose :global(li) {
-    margin-bottom: var(--space-sm);
-  }
-
-  .prose :global(blockquote) {
-    border-left: 3px solid var(--color-accent);
-    padding-left: var(--space-lg);
-    margin: var(--space-xl) 0;
-    font-style: italic;
-    color: var(--color-text-secondary);
-  }
-
-  .prose :global(code) {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.9em;
-    background: var(--color-bg-subtle);
-    padding: 2px 6px;
-    border-radius: 4px;
-  }
-
-  .prose :global(pre) {
-    background: var(--color-text);
-    color: var(--color-bg);
-    padding: var(--space-lg);
-    border-radius: 8px;
-    overflow-x: auto;
-    margin: var(--space-xl) 0;
-  }
-
-  .prose :global(pre code) {
-    background: none;
-    padding: 0;
-  }
-
-  .prose :global(strong) {
-    font-weight: 600;
-    color: var(--color-text);
-  }
-
-  .prose :global(hr) {
-    border: none;
-    border-top: 1px solid var(--color-border-subtle);
-    margin: var(--space-3xl) 0;
-  }
-
-  /* Mermaid diagram styles */
-  .prose :global(.mermaid-diagram) {
-    margin: var(--space-xl) 0;
-    text-align: center;
-    overflow-x: auto;
-  }
-
-  .prose :global(.mermaid-diagram svg) {
-    max-width: 100%;
+  .prose :global(img) {
+    width: min(100% + 60px, calc(100vw - 40px));
+    max-width: calc(100% + 60px);
     height: auto;
+    margin: var(--space-lg) 0 var(--space-lg) -30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    cursor: zoom-in;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
-  /* Side-by-side images */
+  .prose :global(img:hover) {
+    transform: scale(1.015);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  }
+
   .prose :global(.image-row) {
     display: flex;
     gap: var(--space-lg);
-    margin: var(--space-lg) 0;
     width: calc(100% + 60px);
-    margin-left: -30px;
-  }
-
-  @media (max-width: 740px) {
-    .prose :global(.image-row) {
-      width: 100%;
-      margin-left: 0;
-    }
+    margin: var(--space-lg) 0 var(--space-lg) -30px;
   }
 
   .prose :global(.image-row figure) {
@@ -327,106 +238,52 @@ const formattedDate = post.data.date.toLocaleDateString('en-US', {
   }
 
   .prose :global(.image-row img) {
-    margin: 0;
     width: 100%;
+    max-width: 100%;
+    margin: 0;
   }
 
   .prose :global(.image-row figcaption) {
-    text-align: center;
-    font-size: 0.875rem;
-    color: var(--color-text-tertiary);
-    font-style: italic;
     margin-top: var(--space-sm);
+    color: var(--color-text-tertiary);
+    font-size: 0.875rem;
+    text-align: center;
   }
 
-  /* Floated image for mobile screenshots */
   .prose :global(.image-float-right) {
     float: right;
     width: 180px;
     max-width: 180px;
     margin: 0 -30px var(--space-lg) var(--space-xl);
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   }
 
-  @media (max-width: 640px) {
-    .prose :global(.image-row) {
-      flex-direction: column;
-    }
-
-    .prose :global(.image-float-right) {
-      float: none;
-      width: 60%;
-      max-width: 200px;
-      margin: var(--space-lg) auto;
-      display: block;
-    }
+  .prose :global(pre) {
+    overflow-x: auto;
   }
 
-  /* Post footer */
   .post-footer {
     margin-top: var(--space-4xl);
     padding-top: var(--space-xl);
     border-top: 1px solid var(--color-border-subtle);
   }
 
-  .back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-sm);
-    font-size: 0.9375rem;
-    color: var(--color-text-secondary);
-    text-decoration: none;
-    transition: color 0.2s ease, gap 0.2s ease;
-  }
-
-  .back-link:hover {
-    color: var(--color-text);
-    gap: var(--space-md);
-  }
-
-  .back-arrow {
-    transition: transform 0.2s ease;
-  }
-
-  .back-link:hover .back-arrow {
-    transform: translateX(-4px);
-  }
-
-  @media (max-width: 640px) {
-    .post-title {
-      font-size: 1.75rem;
-    }
-  }
-
-  /* Image hover zoom */
-  .prose :global(img) {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .prose :global(img:hover) {
-    transform: scale(1.02);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-  }
-
-  /* Lightbox */
   .lightbox {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
-    opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    opacity: 0;
+    background: rgba(0, 0, 0, 0.9);
     cursor: zoom-out;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
   }
 
   .lightbox.active {
-    opacity: 1;
     visibility: visible;
+    opacity: 1;
   }
 
   .lightbox-img {
@@ -434,31 +291,38 @@ const formattedDate = post.data.date.toLocaleDateString('en-US', {
     max-height: 90vh;
     object-fit: contain;
     border-radius: 8px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-    transform: scale(0.95);
-    transition: transform 0.3s ease;
-  }
-
-  .lightbox.active .lightbox-img {
-    transform: scale(1);
   }
 
   .lightbox-close {
     position: absolute;
     top: 20px;
     right: 24px;
+    border: 0;
     background: none;
-    border: none;
     color: white;
     font-size: 2.5rem;
-    cursor: pointer;
-    opacity: 0.7;
-    transition: opacity 0.2s ease, transform 0.2s ease;
     line-height: 1;
+    cursor: pointer;
   }
 
-  .lightbox-close:hover {
-    opacity: 1;
-    transform: scale(1.1);
+  @media (max-width: 740px) {
+    .prose :global(img),
+    .prose :global(.image-row) {
+      width: 100%;
+      max-width: 100%;
+      margin-left: 0;
+    }
+
+    .prose :global(.image-row) {
+      flex-direction: column;
+    }
+
+    .prose :global(.image-float-right) {
+      float: none;
+      display: block;
+      width: 60%;
+      max-width: 200px;
+      margin: var(--space-lg) auto;
+    }
   }
 </style>

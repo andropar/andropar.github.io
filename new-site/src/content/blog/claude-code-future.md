@@ -2,7 +2,7 @@
 title: "$200 for a glimpse into the future (existential crisis included)"
 description: "A month with Claude Max taught me how work, science, and life will change radically in the very near future."
 date: 2025-12-31
-draft: true
+draft: false
 tags: ["AI", "productivity", "future of work"]
 ---
 
