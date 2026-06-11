@@ -118,6 +118,7 @@ const formattedDate = post.data.date.toLocaleDateString('en-US', {
 <style>
   .blog-post {
     max-width: 720px;
+    margin-inline: auto;
   }
 
   .post-header {
@@ -204,6 +205,14 @@ const formattedDate = post.data.date.toLocaleDateString('en-US', {
     margin-bottom: var(--space-lg);
   }
 
+  .prose :global(> p:first-of-type) {
+    padding-left: 0;
+  }
+
+  .prose :global(> p:first-of-type::before) {
+    content: none;
+  }
+
   .prose :global(ul),
   .prose :global(ol) {
     padding-left: var(--space-xl);
@@ -213,7 +222,7 @@ const formattedDate = post.data.date.toLocaleDateString('en-US', {
     width: min(100% + 60px, calc(100vw - 40px));
     max-width: calc(100% + 60px);
     height: auto;
-    margin: var(--space-lg) 0 var(--space-lg) -30px;
+    margin: var(--space-lg) calc((100% - min(100% + 60px, calc(100vw - 40px))) / 2);
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     cursor: zoom-in;
@@ -229,7 +238,7 @@ const formattedDate = post.data.date.toLocaleDateString('en-US', {
     display: flex;
     gap: var(--space-lg);
     width: calc(100% + 60px);
-    margin: var(--space-lg) 0 var(--space-lg) -30px;
+    margin: var(--space-lg) -30px;
   }
 
   .prose :global(.image-row figure) {
