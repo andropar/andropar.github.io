@@ -2279,7 +2279,7 @@ main {
   line-height: 1.52 !important;
 }
 
-.tools-heading {
+.tools-heading:not(.tools-heading--primary) {
   margin-top: 96px !important;
 }
 
@@ -3933,6 +3933,7 @@ nav[data-menu-open="true"] .nav-menu-lines::after {
 
 #experience .timeline-date,
 #experience .timeline-title,
+#experience .timeline-subtitle,
 #experience .timeline-org,
 #experience .timeline-description,
 #experience .timeline-tech {
@@ -3979,6 +3980,13 @@ nav[data-menu-open="true"] .nav-menu-lines::after {
   margin: 0 !important;
   font-size: clamp(18px, 1.7vw, 23px) !important;
   line-height: 1.14 !important;
+}
+
+#experience .timeline-subtitle {
+  margin: 9px 0 14px !important;
+  color: var(--color-text-secondary);
+  font-size: 12.5px !important;
+  line-height: 1.38 !important;
 }
 
 #experience .role-meta {
@@ -4190,7 +4198,7 @@ details[open] .toggle-label--open {
   animation: fadeInUp 0.22s ease-out;
 }
 
-#work .tools-heading {
+#work .tools-heading:not(.tools-heading--primary) {
   margin-top: 72px !important;
 }
 
@@ -4472,7 +4480,7 @@ details[open] .toggle-label--open {
     margin-left: 56px !important;
   }
 
-  #work .tools-heading {
+  #work .tools-heading:not(.tools-heading--primary) {
     margin-top: 58px !important;
   }
 

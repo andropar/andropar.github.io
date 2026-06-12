@@ -451,15 +451,14 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
       <div class="intro-bio-stack">
         <div class="intro-bio-group intro-bio-group--professional">
           <p class="intro-bio">
-            I'm finishing my <strong>PhD at the intersection of NeuroAI and Computational Cognitive Neuroscience</strong> at the
-            Max Planck Institute in Leipzig, where my research focuses on datasets used for comparing
-            neural network models with the human brain.
+            I'm a <strong>computer scientist and ML engineer</strong> with a background in business
+            information systems, applied data science, and computational neuroscience.
           </p>
           <p class="intro-bio">
-            Before academia, I spent several years working on applied data and ML problems - building
-            recommendation systems, image processing pipelines, and ML infrastructure in production. What drives me is
-            <strong>solving hard technical problems that actually matter</strong>: whether that's making
-            neuroimaging experiments more efficient or providing a model that changes how a product works.
+            Right now, I'm finishing a PhD in Computer Science / Machine Learning at the Max Planck Institute
+            in Leipzig, where I build large-scale data and ML infrastructure for NeuroAI and visual neuroscience.
+            Before that, I worked on production-facing ML services, recommender systems, image-processing
+            pipelines, and product data workflows.
           </p>
         </div>
         <div class="intro-bio-group intro-bio-group--personal">
@@ -494,92 +493,74 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
       <img class="hero-portrait hero-portrait--personal" src="/portrait-casual-hero.png?v=2" alt="Casual portrait of Johannes Roth in climbing gear" aria-hidden="true" style="opacity: 0;" />
     </div>
 
-    <a href="#experience" class="scroll-cue" aria-label="Scroll to experience"></a>
+    <a href="#capabilities" class="scroll-cue" aria-label="Scroll to what I can do"></a>
+  </section>
+
+  <!-- Capabilities -->
+  <section class="section mode-section mode-section--professional capability-section" id="capabilities">
+    <h2 class="section-title">What I can do</h2>
+    <div class="capability-grid">
+      <article class="capability-card">
+        <p class="capability-kicker">Software engineering</p>
+        <h3 class="capability-title">Build reliable Python-backed software</h3>
+        <p>
+          Web backends, APIs, services, Linux deployments, automation, and maintainable applications that people
+          can actually use.
+        </p>
+        <p class="capability-tech">Python · Django · Flask · Nginx · Gunicorn · Linux · CI/CD</p>
+      </article>
+      <article class="capability-card">
+        <p class="capability-kicker">ML & data systems</p>
+        <h3 class="capability-title">Turn data into working models</h3>
+        <p>
+          Computer vision, image processing, recommender logic, model evaluation, data collection, and
+          deployment-oriented inference workflows.
+        </p>
+        <p class="capability-tech">PyTorch · TensorFlow · scikit-learn · CLIP · Redis · BigQuery</p>
+      </article>
+      <article class="capability-card">
+        <p class="capability-kicker">Business technology</p>
+        <h3 class="capability-title">Understand the product side</h3>
+        <p>
+          I studied business information systems and have worked on product matching, travel search, quality scoring,
+          analytics, monitoring, and customer-facing data problems.
+        </p>
+        <p class="capability-tech">PostgreSQL · AWS · Grafana · data pipelines · analytics</p>
+      </article>
+      <article class="capability-card">
+        <p class="capability-kicker">Research depth</p>
+        <h3 class="capability-title">Handle ambiguity and scale</h3>
+        <p>
+          I can translate ambiguous domain questions into concrete datasets, experiments, codebases,
+          and infrastructure with clear evaluation loops.
+        </p>
+        <p class="capability-tech">open source · HPC · datasets · reproducible workflows</p>
+      </article>
+    </div>
   </section>
 
   <!-- Experience -->
   <section class="section mode-section mode-section--professional" id="experience">
     <h2 class="section-title">Experience</h2>
     <div class="timeline">
-      <div class="timeline-group-label">Professional Experience</div>
+      <div class="timeline-group-label timeline-group-label--education">Education</div>
 
-      <div class="timeline-item timeline-item--research">
+      <div class="timeline-item timeline-item--education">
         <div class="timeline-meta">
           <span class="timeline-date">2022 - Present</span>
-          <span class="timeline-kind">Research</span>
+          <span class="timeline-kind">Doctorate</span>
         </div>
-        <h3 class="timeline-title">PhD in Computational Cognitive Neuroscience</h3>
-        <p class="timeline-org"><a href="https://hebartlab.com/" target="_blank" rel="noopener">Hebart Lab</a> · Max Planck Institute for Human Cognition and Brain Sciences & University of Gießen</p>
+        <h3 class="timeline-title">PhD in Computer Science / Machine Learning</h3>
+        <p class="timeline-subtitle">NeuroAI, visual neuroscience, and large-scale data infrastructure</p>
+        <p class="timeline-org"><a href="https://hebartlab.com/" target="_blank" rel="noopener">Hebart Lab</a> · Max Planck Institute & University of Gießen</p>
         <p class="timeline-description">
-          Researching NeuroAI approaches for efficient experimental design in visual neuroscience: using modern computer vision models and large-scale naturalistic image spaces to choose better stimuli, compare model and brain representations, and improve fMRI dataset coverage. Built the ML/data infrastructure behind these workflows, including public datasets and <a href="https://re-vision-initiative.org" target="_blank" rel="noopener">re:vision</a> challenge infrastructure.
+          Researching NeuroAI approaches for efficient experimental design in visual neuroscience: choosing
+          better stimuli from large naturalistic image spaces, comparing model and brain representations, and
+          improving fMRI dataset coverage. Built the ML/data infrastructure behind these workflows, including
+          public datasets and <a href="https://re-vision-initiative.org" target="_blank" rel="noopener">re:vision</a> challenge infrastructure.
         </p>
         <p class="timeline-tech">Python · PyTorch · CLIP · scikit-learn · SLURM · Docker</p>
       </div>
-
-      <div class="timeline-item timeline-item--research">
-        <div class="timeline-meta">
-          <span class="timeline-date">Jun 2021 - May 2022</span>
-          <span class="timeline-kind">Research</span>
-        </div>
-        <h3 class="timeline-title">Research Assistant - ML in Medicine</h3>
-        <p class="timeline-org">ScaDS.AI Dresden/Leipzig</p>
-        <p class="timeline-description">
-          Engineered a multi-plane UNet++ ensemble for Glioblastoma segmentation (BraTS 2021), reaching 0.90 Dice for whole tumor. Developed attention-based mortality prediction models with epistemic uncertainty estimation.
-        </p>
-        <p class="timeline-tech">PyTorch · FT-Transformer · SAINT · UNet++</p>
-      </div>
-
-      <div class="timeline-item timeline-item--industry">
-        <div class="timeline-meta">
-          <span class="timeline-date">Oct 2019 - May 2021</span>
-          <span class="timeline-kind">Industry</span>
-        </div>
-        <h3 class="timeline-title">Data Scientist / ML Engineer <span class="role-meta">(Working student)</span></h3>
-        <p class="timeline-org">CHECK24 (Travel Vertical)</p>
-        <p class="timeline-description">
-          Designed and deployed a Flask + Redis image-processing microservice for fast ML inference over 20M+ hotel images. Built deduplication, retrieval, classification, quality scoring, recommender tuning, and Grafana monitoring workflows.
-        </p>
-        <p class="timeline-tech">Python · PyTorch · Flask · Redis · Hyperopt · BigQuery · Grafana</p>
-      </div>
-
-      <details class="timeline-toggle experience-toggle">
-        <summary class="timeline-toggle-cta">
-          <span class="toggle-icon" aria-hidden="true"></span>
-          <span class="toggle-copy">
-            <span class="toggle-label toggle-label--closed">Show other experience</span>
-            <span class="toggle-label toggle-label--open">Hide other experience</span>
-            <span class="toggle-note">education, freelance, earlier ML roles</span>
-          </span>
-        </summary>
-      </details>
-
-      <div class="timeline-item timeline-item--industry">
-        <div class="timeline-meta">
-          <span class="timeline-date">Oct 2020 - May 2021</span>
-          <span class="timeline-kind">Industry</span>
-        </div>
-        <h3 class="timeline-title">Full-stack Developer <span class="role-meta">(Freelance)</span></h3>
-        <p class="timeline-org">Kimetric UG</p>
-        <p class="timeline-description">
-          Implemented two academic websites using Django, Nginx, and Gunicorn. Configured Linux hosting environments and automated deployment scripts.
-        </p>
-        <p class="timeline-tech">Django · Nginx · Gunicorn · Linux · CI/CD</p>
-      </div>
-
-      <div class="timeline-item timeline-item--industry">
-        <div class="timeline-meta">
-          <span class="timeline-date">Oct 2018 - Oct 2019</span>
-          <span class="timeline-kind">Industry</span>
-        </div>
-        <h3 class="timeline-title">Data Scientist <span class="role-meta">(Working student)</span></h3>
-        <p class="timeline-org">Webdata Solutions GmbH (now Vistex)</p>
-        <p class="timeline-description">
-          Revamped a product-matching pipeline with a neural-network approach trained on self-collected web-scraped datasets, increasing matching accuracy from &lt;50% to 92%. Built data collection, training, evaluation, and interpretability workflows.
-        </p>
-        <p class="timeline-tech">Python · TensorFlow · PostgreSQL · AWS</p>
-      </div>
-
-      <div class="timeline-group-label timeline-group-label--education">Education</div>
 
       <div class="timeline-item timeline-item--education">
         <div class="timeline-meta">
@@ -587,10 +568,11 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
           <span class="timeline-kind">Education</span>
         </div>
         <h3 class="timeline-title">M.Sc. Computer Science</h3>
+        <p class="timeline-subtitle">Machine learning, data analysis, and medical image processing</p>
         <p class="timeline-org">Leipzig University</p>
         <p class="timeline-description">
-          Graduated with grade 1.2 (Distinction). Focused on ML, data analysis, and medical image processing.
-          Thesis on using GANs to synthesize images that maximally activate specific brain regions.
+          Graduated with grade 1.2 (Distinction). Thesis on using GANs to synthesize images that
+          maximally activate specific brain regions.
         </p>
         <p class="timeline-tech">Machine learning · Data analysis · Medical image processing</p>
       </div>
@@ -601,17 +583,173 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
           <span class="timeline-kind">Education</span>
         </div>
         <h3 class="timeline-title">B.Sc. Business Information Systems</h3>
+        <p class="timeline-subtitle">Computer science foundation with business-facing analytics and systems thinking</p>
         <p class="timeline-org">Leipzig University</p>
         <p class="timeline-description">
           Built a foundation across computer science, data systems, software engineering, and business-facing analytics.
         </p>
         <p class="timeline-tech">Software engineering · Databases · Analytics</p>
       </div>
+
+      <div class="timeline-group-label">Professional Experience</div>
+
+      <div class="timeline-item timeline-item--research">
+        <div class="timeline-meta">
+          <span class="timeline-date">Jun 2021 - May 2022</span>
+          <span class="timeline-kind">Research</span>
+        </div>
+        <h3 class="timeline-title">Research Assistant - ML in Medicine</h3>
+        <p class="timeline-subtitle">Medical imaging models, segmentation, and uncertainty estimation</p>
+        <p class="timeline-org">ScaDS.AI Dresden/Leipzig</p>
+        <p class="timeline-description">
+          Implemented and adapted recent deep-learning papers for medical imaging, especially brain-tumor
+          segmentation and survival prediction. Built preprocessing, training, and evaluation workflows,
+          ran experiments, and analyzed uncertainty in model predictions.
+        </p>
+        <p class="timeline-tech">PyTorch · FT-Transformer · SAINT · UNet++</p>
+      </div>
+
+      <div class="timeline-item timeline-item--industry">
+        <div class="timeline-meta">
+          <span class="timeline-date">Oct 2019 - May 2021</span>
+          <span class="timeline-kind">Industry</span>
+        </div>
+        <h3 class="timeline-title">Data Scientist / ML Engineer <span class="role-meta">(Working student)</span></h3>
+        <p class="timeline-subtitle">Production ML service for hotel images and travel product data</p>
+        <p class="timeline-org">CHECK24 (Travel Vertical)</p>
+        <p class="timeline-description">
+          Built applied ML and backend features for the travel product. Designed and deployed a Flask + Redis
+          service for fast image inference across millions of hotel images, using the outputs for deduplication,
+          retrieval, classification, quality scoring, and recommendation tuning. Also worked on PHP backend
+          features for the booking engine and outlier-detection workflows for hotel prices.
+        </p>
+        <p class="timeline-tech">Python · PyTorch · Flask · Redis · PHP · BigQuery · Grafana</p>
+      </div>
+
+      <details class="timeline-toggle experience-toggle">
+        <summary class="timeline-toggle-cta">
+          <span class="toggle-icon" aria-hidden="true"></span>
+          <span class="toggle-copy">
+            <span class="toggle-label toggle-label--closed">Show other experience</span>
+            <span class="toggle-label toggle-label--open">Hide other experience</span>
+            <span class="toggle-note">freelance and earlier ML roles</span>
+          </span>
+        </summary>
+      </details>
+
+      <div class="timeline-item timeline-item--industry">
+        <div class="timeline-meta">
+          <span class="timeline-date">Oct 2020 - May 2021</span>
+          <span class="timeline-kind">Industry</span>
+        </div>
+        <h3 class="timeline-title">Full-stack Developer <span class="role-meta">(Freelance)</span></h3>
+        <p class="timeline-subtitle">Django sites, Linux hosting, and deployment automation</p>
+        <p class="timeline-org">Kimetric UG</p>
+        <p class="timeline-description">
+          Delivered full-stack web projects for academic clients, from backend implementation to deployment.
+          Built Django-based websites, configured Linux servers with Nginx and Gunicorn, and wrote deployment
+          scripts so the sites could be maintained reliably after handoff.
+        </p>
+        <p class="timeline-tech">Django · Nginx · Gunicorn · Linux · CI/CD</p>
+      </div>
+
+      <div class="timeline-item timeline-item--industry">
+        <div class="timeline-meta">
+          <span class="timeline-date">Oct 2018 - Oct 2019</span>
+          <span class="timeline-kind">Industry</span>
+        </div>
+        <h3 class="timeline-title">Data Scientist <span class="role-meta">(Working student)</span></h3>
+        <p class="timeline-subtitle">Product matching, scraping, and model evaluation workflows</p>
+        <p class="timeline-org">Webdata Solutions GmbH (now Vistex)</p>
+        <p class="timeline-description">
+          Worked on product matching for e-commerce data, where the hard part was turning noisy scraped web data
+          into usable training and evaluation datasets. Rebuilt parts of the matching pipeline with a neural-network
+          approach, improving matching accuracy from below 50% to 92%.
+        </p>
+        <p class="timeline-tech">Python · TensorFlow · PostgreSQL · AWS</p>
+      </div>
+
     </div>
   </section>
 
   <!-- Work: Papers, Tools & Datasets -->
   <section class="section mode-section mode-section--professional" id="work">
+    <h2 class="section-title tools-heading tools-heading--primary">Datasets & Tools</h2>
+    <div class="tools-list">
+      <div class="tool-entry">
+        <a href="https://huggingface.co/datasets/andropar/relaion2b-natural" class="tool-row" target="_blank" rel="noopener">
+          <span class="tool-label-col">
+            <span class="tool-label">Dataset</span>
+            <canvas class="tool-anim" data-anim="sift" width="48" height="32"></canvas>
+          </span>
+          <span class="tool-info">
+            <span class="tool-name">ReLAION-2B Natural</span>
+            <span class="tool-desc">Naturalness scores for 2.1B images, identifying ~500M photographic images for vision research</span>
+          </span>
+          <span class="tool-tech">167 GB · CLIP ViT-H/14</span>
+        </a>
+        <button class="tool-notes-toggle" type="button" aria-expanded="false" aria-controls="tool-notes-relaion" data-tool-notes-toggle="tool-notes-relaion">
+          <span class="tool-notes-label tool-notes-label--closed">+ notes</span>
+          <span class="tool-notes-label tool-notes-label--open">- close notes</span>
+        </button>
+      </div>
+      <div class="tool-entry">
+        <a href="https://github.com/ViCCo-Group/thingsvision" class="tool-row" target="_blank" rel="noopener">
+          <span class="tool-label-col">
+            <span class="tool-label">Library</span>
+            <canvas class="tool-anim" data-anim="hub" width="48" height="32"></canvas>
+          </span>
+          <span class="tool-info">
+            <span class="tool-name">thingsvision</span>
+            <span class="tool-desc">Unified feature extraction API for 100+ vision models</span>
+          </span>
+          <span class="tool-tech">Core contributor · Python · 460k+ downloads</span>
+        </a>
+        <button class="tool-notes-toggle" type="button" aria-expanded="false" aria-controls="tool-notes-thingsvision" data-tool-notes-toggle="tool-notes-thingsvision">
+          <span class="tool-notes-label tool-notes-label--closed">+ notes</span>
+          <span class="tool-notes-label tool-notes-label--open">- close notes</span>
+        </button>
+      </div>
+      <div class="tool-entry">
+        <a href="https://laion-fmri.hebartlab.com" class="tool-row" target="_blank" rel="noopener">
+          <span class="tool-label-col">
+            <span class="tool-label">Dataset</span>
+            <canvas class="tool-anim" data-anim="scan" width="48" height="32"></canvas>
+          </span>
+          <span class="tool-info">
+            <span class="tool-name">LAION-fMRI</span>
+            <span class="tool-desc">Deeply sampled 7T fMRI responses to 25k natural images for NeuroAI and visual neuroscience</span>
+          </span>
+          <span class="tool-tech">5 subjects · 165 sessions · GLMsingle betas</span>
+        </a>
+        <button class="tool-notes-toggle" type="button" aria-expanded="false" aria-controls="tool-notes-laion-fmri" data-tool-notes-toggle="tool-notes-laion-fmri">
+          <span class="tool-notes-label tool-notes-label--closed">+ notes</span>
+          <span class="tool-notes-label tool-notes-label--open">- close notes</span>
+        </button>
+      </div>
+      <div class="tool-notes-panel" id="tool-notes-relaion" data-tool-notes-panel hidden>
+        <p class="tool-notes-kicker">Dataset notes</p>
+        <h3 class="tool-notes-title">ReLAION-2B Natural</h3>
+        <div class="tool-notes-content">
+          <p>Vision research needs naturalistic photographs, but web-scraped datasets like LAION are full of screenshots, memes, ads, and generated images. We scored all 2.1 billion images in ReLAION-2B for "naturalness" using a CLIP-based classifier, then extracted and published ViT-H/14 embeddings for the ~500M most photographic ones. The result is a 167GB dataset on Hugging Face that lets researchers query half a billion images by visual similarity without downloading a single pixel.</p>
+        </div>
+      </div>
+      <div class="tool-notes-panel" id="tool-notes-thingsvision" data-tool-notes-panel hidden>
+        <p class="tool-notes-kicker">Library notes</p>
+        <h3 class="tool-notes-title">thingsvision</h3>
+        <div class="tool-notes-content">
+          <p>An open-source Python toolbox for extracting and comparing image representations from deep neural networks. Supports 100+ models across torchvision, timm, CLIP, self-supervised models (DINO, MAE, SimCLR), and more. Also includes tools for aligning DNN representations with human similarity judgments via RSA and CKA. I'm the third-largest contributor to the project, which has 460k+ PyPI downloads and is used across vision and cognitive neuroscience labs.</p>
+        </div>
+      </div>
+      <div class="tool-notes-panel" id="tool-notes-laion-fmri" data-tool-notes-panel hidden>
+        <p class="tool-notes-kicker">Dataset notes</p>
+        <h3 class="tool-notes-title">LAION-fMRI</h3>
+        <div class="tool-notes-content">
+          <p>LAION-fMRI is a deeply sampled 7T fMRI dataset for studying human visual representations with naturalistic images. It contains brain responses to 25,052 LAION-derived images across 5 subjects and 165 acquired scanning sessions, including single-trial GLMsingle betas, retinotopy, localizers, and diffusion data. The dataset supports work on model-brain comparison, stimulus selection, and replication through the re:vision initiative.</p>
+        </div>
+      </div>
+    </div>
+
     <h2 class="section-title">Publications</h2>
     <ul class="pub-list" role="list">
       <li class="pub">
@@ -710,82 +848,6 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
         </li>
       </ul>
     </details>
-
-    <h2 class="section-title tools-heading">Datasets & Tools</h2>
-    <div class="tools-list">
-      <div class="tool-entry">
-        <a href="https://huggingface.co/datasets/andropar/relaion2b-natural" class="tool-row" target="_blank" rel="noopener">
-          <span class="tool-label-col">
-            <span class="tool-label">Dataset</span>
-            <canvas class="tool-anim" data-anim="sift" width="48" height="32"></canvas>
-          </span>
-          <span class="tool-info">
-            <span class="tool-name">ReLAION-2B Natural</span>
-            <span class="tool-desc">Naturalness scores for 2.1B images, identifying ~500M photographic images for vision research</span>
-          </span>
-          <span class="tool-tech">167 GB · CLIP ViT-H/14</span>
-        </a>
-        <button class="tool-notes-toggle" type="button" aria-expanded="false" aria-controls="tool-notes-relaion" data-tool-notes-toggle="tool-notes-relaion">
-          <span class="tool-notes-label tool-notes-label--closed">+ notes</span>
-          <span class="tool-notes-label tool-notes-label--open">- close notes</span>
-        </button>
-      </div>
-      <div class="tool-entry">
-        <a href="https://github.com/ViCCo-Group/thingsvision" class="tool-row" target="_blank" rel="noopener">
-          <span class="tool-label-col">
-            <span class="tool-label">Library</span>
-            <canvas class="tool-anim" data-anim="hub" width="48" height="32"></canvas>
-          </span>
-          <span class="tool-info">
-            <span class="tool-name">thingsvision</span>
-            <span class="tool-desc">Unified feature extraction API for 100+ vision models</span>
-          </span>
-          <span class="tool-tech">Core contributor · Python · 460k+ downloads</span>
-        </a>
-        <button class="tool-notes-toggle" type="button" aria-expanded="false" aria-controls="tool-notes-thingsvision" data-tool-notes-toggle="tool-notes-thingsvision">
-          <span class="tool-notes-label tool-notes-label--closed">+ notes</span>
-          <span class="tool-notes-label tool-notes-label--open">- close notes</span>
-        </button>
-      </div>
-      <div class="tool-entry">
-        <a href="https://laion-fmri.hebartlab.com" class="tool-row" target="_blank" rel="noopener">
-          <span class="tool-label-col">
-            <span class="tool-label">Dataset</span>
-            <canvas class="tool-anim" data-anim="scan" width="48" height="32"></canvas>
-          </span>
-          <span class="tool-info">
-            <span class="tool-name">LAION-fMRI</span>
-            <span class="tool-desc">Deeply sampled 7T fMRI responses to 25k natural images for NeuroAI and visual neuroscience</span>
-          </span>
-          <span class="tool-tech">5 subjects · 165 sessions · GLMsingle betas</span>
-        </a>
-        <button class="tool-notes-toggle" type="button" aria-expanded="false" aria-controls="tool-notes-laion-fmri" data-tool-notes-toggle="tool-notes-laion-fmri">
-          <span class="tool-notes-label tool-notes-label--closed">+ notes</span>
-          <span class="tool-notes-label tool-notes-label--open">- close notes</span>
-        </button>
-      </div>
-      <div class="tool-notes-panel" id="tool-notes-relaion" data-tool-notes-panel hidden>
-        <p class="tool-notes-kicker">Dataset notes</p>
-        <h3 class="tool-notes-title">ReLAION-2B Natural</h3>
-        <div class="tool-notes-content">
-          <p>Vision research needs naturalistic photographs, but web-scraped datasets like LAION are full of screenshots, memes, ads, and generated images. We scored all 2.1 billion images in ReLAION-2B for "naturalness" using a CLIP-based classifier, then extracted and published ViT-H/14 embeddings for the ~500M most photographic ones. The result is a 167GB dataset on Hugging Face that lets researchers query half a billion images by visual similarity without downloading a single pixel.</p>
-        </div>
-      </div>
-      <div class="tool-notes-panel" id="tool-notes-thingsvision" data-tool-notes-panel hidden>
-        <p class="tool-notes-kicker">Library notes</p>
-        <h3 class="tool-notes-title">thingsvision</h3>
-        <div class="tool-notes-content">
-          <p>An open-source Python toolbox for extracting and comparing image representations from deep neural networks. Supports 100+ models across torchvision, timm, CLIP, self-supervised models (DINO, MAE, SimCLR), and more. Also includes tools for aligning DNN representations with human similarity judgments via RSA and CKA. I'm the third-largest contributor to the project, which has 460k+ PyPI downloads and is used across vision and cognitive neuroscience labs.</p>
-        </div>
-      </div>
-      <div class="tool-notes-panel" id="tool-notes-laion-fmri" data-tool-notes-panel hidden>
-        <p class="tool-notes-kicker">Dataset notes</p>
-        <h3 class="tool-notes-title">LAION-fMRI</h3>
-        <div class="tool-notes-content">
-          <p>LAION-fMRI is a deeply sampled 7T fMRI dataset for studying human visual representations with naturalistic images. It contains brain responses to 25,052 LAION-derived images across 5 subjects and 165 acquired scanning sessions, including single-trial GLMsingle betas, retinotopy, localizers, and diffusion data. The dataset supports work on model-brain comparison, stimulus selection, and replication through the re:vision initiative.</p>
-        </div>
-      </div>
-    </div>
 
     <div class="recognition-block" aria-label="Recognition and service">
       <p class="recognition-kicker">Recognition / service</p>
@@ -1123,6 +1185,71 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
     color: var(--color-text);
   }
 
+  /* ── Capabilities ── */
+  .capability-section {
+    padding-top: clamp(36px, 6vw, 72px);
+  }
+
+  .capability-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .capability-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 220px;
+    padding: 22px;
+    border: 1px solid var(--section-card-border);
+    border-radius: 8px;
+    background:
+      linear-gradient(115deg, rgba(160, 224, 171, 0.045), rgba(255, 172, 46, 0.022) 48%, rgba(165, 45, 37, 0.04)),
+      var(--section-card-bg);
+  }
+
+  .capability-kicker {
+    margin: 0 0 18px;
+    color: var(--color-text-tertiary);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.075em;
+  }
+
+  .capability-title {
+    margin: 0 0 12px !important;
+    color: var(--color-text);
+    font-size: clamp(20px, 2vw, 24px) !important;
+    line-height: 1.12 !important;
+    font-weight: 400 !important;
+    letter-spacing: normal !important;
+  }
+
+  .capability-card p:not(.capability-kicker):not(.capability-tech) {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 14px;
+    line-height: 1.48;
+  }
+
+  .capability-tech {
+    margin: auto 0 0;
+    padding-top: 22px;
+    color: var(--color-text-tertiary);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.45;
+  }
+
+  .timeline-subtitle {
+    margin: 9px 0 14px;
+    color: var(--color-text-secondary);
+    font-size: 12.75px;
+    line-height: 1.38;
+  }
+
   /* ── Publications ── */
   .pub-list {
     list-style: none;
@@ -1352,6 +1479,14 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
 
   /* ── Datasets & Tools ── */
   .tools-heading {
+    margin-top: var(--space-3xl);
+  }
+
+  .tools-heading--primary {
+    margin-top: 0;
+  }
+
+  .tools-list + .section-title {
     margin-top: var(--space-3xl);
   }
 
@@ -1662,6 +1797,20 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
     .tool-anim {
       width: 36px;
       height: 24px;
+    }
+
+    .capability-grid {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .capability-card {
+      min-height: 0;
+      padding: 18px;
+    }
+
+    .capability-tech {
+      padding-top: 18px;
     }
 
     .ascii-accent {
@@ -3202,9 +3351,9 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
     const onHome = window.location.pathname === '/' || window.location.pathname.endsWith('/index.html');
     const navSets = {
       professional: [
+        { href: 'capabilities', label: 'skills' },
         { href: 'experience', label: 'experience' },
         { href: 'work', label: 'work' },
-        { href: 'contact', label: 'contact' },
       ],
       personal: [
         { href: 'personal-life', label: 'about' },
@@ -3262,9 +3411,9 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
       });
 
       if (scrollCue) {
-        const target = isPersonal ? 'personal-life' : 'experience';
+        const target = isPersonal ? 'personal-life' : 'capabilities';
         scrollCue.setAttribute('href', sectionHref(target));
-        scrollCue.setAttribute('aria-label', isPersonal ? 'Scroll to about me' : 'Scroll to experience');
+        scrollCue.setAttribute('aria-label', isPersonal ? 'Scroll to about me' : 'Scroll to what I can do');
       }
 
       if (persist) {

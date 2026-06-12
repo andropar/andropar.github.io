@@ -6,12 +6,12 @@ interface Props {
   description?: string;
 }
 
-const { title, description = "PhD student in Computational Cognitive Neuroscience. Interested in the intersection of AI, vision science, and human cognition." } = Astro.props;
+const { title, description = "Computer scientist and ML engineer with experience in applied data science, production-facing ML systems, and computational neuroscience." } = Astro.props;
 
 const navLinks = [
+  { href: '/#capabilities', label: 'skills' },
   { href: '/#experience', label: 'experience' },
   { href: '/#work', label: 'work' },
-  { href: '/#contact', label: 'contact' },
 ];
 ---
 
