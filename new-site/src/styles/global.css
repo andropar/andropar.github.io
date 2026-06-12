@@ -2408,10 +2408,10 @@ footer {
    ========================================== */
 
 .intro {
-  min-height: calc(100vh - 116px) !important;
+  min-height: clamp(600px, calc(100vh - 196px), 720px) !important;
   display: grid !important;
   align-content: stretch !important;
-  padding: clamp(52px, 6vw, 76px) clamp(44px, 6.4vw, 86px) !important;
+  padding: clamp(44px, 5.2vw, 64px) clamp(44px, 6.4vw, 86px) !important;
 }
 
 .intro-copy {
@@ -2740,9 +2740,9 @@ footer {
 
 @media (min-width: 761px) {
   .intro {
-    height: min(760px, calc(100svh - 132px));
+    height: min(720px, calc(100svh - 156px));
     min-height: 0 !important;
-    max-height: 820px;
+    max-height: 760px;
   }
 }
 
@@ -2752,7 +2752,7 @@ footer {
   }
 
   .intro {
-    height: calc(100svh - 116px);
+    height: calc(100svh - 156px);
     margin-bottom: 112px !important;
     padding-top: clamp(32px, 4.6svh, 48px) !important;
     padding-left: clamp(42px, 5.4vw, 70px) !important;
@@ -2849,7 +2849,7 @@ footer {
   .intro {
     grid-template-columns: minmax(0, 1.08fr) minmax(390px, 0.78fr);
     column-gap: clamp(56px, 5vw, 84px);
-    height: min(760px, calc(100svh - 116px));
+    height: min(720px, calc(100svh - 156px));
     padding-top: 44px !important;
     padding-left: clamp(64px, 5.6vw, 92px) !important;
     padding-right: clamp(64px, 5.6vw, 92px) !important;
@@ -3747,7 +3747,7 @@ nav[data-menu-open="true"] .nav-menu-lines::after {
   .intro {
     grid-template-columns: minmax(0, 1.06fr) minmax(360px, 0.74fr);
     column-gap: clamp(44px, 4vw, 68px);
-    height: min(760px, calc(100svh - 116px)) !important;
+    height: min(720px, calc(100svh - 156px)) !important;
     min-height: 0 !important;
     overflow: hidden !important;
     padding-left: clamp(54px, 5vw, 84px) !important;

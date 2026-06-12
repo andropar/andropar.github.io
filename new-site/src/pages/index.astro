@@ -571,10 +571,12 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
         <p class="timeline-subtitle">Machine learning, data analysis, and medical image processing</p>
         <p class="timeline-org">Leipzig University</p>
         <p class="timeline-description">
-          Graduated with grade 1.2 (Distinction). Thesis on using GANs to synthesize images that
-          maximally activate specific brain regions.
+          Studied applied machine learning and data analysis, graduating with grade 1.2. Thesis used
+          GANs to synthesize stimuli that maximally activate targeted brain regions. Project work
+          ranged from clothing-color recognition with segmentation models to EEG eigenspectra for
+          states of consciousness and cloud-formation classification from satellite imagery.
         </p>
-        <p class="timeline-tech">Machine learning · Data analysis · Medical image processing</p>
+        <p class="timeline-tech">Machine learning · GANs · Segmentation · EEG · Satellite imagery</p>
       </div>
 
       <div class="timeline-item timeline-item--education">
@@ -586,9 +588,13 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
         <p class="timeline-subtitle">Computer science foundation with business-facing analytics and systems thinking</p>
         <p class="timeline-org">Leipzig University</p>
         <p class="timeline-description">
-          Built a foundation across computer science, data systems, software engineering, and business-facing analytics.
+          Built a foundation across computer science, data systems, software engineering, and
+          business-facing analytics, graduating with grade 1.5. Thesis extended a software-visualization
+          framework to ABAP. Other projects included ABAP and full-stack work on an in-house metering
+          app at GISA and a full e-commerce build spanning store implementation, SEO, catalogue work,
+          design, and marketing.
         </p>
-        <p class="timeline-tech">Software engineering · Databases · Analytics</p>
+        <p class="timeline-tech">Software engineering · ABAP · Full-stack development · Databases · E-commerce</p>
       </div>
 
       <div class="timeline-group-label">Professional Experience</div>
@@ -752,6 +758,22 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
 
     <h2 class="section-title">Publications</h2>
     <ul class="pub-list" role="list">
+      <li class="pub">
+        <a href="https://arxiv.org/abs/2605.13675" class="pub-link" target="_blank" rel="noopener">
+          <span class="pub-year">2026</span>
+          <span class="pub-body">
+            <span class="pub-title">Characterizing Universal Object Representations Across Vision Models</span>
+            <span class="pub-meta">Mahner*, Roth* et al. <span class="pub-sep">/</span> arXiv preprint <span class="pub-type">Shared first author</span></span>
+          </span>
+          <svg class="pub-arrow" width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3.5 12.5L12.5 3.5M12.5 3.5H5.5M12.5 3.5V10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <details class="pub-writeup">
+          <summary></summary>
+          <div class="pub-writeup-content">
+            <p>We analyzed the object similarity structure of 162 diverse vision models to ask what, if anything, converges across architectures, objectives, and datasets. The paper separates universal from model-specific dimensions and links the more universal structure to interpretability, semantic image properties, macaque IT activity, and human similarity judgments.</p>
+          </div>
+        </details>
+      </li>
       <li class="pub">
         <a href="https://openreview.net/forum?id=T9k6KkZoca" class="pub-link" target="_blank" rel="noopener">
           <span class="pub-year">2025</span>
@@ -2147,18 +2169,18 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
 
   .intro .intro-photo .hero-portrait--professional {
     z-index: 1;
-    height: min(calc(100% - 24px), calc(100vh - 168px)) !important;
-    min-height: 540px;
-    max-height: 760px;
+    height: min(calc(100% - 16px), calc(100vh - 200px)) !important;
+    min-height: 470px;
+    max-height: 660px;
     transform: translate(-50%, 8px) scale(1) !important;
     filter: grayscale(4%) contrast(1.02) !important;
   }
 
   .intro .intro-photo .hero-portrait--personal {
     z-index: 2;
-    height: min(calc(100% - 24px), calc(100vh - 168px)) !important;
-    min-height: 540px;
-    max-height: 760px;
+    height: min(calc(100% - 16px), calc(100vh - 200px)) !important;
+    min-height: 470px;
+    max-height: 660px;
     transform: translate(-50%, 8px) scale(1) !important;
     filter: blur(7px) grayscale(22%) saturate(0.72) drop-shadow(0 34px 58px rgba(0, 0, 0, 0.24)) !important;
   }
@@ -2957,7 +2979,7 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
   @media (min-width: 761px) and (max-width: 1100px) {
     .intro {
       grid-template-columns: minmax(0, 0.55fr) minmax(220px, 0.45fr) !important;
-      min-height: 620px !important;
+      min-height: 560px !important;
       overflow: hidden !important;
     }
 
