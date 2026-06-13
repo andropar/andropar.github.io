@@ -3369,7 +3369,6 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
     const navLinks = Array.from(document.querySelectorAll('#site-navigation .nav-link'));
     if (!shell || !toggle) return;
 
-    const storageKey = 'johannes-site-mode-v3';
     const onHome = window.location.pathname === '/' || window.location.pathname.endsWith('/index.html');
     const navSets = {
       professional: [
@@ -3406,7 +3405,11 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
       }
     }
 
-    function setMode(mode, persist = true) {
+    function getInitialMode() {
+      return window.location.hash.indexOf('#personal-') === 0 ? 'personal' : 'professional';
+    }
+
+    function setMode(mode) {
       const nextMode = mode === 'personal' ? 'personal' : 'professional';
       const isPersonal = nextMode === 'personal';
       shell.dataset.siteMode = nextMode;
@@ -3438,25 +3441,8 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
         scrollCue.setAttribute('aria-label', isPersonal ? 'Scroll to about me' : 'Scroll to what I can do');
       }
 
-      if (persist) {
-        try {
-          localStorage.setItem(storageKey, nextMode);
-        } catch (error) {
-          // The page can still switch modes without local storage.
-        }
-      }
     }
-
-    let savedMode = 'professional';
-    try {
-      const storedMode = localStorage.getItem(storageKey);
-      if (storedMode === 'personal' || storedMode === 'professional') {
-        savedMode = storedMode;
-      }
-    } catch (error) {
-      savedMode = 'professional';
-    }
-    setMode(savedMode, false);
+    setMode(getInitialMode());
 
     toggle.addEventListener('click', () => {
       const nextMode = shell.dataset.siteMode === 'personal' ? 'professional' : 'personal';
