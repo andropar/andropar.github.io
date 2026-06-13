@@ -2258,11 +2258,11 @@ main {
 }
 
 .pub-writeup summary::before {
-  content: '+ notes';
+  content: '+ Read more';
 }
 
 .pub-writeup[open] summary::before {
-  content: '- close notes';
+  content: '- Less';
 }
 
 .pub-writeup-content {
@@ -4262,10 +4262,6 @@ details[open] .toggle-label--open {
   line-height: 1.45 !important;
 }
 
-#work .tools-list .pub-writeup {
-  margin: -4px 18px 18px !important;
-}
-
 #work .recognition-block {
   margin-top: 42px !important;
 }
@@ -4490,8 +4486,12 @@ details[open] .toggle-label--open {
     padding: 0 !important;
   }
 
-  #work .tools-list .pub-writeup {
-    margin: 8px 0 0 !important;
+  #work .tool-notes-toggle {
+    margin: 12px 0 0 !important;
+  }
+
+  #work .tool-notes-panel {
+    padding: 12px 0 0 !important;
   }
 }
 

@@ -638,7 +638,7 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
           <span class="toggle-copy">
             <span class="toggle-label toggle-label--closed">Show other experience</span>
             <span class="toggle-label toggle-label--open">Hide other experience</span>
-            <span class="toggle-note">freelance and earlier ML roles</span>
+            <span class="toggle-note">freelance and earlier data roles</span>
           </span>
         </summary>
       </details>
@@ -675,6 +675,22 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
         <p class="timeline-tech">Python · TensorFlow · PostgreSQL · AWS</p>
       </div>
 
+      <div class="timeline-item timeline-item--industry">
+        <div class="timeline-meta">
+          <span class="timeline-date">Feb 2018 - Aug 2018</span>
+          <span class="timeline-kind">Industry</span>
+        </div>
+        <h3 class="timeline-title">Data Analyst <span class="role-meta">(Working student)</span></h3>
+        <p class="timeline-subtitle">Cloud data warehouse, ETL testing, and reporting workflows</p>
+        <p class="timeline-org">Mercateo Services GmbH & Co. KG</p>
+        <p class="timeline-description">
+          Worked on data-engineering and reporting infrastructure for B2B commerce. Helped build a
+          cloud-based data warehouse with AWS and Apache NiFi, developed Python test infrastructure
+          for ETL processes, and implemented ETL/reporting workflows with Pentaho, Java, and R.
+        </p>
+        <p class="timeline-tech">AWS · Apache NiFi · Python · Pentaho · Java · R</p>
+      </div>
+
     </div>
   </section>
 
@@ -695,8 +711,8 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
           <span class="tool-tech">167 GB · CLIP ViT-H/14</span>
         </a>
         <button class="tool-notes-toggle" type="button" aria-expanded="false" aria-controls="tool-notes-relaion" data-tool-notes-toggle="tool-notes-relaion">
-          <span class="tool-notes-label tool-notes-label--closed">+ notes</span>
-          <span class="tool-notes-label tool-notes-label--open">- close notes</span>
+          <span class="tool-notes-label tool-notes-label--closed">notes</span>
+          <span class="tool-notes-label tool-notes-label--open">close</span>
         </button>
       </div>
       <div class="tool-entry">
@@ -712,8 +728,8 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
           <span class="tool-tech">Core contributor · Python · 460k+ downloads</span>
         </a>
         <button class="tool-notes-toggle" type="button" aria-expanded="false" aria-controls="tool-notes-thingsvision" data-tool-notes-toggle="tool-notes-thingsvision">
-          <span class="tool-notes-label tool-notes-label--closed">+ notes</span>
-          <span class="tool-notes-label tool-notes-label--open">- close notes</span>
+          <span class="tool-notes-label tool-notes-label--closed">notes</span>
+          <span class="tool-notes-label tool-notes-label--open">close</span>
         </button>
       </div>
       <div class="tool-entry">
@@ -729,30 +745,18 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
           <span class="tool-tech">5 subjects · 165 sessions · GLMsingle betas</span>
         </a>
         <button class="tool-notes-toggle" type="button" aria-expanded="false" aria-controls="tool-notes-laion-fmri" data-tool-notes-toggle="tool-notes-laion-fmri">
-          <span class="tool-notes-label tool-notes-label--closed">+ notes</span>
-          <span class="tool-notes-label tool-notes-label--open">- close notes</span>
+          <span class="tool-notes-label tool-notes-label--closed">notes</span>
+          <span class="tool-notes-label tool-notes-label--open">close</span>
         </button>
       </div>
       <div class="tool-notes-panel" id="tool-notes-relaion" data-tool-notes-panel hidden>
-        <p class="tool-notes-kicker">Dataset notes</p>
-        <h3 class="tool-notes-title">ReLAION-2B Natural</h3>
-        <div class="tool-notes-content">
-          <p>Vision research needs naturalistic photographs, but web-scraped datasets like LAION are full of screenshots, memes, ads, and generated images. We scored all 2.1 billion images in ReLAION-2B for "naturalness" using a CLIP-based classifier, then extracted and published ViT-H/14 embeddings for the ~500M most photographic ones. The result is a 167GB dataset on Hugging Face that lets researchers query half a billion images by visual similarity without downloading a single pixel.</p>
-        </div>
+        <p>Vision research needs naturalistic photographs, but web-scraped datasets like LAION are full of screenshots, memes, ads, and generated images. We scored all 2.1 billion images in ReLAION-2B for "naturalness" using a CLIP-based classifier, then extracted and published ViT-H/14 embeddings for the ~500M most photographic ones. The result is a 167GB dataset on Hugging Face that lets researchers query half a billion images by visual similarity without downloading a single pixel.</p>
       </div>
       <div class="tool-notes-panel" id="tool-notes-thingsvision" data-tool-notes-panel hidden>
-        <p class="tool-notes-kicker">Library notes</p>
-        <h3 class="tool-notes-title">thingsvision</h3>
-        <div class="tool-notes-content">
-          <p>An open-source Python toolbox for extracting and comparing image representations from deep neural networks. Supports 100+ models across torchvision, timm, CLIP, self-supervised models (DINO, MAE, SimCLR), and more. Also includes tools for aligning DNN representations with human similarity judgments via RSA and CKA. I'm the third-largest contributor to the project, which has 460k+ PyPI downloads and is used across vision and cognitive neuroscience labs.</p>
-        </div>
+        <p>An open-source Python toolbox for extracting and comparing image representations from deep neural networks. Supports 100+ models across torchvision, timm, CLIP, self-supervised models (DINO, MAE, SimCLR), and more. Also includes tools for aligning DNN representations with human similarity judgments via RSA and CKA. I'm the third-largest contributor to the project, which has 460k+ PyPI downloads and is used across vision and cognitive neuroscience labs.</p>
       </div>
       <div class="tool-notes-panel" id="tool-notes-laion-fmri" data-tool-notes-panel hidden>
-        <p class="tool-notes-kicker">Dataset notes</p>
-        <h3 class="tool-notes-title">LAION-fMRI</h3>
-        <div class="tool-notes-content">
-          <p>LAION-fMRI is a deeply sampled 7T fMRI dataset for studying human visual representations with naturalistic images. It contains brain responses to 25,052 LAION-derived images across 5 subjects and 165 acquired scanning sessions, including single-trial GLMsingle betas, retinotopy, localizers, and diffusion data. The dataset supports work on model-brain comparison, stimulus selection, and replication through the re:vision initiative.</p>
-        </div>
+        <p>LAION-fMRI is a deeply sampled 7T fMRI dataset for studying human visual representations with naturalistic images. It contains brain responses to 25,052 LAION-derived images across 5 subjects and 165 acquired scanning sessions, including single-trial GLMsingle betas, retinotopy, localizers, and diffusion data. The dataset supports work on model-brain comparison, stimulus selection, and replication through the re:vision initiative.</p>
       </div>
     </div>
 
@@ -1645,21 +1649,27 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
   .tool-notes-toggle {
     align-self: flex-start;
     width: fit-content;
-    margin: -6px 18px 18px;
+    margin: -2px 18px 18px;
     padding: 0;
     border: 0;
+    border-radius: 0;
     background: transparent;
     color: var(--color-text-tertiary);
     font-family: var(--font-mono);
     font-size: 10.5px;
     line-height: 1.45;
     cursor: pointer;
-    transition: color 0.15s ease;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    text-decoration-color: color-mix(in srgb, currentColor 42%, transparent);
+    transition: color 0.15s ease, text-decoration-color 0.15s ease;
   }
 
   .tool-notes-toggle:hover,
   .tool-notes-toggle[aria-expanded="true"] {
     color: var(--color-text-secondary);
+    text-decoration-color: currentColor;
   }
 
   .tool-notes-label--open {
@@ -1676,46 +1686,25 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
 
   .tool-notes-panel {
     grid-column: 1 / -1;
-    padding: 24px;
-    border: 1px solid var(--section-card-border);
-    border-radius: 8px;
-    background:
-      linear-gradient(112deg, rgba(160, 224, 171, 0.065), rgba(255, 172, 46, 0.035) 46%, rgba(165, 45, 37, 0.07)),
-      var(--section-card-bg);
-    animation: fadeInUp 0.22s ease-out;
+    margin: 0;
+    padding: 18px 0 0;
+    border-top: 1px solid var(--section-card-border);
+    color: var(--color-text-secondary);
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+
+  .tool-entry > .tool-notes-panel {
+    width: 100%;
+    margin-top: 0;
+    padding: 14px 0 0;
   }
 
   .tool-notes-panel[hidden] {
     display: none !important;
   }
 
-  .tool-notes-kicker {
-    margin: 0 0 8px;
-    color: var(--color-text-tertiary);
-    font-family: var(--font-mono);
-    font-size: 10.5px;
-    line-height: 1.35;
-    text-transform: uppercase;
-    letter-spacing: 0.075em;
-  }
-
-  .tool-notes-title {
-    margin: 0 0 14px !important;
-    color: var(--color-text);
-    font-size: clamp(20px, 2vw, 24px) !important;
-    line-height: 1.12 !important;
-    font-weight: 400 !important;
-    letter-spacing: normal !important;
-  }
-
-  .tool-notes-content {
-    max-width: 760px;
-    color: var(--color-text-secondary);
-    font-size: 13.5px;
-    line-height: 1.5;
-  }
-
-  .tool-notes-content p {
+  .tool-notes-panel p {
     margin: 0;
   }
 
@@ -3056,11 +3045,11 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
     }
 
     #work .tool-notes-toggle {
-      margin: -2px 14px 14px;
+      margin: 12px 0 0;
     }
 
     #work .tool-notes-panel {
-      padding: 20px;
+      padding: 12px 0 0;
     }
 
     .personal-grid--life,
@@ -3527,13 +3516,29 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
     scheduleCoverPrefetch();
   })();
 
-  // Expand Datasets & Tools notes below the full tools grid.
+  // Expand Datasets & Tools notes near the selected card.
   (function() {
+    const toolsList = document.querySelector('.tools-list');
     const toggles = Array.from(document.querySelectorAll('[data-tool-notes-toggle]'));
     const panels = Array.from(document.querySelectorAll('[data-tool-notes-panel]'));
-    if (!toggles.length || !panels.length) return;
+    const mobileNotesQuery = window.matchMedia('(max-width: 760px)');
+    if (!toolsList || !toggles.length || !panels.length) return;
+
+    function placePanel(panel, toggle) {
+      const entry = toggle.closest('.tool-entry');
+      if (mobileNotesQuery.matches && entry) {
+        if (panel.parentElement !== entry) entry.appendChild(panel);
+        return;
+      }
+
+      if (panel.parentElement !== toolsList) toolsList.appendChild(panel);
+    }
 
     function setActivePanel(panelId) {
+      const activeToggle = toggles.find((toggle) => toggle.dataset.toolNotesToggle === panelId);
+      const activePanel = panels.find((panel) => panel.id === panelId);
+      if (activeToggle && activePanel) placePanel(activePanel, activeToggle);
+
       toggles.forEach((toggle) => {
         const isActive = toggle.dataset.toolNotesToggle === panelId;
         toggle.setAttribute('aria-expanded', String(isActive));
@@ -3561,6 +3566,11 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
         }
         setActivePanel(panelId);
       });
+    });
+
+    mobileNotesQuery.addEventListener('change', () => {
+      const activeToggle = toggles.find((toggle) => toggle.getAttribute('aria-expanded') === 'true');
+      if (activeToggle?.dataset.toolNotesToggle) setActivePanel(activeToggle.dataset.toolNotesToggle);
     });
   })();
 
