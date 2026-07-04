@@ -1710,6 +1710,12 @@ nav .container {
 }
 
 .intro .intro-photo {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
   grid-column: 2;
   grid-row: 1 / span 3;
   width: 100% !important;
@@ -2464,6 +2470,25 @@ footer {
   border-radius: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
+}
+
+.intro .intro-photo:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 8px;
+}
+
+.intro-mobile-headshot-stack {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.intro-mobile-headshot-stack:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
 }
 
 .intro .intro-photo::before {
