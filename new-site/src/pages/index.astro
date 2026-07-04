@@ -440,10 +440,10 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
     <div class="intro-copy">
       <div class="intro-name-row">
         <h1 class="intro-title">Johannes Roth</h1>
-        <span class="intro-mobile-headshot-stack" aria-hidden="true">
-          <img class="intro-mobile-headshot hero-portrait--professional" src="/generated-lighting/portrait-professional-relit-balanced.png?v=1" alt="" style="opacity: 1;" />
-          <img class="intro-mobile-headshot hero-portrait--personal" src="/portrait-casual-hero.png?v=2" alt="" style="opacity: 0;" />
-        </span>
+        <button class="intro-mobile-headshot-stack" type="button" data-mode-toggle-trigger aria-label="Switch to personal view" title="Switch to personal view">
+          <img class="intro-mobile-headshot hero-portrait--professional" src="/generated-lighting/portrait-professional-relit-balanced.png?v=1" alt="" aria-hidden="true" style="opacity: 1;" />
+          <img class="intro-mobile-headshot hero-portrait--personal" src="/portrait-casual-hero.png?v=2" alt="" aria-hidden="true" style="opacity: 0;" />
+        </button>
         <div class="ascii-accent" aria-hidden="true">
           <pre id="asciiHero"></pre>
         </div>
@@ -488,10 +488,10 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
       </div>
     </div>
 
-    <div class="intro-photo">
+    <button class="intro-photo" type="button" data-mode-toggle-trigger aria-label="Switch to personal view" title="Switch to personal view">
       <img class="hero-portrait hero-portrait--professional" src="/generated-lighting/portrait-professional-relit-balanced.png?v=1" alt="Black-and-white portrait of Johannes Roth in a suit" style="opacity: 1;" />
       <img class="hero-portrait hero-portrait--personal" src="/portrait-casual-hero.png?v=2" alt="Casual portrait of Johannes Roth in climbing gear" aria-hidden="true" style="opacity: 0;" />
-    </div>
+    </button>
 
     <a href="#capabilities" class="scroll-cue" aria-label="Scroll to what I can do"></a>
   </section>
@@ -3355,6 +3355,7 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
     const shell = document.querySelector('.mode-shell');
     const toggle = document.querySelector('.mode-toggle');
     const scrollCue = document.querySelector('.scroll-cue');
+    const modeToggleTriggers = Array.from(document.querySelectorAll('[data-mode-toggle-trigger]'));
     const navLinks = Array.from(document.querySelectorAll('#site-navigation .nav-link'));
     if (!shell || !toggle) return;
 
@@ -3406,6 +3407,10 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
       syncThemeForMode(nextMode);
       toggle.setAttribute('aria-pressed', String(isPersonal));
       toggle.setAttribute('aria-label', isPersonal ? 'Back to my professional work' : 'Learn more about my life outside work');
+      modeToggleTriggers.forEach((trigger) => {
+        trigger.setAttribute('aria-label', isPersonal ? 'Switch to professional view' : 'Switch to personal view');
+        trigger.setAttribute('title', isPersonal ? 'Switch to professional view' : 'Switch to personal view');
+      });
 
       document.querySelectorAll('.hero-portrait--professional').forEach((portrait) => {
         portrait.setAttribute('aria-hidden', String(isPersonal));
@@ -3433,9 +3438,14 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
     }
     setMode(getInitialMode());
 
-    toggle.addEventListener('click', () => {
+    function toggleMode() {
       const nextMode = shell.dataset.siteMode === 'personal' ? 'professional' : 'personal';
       setMode(nextMode);
+    }
+
+    toggle.addEventListener('click', toggleMode);
+    modeToggleTriggers.forEach((trigger) => {
+      trigger.addEventListener('click', toggleMode);
     });
   })();
 
