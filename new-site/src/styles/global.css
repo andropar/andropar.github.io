@@ -4575,4 +4575,30 @@ details[open] .toggle-label--open {
 .intro-mobile-headshot-stack[data-mode-toggle-trigger] {
   cursor: pointer;
   pointer-events: auto !important;
+  transition:
+    filter 180ms ease,
+    transform 180ms ease;
+}
+
+.intro [data-mode-toggle-trigger]:hover,
+.intro [data-mode-toggle-trigger]:focus-visible,
+.intro-mobile-headshot-stack[data-mode-toggle-trigger]:hover,
+.intro-mobile-headshot-stack[data-mode-toggle-trigger]:focus-visible {
+  filter: brightness(1.04);
+  transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro [data-mode-toggle-trigger],
+  .intro .intro-photo[data-mode-toggle-trigger],
+  .intro-mobile-headshot-stack[data-mode-toggle-trigger] {
+    transition: none;
+  }
+
+  .intro [data-mode-toggle-trigger]:hover,
+  .intro [data-mode-toggle-trigger]:focus-visible,
+  .intro-mobile-headshot-stack[data-mode-toggle-trigger]:hover,
+  .intro-mobile-headshot-stack[data-mode-toggle-trigger]:focus-visible {
+    transform: none;
+  }
 }
