@@ -4569,3 +4569,10 @@ details[open] .toggle-label--open {
     margin-top: 14px !important;
   }
 }
+
+.intro [data-mode-toggle-trigger],
+.intro .intro-photo[data-mode-toggle-trigger],
+.intro-mobile-headshot-stack[data-mode-toggle-trigger] {
+  cursor: pointer;
+  pointer-events: auto !important;
+}
