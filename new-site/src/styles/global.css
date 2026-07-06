@@ -4573,6 +4573,8 @@ details[open] .toggle-label--open {
 .intro [data-mode-toggle-trigger],
 .intro .intro-photo[data-mode-toggle-trigger],
 .intro-mobile-headshot-stack[data-mode-toggle-trigger] {
+  appearance: none;
+  background: transparent !important;
   cursor: pointer;
   pointer-events: auto !important;
 }
