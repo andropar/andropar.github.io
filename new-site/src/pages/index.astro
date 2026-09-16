@@ -1,5 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import professionalPortrait from '../../public/generated-lighting/portrait-professional-relit-balanced.png';
+import personalPortrait from '../../public/portrait-casual-hero.png';
 import { getCollection } from 'astro:content';
 import { personalCatAsciiDelays, personalCatAsciiFrames } from '../data/personal-cat-ascii';
 
@@ -414,7 +417,7 @@ const getRecentLetterboxdFilms = async () => {
   return fallbackLetterboxdFilms;
 };
 
-const recentLetterboxdFilms = await getRecentLetterboxdFilms();
+const recentLetterboxdFilms = import.meta.env.DEV ? fallbackLetterboxdFilms : await getRecentLetterboxdFilms();
 
 const openLibraryCover = (coverRef: string) => {
   const [kind, value] = coverRef.includes(':') ? coverRef.split(':') : ['isbn', coverRef];
@@ -428,7 +431,7 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
 });
 ---
 
-<Layout title="Johannes Roth">
+<Layout title="Johannes Roth — Machine Learning & Research">
   <script
     id="personalCatAsciiData"
     type="application/json"
@@ -441,8 +444,8 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
       <div class="intro-name-row">
         <h1 class="intro-title">Johannes Roth</h1>
         <button class="intro-mobile-headshot-stack" type="button" data-mode-toggle-trigger aria-label="Switch to personal view" title="Switch to personal view">
-          <img class="intro-mobile-headshot hero-portrait--professional" src="/generated-lighting/portrait-professional-relit-balanced.png?v=1" alt="" aria-hidden="true" style="opacity: 1;" />
-          <img class="intro-mobile-headshot hero-portrait--personal" src="/portrait-casual-hero.png?v=2" alt="" aria-hidden="true" style="opacity: 0;" />
+          <Image class="intro-mobile-headshot hero-portrait--professional" src={professionalPortrait} width={240} format="webp" loading="eager" alt="" aria-hidden="true" style="opacity: 1;" />
+          <Image class="intro-mobile-headshot hero-portrait--personal" src={personalPortrait} width={240} format="webp" alt="" aria-hidden="true" style="opacity: 0;" />
         </button>
         <div class="ascii-accent" aria-hidden="true">
           <pre id="asciiHero"></pre>
@@ -451,15 +454,15 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
       <div class="intro-bio-stack">
         <div class="intro-bio-group intro-bio-group--professional">
           <p class="intro-bio">
-            I'm an <strong>applied AI / machine learning engineer</strong> and PhD researcher with
-            a background in business information systems, data science, and computational neuroscience.
+            I'm a <strong>machine learning engineer and PhD researcher</strong> in Leipzig.
+            I build computer-vision systems, data pipelines, and software for research.
           </p>
           <p class="intro-bio">
-            Right now, I'm finishing a PhD in Computer Science / Machine Learning at the Max Planck Institute
-            in Leipzig, where I turn ambiguous data problems into scalable ML systems, evaluation workflows,
-            and large-scale computer vision infrastructure. Before that, I worked on production-facing ML
-            services, recommender systems, image-processing pipelines, and product data workflows.
+            My research at the Max Planck Institute and University of Giessen studies how vision models
+            relate to human brain activity. Before that, I worked on computer vision at CHECK24,
+            medical machine learning, and product matching for e-commerce.
           </p>
+          <p class="intro-availability">Available from January 2027 · <a href="/cv.pdf">View CV</a></p>
         </div>
         <div class="intro-bio-group intro-bio-group--personal">
           <p class="intro-bio">
@@ -489,8 +492,8 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
     </div>
 
     <button class="intro-photo" type="button" data-mode-toggle-trigger aria-label="Switch to personal view" title="Switch to personal view">
-      <img class="hero-portrait hero-portrait--professional" src="/generated-lighting/portrait-professional-relit-balanced.png?v=1" alt="Black-and-white portrait of Johannes Roth in a suit" style="opacity: 1;" />
-      <img class="hero-portrait hero-portrait--personal" src="/portrait-casual-hero.png?v=2" alt="Casual portrait of Johannes Roth in climbing gear" aria-hidden="true" style="opacity: 0;" />
+      <Image class="hero-portrait hero-portrait--professional" src={professionalPortrait} widths={[480, 760, 1000]} sizes="(max-width: 760px) 45vw, 480px" width={760} format="webp" loading="eager" fetchpriority="high" alt="Black-and-white portrait of Johannes Roth in a suit" style="opacity: 1;" />
+      <Image class="hero-portrait hero-portrait--personal" src={personalPortrait} widths={[480, 760, 1000]} sizes="(max-width: 760px) 45vw, 480px" width={760} format="webp" alt="Casual portrait of Johannes Roth in climbing gear" aria-hidden="true" style="opacity: 0;" />
     </button>
 
     <a href="#capabilities" class="scroll-cue" aria-label="Scroll to what I can do"></a>
@@ -498,43 +501,31 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
 
   <!-- Capabilities -->
   <section class="section mode-section mode-section--professional capability-section" id="capabilities">
-    <h2 class="section-title">What I can do</h2>
+    <h2 class="section-title">Expertise</h2>
     <div class="capability-grid">
       <article class="capability-card">
-        <p class="capability-kicker">Software engineering</p>
-        <h3 class="capability-title">Build reliable Python-backed software</h3>
+        <h3 class="capability-title">Applied machine learning</h3>
         <p>
-          Web backends, APIs, services, Linux deployments, automation, and maintainable applications that people
-          can actually use.
+          I develop and evaluate machine-learning models, with experience in computer vision, recommendation systems, and medical image analysis.
         </p>
-        <p class="capability-tech">Python · Django · Flask · Nginx · Gunicorn · Linux · CI/CD</p>
       </article>
       <article class="capability-card">
-        <p class="capability-kicker">ML & data systems</p>
-        <h3 class="capability-title">Turn data into working models</h3>
+        <h3 class="capability-title">Data engineering</h3>
         <p>
-          Computer vision, image processing, recommender logic, model evaluation, data collection, and
-          deployment-oriented inference workflows.
+          I build pipelines for collecting, processing, and organizing large datasets for machine learning and research.
         </p>
-        <p class="capability-tech">PyTorch · TensorFlow · scikit-learn · CLIP · Redis · BigQuery</p>
       </article>
       <article class="capability-card">
-        <p class="capability-kicker">Business technology</p>
-        <h3 class="capability-title">Understand the product side</h3>
+        <h3 class="capability-title">Software engineering</h3>
         <p>
-          I studied business information systems and have worked on product matching, travel search, quality scoring,
-          analytics, monitoring, and customer-facing data problems.
+          I design and build web applications, APIs, and research software, including their deployment and maintenance.
         </p>
-        <p class="capability-tech">PostgreSQL · AWS · Grafana · data pipelines · analytics</p>
       </article>
       <article class="capability-card">
-        <p class="capability-kicker">Research depth</p>
-        <h3 class="capability-title">Handle ambiguity and scale</h3>
+        <h3 class="capability-title">Research</h3>
         <p>
-          I can translate ambiguous domain questions into concrete datasets, experiments, codebases,
-          and infrastructure with clear evaluation loops.
+          I study how vision models relate to human brain activity, combining computational modelling, statistical analysis, and fMRI experiments.
         </p>
-        <p class="capability-tech">open source · HPC · datasets · reproducible workflows</p>
       </article>
     </div>
   </section>
@@ -543,61 +534,23 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
   <section class="section mode-section mode-section--professional" id="experience">
     <h2 class="section-title">Experience</h2>
     <div class="timeline">
-      <div class="timeline-group-label timeline-group-label--education">Education</div>
-
-      <div class="timeline-item timeline-item--education">
+      <div class="timeline-item timeline-item--research">
         <div class="timeline-meta">
-          <span class="timeline-date">2022 - Present</span>
-          <span class="timeline-kind">Doctorate</span>
+          <span class="timeline-date">May 2022 - Present</span>
+          <span class="timeline-kind">Research</span>
         </div>
-        <h3 class="timeline-title">PhD in Computer Science / Machine Learning</h3>
-        <p class="timeline-subtitle">NeuroAI, visual neuroscience, and large-scale data infrastructure</p>
-        <p class="timeline-org"><a href="https://hebartlab.com/" target="_blank" rel="noopener">Hebart Lab</a> · Max Planck Institute & University of Gießen</p>
+        <h3 class="timeline-title">PhD Researcher</h3>
+        <p class="timeline-subtitle">Machine learning and computational neuroscience</p>
+        <p class="timeline-org"><a href="https://hebartlab.com/" target="_blank" rel="noopener">Hebart Lab</a> · MPI for Human Cognitive and Brain Sciences & University of Giessen</p>
         <p class="timeline-description">
-          Researching NeuroAI approaches for efficient experimental design in visual neuroscience: choosing
-          better stimuli from large naturalistic image spaces, comparing model and brain representations, and
-          improving fMRI dataset coverage. Built the ML/data infrastructure behind these workflows, including
-          public datasets and <a href="https://re-vision-initiative.org" target="_blank" rel="noopener">re:vision</a> challenge infrastructure.
+          Independent research on vision models and their relationship to human brain activity, combining
+          computational analyses with fMRI experiments. Developed methods for model evaluation and experimental
+          design, GPU-based data pipelines, and public research software. Supervised working students and interns.
         </p>
         <p class="timeline-tech">Python · PyTorch · CLIP · scikit-learn · SLURM · Docker</p>
       </div>
 
-      <div class="timeline-item timeline-item--education">
-        <div class="timeline-meta">
-          <span class="timeline-date">2018 - 2021</span>
-          <span class="timeline-kind">Education</span>
-        </div>
-        <h3 class="timeline-title">M.Sc. Computer Science</h3>
-        <p class="timeline-subtitle">Machine learning, data analysis, and medical image processing</p>
-        <p class="timeline-org">Leipzig University</p>
-        <p class="timeline-description">
-          Studied applied machine learning and data analysis, graduating with grade 1.2. Thesis used
-          GANs to synthesize stimuli that maximally activate targeted brain regions. Project work
-          ranged from clothing-color recognition with segmentation models to EEG eigenspectra for
-          states of consciousness and cloud-formation classification from satellite imagery.
-        </p>
-        <p class="timeline-tech">Machine learning · GANs · Segmentation · EEG · Satellite imagery</p>
-      </div>
 
-      <div class="timeline-item timeline-item--education">
-        <div class="timeline-meta">
-          <span class="timeline-date">2014 - 2018</span>
-          <span class="timeline-kind">Education</span>
-        </div>
-        <h3 class="timeline-title">B.Sc. Business Information Systems</h3>
-        <p class="timeline-subtitle">Computer science foundation with business-facing analytics and systems thinking</p>
-        <p class="timeline-org">Leipzig University</p>
-        <p class="timeline-description">
-          Built a foundation across computer science, data systems, software engineering, and
-          business-facing analytics, graduating with grade 1.5. Thesis extended a software-visualization
-          framework to ABAP. Other projects included ABAP and full-stack work on an in-house metering
-          app at GISA and a full e-commerce build spanning store implementation, SEO, catalogue work,
-          design, and marketing.
-        </p>
-        <p class="timeline-tech">Software engineering · ABAP · Full-stack development · Databases · E-commerce</p>
-      </div>
-
-      <div class="timeline-group-label">Professional Experience</div>
 
       <div class="timeline-item timeline-item--research">
         <div class="timeline-meta">
@@ -608,40 +561,27 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
         <p class="timeline-subtitle">Medical imaging models, segmentation, and uncertainty estimation</p>
         <p class="timeline-org">ScaDS.AI Dresden/Leipzig</p>
         <p class="timeline-description">
-          Implemented and adapted recent deep-learning papers for medical imaging, especially brain-tumor
-          segmentation and survival prediction. Built preprocessing, training, and evaluation workflows,
-          ran experiments, and analyzed uncertainty in model predictions.
+          Developed and evaluated deep-learning models for brain-tumor segmentation, including a multi-plane
+          UNet++ ensemble. Also built mortality-prediction models for clinical data, with uncertainty estimation.
         </p>
         <p class="timeline-tech">PyTorch · FT-Transformer · SAINT · UNet++</p>
       </div>
 
       <div class="timeline-item timeline-item--industry">
         <div class="timeline-meta">
-          <span class="timeline-date">Oct 2019 - May 2021</span>
+          <span class="timeline-date">Nov 2019 - May 2021</span>
           <span class="timeline-kind">Industry</span>
         </div>
         <h3 class="timeline-title">Data Scientist / ML Engineer <span class="role-meta">(Working student)</span></h3>
         <p class="timeline-subtitle">Production ML service for hotel images and travel product data</p>
         <p class="timeline-org">CHECK24 (Travel Vertical)</p>
         <p class="timeline-description">
-          Built applied ML and backend features for the travel product. Designed and deployed a Flask + Redis
-          service for fast image inference across millions of hotel images, using the outputs for deduplication,
-          retrieval, classification, quality scoring, and recommendation tuning. Also worked on PHP backend
-          features for the booking engine and outlier-detection workflows for hotel prices.
+          Independently designed and deployed a computer-vision service processing 20 million hotel images,
+          including seasonal image classification. Prototyped image retrieval, duplicate detection, and
+          image-quality assessment. Reduced recommendation-data update time by over 95% through incremental processing.
         </p>
         <p class="timeline-tech">Python · PyTorch · Flask · Redis · PHP · BigQuery · Grafana</p>
       </div>
-
-      <details class="timeline-toggle experience-toggle">
-        <summary class="timeline-toggle-cta">
-          <span class="toggle-icon" aria-hidden="true"></span>
-          <span class="toggle-copy">
-            <span class="toggle-label toggle-label--closed">Show other experience</span>
-            <span class="toggle-label toggle-label--open">Hide other experience</span>
-            <span class="toggle-note">freelance and earlier data roles</span>
-          </span>
-        </summary>
-      </details>
 
       <div class="timeline-item timeline-item--industry">
         <div class="timeline-meta">
@@ -652,25 +592,25 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
         <p class="timeline-subtitle">Django sites, Linux hosting, and deployment automation</p>
         <p class="timeline-org">Kimetric UG</p>
         <p class="timeline-description">
-          Delivered full-stack web projects for academic clients, from backend implementation to deployment.
-          Built Django-based websites, configured Linux servers with Nginx and Gunicorn, and wrote deployment
-          scripts so the sites could be maintained reliably after handoff.
+          Designed and delivered the <a href="https://hebartlab.com" target="_blank" rel="noopener">Hebart Lab</a>
+          and <a href="https://things-initiative.org" target="_blank" rel="noopener">THINGS Initiative</a>
+          websites. Gathered client requirements and handled implementation, deployment, Linux hosting, and maintenance.
         </p>
         <p class="timeline-tech">Django · Nginx · Gunicorn · Linux · CI/CD</p>
       </div>
 
       <div class="timeline-item timeline-item--industry">
         <div class="timeline-meta">
-          <span class="timeline-date">Oct 2018 - Oct 2019</span>
+          <span class="timeline-date">Oct 2018 - Sep 2019</span>
           <span class="timeline-kind">Industry</span>
         </div>
         <h3 class="timeline-title">Data Scientist <span class="role-meta">(Working student)</span></h3>
         <p class="timeline-subtitle">Product matching, scraping, and model evaluation workflows</p>
         <p class="timeline-org">Webdata Solutions GmbH (now Vistex)</p>
         <p class="timeline-description">
-          Worked on product matching for e-commerce data, where the hard part was turning noisy scraped web data
-          into usable training and evaluation datasets. Rebuilt parts of the matching pipeline with a neural-network
-          approach, improving matching accuracy from below 50% to 92%.
+          Developed machine-learning models for product matching and image classification in e-commerce.
+          Improved image-based matching accuracy from 12% to 83% against a classification baseline
+          in an internal cross-retailer evaluation.
         </p>
         <p class="timeline-tech">Python · TensorFlow · PostgreSQL · AWS</p>
       </div>
@@ -684,19 +624,49 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
         <p class="timeline-subtitle">Cloud data warehouse, ETL testing, and reporting workflows</p>
         <p class="timeline-org">Mercateo Services GmbH & Co. KG</p>
         <p class="timeline-description">
-          Worked on data-engineering and reporting infrastructure for B2B commerce. Helped build a
-          cloud-based data warehouse with AWS and Apache NiFi, developed Python test infrastructure
-          for ETL processes, and implemented ETL/reporting workflows with Pentaho, Java, and R.
+          Developed data-integration, reporting, and testing workflows for an AWS-based data warehouse,
+          using Apache NiFi and Pentaho.
         </p>
         <p class="timeline-tech">AWS · Apache NiFi · Python · Pentaho · Java · R</p>
       </div>
+
+      <div class="timeline-group-label timeline-group-label--education">Education</div>
+
+      <div class="timeline-item timeline-item--education">
+        <div class="timeline-meta">
+          <span class="timeline-date">2017 - 2021</span>
+          <span class="timeline-kind">Education</span>
+        </div>
+        <h3 class="timeline-title">M.Sc. Computer Science</h3>
+        <p class="timeline-subtitle">Machine learning, data analysis, and medical image processing</p>
+        <p class="timeline-org">Leipzig University</p>
+        <p class="timeline-description">
+          Focus on machine learning, data analysis, and medical image processing; grade 1.2.
+          Master's thesis applied generative deep learning to study visual processing in the human brain
+          (grade 1.1).
+        </p>
+      </div>
+
+      <div class="timeline-item timeline-item--education">
+        <div class="timeline-meta">
+          <span class="timeline-date">2014 - 2017</span>
+          <span class="timeline-kind">Education</span>
+        </div>
+        <h3 class="timeline-title">B.Sc. Business Information Systems</h3>
+        <p class="timeline-subtitle">Software engineering, data systems, and business</p>
+        <p class="timeline-org">Leipzig University</p>
+        <p class="timeline-description">
+          Studied distributed systems, data management, e-commerce, and economics; grade 1.5.
+        </p>
+      </div>
+
 
     </div>
   </section>
 
   <!-- Work: Papers, Tools & Datasets -->
   <section class="section mode-section mode-section--professional" id="work">
-    <h2 class="section-title tools-heading tools-heading--primary">Datasets & Tools</h2>
+    <h2 class="section-title tools-heading tools-heading--primary">Selected Projects</h2>
     <div class="tools-list">
       <div class="tool-entry">
         <a href="https://huggingface.co/datasets/andropar/relaion2b-natural" class="tool-row" target="_blank" rel="noopener">
@@ -705,10 +675,10 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
             <canvas class="tool-anim" data-anim="sift" width="48" height="32"></canvas>
           </span>
           <span class="tool-info">
-            <span class="tool-name">ReLAION-2B Natural</span>
-            <span class="tool-desc">Naturalness scores for 2.1B images, identifying ~500M photographic images for vision research</span>
+            <span class="tool-name">ReLAION-natural</span>
+            <span class="tool-desc">Naturalistic image data for computer-vision research, with published embeddings for similarity search</span>
           </span>
-          <span class="tool-tech">167 GB · CLIP ViT-H/14</span>
+          <span class="tool-tech">Dataset curation · feature extraction</span>
         </a>
         <button class="tool-notes-toggle" type="button" aria-expanded="false" aria-controls="tool-notes-relaion" data-tool-notes-toggle="tool-notes-relaion">
           <span class="tool-notes-label tool-notes-label--closed">notes</span>
@@ -723,9 +693,9 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
           </span>
           <span class="tool-info">
             <span class="tool-name">thingsvision</span>
-            <span class="tool-desc">Unified feature extraction API for 100+ vision models</span>
+            <span class="tool-desc">Open-source Python library for extracting and comparing features from vision models</span>
           </span>
-          <span class="tool-tech">Core contributor · Python · 460k+ downloads</span>
+          <span class="tool-tech">Contributor · Python</span>
         </a>
         <button class="tool-notes-toggle" type="button" aria-expanded="false" aria-controls="tool-notes-thingsvision" data-tool-notes-toggle="tool-notes-thingsvision">
           <span class="tool-notes-label tool-notes-label--closed">notes</span>
@@ -740,23 +710,40 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
           </span>
           <span class="tool-info">
             <span class="tool-name">LAION-fMRI</span>
-            <span class="tool-desc">Deeply sampled 7T fMRI responses to 25k natural images for NeuroAI and visual neuroscience</span>
+            <span class="tool-desc">Brain-imaging dataset for visual neuroscience; I built its website and cloud-based data access</span>
           </span>
-          <span class="tool-tech">5 subjects · 165 sessions · GLMsingle betas</span>
+          <span class="tool-tech">Web development · AWS S3 / IAM</span>
         </a>
         <button class="tool-notes-toggle" type="button" aria-expanded="false" aria-controls="tool-notes-laion-fmri" data-tool-notes-toggle="tool-notes-laion-fmri">
           <span class="tool-notes-label tool-notes-label--closed">notes</span>
           <span class="tool-notes-label tool-notes-label--open">close</span>
         </button>
       </div>
+      <div class="tool-entry">
+        <a href="https://re-vision-initiative.org" class="tool-row" target="_blank" rel="noopener">
+          <span class="tool-label-col"><span class="tool-label">Research platform</span></span>
+          <span class="tool-info">
+            <span class="tool-name">re:vision</span>
+            <span class="tool-desc">Replication initiative in visual neuroscience; I developed the website, data services, and annotation tools</span>
+          </span>
+          <span class="tool-tech">Backend engineering · data access</span>
+        </a>
+        <button class="tool-notes-toggle" type="button" aria-expanded="false" aria-controls="tool-notes-revision" data-tool-notes-toggle="tool-notes-revision">
+          <span class="tool-notes-label tool-notes-label--closed">notes</span>
+          <span class="tool-notes-label tool-notes-label--open">close</span>
+        </button>
+      </div>
       <div class="tool-notes-panel" id="tool-notes-relaion" data-tool-notes-panel hidden>
-        <p>Vision research needs naturalistic photographs, but web-scraped datasets like LAION are full of screenshots, memes, ads, and generated images. We scored all 2.1 billion images in ReLAION-2B for "naturalness" using a CLIP-based classifier, then extracted and published ViT-H/14 embeddings for the ~500M most photographic ones. The result is a 167GB dataset on Hugging Face that lets researchers query half a billion images by visual similarity without downloading a single pixel.</p>
+        <p>I developed pipelines to identify naturalistic photographs in large web-image datasets, including classification, quality checks, and GPU-based feature extraction. The public release includes image embeddings for visual similarity search.</p>
       </div>
       <div class="tool-notes-panel" id="tool-notes-thingsvision" data-tool-notes-panel hidden>
-        <p>An open-source Python toolbox for extracting and comparing image representations from deep neural networks. Supports 100+ models across torchvision, timm, CLIP, self-supervised models (DINO, MAE, SimCLR), and more. Also includes tools for aligning DNN representations with human similarity judgments via RSA and CKA. I'm the third-largest contributor to the project, which has 460k+ PyPI downloads and is used across vision and cognitive neuroscience labs.</p>
+        <p>thingsvision provides a common interface for extracting features from different vision models, making it easier to compare their representations. My contributions include software architecture, model integration, and memory efficiency.</p>
       </div>
       <div class="tool-notes-panel" id="tool-notes-laion-fmri" data-tool-notes-panel hidden>
-        <p>LAION-fMRI is a deeply sampled 7T fMRI dataset for studying human visual representations with naturalistic images. It contains brain responses to 25,052 LAION-derived images across 5 subjects and 165 acquired scanning sessions, including single-trial GLMsingle betas, retinotopy, localizers, and diffusion data. The dataset supports work on model-brain comparison, stimulus selection, and replication through the re:vision initiative.</p>
+        <p>LAION-fMRI supports research on how the brain represents natural images. I developed and maintained the public website and data-download services, using AWS S3, access controls, and short-lived download links.</p>
+      </div>
+      <div class="tool-notes-panel" id="tool-notes-revision" data-tool-notes-panel hidden>
+        <p>I developed the public website and cloud-based data services, and built annotation tools for working students and interns. I also contributed to data preprocessing, organization, and labeling.</p>
       </div>
     </div>
 
@@ -790,9 +777,7 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
         <details class="pub-writeup">
           <summary></summary>
           <div class="pub-writeup-content">
-            <p>Vision neuroscience runs on large fMRI datasets, but nobody had checked whether the stimulus images in these datasets actually cover what humans see in the real world. We built LAION-natural -a reference distribution of ~120M naturalistic photographs filtered from 2 billion LAION images using a CLIP-based classifier trained on 25k actively sampled labels. Then we measured coverage: ~50% of the visual-semantic space is missing from the two most widely used datasets (NSD and THINGS).</p>
-            <p>The good news: you don't need millions of images to fix this. In both simulations and real fMRI data, out-of-distribution generalization saturates at 5-10k samples - as long as you draw them from a diverse enough pool. We compared seven sampling strategies (random, stratified, k-Means, Core-Set, effective dimensionality optimization, active learning) and found that pool diversity matters far more than which algorithm you use to sample from it.</p>
-            <p>The pipeline processes billions of images using CLIP embeddings, Annoy indices for nearest-neighbor search, mini-batch k-Means clustering, and Ridge regression encoding models - all at a scale that runs on a university HPC cluster, not a cloud budget.</p>
+            <p>How does the choice of images affect what we can learn about the visual brain? We developed a large reference set of naturalistic photographs and compared image-sampling strategies, using simulations and fMRI data to study dataset coverage and model generalization.</p>
           </div>
         </details>
       </li>
@@ -800,16 +785,15 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
         <a href="https://doi.org/10.1038/s44271-025-00236-3" class="pub-link" target="_blank" rel="noopener">
           <span class="pub-year">2025</span>
           <span class="pub-body">
-            <span class="pub-title">Ten principles for reliable, efficient, and adaptable coding</span>
-            <span class="pub-meta">Roth et al. <span class="pub-sep">/</span> Communications Psychology</span>
+            <span class="pub-title">Ten principles for reliable, efficient, and adaptable coding in psychology and cognitive neuroscience</span>
+            <span class="pub-meta">Roth*, Duan* et al. <span class="pub-sep">/</span> Communications Psychology <span class="pub-type">Shared first author</span></span>
           </span>
           <svg class="pub-arrow" width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3.5 12.5L12.5 3.5M12.5 3.5H5.5M12.5 3.5V10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
         <details class="pub-writeup">
           <summary></summary>
           <div class="pub-writeup-content">
-            <p>Most scientists learn to code informally - picking things up as they go, optimizing for "does it run?" over "will anyone else understand this?" This paper introduces a structured framework for writing better research code, built around the idea that researchers naturally switch between quick prototyping and careful development - and that being deliberate about which mode you're in makes all the difference.</p>
-            <p>The ten principles span three tiers: organizing code (standardized project structures, version control, automation), writing reusable code (testing, documentation, clean interfaces), and collaborating (code review systems, shared knowledge bases, lab-wide standards). Already at 22k+ accesses, it clearly hit a nerve - these are problems every computational lab deals with but rarely talks about explicitly.</p>
+            <p>A practical guide to research software, covering project organization, testing, documentation, version control, and collaboration. The principles distinguish exploratory prototyping from the work needed to make code reliable and reusable.</p>
           </div>
         </details>
       </li>
@@ -857,17 +841,16 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
           <details class="pub-writeup">
             <summary></summary>
             <div class="pub-writeup-content">
-              <p>You can't show the brain every possible image, so how do you figure out what a specific patch of visual cortex actually responds to? We trained a convolutional neural network end-to-end on fMRI data from a subject watching naturalistic movies - no ImageNet pretraining, just raw stimulus-response pairs. Then we used BigGAN to synthesize images that maximally activate individual voxels via gradient ascent through the model.</p>
-              <p>Early visual areas (V1-V3) preferred gratings in small receptive fields, as expected. More interesting: FFA showed preference for faces but also oval shapes and vertical symmetry, while PPA preferred places plus horizontal lines and high spatial frequencies. An SVM classifier could distinguish FFA vs. PPA preferred stimuli from their GAN latent vectors at 87% accuracy, confirming the approach produces meaningfully different outputs per region. This was one of the first demonstrations of GAN-based preferred stimulus synthesis for the human visual system.</p>
+              <p>For my master's thesis, I used generative deep learning to synthesize images predicted to activate particular regions of the human visual system. The work combined a model of brain activity with a generative image model to investigate visual selectivity.</p>
             </div>
           </details>
         </li>
         <li class="pub">
           <a href="https://doi.org/10.1007/978-3-031-08999-2_23" class="pub-link" target="_blank" rel="noopener">
-            <span class="pub-year">2021</span>
+            <span class="pub-year">2022</span>
             <span class="pub-body">
               <span class="pub-title">Multi-plane UNet++ Ensemble for Glioblastoma Segmentation</span>
-              <span class="pub-meta">Roth, Keller et al. <span class="pub-sep">/</span> MICCAI BraTS</span>
+              <span class="pub-meta">Roth et al. <span class="pub-sep">/</span> MICCAI BrainLes 2021 proceedings, published 2022</span>
             </span>
             <svg class="pub-arrow" width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3.5 12.5L12.5 3.5M12.5 3.5H5.5M12.5 3.5V10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
@@ -878,20 +861,15 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
     <div class="recognition-block" aria-label="Recognition and service">
       <p class="recognition-kicker">Recognition / service</p>
       <div class="recognition-grid">
-        <a class="recognition-line recognition-line--featured" href="https://re-vision-initiative.org" target="_blank" rel="noopener">
-          <span class="recognition-year">2025</span>
-          <span class="recognition-award">re:vision initiative</span>
-          <span class="recognition-note">LAION-fMRI consortium replication challenge · infrastructure for image-related neuroscience</span>
-        </a>
         <div class="recognition-line">
           <span class="recognition-year">2025</span>
           <span class="recognition-award">CMBB Replication Award</span>
           <span class="recognition-note">for reliable coding practices in neuroscience</span>
         </div>
         <div class="recognition-line">
-          <span class="recognition-year">MPI CBS</span>
+          <span class="recognition-year">2023–2024</span>
           <span class="recognition-award">PhD student representative</span>
-          <span class="recognition-note">graduate program, MPI CBS & University of Gießen</span>
+          <span class="recognition-note">elected to represent 180+ doctoral researchers at MPI CBS</span>
         </div>
         <a class="recognition-line" href="https://github.com/andropar/CNNvis" target="_blank" rel="noopener">
           <span class="recognition-year">2024/25</span>
@@ -1173,11 +1151,19 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
   .intro-photo {
     width: 100px;
     height: 100px;
+    padding: 0;
+    border: 0;
     border-radius: 16px;
     overflow: hidden;
     background: var(--color-bg-subtle);
     flex-shrink: 0;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .intro-photo[data-mode-toggle-trigger],
+  .intro-mobile-headshot-stack[data-mode-toggle-trigger] {
+    cursor: pointer;
+    pointer-events: auto;
   }
 
   .intro-photo img {
@@ -1247,16 +1233,16 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
   .capability-title {
     margin: 0 0 12px !important;
     color: var(--color-text);
-    font-size: clamp(20px, 2vw, 24px) !important;
+    font-size: 22px !important;
     line-height: 1.12 !important;
     font-weight: 400 !important;
-    letter-spacing: normal !important;
+    letter-spacing: 0 !important;
   }
 
   .capability-card p:not(.capability-kicker):not(.capability-tech) {
     margin: 0;
     color: var(--color-text-secondary);
-    font-size: 14px;
+    font-size: 16px;
     line-height: 1.48;
   }
 
@@ -1942,6 +1928,19 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
     display: grid;
   }
 
+  .intro-availability {
+    margin: 20px 0 0;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+  }
+
+  .intro-availability a {
+    color: var(--color-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
   .intro-bio-group {
     grid-area: 1 / 1;
     transition: opacity 0.24s ease, visibility 0.24s ease;
@@ -2148,6 +2147,9 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
     bottom: 0 !important;
     width: auto !important;
     max-width: none !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
     object-fit: contain !important;
     object-position: center bottom !important;
     pointer-events: none;
@@ -2158,29 +2160,23 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
 
   .intro .intro-photo .hero-portrait--professional {
     z-index: 1;
-    height: min(calc(100% - 16px), calc(100vh - 200px)) !important;
-    min-height: 470px;
-    max-height: 660px;
-    transform: translate(-50%, 8px) scale(1) !important;
+    transform: translateX(-50%) !important;
     filter: grayscale(4%) contrast(1.02) !important;
   }
 
   .intro .intro-photo .hero-portrait--personal {
     z-index: 2;
-    height: min(calc(100% - 16px), calc(100vh - 200px)) !important;
-    min-height: 470px;
-    max-height: 660px;
-    transform: translate(-50%, 8px) scale(1) !important;
+    transform: translateX(-50%) !important;
     filter: blur(7px) grayscale(22%) saturate(0.72) drop-shadow(0 34px 58px rgba(0, 0, 0, 0.24)) !important;
   }
 
   .mode-shell[data-site-mode="personal"] .intro .intro-photo .hero-portrait--professional {
-    transform: translate(-50%, 8px) scale(1) !important;
+    transform: translateX(-50%) !important;
     filter: blur(8px) grayscale(100%) drop-shadow(0 24px 42px rgba(0, 0, 0, 0.2)) !important;
   }
 
   .mode-shell[data-site-mode="personal"] .intro .intro-photo .hero-portrait--personal {
-    transform: translate(-50%, 8px) scale(1) !important;
+    transform: translateX(-50%) !important;
     filter: saturate(0.98) contrast(1.02) !important;
   }
 
@@ -3006,7 +3002,7 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
     }
 
     #work .tools-list {
-      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
       gap: 10px !important;
     }
 
@@ -3308,6 +3304,53 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
     }
   }
 
+  @media (min-width: 521px) and (max-width: 760px) {
+    .intro {
+      grid-template-columns: minmax(0, 1fr) minmax(150px, 0.62fr) !important;
+      column-gap: 24px !important;
+      row-gap: 24px !important;
+      align-items: start;
+    }
+
+    .intro .intro-name-row {
+      grid-column: 1 / -1 !important;
+      grid-row: 1 !important;
+      margin: 0 !important;
+    }
+
+    .intro .intro-title {
+      max-width: 100%;
+      font-size: 48px !important;
+      letter-spacing: 0;
+    }
+
+    .intro .intro-bio-stack {
+      grid-column: 1 !important;
+      grid-row: 2 !important;
+      min-width: 0;
+    }
+
+    .intro .intro-photo {
+      grid-column: 2 !important;
+      grid-row: 2 !important;
+      align-self: start;
+      height: 340px !important;
+      margin: 0 !important;
+    }
+
+    .intro .intro-photo .hero-portrait {
+      width: 100% !important;
+      max-width: 100% !important;
+      object-position: center top !important;
+    }
+
+    .intro .intro-actions {
+      grid-column: 1 / -1 !important;
+      grid-row: 3 !important;
+      margin: 0 !important;
+    }
+  }
+
   @media (max-width: 520px) {
     .intro-mobile-headshot-stack {
       position: relative;
@@ -3360,56 +3403,69 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
     if (!shell || !toggle) return;
 
     const onHome = window.location.pathname === '/' || window.location.pathname.endsWith('/index.html');
-    const navSets = {
-      professional: [
-        { href: 'capabilities', label: 'skills' },
-        { href: 'experience', label: 'experience' },
-        { href: 'work', label: 'work' },
-      ],
-      personal: [
-        { href: 'personal-life', label: 'about' },
-        { href: 'personal-shelves', label: 'shelves' },
-        { href: 'personal-notes', label: 'notes' },
-      ],
+    const modeCopy = {
+        nav: {
+          professional: [
+            { href: 'capabilities', label: 'skills' },
+            { href: 'experience', label: 'experience' },
+            { href: 'work', label: 'work' },
+          ],
+          personal: [
+            { href: 'personal-life', label: 'about' },
+            { href: 'personal-shelves', label: 'shelves' },
+            { href: 'personal-notes', label: 'notes' },
+          ],
+        },
+        toggleProfessional: 'Learn more about my life outside work',
+        togglePersonal: 'Back to my professional work',
+        scrollProfessional: 'Scroll to what I can do',
+        scrollPersonal: 'Scroll to about me',
+        switchTheme: (nextTheme) => `Switch to ${nextTheme} mode`,
     };
 
     function sectionHref(id) {
       return onHome ? `#${id}` : `/#${id}`;
     }
 
-    function syncThemeForMode(mode) {
-      const theme = mode === 'personal' ? 'light' : 'dark';
+    function syncThemeForMode(mode, followMode) {
+      if (followMode) {
+        document.documentElement.dataset.theme = mode === 'personal' ? 'light' : 'dark';
+        try {
+          localStorage.setItem('theme', document.documentElement.dataset.theme);
+        } catch (error) {
+          // Switching views still works when storage is unavailable.
+        }
+      }
+      const theme = document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
       const nextTheme = theme === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', theme);
-      try {
-        localStorage.setItem('theme', theme);
-      } catch (error) {
-        // The active page can still switch themes without local storage.
-      }
 
       const themeToggle = document.querySelector('.theme-toggle');
       if (themeToggle) {
-        themeToggle.setAttribute('aria-label', `Switch to ${nextTheme} mode`);
-        themeToggle.setAttribute('title', `Switch to ${nextTheme} mode`);
+        const label = modeCopy.switchTheme(nextTheme);
+        themeToggle.setAttribute('aria-label', label);
+        themeToggle.setAttribute('title', label);
         themeToggle.setAttribute('aria-pressed', String(theme === 'dark'));
       }
     }
 
     function getInitialMode() {
-      return window.location.hash.indexOf('#personal-') === 0 ? 'personal' : 'professional';
+      return /^#personal(?:-|$)/.test(window.location.hash) ? 'personal' : 'professional';
     }
 
-    function setMode(mode) {
+    function setMode(mode, followMode = false) {
       const nextMode = mode === 'personal' ? 'personal' : 'professional';
       const isPersonal = nextMode === 'personal';
       shell.dataset.siteMode = nextMode;
       document.documentElement.dataset.siteMode = nextMode;
-      syncThemeForMode(nextMode);
+      syncThemeForMode(nextMode, followMode);
       toggle.setAttribute('aria-pressed', String(isPersonal));
-      toggle.setAttribute('aria-label', isPersonal ? 'Back to my professional work' : 'Learn more about my life outside work');
+      const copy = modeCopy;
+      const toggleLabel = isPersonal ? copy.togglePersonal : copy.toggleProfessional;
+      toggle.setAttribute('aria-label', toggleLabel);
       modeToggleTriggers.forEach((trigger) => {
-        trigger.setAttribute('aria-label', isPersonal ? 'Switch to professional view' : 'Switch to personal view');
-        trigger.setAttribute('title', isPersonal ? 'Switch to professional view' : 'Switch to personal view');
+        trigger.setAttribute('aria-label', toggleLabel);
+        trigger.setAttribute('title', toggleLabel);
       });
 
       document.querySelectorAll('.hero-portrait--professional').forEach((portrait) => {
@@ -3421,7 +3477,7 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
         portrait.style.opacity = isPersonal ? '1' : '0';
       });
 
-      const activeNav = navSets[nextMode];
+      const activeNav = copy.nav[nextMode];
       navLinks.forEach((link, index) => {
         const item = activeNav[index];
         if (!item) return;
@@ -3432,7 +3488,7 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
       if (scrollCue) {
         const target = isPersonal ? 'personal-life' : 'capabilities';
         scrollCue.setAttribute('href', sectionHref(target));
-        scrollCue.setAttribute('aria-label', isPersonal ? 'Scroll to about me' : 'Scroll to what I can do');
+        scrollCue.setAttribute('aria-label', isPersonal ? copy.scrollPersonal : copy.scrollProfessional);
       }
 
     }
@@ -3440,13 +3496,25 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
 
     function toggleMode() {
       const nextMode = shell.dataset.siteMode === 'personal' ? 'professional' : 'personal';
-      setMode(nextMode);
+      setMode(nextMode, true);
+      const hash = nextMode === 'personal' ? '#personal' : '#professional';
+      history.pushState(null, '', hash);
     }
 
     toggle.addEventListener('click', toggleMode);
     modeToggleTriggers.forEach((trigger) => {
       trigger.addEventListener('click', toggleMode);
     });
+
+    window.addEventListener('hashchange', () => {
+      const hash = window.location.hash;
+      if (!hash || hash === '#professional' || ['#capabilities', '#experience', '#work', '#writing', '#contact'].includes(hash)) {
+        setMode('professional', true);
+      } else if (hash === '#personal' || hash.startsWith('#personal-')) {
+        setMode('personal', true);
+      }
+    });
+
   })();
 
   // Expand the personal reading archive under the shelf grid.
@@ -3622,6 +3690,7 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
 
   // Tiny metaphorical animations for each tool type
   document.querySelectorAll('.tool-anim').forEach((canvas) => {
+    if (getComputedStyle(canvas).display === 'none' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const ctx = canvas.getContext('2d');
     const type = canvas.dataset.anim;
     const dpr = window.devicePixelRatio || 1;
@@ -3764,6 +3833,7 @@ const formatPostDate = (date: Date) => date.toLocaleDateString('en-US', {
   (function() {
     const el = document.getElementById('asciiHero');
     if (!el) return;
+    if (!el.getClientRects().length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     function gabor(x, y, lambda, theta, sigma, phase) {
       const xp = x * Math.cos(theta) + y * Math.sin(theta);

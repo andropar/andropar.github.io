@@ -1,172 +1,131 @@
 \documentclass[10pt,a4paper]{article}
-
-\usepackage[a4paper,left=22mm,right=22mm,top=18mm,bottom=17mm]{geometry}
+\usepackage[a4paper,left=21mm,right=21mm,top=17mm,bottom=19mm]{geometry}
 \usepackage{fontspec}
-\usepackage{xcolor}
 \usepackage{enumitem}
 \usepackage{hyperref}
 \usepackage{tabularx}
 \usepackage{ragged2e}
-\usepackage{microtype}
 \usepackage{fancyhdr}
-
 \setmainfont{Helvetica}
-
-\hypersetup{
-  pdftitle={Johannes Roth - Applied AI / Machine Learning CV},
-  pdfauthor={Johannes Roth},
-  pdfsubject={Applied AI, machine learning, data systems, and research engineering CV},
-  colorlinks=true,
-  urlcolor=black
-}
-
+\hypersetup{pdftitle={Johannes Roth - Machine Learning Engineer},pdfauthor={Johannes Roth},pdfsubject={Machine learning engineering, applied data science, and research},colorlinks=true,urlcolor=black}
 \pagestyle{fancy}
 \fancyhf{}
 \renewcommand{\headrulewidth}{0pt}
-\renewcommand{\footrulewidth}{0pt}
-\cfoot{\small Page \thepage\ of 2}
+\cfoot{\fontsize{8.5}{10}\selectfont Johannes Roth \quad | \quad \thepage\ / 2}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0pt}
-\setlist[itemize]{
-  leftmargin=10pt,
-  labelsep=5pt,
-  itemsep=1.2pt,
-  topsep=1.5pt,
-  parsep=0pt,
-  partopsep=0pt
-}
-\renewcommand{\labelitemi}{\raisebox{0.2ex}{\scriptsize$\bullet$}}
-
-\newcommand{\sectiontitle}[1]{%
-  \par
-  \vspace{7pt}
-  {\fontsize{13.5}{14.5}\selectfont\bfseries\MakeUppercase{#1}}\par
-  \vspace{-1pt}
-  \hrule height 0.45pt
-  \vspace{2.5pt}
-}
-
-\newcommand{\role}[4]{%
-  \par
-  \vspace{4.2pt}
-  \begin{tabularx}{\textwidth}{@{}Xr@{}}
-    \textbf{#1} & \textbf{\textit{#2}} \\
-  \end{tabularx}
-  \textbf{#3}\par
-  #4
-}
-
-\newcommand{\education}[4]{%
-  \par
-  \vspace{4.2pt}
-  \begin{tabularx}{\textwidth}{@{}Xr@{}}
-    \textbf{#1} & \textbf{\textit{#2}} \\
-  \end{tabularx}
-  \textbf{#3}\par
-  #4
-}
-
+\setlength{\RaggedRightRightskip}{0pt plus 1fil}
+\setlist[itemize]{leftmargin=12pt,itemsep=3pt,topsep=4pt,parsep=0pt,partopsep=0pt}
+\newcommand{\sectiontitle}[1]{\par\vspace{12pt}{\fontsize{12}{14}\selectfont\bfseries\MakeUppercase{#1}}\par\vspace{3pt}\hrule height 0.4pt\vspace{4pt}}
+\newcommand{\role}[3]{\par\vspace{8pt}\begin{tabularx}{\textwidth}{@{}Xr@{}}\textbf{#1}&{\small #2}\\\end{tabularx}\par\textit{#3}\par}
 \begin{document}
-
 \begin{center}
-  {\fontsize{25.5}{29}\selectfont\bfseries Johannes Roth}\par
-  \vspace{6pt}
-  johannes@roth24.de \hspace{12pt}
-  \href{https://linkedin.com/in/johannes-roth-a67baa141}{LinkedIn} \hspace{12pt}
-  \href{https://github.com/andropar}{GitHub} \hspace{12pt}
-  \href{https://jroth.space}{jroth.space} \hspace{12pt}
-  Leipzig, Germany
+{\fontsize{26}{30}\selectfont\bfseries Johannes Roth}\par
+\vspace{5pt}
+{\fontsize{12}{14}\selectfont Machine Learning Engineer}\par
+\vspace{7pt}
+{\small \href{mailto:johannes@roth24.de}{johannes@roth24.de}\quad
+\href{https://linkedin.com/in/johannes-roth-a67baa141}{LinkedIn}\quad
+\href{https://github.com/andropar}{GitHub}\quad
+\href{https://scholar.google.com/citations?user=U3Z3J2gAAAAJ}{Scholar}\quad
+\href{https://jroth.space}{jroth.space}\quad Leipzig, Germany}\par
+\vspace{4pt}
+{\small Available from January 2027}
 \end{center}
-\vspace{6pt}
-
-\fontsize{9.35}{10.75}\selectfont
-\justifying\setlength{\parindent}{0pt}
-\textbf{Applied AI / Machine Learning Engineer} and PhD researcher with 6+ years of experience turning ambiguous data problems into scalable ML systems, evaluation workflows, and production-facing tools. Background spans large-scale computer vision infrastructure, dataset curation over billions of images, production ML services for travel products, and business information systems. Strong in Python, PyTorch, computer vision, representation learning, data quality, model evaluation, and cross-functional product engineering. Open to industry roles from \textbf{September 2026}.
+\fontsize{10.5}{13}\selectfont
+\RaggedRight
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
+Machine learning engineer with experience taking ML and data projects from initial requirements to deployment and operation. Background in production computer vision, large-scale data processing, and independent research in computational neuroscience.
 
 \sectiontitle{Experience}
-
-\role{PhD Researcher - NeuroAI / Computational Cognitive Neuroscience}{May 2022 -- Present}{Max Planck Institute for Human Cognitive and Brain Sciences \& University of Giessen}{
+\begin{samepage}
+\role{PhD Researcher - Computational Cognitive Neuroscience}{May 2022 -- Present}{Max Planck Institute for Human Cognitive and Brain Sciences \& University of Giessen}
 \begin{itemize}
-  \item Researching applied NeuroAI methods for efficient experimental design: translating open-ended scientific questions into validation-set design, active sampling, model evaluation, and scalable data-selection workflows.
-  \item Built the ML/data infrastructure behind these workflows, including public datasets, embedding-search utilities, \textbf{AWS S3/IAM}-backed data access, and re:vision challenge infrastructure for external research teams.
-  \item Processed \textbf{2.1B} ReLAION images to score naturalness, identify approximately \textbf{500M} photographic images, and release \textbf{ReLAION-2B Natural} with a \textbf{167GB} model-feature release.
-  \item Developed hard-example mining and evaluation workflows using model features, nearest-neighbor search, mini-batch k-Means, and Ridge encoding models to study dataset coverage and model--brain generalization.
+\item Conducted independent research at the intersection of \textbf{machine learning and computational neuroscience}, focusing on vision models and their relationship to human brain activity.
+\item Developed methods for model evaluation and experimental design, combining computational analyses with fMRI studies.
+\item Developed \textbf{GPU-based ML pipelines} for dataset curation and feature extraction, and released \href{https://huggingface.co/datasets/andropar/relaion2b-natural}{large-scale image datasets} for computer-vision research.
+\item Independently developed and maintained research software and cloud-based data services for \href{https://laion-fmri.hebartlab.com}{\textbf{LAION-fMRI}} and \href{https://re-vision-initiative.org/}{\textbf{re:vision}}, including public websites and annotation tools.
+\item Supervised working students and interns and collaborated with researchers across computer science and neuroscience.
 \end{itemize}
-}
+\end{samepage}
 
-\role{Research Assistant - ML in Medicine}{Jun 2021 -- May 2022}{ScaDS.AI Dresden/Leipzig}{
+\begin{samepage}
+\role{Research Assistant - Machine Learning in Medicine}{Jun 2021 -- May 2022}{ScaDS.AI Dresden/Leipzig}
 \begin{itemize}
-  \item Built reproducible deep learning workflows for medical image segmentation and clinical prediction, covering preprocessing, GPU training, model comparison, and uncertainty-aware evaluation.
-  \item Engineered a multi-plane \textbf{UNet++} ensemble for glioblastoma segmentation and developed \textbf{FT-Transformer/SAINT} clinical prediction models with epistemic uncertainty estimation.
+\item Developed and evaluated deep-learning models for \textbf{medical image analysis}, including brain-tumor segmentation.
+\item Built predictive models for clinical data, with a focus on mortality prediction and uncertainty estimation.
 \end{itemize}
-}
+\end{samepage}
 
-\role{Data Scientist / ML Engineer (Working Student)}{Oct 2019 -- May 2021}{CHECK24 (Travel Vertical)}{
+\begin{samepage}
+\role{Data Scientist / ML Engineer (Working Student)}{Nov 2019 -- May 2021}{CHECK24, Travel Vertical}
 \begin{itemize}
-  \item Built applied ML and backend features for a consumer travel product, including a Flask/Redis service for fast image inference across \textbf{>20 million} hotel images.
-  \item Used model outputs for deduplication, retrieval, classification, quality scoring, and recommendation tuning; optimized serving with \textbf{ONNX} and worked with \textbf{GCP BigQuery} and \textbf{Grafana} for product-data workflows.
-  \item Worked cross-functionally on booking-engine features, hotel-price outlier detection, ranking evaluation, Bayesian search, and image-quality pipelines used by product and data teams.
+\item Independently designed and deployed a \textbf{production computer-vision service} for \textbf{20 million hotel images}, covering model development and backend engineering.
+\item Prototyped additional computer-vision applications for image retrieval, duplicate detection, and image-quality assessment.
+\item Optimized recommendation-data pipelines through incremental processing, reducing update time by over \textbf{95\%}.
 \end{itemize}
-}
+\end{samepage}
 
-\role{Data Scientist (Working Student)}{Oct 2018 -- Oct 2019}{Webdata Solutions GmbH (now Vistex)}{
+\begin{samepage}
+\role{Full-Stack Developer (Freelance)}{Oct 2020 -- May 2021}{Kimetric UG}
 \begin{itemize}
-  \item Worked on product matching for e-commerce data, using \textbf{Azure on-demand servers} while turning noisy scraped web data into usable training and evaluation datasets.
-  \item Rebuilt parts of the matching pipeline with a neural-network approach, improving matching accuracy from \textbf{<50\%} to \textbf{92\%}.
+\item Designed and delivered Django-based websites for research organizations, including \href{https://hebartlab.com}{\textbf{Hebart Lab}} and the \href{https://things-initiative.org}{\textbf{THINGS Initiative}}.
+\item Gathered client requirements and managed deployment, Linux hosting, and ongoing application maintenance.
 \end{itemize}
-}
-
-\role{Full-stack Developer (Freelance)}{Oct 2020 -- May 2021}{Kimetric UG}{
-\begin{itemize}
-  \item Delivered full-stack web projects for academic clients, from requirements clarification and backend implementation to deployment.
-  \item Built Django-based websites, configured Linux servers with Nginx and Gunicorn, and wrote deployment scripts for reliable handoff.
-\end{itemize}
-}
-
-\sectiontitle{Projects \& Open Source}
-\begin{itemize}
-  \item \textbf{thingsvision (Core Contributor)} -- Unified Python API for extracting and comparing image representations from \textbf{100+} vision and foundation models; \textbf{460k+} PyPI downloads.
-  \item \textbf{ReLAION-2B Natural} -- Naturalness scores, approximately \textbf{500M} photographic images, and a \textbf{167GB} feature release for data selection, retrieval, and model-comparison workflows.
-  \item \textbf{LAION-fMRI / re:vision} -- Stimulus selection and release infrastructure for a deeply sampled \textbf{7T fMRI} dataset with \textbf{25,052} natural images and \textbf{165} scan sessions.
-\end{itemize}
+\end{samepage}
 
 \newpage
-
-\sectiontitle{Education}
-
-\education{PhD Candidate - Computer Science / Machine Learning}{May 2022 -- Present}{Max Planck Institute for Human Cognitive and Brain Sciences \& University of Giessen}{Dissertation on efficient experimental design, large-scale visual datasets, and model--brain alignment for computational neuroscience.}
-
-\education{M.Sc. Computer Science}{2017 -- 2021}{Leipzig University}{Grade \textbf{1.2}. Focus: Data Analysis, Machine Learning, Medical Image Processing.
+\begin{samepage}
+\role{Data Scientist (Working Student)}{Oct 2018 -- Sep 2019}{Webdata Solutions GmbH (now Vistex)}
 \begin{itemize}
-  \item \textbf{Master's Thesis (Grade 1.1)} -- Used GANs and neural encoding models to synthesize stimuli that maximally activate targeted brain regions, recovering known category-selective areas in human visual cortex.
+\item Developed machine-learning models for \textbf{product matching and image classification} in e-commerce.
+\item Improved image-based matching accuracy from \textbf{12\% to 83\%} against a classification baseline in an internal cross-retailer evaluation.
 \end{itemize}
-}
+\end{samepage}
 
-\education{B.Sc. Business Information Systems}{2014 -- 2017}{Leipzig University}{Grade \textbf{1.5}. Focus: Distributed Systems, E-Commerce, Data Management, Economics.}
+\begin{samepage}
+\role{Data Analyst (Working Student)}{Feb 2018 -- Aug 2018}{Mercateo Services GmbH \& Co. KG}
+\begin{itemize}
+\item Developed data-integration, reporting, and testing workflows for an \textbf{AWS-based data warehouse} using Apache NiFi and Pentaho.
+\end{itemize}
+\end{samepage}
 
 \sectiontitle{Technical Skills}
-\begin{tabularx}{\textwidth}{@{}p{37mm}X@{}}
-\textbf{Applied AI \& Vision} & Computer vision, representation learning, model--brain comparison, fMRI workflows \\
-\textbf{ML \& Data Systems} & Dataset curation, billion-scale filtering, embedding search, data quality, active sampling, validation data design, hard-example mining \\
-\textbf{Training \& Evaluation} & PyTorch, TensorFlow, scikit-learn, Transformers, automated model comparison, ranking metrics, uncertainty estimation, reproducible experiment workflows \\
-\textbf{Models} & CLIP/OpenCLIP-style embeddings, ViT, CNNs, UNet++, GANs, foundation-model feature extraction and representation comparison \\
-\textbf{Engineering} & Python, SQL, Docker, ONNX, AWS S3/IAM, GCP BigQuery, Azure, Git, CI/CD, Flask, Redis, Linux servers, Nginx/Gunicorn, Bash, SLURM/HPC, Grafana \\
-\textbf{Communication} & Technical writing, research talks, stakeholder alignment, mentoring, German (Native), English (Fluent) \\
-\end{tabularx}
-
-\sectiontitle{Selected Publications \& Awards}
 \begin{itemize}
-  \item \textbf{Award (2025):} CMBB Replication Award for reliable coding practices in neuroscience.
-  \item \textbf{F.P. Mahner*, J. Roth*}, et al. \textit{Characterizing Universal Object Representations Across Vision Models}. arXiv preprint, 2026 (shared first author, under review).
-  \item \textbf{J. Roth}, M. N. Hebart. \textit{How to sample the world for understanding the visual system}. CCN 2025 Oral.
-  \item \textbf{J. Roth} et al. \textit{Ten principles for reliable, efficient, and adaptable coding}. Communications Psychology 2025; \textbf{22k+} accesses.
+\item \textbf{ML \& Analysis:} Python, SQL, PyTorch, TensorFlow, scikit-learn; computer vision, embeddings, model evaluation, statistical analysis, experimental design.
+\item \textbf{Software \& Data:} FastAPI, Flask, Django, Redis, Docker, Git, CI/CD; data pipelines, similarity search, dataset curation.
+\item \textbf{Cloud \& Compute:} AWS (S3, IAM), Linux, SLURM/HPC, multi-GPU processing.
+\item \textbf{Languages:} German (native), English (fluent).
 \end{itemize}
 
-\sectiontitle{Leadership \& Community}
+\sectiontitle{Open Source}
 \begin{itemize}
-  \item \textbf{PhD Representative (2023--2024):} Elected to represent \textbf{>180} doctoral researchers at MPI CBS.
-  \item \textbf{Mentoring:} Supervised working students and interns in the research group; translated ambiguous research goals into scoped engineering tasks and feedback loops.
-  \item \textbf{Research communication:} Presented work at international conferences, institute colloquia, interdisciplinary research meetings, and public ML outreach events.
+\item Contributed to \href{https://github.com/ViCCo-Group/thingsvision}{\textbf{thingsvision}}, an open-source library for computer-vision research, with work on software architecture, model integration, and memory efficiency.
 \end{itemize}
 
+\sectiontitle{Education}
+\role{Doctoral Candidate (Dr. rer. nat.)}{May 2022 -- Present}{University of Giessen}
+Research focus: machine learning and computational neuroscience.
+
+\role{M.Sc. Computer Science}{2017 -- 2021}{Leipzig University; grade 1.2}
+\begin{itemize}
+\item \textbf{Master's thesis (grade 1.1):} Applied generative deep learning to study visual processing in the human brain.
+\end{itemize}
+
+\role{B.Sc. Business Information Systems}{2014 -- 2017}{Leipzig University; grade 1.5}
+
+\sectiontitle{Selected Publications}
+\begin{itemize}
+\item F. P. Mahner*, \textbf{J. Roth*}, et al. \href{https://arxiv.org/abs/2605.13675}{\textit{Characterizing Universal Object Representations Across Vision Models}}. arXiv preprint, 2026. Shared first author.
+\item \textbf{J. Roth*}, Y. Duan*, et al. \href{https://doi.org/10.1038/s44271-025-00236-3}{\textit{Ten principles for reliable, efficient, and adaptable coding in psychology and cognitive neuroscience}}. Communications Psychology, 2025. Shared first author.
+\item \textbf{J. Roth} et al. \href{https://doi.org/10.1007/978-3-031-08999-2_23}{\textit{Multi-plane UNet++ Ensemble for Glioblastoma Segmentation}}. MICCAI BrainLes 2021 workshop proceedings, published 2022.
+\end{itemize}
+
+\sectiontitle{Recognition \& Service}
+\begin{itemize}
+\item Presented research at \href{https://openreview.net/forum?id=T9k6KkZoca}{\textbf{CCN 2025 (oral)}}.
+\item Elected representative for \textbf{180+ doctoral researchers} at MPI CBS (2023--2024).
+\item \textbf{CMBB Replication Award (2025)} for contributions to reliable coding practices in neuroscience.
+\end{itemize}
 \end{document}

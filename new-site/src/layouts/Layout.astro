@@ -6,8 +6,8 @@ interface Props {
   description?: string;
 }
 
-const { title, description = "Computer scientist and ML engineer with experience in applied data science, production-facing ML systems, and computational neuroscience." } = Astro.props;
-
+const { title, description = "Johannes Roth is a machine learning engineer and PhD researcher in Leipzig, working on computer vision, data systems, and computational neuroscience." } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const navLinks = [
   { href: '/#capabilities', label: 'skills' },
   { href: '/#experience', label: 'experience' },
@@ -22,57 +22,47 @@ const navLinks = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="author" content="Johannes Roth" />
-
-    <!-- Open Graph -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:site_name" content="Johannes Roth" />
+    <link rel="canonical" href={canonicalURL} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;500&family=Raleway:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;500&family=Raleway:wght@400&display=swap" rel="stylesheet" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
     <title>{title}</title>
 
-    <!-- Set the theme before paint; the homepage defaults to the professional side. -->
     <script is:inline>
       (function() {
-        var theme = 'light';
+        var isHome = window.location.pathname === '/' || window.location.pathname === '/index.html';
+        var theme = isHome && /^#personal(?:-|$)/.test(window.location.hash) ? 'light' : 'dark';
         try {
-          var isHome = window.location.pathname === '/' || window.location.pathname.endsWith('/index.html');
           var storedTheme = localStorage.getItem('theme');
-          if (isHome) {
-            theme = window.location.hash.indexOf('#personal-') === 0 ? 'light' : 'dark';
-          } else if (storedTheme === 'light' || storedTheme === 'dark') {
-            theme = storedTheme;
-          }
+          if (storedTheme === 'light' || storedTheme === 'dark') theme = storedTheme;
         } catch (error) {
-          theme = 'light';
+          // Keep the default theme when storage is unavailable.
         }
         document.documentElement.setAttribute('data-theme', theme);
       })();
     </script>
-
-    <!-- GoatCounter Analytics -->
-    <script data-goatcounter="https://jroth.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+    {import.meta.env.PROD && <script data-goatcounter="https://jroth.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>}
   </head>
   <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
-    <nav>
+    <nav aria-label="Main navigation">
       <div class="container">
         <a href="/" class="nav-brand">Johannes Roth</a>
         <ul class="nav-links" id="site-navigation">
           {navLinks.map(link => (
-            <li>
-              <a href={link.href} class="nav-link">
-                {link.label}
-              </a>
-            </li>
+            <li><a href={link.href} class="nav-link">{link.label}</a></li>
           ))}
+          <li><a href="/blog" class="nav-link" aria-current={Astro.url.pathname.startsWith('/blog') ? 'page' : undefined}>writing</a></li>
         </ul>
         <div class="nav-actions">
-          <button class="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
+          <button class="theme-toggle" type="button" aria-label="Switch to light mode" title="Switch to light mode">
             <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
               <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.8 6.8 0 0 0 9.8 9.8z" />
             </svg>
@@ -84,16 +74,12 @@ const navLinks = [
           <button class="nav-menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="site-navigation">
             <span class="nav-menu-lines" aria-hidden="true"></span>
           </button>
-          <a href="/cv.pdf" download="Johannes_Roth_CV.pdf" class="nav-cv">cv</a>
+          <a href="/cv.pdf" download="Johannes_Roth_CV.pdf" class="nav-cv">CV</a>
         </div>
       </div>
     </nav>
 
-    <main id="main-content">
-      <div class="container">
-        <slot />
-      </div>
-    </main>
+    <main id="main-content"><div class="container"><slot /></div></main>
 
     <footer>
       <div class="container">
@@ -109,64 +95,39 @@ const navLinks = [
     </footer>
 
     <script>
-      // Scroll-triggered reveals with Intersection Observer
       const revealElements = document.querySelectorAll('.timeline-item, .publication, .item, .card, .now-card');
-
       if ('IntersectionObserver' in window) {
         const revealObserver = new IntersectionObserver((entries) => {
           entries.forEach((entry, index) => {
             if (entry.isIntersecting) {
-              // Staggered reveal
-              setTimeout(() => {
-                entry.target.classList.add('revealed');
-              }, index * 50);
+              setTimeout(() => entry.target.classList.add('revealed'), index * 50);
               revealObserver.unobserve(entry.target);
             }
           });
-        }, {
-          threshold: 0.1,
-          rootMargin: '0px 0px -50px 0px'
-        });
-
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
         revealElements.forEach(el => {
           el.classList.add('reveal');
           revealObserver.observe(el);
         });
       }
 
-      // Smooth scroll offset for sticky nav
-      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-          e.preventDefault();
-          const targetId = this.getAttribute('href');
-          if (targetId && targetId !== '#') {
-            const target = document.querySelector(targetId);
-            if (target) {
-              const navHeight = document.querySelector('nav')?.offsetHeight || 64;
-              const targetPosition = target.getBoundingClientRect().top + window.scrollY - navHeight - 20;
-              window.scrollTo({
-                top: targetPosition,
-                behavior: 'smooth'
-              });
-            }
-          }
-        });
-      });
-
-      // Mobile navigation
       const nav = document.querySelector('nav');
-      const navMenuToggle = document.querySelector('.nav-menu-toggle');
+      const navMenuToggle = document.querySelector<HTMLButtonElement>('.nav-menu-toggle');
       const closeNavMenu = () => {
         if (!nav || !navMenuToggle) return;
         nav.removeAttribute('data-menu-open');
         navMenuToggle.setAttribute('aria-expanded', 'false');
         navMenuToggle.setAttribute('aria-label', 'Open navigation');
       };
-
       if (nav && navMenuToggle) {
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape' && nav.hasAttribute('data-menu-open')) {
+            closeNavMenu();
+            navMenuToggle.focus();
+          }
+        });
         navMenuToggle.addEventListener('click', () => {
-          const isOpen = nav.getAttribute('data-menu-open') === 'true';
-          if (isOpen) {
+          if (nav.getAttribute('data-menu-open') === 'true') {
             closeNavMenu();
           } else {
             nav.setAttribute('data-menu-open', 'true');
@@ -174,38 +135,41 @@ const navLinks = [
             navMenuToggle.setAttribute('aria-label', 'Close navigation');
           }
         });
-
-        document.querySelectorAll('.nav-link').forEach(link => {
-          link.addEventListener('click', closeNavMenu);
-        });
+        document.querySelectorAll('.nav-link').forEach(link => link.addEventListener('click', closeNavMenu));
       }
 
-      // Theme toggle
+      const getTheme = () => document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
       const themeToggle = document.querySelector('.theme-toggle');
-      const getTheme = () => document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
-      const updateThemeToggle = (theme) => {
+      function updateThemeToggle() {
         if (!themeToggle) return;
-        const nextTheme = theme === 'dark' ? 'light' : 'dark';
-        themeToggle.setAttribute('aria-label', `Switch to ${nextTheme} mode`);
-        themeToggle.setAttribute('title', `Switch to ${nextTheme} mode`);
+        const theme = getTheme();
+        const label = `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`;
+        themeToggle.setAttribute('aria-label', label);
+        themeToggle.setAttribute('title', label);
         themeToggle.setAttribute('aria-pressed', String(theme === 'dark'));
-      };
-
+      }
       if (themeToggle) {
-        updateThemeToggle(getTheme());
+        updateThemeToggle();
         themeToggle.addEventListener('click', () => {
           const nextTheme = getTheme() === 'dark' ? 'light' : 'dark';
-          document.documentElement.setAttribute('data-theme', nextTheme);
-          try {
-            localStorage.setItem('theme', nextTheme);
-          } catch (error) {
-            // Ignore storage failures; the active page can still switch themes.
+          document.documentElement.dataset.theme = nextTheme;
+          try { localStorage.setItem('theme', nextTheme); } catch (error) {
+            // The active page can still switch themes without storage.
           }
-          updateThemeToggle(nextTheme);
+          updateThemeToggle();
         });
       }
-
     </script>
-
   </body>
 </html>
+
+<style is:global>
+  :is(a, button, summary):focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto !important; }
+    .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+  }
+</style>
