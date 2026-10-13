@@ -159,8 +159,8 @@ In vision research you'll rarely look at the whole brain. Much more often you wa
 
 You fit a regular GLM to the localizer runs and compute contrasts:
 
-- faces > objects: FFA and OFA (Kanwisher et al., 1997)
-- scenes > objects: PPA, OPA (also called TOS) and RSC/MPA (Epstein & Kanwisher, 1998)
+- faces > objects: FFA and the occipital face area, OFA (Kanwisher et al., 1997)
+- scenes > objects: PPA, the occipital place area (OPA, also called TOS) and the retrosplenial complex (RSC, also called MPA) (Epstein & Kanwisher, 1998)
 - bodies > objects: EBA (Downing et al., 2001)
 - objects > scrambled objects: LOC (Malach et al., 1995)
 
@@ -282,11 +282,11 @@ The problem is that when trials are close together in time (fast event-related d
 
 <img src="/blog/fmri-diagrams/design-matrix-collinearity.svg" alt="Single-trial regressors for four trials: well separated in a slow design, strongly overlapping in a fast design" />
 
-*Simulated single-trial regressors. With 12 s between trials (left), neighbouring regressors barely overlap (r = -0.21 in this simulation). With 3 s between trials (right), the HRFs overlap and neighbouring regressors are strongly correlated (r = 0.57), which inflates the variance of the beta estimates.*
+*Simulated single-trial regressors. With 12 s between trials (left), neighboring regressors barely overlap (r = -0.21 in this simulation). With 3 s between trials (right), the HRFs overlap and neighboring regressors are strongly correlated (r = 0.57), which inflates the variance of the beta estimates.*
 
 ### LSS: Least Squares Separate
 
-Mumford et al. (2012) proposed fitting one model per trial. For trial N, the design matrix has one regressor for trial N and a single nuisance regressor for all other trials together. Because the target regressor only has to compete with one other regressor, collinearity is much lower and the estimates are less noisy. The price is some bias (the estimates tend to be shrunk a bit), plus you have to fit N models instead of one. In fast designs this trade-off usually works out in LSS's favour. A common variant models the other trials by condition rather than lumping them together.
+Mumford et al. (2012) proposed fitting one model per trial. For trial N, the design matrix has one regressor for trial N and a single nuisance regressor for all other trials together. Because the target regressor only has to compete with one other regressor, collinearity is much lower and the estimates are less noisy. The price is some bias (the estimates tend to be shrunk a bit), plus you have to fit N models instead of one. In fast designs this trade-off usually works out in LSS's favor. A common variant models the other trials by condition rather than lumping them together.
 
 With nilearn it's a short loop:
 
@@ -316,7 +316,7 @@ First, voxel-wise HRF selection. Instead of assuming one HRF shape for the whole
 
 Second, GLMdenoise (Kay et al., 2013). It finds voxels that don't respond to the task, takes principal components of their timeseries, and uses those as nuisance regressors. The reasoning is that whatever fluctuates in task-unresponsive voxels is probably noise, so it can be regressed out everywhere. The number of components is chosen by cross-validation.
 
-Third, fractional ridge regression. As described above, collinearity between neighbouring trials inflates the variance of the beta estimates. Ridge regression shrinks the betas to reduce that variance, and GLMsingle picks the amount of shrinkage separately for each voxel by cross-validation.
+Third, fractional ridge regression. As described above, collinearity between neighboring trials inflates the variance of the beta estimates. Ridge regression shrinks the betas to reduce that variance, and GLMsingle picks the amount of shrinkage separately for each voxel by cross-validation.
 
 Prince et al. showed clear improvements in the reliability of single-trial betas on several datasets, including NSD and BOLD5000, and downstream analyses like RSA and decoding benefited too.
 
@@ -368,9 +368,9 @@ The design format is the main thing to get right. Each design matrix is a binary
 
 For standard condition-level analyses (activation maps, localizers, group studies) you don't need single-trial estimates at all. A regular GLM in nilearn or SPM is fine.
 
-For MVPA with a slow event-related design (6+ seconds between trials), LSA is probably fine, since well-spaced trials don't overlap much.
+For MVPA with a slow event-related design (trials roughly 10 seconds or more apart), LSA is probably fine, since well-spaced trials don't overlap much.
 
-For MVPA with a fast event-related design (the typical 2-4 second ITI), I'd use GLMsingle unless there's a specific reason not to. The collinearity is real, HRF variation matters, and the denoising helps.
+For MVPA with a fast event-related design (the typical ISI of 2-4 seconds), I'd use GLMsingle unless there's a specific reason not to. The collinearity is real, HRF variation matters, and the denoising helps.
 
 For large datasets with thousands of images, like NSD or LAION-fMRI, GLMsingle is the obvious choice (LAION-fMRI ships GLMsingle betas). It was developed with exactly this kind of data in mind.
 
@@ -387,6 +387,10 @@ If you want something quick without another toolbox, LSS with nilearn only takes
 ---
 
 With beta estimates in hand, whether condition-level from a standard GLM or single-trial from GLMsingle, we can move on to multivariate methods. In the final post we'll look at how to decode what people are seeing from their brain activity patterns.
+
+**Next:** [Part 8: Multivariate analysis](/blog/fmri-crash-course-8-multivariate)
+
+**Previous:** [Part 6: Assessing the quality of fMRI data](/blog/fmri-crash-course-6-quality-assessment)
 
 ## References
 
@@ -427,7 +431,3 @@ With beta estimates in hand, whether condition-level from a standard GLM or sing
 - Benjamini, Y., & Hochberg, Y. (1995). Controlling the false discovery rate: A practical and powerful approach to multiple testing. *Journal of the Royal Statistical Society: Series B*, 57(1), 289-300. [Paper](https://rss.onlinelibrary.wiley.com/doi/10.1111/j.2517-6161.1995.tb02031.x)
 - Genovese, C.R., Lazar, N.A., & Nichols, T. (2002). Thresholding of statistical maps in functional neuroimaging using the false discovery rate. *NeuroImage*, 15(4), 870-878. [PubMed](https://pubmed.ncbi.nlm.nih.gov/11906227/)
 - Eklund, A., Nichols, T.E., & Knutsson, H. (2016). Cluster failure: Why fMRI inferences for spatial extent have inflated false-positive rates. *PNAS*, 113(28), 7900-7905. [Paper](https://www.pnas.org/doi/full/10.1073/pnas.1602413113)
-
-**Next:** [Part 8: Multivariate Pattern Analysis](/blog/fmri-crash-course-8-multivariate)
-
-**Previous:** [Part 6: Assessing the Quality of fMRI Data](/blog/fmri-crash-course-6-quality-assessment)

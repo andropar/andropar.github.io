@@ -44,11 +44,11 @@ This hierarchical organization is supported by lesion studies, single-unit recor
 
 Two more organizing principles will come up again and again in this series.
 
-First, the early visual areas are **retinotopic**: neighbouring points in the visual field are represented by neighbouring points on the cortex, so V1, V2 and V3 each contain a map of the visual field. The boundaries between these areas can't be seen in an anatomical scan, but they show up as reversals in these maps. That's why people run a retinotopic mapping experiment (for example with population receptive field mapping; Dumoulin & Wandell, 2008) to delineate V1, V2 and V3 in each participant.
+First, the early visual areas are **retinotopic**: neighboring points in the visual field are represented by neighboring points on the cortex, so V1, V2 and V3 each contain a map of the visual field. The boundaries between these areas can't be seen in an anatomical scan, but they show up as reversals in these maps. That's why people run a retinotopic mapping experiment (for example with population receptive field mapping; Dumoulin & Wandell, 2008) to delineate V1, V2 and V3 in each participant.
 
 Second, further along the ventral stream there are regions that respond much more strongly to some categories than to others. The best known are the fusiform face area (FFA; Kanwisher, McDermott & Chun, 1997), the parahippocampal place area (PPA), which prefers scenes and places (Epstein & Kanwisher, 1998), and the lateral occipital complex (LOC), which responds more to intact objects than to scrambled versions of them (Malach et al., 1995). These regions are usually identified per participant with a **functional localizer**, a short experiment contrasting, say, faces against objects.
 
-Both retinotopic maps and localizer-defined regions are what most fMRI vision studies use as their regions of interest. Later parts of the series show how to actually define them.
+Both retinotopic maps and localizer-defined regions are what most fMRI vision studies use as their regions of interest (ROIs). [Part 4](/blog/fmri-crash-course-4-recording-experiments) covers the scans you need for them and [Part 7](/blog/fmri-crash-course-7-analysis-glm) how to define the ROIs from the data.
 
 ## Neuroimaging modalities
 

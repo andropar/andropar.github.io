@@ -86,13 +86,13 @@ Motion correction aligns every volume in the time series to a reference volume. 
 
 Two limitations to keep in mind. Realignment uses interpolation, which smooths your data slightly. And it can only correct for movement between volumes, not within them: if the subject moved while a volume was being acquired, that volume is corrupted in a way realignment can't fix.
 
-The motion parameters are also useful after correction. Motion-related signal changes remain in the data even after alignment, so the parameters (often with their temporal derivatives) are usually added as nuisance regressors to your model. Volumes with large sudden movements, e.g. framewise displacement above 0.5 mm, are sometimes censored entirely (Power et al., 2012).
+The motion parameters are also useful after correction. Motion-related signal changes remain in the data even after alignment, so the parameters (often with their temporal derivatives) are usually added as nuisance regressors to your model. Volumes with large sudden movements, e.g. a framewise displacement (FD, how far the head moved since the previous volume; see [Part 6](/blog/fmri-crash-course-6-quality-assessment)) above 0.5 mm, are sometimes censored entirely (Power et al., 2012).
 
-Always look at your motion parameters. A common rule of thumb is to consider excluding a run if the subject moved more than 3-4 mm in total. Motion is also often correlated with the task (people move more during difficult trials or right before responding), so motion artifacts can show up as apparent task effects.
+Always look at your motion parameters. A common rule of thumb is to consider excluding a run if the subject moved more than 3-4 mm in total; [Part 6](/blog/fmri-crash-course-6-quality-assessment) has more concrete thresholds. Motion is also often correlated with the task (people move more during difficult trials or right before responding), so motion artifacts can show up as apparent task effects.
 
 ### Distortion correction
 
-EPI images are warped, mostly near air-tissue boundaries: frontal regions near the sinuses and temporal regions near the ear canals get stretched or compressed along the phase-encoding direction, and some signal is lost entirely. Without correction, voxels end up displaced relative to the anatomy, so your functional data won't line up properly with the T1.
+EPI images are warped, mostly near air-tissue boundaries: frontal regions near the sinuses and temporal regions near the ear canals get stretched or compressed along the phase-encoding direction (the image axis along which EPI is most sensitive to field errors, usually anterior-posterior), and some signal is lost entirely. Without correction, voxels end up displaced relative to the anatomy, so your functional data won't line up properly with the T1.
 
 There are three common ways to fix this. First, field maps: the scanner measures the inhomogeneities of the magnetic field, which tells you how each voxel was displaced. If your protocol includes field maps (and it should), fMRIPrep uses them automatically. Second, reverse phase encoding: you acquire two short scans with opposite phase-encoding directions (e.g. anterior-posterior and posterior-anterior), so the distortions go in opposite directions, and an algorithm estimates the undistortion field from the difference. This is the approach FSL's `topup` uses. Third, if you have neither, fMRIPrep can estimate the distortion by nonlinearly registering the EPI to the anatomical image (fieldmap-less "SyN" correction, enabled with `--use-syn-sdc`). It works reasonably well, but real field maps are better.
 
@@ -118,7 +118,7 @@ You don't always want to normalize. For single-subject analyses you might stay i
 
 ### Spatial smoothing
 
-Smoothing convolves the data with a Gaussian kernel, typically 4-8 mm FWHM (full width at half maximum). This increases the signal-to-noise ratio by averaging neighboring voxels, reduces the impact of residual misalignment between subjects, and makes the data more normally distributed, which helps the statistics.
+Smoothing convolves the data with a Gaussian kernel, typically 4-8 mm FWHM (full width at half maximum). This increases the SNR by averaging neighboring voxels, reduces the impact of residual misalignment between subjects, and makes the data more normally distributed, which helps the statistics.
 
 Don't smooth (much) for MVPA. Multivariate pattern analysis relies on fine-grained spatial patterns, and smoothing blurs them. For MVPA, either skip smoothing or use very little (2-3 mm).
 

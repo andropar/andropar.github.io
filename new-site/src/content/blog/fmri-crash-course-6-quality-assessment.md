@@ -104,7 +104,7 @@ Preprocessing can't fix this - if the signal is gone, it's gone. You need to loo
 
 ### Ghosting and ringing
 
-Ghosting shows up as faint copies of the brain shifted along the phase-encoding direction, usually by half the field of view. It comes from inconsistencies in the k-space data during acquisition. Ringing (Gibbs ringing) looks like ripples running parallel to high-contrast edges, for example at the boundary between brain and CSF or skull.
+Ghosting shows up as faint copies of the brain shifted along the phase-encoding direction, usually by half the field of view. It comes from inconsistencies in the raw frequency-space (k-space) data during acquisition. Ringing (Gibbs ringing) looks like ripples running parallel to high-contrast edges, for example at the boundary between brain and CSF or skull.
 
 Both are acquisition problems. In preprocessing there's not much you can do beyond knowing they're there and keeping them in mind when interpreting results.
 
@@ -143,7 +143,7 @@ I find the group report the most useful part, because it shows where each scan f
 
 ### fMRIPrep HTML reports
 
-If you preprocessed with fMRIPrep (see Part 5), you get detailed HTML reports for free. Things to check:
+If you preprocessed with fMRIPrep (see [Part 5](/blog/fmri-crash-course-5-preprocessing)), you get detailed HTML reports for free. Things to check:
 
 1. Brain mask: does it capture all brain tissue without including skull?
 2. T1-to-template registration: flip between the subject's brain and the template. Any obvious misalignment?
@@ -183,11 +183,11 @@ Everything above applies to any fMRI study. For vision experiments there are a f
 
 ### Does early visual cortex respond?
 
-Fit a quick sanity GLM for every run with a single regressor, stimulus vs. baseline (fixation). Any visual experiment should produce strong activation in occipital cortex in every single run. If one run doesn't show it, something went wrong: the timing log doesn't match the data, the scanner trigger was missed or recorded wrong, or the participant had their eyes closed or fell asleep. This takes a few minutes to set up (GLMs are covered in Part 7) and catches problems that no image quality metric will.
+Fit a quick sanity GLM for every run with a single regressor, stimulus vs. baseline (fixation). Any visual experiment should produce strong activation in occipital cortex in every single run. If one run doesn't show it, something went wrong: the timing log doesn't match the data, the scanner trigger was missed or recorded wrong, or the participant had their eyes closed or fell asleep. This takes a few minutes to set up (GLMs are covered in [Part 7](/blog/fmri-crash-course-7-analysis-glm)) and catches problems that no image quality metric will.
 
 ### Response reliability
 
-If your design repeats images, as NSD, THINGS-fMRI and LAION-fMRI do, you can check how reliable the responses are. Estimate single-trial betas, split the repetitions of each image into two halves (e.g. odd vs. even repetitions), average within each half, and correlate the two halves across images, separately for each voxel. In visual cortex you should see clearly positive reliabilities. If you don't, your betas are mostly noise, and that's something to sort out before running any fancy analysis.
+If your design repeats images, as NSD, THINGS-fMRI and LAION-fMRI do, you can check how reliable the responses are. Estimate single-trial betas ([Part 7](/blog/fmri-crash-course-7-analysis-glm) shows how), split the repetitions of each image into two halves (e.g. odd vs. even repetitions), average within each half, and correlate the two halves across images, separately for each voxel. In visual cortex you should see clearly positive reliabilities. If you don't, your betas are mostly noise, and that's something to sort out before running any fancy analysis.
 
 ```python
 import numpy as np
@@ -279,6 +279,14 @@ Please don't bury exclusions in the supplementary materials. Readers need to kno
 - For vision experiments, also check that visual cortex responds in every run, that responses to repeated images are reliable, and that participants fixated and paid attention.
 - Treat thresholds as rough guides, set them before looking at results, and report all exclusions.
 
+---
+
+With quality-checked data in hand, we can finally analyze it. Next up is the General Linear Model, the workhorse of fMRI analysis.
+
+**Next:** [Part 7: Analyzing fMRI data with the GLM](/blog/fmri-crash-course-7-analysis-glm)
+
+**Previous:** [Part 5: Preprocessing fMRI data](/blog/fmri-crash-course-5-preprocessing)
+
 ## References
 
 ### MRIQC
@@ -307,11 +315,3 @@ Please don't bury exclusions in the supplementary materials. Readers need to kno
 - [COBIDAS Checklist](https://www.humanbrainmapping.org/cobidas/)
 - Williams PA, et al. (2023). [The art and science of using quality control to understand and improve fMRI data](https://www.frontiersin.org/journals/neuroscience/articles/10.3389/fnins.2023.1100544/full). Frontiers in Neuroscience 17:1100544.
 - Provins C, et al. (2023). [Quality control in functional MRI studies with MRIQC and fMRIPrep](https://www.frontiersin.org/journals/neuroimaging/articles/10.3389/fnimg.2022.1073734/full). Frontiers in Neuroimaging 1:1073734.
-
----
-
-With quality-checked data in hand, we can finally analyze it. Next up is the General Linear Model, the workhorse of fMRI analysis.
-
-**Next:** [Part 7: Analyzing fMRI data with the GLM](/blog/fmri-crash-course-7-analysis-glm)
-
-**Previous:** [Part 5: Preprocessing fMRI data](/blog/fmri-crash-course-5-preprocessing)

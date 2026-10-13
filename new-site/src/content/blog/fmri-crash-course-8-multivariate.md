@@ -8,7 +8,7 @@ tags: ["fMRI", "neuroscience", "methods", "MVPA", "decoding", "deep learning"]
 
 *This is Part 8 of an [8-part crash course on fMRI for vision research](/blog/fmri-crash-course-1-introduction).*
 
-We've gone from raw data to preprocessed, quality-checked and GLM-analyzed brain images. In this last part we'll look at multivariate methods, which is where most of my own work happens and where a lot of current vision neuroscience is done: asking how the brain represents visual information, not just where it responds.
+We've gone from raw data to preprocessed, quality-checked and GLM-analyzed brain images. In this last part we'll look at multivariate methods, which is where a lot of current vision neuroscience is done: asking how the brain represents visual information, not just where it responds.
 
 ## Why multivariate?
 
@@ -209,7 +209,7 @@ Decoding and RSA go from brain activity to the stimulus. Encoding models go the 
 
 The standard setup is voxelwise encoding: for every voxel, fit a regression from stimulus features to that voxel's response, and evaluate on held-out stimuli, typically with the Pearson correlation between predicted and measured responses. That gives you a map of how well your feature space explains each part of the brain. The features can be anything: Gabor wavelets, semantic embeddings, DNN activations.
 
-With thousands of features (a single CNN layer can easily have tens of thousands), you need regularization, and ridge regression with a cross-validated penalty per voxel is the default. Here's a minimal version with scikit-learn. `X` holds DNN features for each image and `Y` the single-trial betas (from Part 7), averaged over repetitions of the same image, so each image appears exactly once. The train/test split is over images, so no test image is ever seen during training.
+With thousands of features (a single CNN layer can easily have tens of thousands), you need regularization, and ridge regression with a cross-validated penalty per voxel is the default. Here's a minimal version with scikit-learn. `X` holds DNN features for each image and `Y` the single-trial betas (from [Part 7](/blog/fmri-crash-course-7-analysis-glm)), averaged over repetitions of the same image, so each image appears exactly once. The train/test split is over images, so no test image is ever seen during training.
 
 ```python
 import numpy as np
@@ -376,7 +376,9 @@ That's the end of the crash course. If you've read all eight parts, you should n
 
 From here, the best way to learn is to pick a dataset and a question and start working on it. Most of the tools are free and the community is helpful. Good luck!
 
----
+**Previous:** [Part 7: Analyzing fMRI data with the GLM](/blog/fmri-crash-course-7-analysis-glm)
+
+**Back to:** [Part 1: Introduction](/blog/fmri-crash-course-1-introduction)
 
 ## References
 
@@ -419,9 +421,3 @@ From here, the best way to learn is to pick a dataset and a question and start w
 - [Nilearn: Decoder class](https://nilearn.github.io/dev/modules/generated/nilearn.decoding.Decoder.html) - API reference for the Decoder wrapper
 - [scikit-learn: Support Vector Machines](https://scikit-learn.org/stable/modules/svm.html) - User guide for SVM classification
 - [scikit-learn: SVC](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html) - API reference for the SVC classifier
-
----
-
-**Previous:** [Part 7: Analyzing fMRI data with the GLM](/blog/fmri-crash-course-7-analysis-glm)
-
-**Back to:** [Part 1: Introduction](/blog/fmri-crash-course-1-introduction)

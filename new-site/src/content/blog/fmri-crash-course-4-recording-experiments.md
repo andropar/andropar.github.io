@@ -8,9 +8,9 @@ tags: ["fMRI", "neuroscience", "methods", "vision", "experimental design"]
 
 *This is Part 4 of an [8-part crash course on fMRI for vision research](/blog/fmri-crash-course-1-introduction).*
 
-In the last post we looked at how fMRI measures brain activity: the BOLD signal, the slow hemodynamic response, and the tradeoffs between spatial and temporal resolution. Now it's time to actually collect some data.
+In the last post we looked at how fMRI measures brain activity: the BOLD signal, the slow hemodynamic response, and the trade-offs between spatial and temporal resolution. Now it's time to actually collect some data.
 
-Scanner time is expensive and often hard to get, so you really don't want to waste it. Unfortunately, recording fMRI data involves dozens of parameters that interact in non-obvious ways, and the "right" settings depend on your research question. There is no universally optimal configuration, only tradeoffs you need to understand.
+Scanner time is expensive and often hard to get, so you really don't want to waste it. Unfortunately, recording fMRI data involves dozens of parameters that interact in non-obvious ways, and the "right" settings depend on your research question. There is no universally optimal configuration, only trade-offs you need to understand.
 
 In this post, I'll go through the most important scanning parameters, the main experimental design paradigms, what's specific to running a vision experiment in the scanner, and some practical tips I wish someone had told me before my first study.
 
@@ -49,7 +49,7 @@ The echo time (TE) determines your sensitivity to the BOLD contrast. The optimum
 
 The flip angle trades off signal against T1 saturation, and the optimum (the Ernst angle) depends on the TR. With the multiband TRs around 1 second that I recommended above, it's lower than people often expect, roughly 50-65 degrees at 3T. The 60-90 degree range you sometimes see quoted applies to longer TRs of 2 seconds or more.
 
-Slice orientation is a bit more interesting for vision research. Signal dropout near the sinuses and ear canals can affect parts of ventral temporal cortex, and tilting the slice stack relative to the AC-PC line can reduce it in some regions. This is worth discussing with the physicist at your center, especially if your ROIs are in the inferior temporal lobe.
+Slice orientation is a bit more interesting for vision research. Signal dropout near the sinuses and ear canals can affect parts of ventral temporal cortex, and tilting the slice stack relative to the AC-PC line (the line through the anterior and posterior commissures, the usual reference for axial slices) can reduce it in some regions. This is worth discussing with the physicist at your center, especially if your ROIs are in the inferior temporal lobe.
 
 <img src="/blog/fmri-diagrams/slice-orientations.svg" alt="Sagittal brain slice with axial slice positions parallel to the AC-PC line, and the same brain with a tilted slice prescription" />
 
@@ -73,13 +73,13 @@ Blocks are great when you care about detection: is region X more active for face
 
 ### Slow event-related designs
 
-Here you present stimuli as brief, discrete events with long gaps between them (slow event-related designs, with ISIs of 12 seconds or more), so the hemodynamic response can rise and fall for each trial. You can estimate the response to individual trial types or even single trials, randomize trial order, and study transient events.
+Here you present stimuli as brief, discrete events with long gaps between them (slow event-related designs, with inter-stimulus intervals, ISIs, of 12 seconds or more), so the hemodynamic response can rise and fall for each trial. You can estimate the response to individual trial types or even single trials, randomize trial order, and study transient events.
 
 The price is efficiency. You spend most of the time waiting for the response to come back down, so you get far fewer trials per run and much lower power than with blocks. I'd only use a slow design when I really need clean estimates of the response shape on each trial.
 
 ### Rapid event-related designs with jittered ISIs
 
-What if you present events quickly (every few seconds) but vary the time between them? With randomized inter-stimulus intervals, the overlapping hemodynamic responses can be separated statistically, because the jitter makes the regressors for different events less correlated. You get many more trials than in a slow design while still being able to estimate responses to individual events.
+What if you present events quickly (every few seconds) but vary the time between them? With randomized ISIs, the overlapping hemodynamic responses can be separated statistically, because the jitter makes the regressors for different events less correlated. You get many more trials than in a slow design while still being able to estimate responses to individual events.
 
 A few principles:
 - Jitter ISIs from a distribution (e.g., 2-8 seconds, roughly exponentially distributed so that short ISIs are most common)
@@ -93,7 +93,9 @@ This is the standard design for most modern cognitive fMRI, including the large 
 
 ### Mixed designs
 
-Sometimes you want to study both sustained and transient effects. Mixed designs combine blocks with jittered events inside the blocks. For example, you could have blocks of face trials and blocks of house trials, with individual images presented as jittered events within each block. This lets you separately estimate the sustained "state" effect of the block and the transient responses to individual events (Petersen & Dubis, 2012).
+Brain activity during a task has two kinds of components. Transient (or item-related) activity is the brief response to each individual stimulus: the bump in the BOLD signal after every image. Sustained (or state-related) activity lasts for as long as the task or condition does, for example because participants keep a particular task set or level of attention up for a whole block. In a block design you only see the sum of the two, and in an event-related design with randomly intermixed conditions there are no extended states to measure.
+
+Mixed designs combine blocks with jittered events inside the blocks so you can estimate both. For example, you could have blocks of face trials and blocks of house trials, with individual images presented as jittered events within each block. The model then contains a regressor for each block (sustained) and regressors for the individual events (transient), and the jitter is what lets the two be separated (Visscher et al., 2003; Petersen & Dubis, 2012). You'll rarely need this in a vision study, but it's worth knowing the distinction, because a block design can't tell you which of the two produced an effect.
 
 ### Comparing design types
 
@@ -130,7 +132,7 @@ LAION-fMRI (Zerbe et al., 2026) scanned 5 participants at 7T with multi-echo fMR
 ### What this means for your own designs
 
 All three start from "how do I collect data that's useful for many questions?" rather than "how do I answer my one question with as little scanning as possible?" You probably won't scan 40 sessions per person, but some of the ideas transfer to smaller studies:
-- Repeating stimuli lets you estimate reliability (and a noise ceiling) and helps single-trial modeling
+- Repeating stimuli lets you estimate reliability (and a noise ceiling, see [Part 6](/blog/fmri-crash-course-6-quality-assessment) and [Part 8](/blog/fmri-crash-course-8-multivariate)) and helps single-trial modeling
 - Sampling stimuli broadly and systematically lets you study representational geometry, not just category selectivity
 - For computational approaches, lots of data from a few participants can be more useful than a little data from many
 
@@ -176,7 +178,7 @@ If you don't have an eye tracker, you can still reduce the problem: give partici
 
 In a vision study you almost always add a functional localizer: a short block-design run with blocks of faces, scenes, bodies, objects and scrambled objects. Contrasts between these conditions define category-selective regions in each participant, like the fusiform face area (FFA; Kanwisher et al., 1997), the parahippocampal place area (PPA; Epstein & Kanwisher, 1998), the extrastriate body area (EBA; Downing et al., 2001) and the lateral occipital complex (LOC; Malach et al., 1995). These regions vary in location from person to person, so defining them individually is much more precise than using a group atlas.
 
-Often you'll also add a retinotopic mapping run to define early visual areas (V1, V2, V3, hV4). The classic approach uses a rotating wedge and an expanding ring, and the more recent population receptive field (pRF) approach typically uses bars sweeping across the visual field (Dumoulin & Wandell, 2008). As mentioned above, a small screen limits how much of the visual field you can map.
+Often you'll also add a retinotopic mapping run to define early visual areas (V1, V2, V3 and hV4, the human counterpart of V4). The classic approach uses a rotating wedge and an expanding ring, and the more recent population receptive field (pRF) approach typically uses bars sweeping across the visual field (Dumoulin & Wandell, 2008). As mentioned above, a small screen limits how much of the visual field you can map.
 
 <img src="/blog/fmri-diagrams/retinotopy-stimuli.svg" alt="Three retinotopic mapping stimuli: a rotating checkerboard wedge, an expanding checkerboard ring, and a sweeping checkerboard bar, each around a central fixation dot" />
 
@@ -279,11 +281,16 @@ It's extra effort up front, but if you're going to scan the same people many tim
 
 With data collected, the next step is preprocessing: getting the raw data ready for analysis. That's where we'll head next.
 
+**Next:** [Part 5: Preprocessing fMRI data](/blog/fmri-crash-course-5-preprocessing)
+
+**Previous:** [Part 3: Basics of (functional) MRI](/blog/fmri-crash-course-3-basics-mri)
+
 ## References
 
 ### Experimental Design
 
 - Dale, A.M. (1999). [Optimal experimental design for event-related fMRI](https://pubmed.ncbi.nlm.nih.gov/10524601/). Human Brain Mapping, 8(2-3), 109-114.
+- Visscher, K.M., Miezin, F.M., Kelly, J.E., Buckner, R.L., Donaldson, D.I., McAvoy, M.P., Bhalodia, V.M., & Petersen, S.E. (2003). Mixed blocked/event-related designs separate transient and sustained activity in fMRI. NeuroImage, 19(4), 1694-1708.
 - Petersen, S.E. & Dubis, J.W. (2012). [The mixed block/event-related design](https://pmc.ncbi.nlm.nih.gov/articles/PMC3288695/). NeuroImage, 62(2), 1177-1184.
 
 ### Multiband/SMS Acquisition
@@ -310,18 +317,8 @@ With data collected, the next step is preprocessing: getting the raw data ready 
 
 - [Gallant Lab headcase-pipeline](https://github.com/gallantlab/headcase-pipeline) - An open-source pipeline to generate subject-specific 3D-printed headcases for fMRI scanning.
 
-### Data Organization
-
-- Gorgolewski, K.J., et al. (2016). [The brain imaging data structure, a format for organizing and describing outputs of neuroimaging experiments](https://www.nature.com/articles/sdata201644). Scientific Data, 3, 160044.
-- [BIDS Specification](https://bids-specification.readthedocs.io/) - Official documentation for the Brain Imaging Data Structure.
-- [BIDS Website](https://bids.neuroimaging.io/) - Main website with tutorials and resources.
-
 ### Naturalistic Paradigms and Inter-Subject Correlation
 
 - Hasson, U., et al. (2004). [Intersubject synchronization of cortical activity during natural vision](https://www.science.org/doi/10.1126/science.1089506). Science, 303(5664), 1634-1640.
 - Nastase, S.A., et al. (2019). [Measuring shared responses across subjects using intersubject correlation](https://academic.oup.com/scan/article/14/6/667/5489905). Social Cognitive and Affective Neuroscience, 14(6), 667-685.
 - [Naturalistic Data Analysis](https://naturalistic-data.org/) - Tutorial resources for analyzing naturalistic fMRI data, including ISC methods.
-
-**Next:** [Part 5: Preprocessing fMRI data](/blog/fmri-crash-course-5-preprocessing)
-
-**Previous:** [Part 3: Basics of (functional) MRI](/blog/fmri-crash-course-3-basics-mri)

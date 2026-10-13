@@ -32,7 +32,7 @@ T1 relaxation (longitudinal relaxation) describes how quickly the magnetization 
 
 T2 relaxation (transverse relaxation) describes how quickly the protons lose their synchrony after the RF pulse, like runners who start together and gradually spread out. In T2-weighted images, fluids appear bright.
 
-In a real scanner, the protons also get out of sync because the magnetic field isn't perfectly uniform: small local field inhomogeneities make neighbouring protons precess at slightly different frequencies. The decay you actually observe, including this extra dephasing, is called T2* ("T2-star"). T2* is always shorter than T2. This is what fMRI exploits.
+In a real scanner, the protons also get out of sync because the magnetic field isn't perfectly uniform: small local field inhomogeneities make neighboring protons precess at slightly different frequencies. The decay you actually observe, including this extra dephasing, is called T2* ("T2-star"). T2* is always shorter than T2. This is what fMRI exploits.
 
 <img src="/blog/fmri-diagrams/t1-t2-curves.svg" alt="T1 recovery and T2 decay curves for white matter, gray matter and CSF at 3T" />
 
@@ -95,7 +95,7 @@ It's widely available, the analysis software is mature, and there's a large comm
 
 ### The not-so-good stuff
 
-The temporal resolution is poor. The BOLD response peaks 5-6 seconds after neural activity, and even with fast acquisition (TR of 1 second or less) you're measuring a slow, smoothed version of neural dynamics.
+The temporal resolution is poor. The BOLD response peaks 5-6 seconds after neural activity, and even with fast acquisition (a TR of 1 second or less) you're measuring a slow, smoothed version of neural dynamics.
 
 It's an indirect measure. You're measuring changes in blood oxygenation, not neural firing, and as the discordant voxel results show, the relationship between the two can vary across brain regions, populations, and conditions.
 
@@ -107,7 +107,7 @@ It's loud (around 100 dB from the switching gradient coils) and the bore is narr
 
 ### Field strength
 
-A rough comparison of the field strengths you'll come across:
+A rough comparison of the field strengths you'll come across (SNR is the signal-to-noise ratio):
 
 | Field Strength | Typical voxel size | SNR | Availability | Mostly used for |
 |----------------|-------------------|-----|--------------|----------|
@@ -115,7 +115,7 @@ A rough comparison of the field strengths you'll come across:
 | 3T | ~2-3 mm | Good | Most research centers | Standard cognitive fMRI |
 | 7T | <1 mm possible | Highest | Specialized centers | High-resolution mapping, layer studies |
 
-Higher field strength gives you more signal, which you can spend on smaller voxels or faster scanning. It also brings more artifacts, especially near air-tissue boundaries, and more expensive hardware. For vision research, 3T is the standard choice. [Part 4](/blog/fmri-crash-course-4-recording-experiments) goes into the trade-offs in more detail.
+Higher field strength gives you a higher SNR, which you can spend on smaller voxels or faster scanning. It also brings more artifacts, especially near air-tissue boundaries, and more expensive hardware. For vision research, 3T is the standard choice. [Part 4](/blog/fmri-crash-course-4-recording-experiments) goes into the trade-offs in more detail.
 
 ## What does fMRI data actually look like?
 
@@ -123,7 +123,7 @@ Higher field strength gives you more signal, which you can spend on smaller voxe
 
 An fMRI dataset is a 4D volume: three spatial dimensions (x, y, z) plus time. At each time point you have a 3D image of the brain divided into small cubes called voxels (volumetric pixels), typically 2-3 mm on each side.
 
-A typical scan might be 64 x 64 x 40 voxels, acquired every 2 seconds for 10 minutes. That gives you 300 time points, i.e. 300 complete 3D brain images.
+A typical scan might be 64 x 64 x 40 voxels, with a new volume acquired every 2 seconds (the repetition time, TR) for 10 minutes. That gives you 300 time points, i.e. 300 complete 3D brain images.
 
 <img src="/blog/fmri-diagrams/4d-volume.svg" alt="A stack of brain volumes acquired over time, with one voxel highlighted and its signal plotted as a time series" />
 
@@ -170,7 +170,7 @@ mean_volume = np.mean(data, axis=3)
 print(f"Mean volume shape: {mean_volume.shape}")
 ```
 
-Everything that follows in this series (preprocessing, modelling, statistics) comes down to manipulating 4D arrays like this one. The large datasets from [Part 2](/blog/fmri-crash-course-2-neuroimaging-vision), NSD, THINGS-data and LAION-fMRI, come in exactly this form.
+Everything that follows in this series (preprocessing, modeling, statistics) comes down to manipulating 4D arrays like this one. The large datasets from [Part 2](/blog/fmri-crash-course-2-neuroimaging-vision), NSD, THINGS-data and LAION-fMRI, come in exactly this form.
 
 ---
 
@@ -180,7 +180,7 @@ Everything that follows in this series (preprocessing, modelling, statistics) co
 - fMRI measures the BOLD signal with T2*-weighted EPI. Deoxyhemoglobin shortens T2*, so when blood flow brings in extra oxygenated blood, the signal goes up.
 - BOLD is an indirect measure of neural activity, and its coupling to metabolism isn't the same everywhere in the brain.
 - The hemodynamic response peaks 5-6 seconds after neural activity, but overlapping responses add up roughly linearly, so rapid designs still work.
-- fMRI data is a 4D array: 3D brain volumes sampled every 1-2 seconds, typically at 2-3 mm resolution.
+- fMRI data is a 4D array: 3D brain volumes sampled every 0.5-2 seconds, typically at 2-3 mm resolution.
 
 ---
 
