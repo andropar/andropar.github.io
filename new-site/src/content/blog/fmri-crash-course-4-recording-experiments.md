@@ -53,6 +53,8 @@ Slice orientation is a bit more interesting for vision research. Signal dropout 
 
 <img src="/blog/fmri-diagrams/slice-orientations.svg" alt="Sagittal brain slice with axial slice positions parallel to the AC-PC line, and the same brain with a tilted slice prescription" />
 
+*Two example prescriptions on a midline slice. The tilted slab here runs roughly parallel to the temporal lobe; tilting the other way (anterior end up) is also common. Which angle is best depends on your target regions and scanner.*
+
 ## Experimental design for fMRI
 
 With the scanner settings sorted, how do you structure your experiment?

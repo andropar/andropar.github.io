@@ -520,7 +520,7 @@ def slice_orientations():
     ext = (y0, y0 + ny * aff[1, 1], z0, z0 + nz * aff[2, 2])
     fig, axs = plt.subplots(1, 2, figsize=(WIDTH, 4.0))
     for ax, tilt, title in ((axs[0], 0, "Axial slices (parallel to AC-PC)"),
-                            (axs[1], -20, "Tilted (oblique) slices")):
+                            (axs[1], -20, "Tilted to run along the temporal lobe")):
         ax.imshow(sag, cmap=GRAYS, extent=ext, interpolation="bilinear")
         th = np.deg2rad(tilt)
         yy = np.array([-130, 90])
