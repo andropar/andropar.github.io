@@ -11,7 +11,7 @@ Saving a post or media in the editor triggers a build immediately through system
 path watcher. Successful builds switch the release symlink atomically; the five most
 recent releases are retained.
 
-The writing editor at `https://jroth.space/admin/` uses its own username/password.
+The writing editor at `https://admin.jroth.space/admin/` uses its own username/password.
 Login details are stored locally in `~/.ssh/personal-vps-editor-login.txt` (mode 600).
 The server stores a bcrypt password hash in `/etc/nginx/.editor-htpasswd`.
 To change the password: `ssh -t personal_vps 'sudo htpasswd /etc/nginx/.editor-htpasswd johannes'`.
@@ -24,7 +24,7 @@ website code remains in GitHub. Initial content was imported from the repository
 The site keeps serving the preceding release if a build fails.
 
 The pinned Decap file service listens on loopback only. nginx protects both the editor
-and API with HTTP authentication. The API requires the exact site Origin. Its service
+and API with HTTP authentication. The API accepts only the website and editor Origins. Its endpoint stays under `/admin/` to share the browser login scope. Its service
 user can write only under `/srv/jroth-editor` and runs with a filesystem sandbox and
 resource limits. Uploaded files and saved posts are never executed by the API.
 
@@ -50,6 +50,6 @@ root and password login are disabled, and Fail2ban blocks repeated failed SSH an
 Security updates run daily; required automatic reboots are scheduled for 04:00 server time when no users are logged in. nginx applies request/connection limits, TLS, HTTPS redirects,
 and security headers. Deployment and editing run without root privileges.
 
-DNS apex A → `178.104.48.146`; www CNAME → `jroth.space`. TLS certificates renew
+DNS admin A → `178.104.48.146`; apex A → `178.104.48.146`; www CNAME → `jroth.space`. TLS certificates renew
 through certbot's timer. Templates under this directory describe the service setup;
 the installed nginx vhost additionally contains certbot's certificate paths.

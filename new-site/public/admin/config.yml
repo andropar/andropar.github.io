@@ -8,7 +8,7 @@ local_backend:
   url: http://127.0.0.1:8085/api/v1
 
 site_url: https://jroth.space
-display_url: /blog
+display_url: https://jroth.space/blog
 publish_mode: simple
 media_folder: new-site/public/blog/uploads
 public_folder: /blog/uploads

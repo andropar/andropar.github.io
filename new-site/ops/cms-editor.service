@@ -7,7 +7,7 @@ Group=website
 WorkingDirectory=/srv/jroth-editor
 ExecStart=/usr/bin/node /opt/jroth-cms-editor/server.js
 Environment=GIT_REPO_DIRECTORY=/srv/jroth-editor
-Environment=ORIGIN=https://jroth.space
+Environment="ORIGIN=https://admin.jroth.space"
 Restart=on-failure
 RestartSec=5
 NoNewPrivileges=true

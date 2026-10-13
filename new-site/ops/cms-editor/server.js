@@ -5,7 +5,7 @@ const { registerLocalFs } = require('decap-server/dist/middlewares');
 const app = express();
 app.disable('x-powered-by');
 app.use((req, res, next) => {
-  if (req.method !== 'POST' || req.headers.origin !== 'https://jroth.space') return res.status(403).json({ error: 'Use the writing editor.' });
+  if (req.method !== 'POST' || !['https://jroth.space', 'https://admin.jroth.space'].includes(req.headers.origin)) return res.status(403).json({ error: 'Use the writing editor.' });
   res.setHeader('Cache-Control', 'no-store');
   next();
 });

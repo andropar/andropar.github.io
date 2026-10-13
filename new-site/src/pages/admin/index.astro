@@ -10,7 +10,12 @@ import previewStyles from '../../styles/v2.css?raw';
     <title>Writing editor · Johannes Roth</title>
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="cms-config-url" type="text/yaml" href="/admin/config.yml" />
-    <script is:inline>window.CMS_MANUAL_INIT = true;</script>
+    <script is:inline>
+      if (window.location.hostname === 'jroth.space' || window.location.hostname === 'www.jroth.space') {
+        window.location.replace('https://admin.jroth.space/admin/' + window.location.hash);
+      }
+      window.CMS_MANUAL_INIT = true;
+    </script>
   </head>
   <body>
     <script is:inline src="/admin/decap.js"></script>
@@ -38,7 +43,7 @@ import previewStyles from '../../styles/v2.css?raw';
         }
       });
       CMS.registerPreviewTemplate('blog', PostPreview);
-      CMS.init({ config: { site_url: window.location.origin } });
+      CMS.init({ config: { site_url: window.location.hostname.endsWith('jroth.space') ? 'https://jroth.space' : window.location.origin } });
     </script>
   </body>
 </html>
