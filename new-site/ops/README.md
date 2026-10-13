@@ -46,8 +46,8 @@ Download a backup over SSH before server maintenance or deletion; a backup on th
 is saved under `new-site/.local/vps-setup-2026-10-13/` during initial setup.
 
 Only TCP 22, 80 and 443 are opened, with SSH connection throttling. SSH uses keys,
-root and password login are disabled, and Fail2ban blocks repeated failed SSH logins.
-Security updates run daily. nginx applies request/connection limits, TLS, HTTPS redirects,
+root and password login are disabled, and Fail2ban blocks repeated failed SSH and editor logins.
+Security updates run daily; required automatic reboots are scheduled for 04:00 server time when no users are logged in. nginx applies request/connection limits, TLS, HTTPS redirects,
 and security headers. Deployment and editing run without root privileges.
 
 DNS apex A → `178.104.48.146`; www CNAME → `jroth.space`. TLS certificates renew
