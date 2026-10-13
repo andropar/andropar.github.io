@@ -187,7 +187,7 @@ Fit a quick sanity GLM for every run with a single regressor, stimulus vs. basel
 
 ### Response reliability
 
-If your design repeats images, as NSD and THINGS-fMRI do, you can check how reliable the responses are. Estimate single-trial betas, split the repetitions of each image into two halves (e.g. odd vs. even repetitions), average within each half, and correlate the two halves across images, separately for each voxel. In visual cortex you should see clearly positive reliabilities. If you don't, your betas are mostly noise, and that's something to sort out before running any fancy analysis.
+If your design repeats images, as NSD, THINGS-fMRI and LAION-fMRI do, you can check how reliable the responses are. Estimate single-trial betas, split the repetitions of each image into two halves (e.g. odd vs. even repetitions), average within each half, and correlate the two halves across images, separately for each voxel. In visual cortex you should see clearly positive reliabilities. If you don't, your betas are mostly noise, and that's something to sort out before running any fancy analysis.
 
 ```python
 import numpy as np
@@ -224,9 +224,17 @@ def split_half_reliability(betas):
 
 Plotting `r` on the brain is a good sanity check in itself: reliability should be highest in visual cortex and fall off elsewhere. NSD uses a more principled version of the same idea, the noise ceiling SNR (ncsnr), which estimates the ratio of signal variability across images to trial-to-trial noise variability across repetitions and converts that into a noise ceiling for each voxel (Allen et al., 2022).
 
+<img src="/blog/fmri-diagrams/split-half-reliability.svg" alt="Histograms of split-half reliability: voxels outside visual cortex center on zero, early visual cortex voxels center around 0.5" />
+
+*Simulated. In a healthy dataset, voxels in early visual cortex have clearly positive split-half reliability while the rest of the brain centers on zero. If visual cortex looks like the gray distribution, something went wrong.*
+
 ### Eye tracking
 
 Most vision experiments ask participants to fixate, and if they don't, your retinotopic responses get smeared and your stimuli land on different parts of the visual field than you think. If you recorded eye tracking, compute the fraction of trials in which gaze stayed within some radius of the fixation point (1-2 degrees of visual angle is common) and look at blink rates and long eye closures, which are a decent proxy for drowsiness. Decide on exclusion criteria for trials or runs, and report how many you excluded.
+
+<img src="/blog/fmri-diagrams/fixation-qc.svg" alt="Two scatter plots of gaze positions: one participant fixates tightly inside a 1.5 degree window, another often looks away toward the stimuli" />
+
+*Simulated eye-tracking data. Summarizing each run as the fraction of samples inside a fixation window makes it easy to spot participants or runs to exclude.*
 
 ### Behavioral performance
 

@@ -105,7 +105,7 @@ Given its strengths (spatial resolution) and limitations (temporal resolution, i
 - Individual differences: why are some people better at recognizing faces than others? How does expertise change neural representations?
 - Comparing models to brains: does a deep neural network trained on ImageNet represent images similarly to human V4? fMRI lets us test this kind of hypothesis directly.
 
-## Large-scale datasets: NSD and THINGS
+## Large-scale datasets: NSD, THINGS and LAION-fMRI
 
 I want to end with something that has changed how a lot of us work: large, densely sampled fMRI datasets.
 
@@ -117,6 +117,8 @@ With this much data per person, models that predict brain activity from images f
 
 The **THINGS** initiative takes a related approach centered on objects (Hebart et al., 2019, 2023). The THINGS database contains 1,854 object concepts with more than 26,000 naturalistic images. In THINGS-fMRI, 3 participants viewed 8,740 images of 720 of these concepts (12 images per concept); THINGS-MEG used the same 720 concepts. The full set of 1,854 concepts is covered by the behavioral part of THINGS-data, millions of odd-one-out similarity judgments collected online.
 
+**LAION-fMRI** (Zerbe et al., 2026) is the most recent of these and pushes image diversity further. Five participants were each scanned in 30 main sessions at 7T, viewing 25,052 unique images in the first release. Most are everyday photographs sampled from a 120-million image-text corpus derived from LAION, and the set also includes images from NSD and THINGS, abstract shapes, visual illusions and other out-of-distribution stimuli. 1,492 shared images were repeated up to 12 times, which gives reliable responses to compare across people. The same participants also have retinotopic mapping, functional localizers, diffusion MRI and eye-tracking data, and the release includes single-trial betas estimated with GLMsingle.
+
 Datasets like these (and others, such as BOLD5000; Chang et al., 2019) mark a shift towards "condition-rich" designs: instead of a handful of tightly controlled stimuli, participants see thousands of naturalistic images. If you're getting into vision neuroscience now, there is more high-quality public data available than ever before, which also means you can do a lot of research without collecting your own.
 
 ## Summary
@@ -124,7 +126,7 @@ Datasets like these (and others, such as BOLD5000; Chang et al., 2019) mark a sh
 - Behavioral experiments tell us what the visual system does; neuroimaging helps us get at where and how it does it.
 - Visual processing is roughly hierarchical, with a ventral "what" stream towards IT and a dorsal "where/how" stream through MT towards parietal cortex. Early areas are retinotopic maps, and higher areas include category-selective regions like FFA, PPA and LOC.
 - EEG and MEG are best for timing, fMRI for spatial localization, invasive recordings for single-neuron precision.
-- Large public datasets like NSD and THINGS-data make data-hungry, model-based analyses feasible.
+- Large public datasets like NSD, THINGS-data and LAION-fMRI make data-hungry, model-based analyses feasible.
 
 ---
 
@@ -171,3 +173,5 @@ In the next post, we'll look at how fMRI actually works: how magnets let us meas
 - **THINGS-data:** Hebart, M. N., Contier, O., Teichmann, L., Rockter, A. H., Zheng, C. Y., Kidder, A., ... & Baker, C. I. (2023). THINGS-data, a multimodal collection of large-scale datasets for investigating object representations in human brain and behavior. *eLife*, 12, e82580. [DOI: 10.7554/eLife.82580](https://doi.org/10.7554/eLife.82580) | [GitHub](https://github.com/ViCCo-Group/THINGS-data)
 
 - **BOLD5000:** Chang, N., Pyles, J. A., Marcus, A., Gupta, A., Tarr, M. J., & Aminoff, E. M. (2019). BOLD5000, a public fMRI dataset while viewing 5000 visual images. *Scientific Data*, 6, 49. [DOI: 10.1038/s41597-019-0052-3](https://doi.org/10.1038/s41597-019-0052-3) | [Dataset Website](https://bold5000-dataset.github.io/website/)
+
+- **LAION-fMRI:** Zerbe, J., Roth, J., Mell, M. M., Herholz, P., Knapen, T., & Hebart, M. N. (2026). LAION-fMRI: A densely sampled 7T-fMRI dataset providing broad coverage of natural image diversity. Talk 25.11, Vision Sciences Society Annual Meeting. [Dataset website](https://laion-fmri.hebartlab.com) | [AWS Open Data](https://registry.opendata.aws/laion-fmri/)

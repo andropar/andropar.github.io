@@ -96,6 +96,10 @@ EPI images are warped, mostly near air-tissue boundaries: frontal regions near t
 
 There are three common ways to fix this. First, field maps: the scanner measures the inhomogeneities of the magnetic field, which tells you how each voxel was displaced. If your protocol includes field maps (and it should), fMRIPrep uses them automatically. Second, reverse phase encoding: you acquire two short scans with opposite phase-encoding directions (e.g. anterior-posterior and posterior-anterior), so the distortions go in opposite directions, and an algorithm estimates the undistortion field from the difference. This is the approach FSL's `topup` uses. Third, if you have neither, fMRIPrep can estimate the distortion by nonlinearly registering the EPI to the anatomical image (fieldmap-less "SyN" correction, enabled with `--use-syn-sdc`). It works reasonably well, but real field maps are better.
 
+<img src="/blog/fmri-diagrams/epi-distortion.svg" alt="Three sagittal slices: the T1w anatomy, a simulated uncorrected EPI stretched and missing signal near the orbitofrontal cortex, and the corrected EPI with geometry restored but signal still missing" />
+
+*Simulated distortion along the anterior-posterior phase-encoding direction. Correction moves signal back to where it belongs, but it can't bring back signal that was lost to dropout.*
+
 ### Coregistration
 
 Coregistration aligns your functional images to the high-resolution anatomical scan, so you can tell which structures your signal actually comes from.
@@ -229,6 +233,10 @@ Older fMRIPrep versions could also run ICA-AROMA and output its motion component
 ## Surface or volume?
 
 So far everything has been in the volume: 3D voxel grids, either in native or MNI space. In vision research, a lot of analysis happens on the cortical surface instead. The reason is that visual areas are organized along the cortical sheet. Retinotopic maps run along the folded cortex, and two points that are close in the volume can be far apart on the surface if they sit on opposite banks of a sulcus. Smoothing or searching over neighboring voxels in the volume mixes signal across those banks; doing it on the surface doesn't.
+
+<img src="/blog/fmri-diagrams/surface-vs-volume.svg" alt="Schematic of a folded cortical ribbon around a sulcus. Two points on opposite banks are 4 mm apart in the volume but about 12 mm apart along the cortex, and a 3D kernel around them covers both banks" />
+
+*Schematic. Two points on opposite banks of a sulcus are close in 3D but far apart along the cortical sheet. Volume-based smoothing or searchlights mix signal from both banks; surface-based analysis follows the sheet.*
 
 Many tools and resources in the field assume surface data. Retinotopic atlases that predict the location of V1-V3 from anatomy work on the FreeSurfer surface (Benson et al., 2014; Benson & Winawer, 2018), and NSD provides its data on subject-native and fsaverage surfaces alongside the volume (Allen et al., 2022).
 

@@ -42,6 +42,10 @@ Linear SVMs and logistic regression are the usual choices. SVMs are more common 
 
 You can't train and test on the same data, and you also can't split trials randomly, because trials from the same run share autocorrelated noise and that inflates accuracy. The standard is leave-one-run-out cross-validation: train on all runs but one, test on the held-out run, and rotate through all runs.
 
+<img src="/blog/fmri-diagrams/cross-validation-folds.svg" alt="Grid of six folds by six runs: in each fold one run is held out for testing and the other five are used for training" />
+
+*Leave-one-run-out cross-validation with six runs. Each run is the test set exactly once.*
+
 ```python
 from sklearn.svm import SVC
 from sklearn.model_selection import cross_val_score, LeaveOneGroupOut
@@ -175,6 +179,10 @@ def rsa_permutation_test(neural_rdm, model_rdm, n_perm=10000, seed=0):
 rho, p = rsa_permutation_test(neural_rdm, model_rdm)
 ```
 
+<img src="/blog/fmri-diagrams/rsa-permutation.svg" alt="Histogram of correlations under 10,000 label permutations centered on zero, with the observed correlation far in the right tail" />
+
+*Simulated. Shuffling condition labels builds the null distribution; the p-value is the fraction of permutations at least as large as the observed correlation.*
+
 This tests one subject's RDM. For group-level inference you'd usually compute the correlation per subject and test across subjects (e.g. a Wilcoxon signed-rank test), or bootstrap over subjects and conditions. In practice I'd let [rsatoolbox](https://github.com/rsagroup/rsatoolbox) handle this, since it implements these inference methods and the noise ceiling below.
 
 One more thing worth knowing about: correlation distance between noisy patterns is biased, because noise alone makes two patterns look dissimilar. Cross-validated distances avoid this. The most common one is the crossnobis distance, a Mahalanobis distance that is noise-normalized using the GLM residuals and computed across independent runs, so its expected value is zero when two conditions don't differ (Walther et al., 2016). rsatoolbox supports it via `calc_rdm(..., method='crossnobis')`.
@@ -238,6 +246,10 @@ For whole-brain data with many voxels and features, [himalaya](https://gallantla
 
 As with RSA, raw prediction accuracy is hard to interpret without knowing how reliable each voxel is. NSD (Allen et al., 2022) provides a noise ceiling SNR (`ncsnr`) per voxel, estimated from the variability across image repetitions. From it you get the noise ceiling as a percentage of explainable variance, NC = 100 · ncsnr² / (ncsnr² + 1/n), where n is the number of trials averaged per image. You can then compare your model's variance explained on the test set against NC. Voxels with a low ceiling are mostly noise, and low prediction accuracy there doesn't say much about your model. (See also [Part 6](/blog/fmri-crash-course-6-quality-assessment).)
 
+<img src="/blog/fmri-diagrams/encoding-noise-ceiling.svg" alt="Grouped bar chart of encoding accuracy per visual area for early-layer and late-layer DNN features, with a noise ceiling line for each area" />
+
+*Simulated. Early-layer features predict early visual areas best and late-layer features predict higher areas best. The noise ceiling shows how much is left to explain in each area.*
+
 ### ROIs and the cortical surface
 
 In vision studies you rarely run these analyses on "the whole brain" in the abstract. Most of the time you work within ROIs: early visual areas (V1, V2, V3, hV4) delineated from retinotopic mapping or a retinotopy atlas (Benson & Winawer, 2018), and category-selective regions from functional localizers, like FFA for faces (Kanwisher et al., 1997), PPA for scenes (Epstein & Kanwisher, 1998) and LOC for objects (Malach et al., 1995). The scans for this are covered in [Part 4](/blog/fmri-crash-course-4-recording-experiments), and defining ROIs from localizers in [Part 7](/blog/fmri-crash-course-7-analysis-glm). Then you compare decoding accuracy, RDMs or encoding performance across areas, which is how you get at questions about the hierarchy.
@@ -300,7 +312,11 @@ In the [Natural Scenes Dataset](https://naturalscenesdataset.org/) (Allen et al.
 
 The broad concept sampling and the behavioral similarity data make it a good fit for RSA, since you can compare neural representations to human similarity judgments and to models. Having fMRI and MEG for the same concepts also lets you ask spatial and temporal questions about the same stimuli.
 
-Both datasets are freely available, and if your question fits them, they're a much cheaper starting point than collecting your own data.
+### LAION-fMRI
+
+[LAION-fMRI](https://laion-fmri.hebartlab.com) (Zerbe et al., 2026) has five participants with 30 main 7T sessions each and 25,052 unique images in its first release, mostly everyday photographs sampled from a large LAION-derived image-text corpus. 1,492 shared images were repeated up to 12 times, and the set includes NSD and THINGS images as well as out-of-distribution stimuli like abstract shapes and visual illusions. That combination makes it useful for testing whether encoding models and representational findings generalize beyond the image distribution they were developed on. It comes with GLMsingle betas, retinotopic maps, localizers and eye tracking, and the data are released under CC0 on AWS Open Data.
+
+All three datasets are freely available, and if your question fits them, they're a much cheaper starting point than collecting your own data.
 
 ## Where the field is heading
 
@@ -322,7 +338,7 @@ Finally, good prediction isn't the same as explanation. People increasingly want
 - Decoding shows that information is present, RSA describes representational geometry, and encoding models test which features drive responses.
 - Cross-validate across runs (or images), test RSA results with condition-label permutations rather than naive p-values, and report performance relative to a noise ceiling.
 - In vision you'll usually do all of this within retinotopic and localizer-defined ROIs, or on the cortical surface.
-- NSD and THINGS-data, together with tools like thingsvision, make comparing DNNs to visual cortex accessible.
+- NSD, THINGS-data and LAION-fMRI, together with tools like thingsvision, make comparing DNNs to visual cortex accessible.
 
 ---
 
@@ -343,6 +359,7 @@ Finally, good prediction isn't the same as explanation. People increasingly want
 **Datasets:**
 - [Natural Scenes Dataset](https://naturalscenesdataset.org/)
 - [THINGS-data](https://things-initiative.org/)
+- [LAION-fMRI](https://laion-fmri.hebartlab.com)
 - [BOLD5000](https://bold5000-dataset.github.io/website/) - another large-scale image viewing dataset
 
 **Papers to start with:**
@@ -395,6 +412,7 @@ From here, the best way to learn is to pick a dataset and a question and start w
 ### Datasets
 - Allen, E. J., St-Yves, G., Wu, Y., et al. (2022). A massive 7T fMRI dataset to bridge cognitive neuroscience and artificial intelligence. *Nature Neuroscience*, 25, 116-126.
 - Hebart, M. N., Contier, O., Teichmann, L., et al. (2023). THINGS-data, a multimodal collection of large-scale datasets for investigating object representations in human brain and behavior. *eLife*, 12, e82580.
+- Zerbe, J., Roth, J., Mell, M. M., Herholz, P., Knapen, T., & Hebart, M. N. (2026). LAION-fMRI: A densely sampled 7T-fMRI dataset providing broad coverage of natural image diversity. Talk 25.11, Vision Sciences Society Annual Meeting.
 
 ### Software Documentation
 - [Nilearn: Decoding and MVPA](https://nilearn.github.io/stable/decoding/decoding_intro.html) - Introduction to decoding with nilearn

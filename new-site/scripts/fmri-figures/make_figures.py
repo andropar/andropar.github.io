@@ -1208,6 +1208,9 @@ FIGURES = {
 def main(argv):
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     setup_style()
+    import extra_figures  # second batch; imports this module for shared style helpers
+
+    FIGURES.update(extra_figures.FIGURES)
     names = argv or list(FIGURES)
     unknown = [n for n in names if n not in FIGURES]
     if unknown:

@@ -189,11 +189,19 @@ roi_mask = np.zeros(z.shape, dtype=bool)
 roi_mask.flat[top_idx] = True
 ```
 
+<img src="/blog/fmri-diagrams/localizer-rois.svg" alt="Ventral view of an inflated left hemisphere with simulated face-selective regions OFA and FFA in orange and scene-selective PPA in blue" />
+
+*Simulated localizer results on an inflated surface. Face-selective FFA sits on the lateral fusiform gyrus, scene-selective PPA medial to it near the collateral sulcus, and OFA further back in occipital cortex.*
+
 One rule you must not break: define the ROI on data that is independent of the data you analyze afterwards. If you select voxels because they respond more to faces and then report that the same data shows a stronger response to faces, the result is guaranteed by the selection. Kriegeskorte et al. (2009) wrote the standard paper on this "double dipping" problem. Separate localizer runs solve it; if you must localize with the main experiment, split the runs (e.g. define the ROI on odd runs, analyze even runs).
 
 ## Retinotopic mapping
 
 Early visual areas (V1, V2, V3, and beyond) aren't defined by category contrasts but by their maps of the visual field. To find them you run retinotopic mapping: stimuli like rotating wedges and expanding rings, analyzed either with a phase-encoded analysis (which phase of the stimulus cycle drives each voxel most) or with population receptive field (pRF) modeling (Dumoulin & Wandell, 2008). The pRF approach fits a small model of each voxel's receptive field and gives you polar angle, eccentricity and pRF size per voxel.
+
+<img src="/blog/fmri-diagrams/prf-model.svg" alt="Left: the visual field with a bar stimulus and a Gaussian population receptive field. Right: simulated voxel time series and the pRF model prediction over four bar sweeps" />
+
+*Simulated pRF fit. The model predicts a response whenever the bar overlaps the voxel's Gaussian receptive field, convolved with the HRF. Fitting the position and size of that Gaussian gives polar angle, eccentricity and pRF size for each voxel.*
 
 The borders between V1, V2 and V3 sit where the polar angle map reverses direction, which you trace on an inflated or flattened cortical surface. For fitting, analyzePRF (MATLAB, from Kendrick Kay's lab) and prfpy (Python) are common choices.
 
@@ -227,11 +235,15 @@ The catch is that you're running one test per voxel, so tens of thousands of tes
 - False discovery rate (FDR; Benjamini & Hochberg, 1995; Genovese et al., 2002), which controls the expected proportion of false positives among the voxels you call significant. Less strict than FWE.
 - Cluster-level inference: threshold the map at a cluster-forming threshold and then ask whether a cluster is larger than you'd expect by chance.
 
+<img src="/blog/fmri-diagrams/fdr-thresholding.svg" alt="Three panels of a simulated statistical map: unthresholded z-values, a lenient uncorrected threshold with many scattered false positives, and an FDR-corrected threshold with far fewer" />
+
+*Simulated map with three true effects. A lenient uncorrected threshold finds the effects but also many scattered false positives; FDR keeps the effects and removes most of the noise.*
+
 Cluster inference needs care. Eklund et al. (2016) showed that parametric cluster inference, as implemented in the common packages, gave false-positive rates far above the nominal 5% when combined with a lenient cluster-forming threshold like p < 0.01. Use a cluster-forming threshold of p < 0.001, or better, nonparametric permutation testing (nilearn has `non_parametric_inference` in `nilearn.glm.second_level`), which held up well in their comparison.
 
 Note that the `cluster_threshold` in the snippet above just removes small clusters for display. It isn't a cluster-level test.
 
-Also, many vision studies never do whole-brain group statistics at all. Dense-sampling datasets like NSD and THINGS-data scan a few people for many hours, define ROIs within each person and report results per subject, treating each subject as a replication. If your question is about specific visual areas, ROI-based analysis within individuals is often the more sensible design.
+Also, many vision studies never do whole-brain group statistics at all. Dense-sampling datasets like NSD, THINGS-data and LAION-fMRI scan a few people for many hours, define ROIs within each person and report results per subject, treating each subject as a replication. If your question is about specific visual areas, ROI-based analysis within individuals is often the more sensible design.
 
 ## Single-trial estimation for MVPA
 
@@ -360,7 +372,7 @@ For MVPA with a slow event-related design (6+ seconds between trials), LSA is pr
 
 For MVPA with a fast event-related design (the typical 2-4 second ITI), I'd use GLMsingle unless there's a specific reason not to. The collinearity is real, HRF variation matters, and the denoising helps.
 
-For large datasets with thousands of images, like NSD, GLMsingle is the obvious choice. It was developed with exactly this kind of data in mind.
+For large datasets with thousands of images, like NSD or LAION-fMRI, GLMsingle is the obvious choice (LAION-fMRI ships GLMsingle betas). It was developed with exactly this kind of data in mind.
 
 If you want something quick without another toolbox, LSS with nilearn only takes the short loop above and works well enough for pilot analyses before you set up GLMsingle.
 

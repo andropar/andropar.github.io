@@ -16,7 +16,7 @@ In this series of blog posts, I want to remove the pain from this process and sh
 
 My goal is to provide you with a foundational set of tools and workflows that can easily be extended for your own research purposes, as well as a general intuition for working with fMRI data. Note that, although we'll focus on vision, many of the tools we'll talk about will also be relevant for other research areas.
 
-Throughout the series, we'll use real code examples and reference the kinds of large-scale datasets that are driving modern vision research - particularly the Natural Scenes Dataset (NSD) and THINGS-data, which have become essential resources for computational approaches to visual neuroscience.
+Throughout the series, we'll use real code examples and reference the kinds of large-scale datasets that are driving modern vision research - particularly the Natural Scenes Dataset (NSD), THINGS-data and LAION-fMRI, which have become essential resources for computational approaches to visual neuroscience.
 
 ![Overview of the 8 parts of the series: introduction, neuroimaging for vision, MRI basics, recording and design, preprocessing, quality assessment, GLM analysis, and multivariate analysis](/blog/fmri-diagrams/pipeline-overview.svg)
 
@@ -56,6 +56,7 @@ Let's get started with [Part 2: Using neuroimaging for understanding the visual 
 
 - **Natural Scenes Dataset (NSD)**: Allen, E.J., St-Yves, G., Wu, Y. et al. (2022). A massive 7T fMRI dataset to bridge cognitive neuroscience and artificial intelligence. *Nature Neuroscience*, 25, 116-126. [DOI: 10.1038/s41593-021-00962-x](https://doi.org/10.1038/s41593-021-00962-x) | [Dataset website](https://naturalscenesdataset.org/)
 - **THINGS-data**: Hebart, M.N., Contier, O., Teichmann, L. et al. (2023). THINGS-data, a multimodal collection of large-scale datasets for investigating object representations in human brain and behavior. *eLife*, 12, e82580. [DOI: 10.7554/eLife.82580](https://doi.org/10.7554/eLife.82580) | [THINGS Initiative](https://things-initiative.org/) | [OpenNeuro](https://openneuro.org/datasets/ds004192)
+- **LAION-fMRI**: Zerbe, J., Roth, J., Mell, M. M., Herholz, P., Knapen, T., & Hebart, M. N. (2026). LAION-fMRI: A densely sampled 7T-fMRI dataset providing broad coverage of natural image diversity. Talk 25.11, Vision Sciences Society Annual Meeting. [Dataset website](https://laion-fmri.hebartlab.com) | [AWS Open Data](https://registry.opendata.aws/laion-fmri/)
 
 ### Textbooks
 

@@ -53,6 +53,10 @@ So the logic goes:
 
 This is the Blood Oxygen Level Dependent (BOLD) signal, first described by Ogawa and colleagues in 1990. To be sensitive to it, fMRI uses T2*-weighted gradient-echo sequences, almost always echo-planar imaging (EPI), which can acquire a whole brain volume in a second or two. We're measuring changes in blood oxygenation that follow neural activity, not the activity itself. Visual cortex was one of the first places this was shown in humans (Kwong et al., 1992, with flashing-light stimulation), and its strong, reliable responses are one reason vision has been such a productive area for fMRI.
 
+<img src="/blog/fmri-diagrams/bold-contrast-te.svg" alt="Left: T2* decay curves at rest and during activity, nearly overlapping. Right: their difference as a function of echo time, peaking near the tissue T2*" />
+
+*Simulated gray matter at 3T. Activity makes T2* slightly longer, so the signal decays a little more slowly. The difference is tiny, and it is largest when the echo time is close to the tissue's T2*. In practice TE is set a bit shorter (around 30 ms at 3T) to limit dropout and keep acquisition fast.*
+
 ### A recent complication: discordant voxels
 
 A [2025 paper in Nature Neuroscience](https://www.nature.com/articles/s41593-025-02132-9) by Epp and colleagues showed that the relationship between BOLD and the underlying physiology can be messier than the standard model suggests.
@@ -166,7 +170,7 @@ mean_volume = np.mean(data, axis=3)
 print(f"Mean volume shape: {mean_volume.shape}")
 ```
 
-Everything that follows in this series (preprocessing, modelling, statistics) comes down to manipulating 4D arrays like this one. The large datasets from [Part 2](/blog/fmri-crash-course-2-neuroimaging-vision), NSD and THINGS-data, come in exactly this form.
+Everything that follows in this series (preprocessing, modelling, statistics) comes down to manipulating 4D arrays like this one. The large datasets from [Part 2](/blog/fmri-crash-course-2-neuroimaging-vision), NSD, THINGS-data and LAION-fMRI, come in exactly this form.
 
 ---
 

@@ -117,15 +117,17 @@ The problems are the flip side of the same coin. You can't counterbalance or ran
 
 ## Design lessons from large datasets
 
-The two large datasets I keep mentioning, NSD and THINGS-data, follow a different design philosophy from the classic small experiment, and it's worth looking at what they did.
+The large datasets I keep mentioning, NSD, THINGS-data and LAION-fMRI, follow a different design philosophy from the classic small experiment, and it's worth looking at what they did.
 
 The Natural Scenes Dataset (Allen et al., 2022) scanned 8 participants for 30-40 sessions each at 7T, with 1.8 mm isotropic voxels and a TR of 1.6 s. Images of natural scenes were shown for 3 seconds with a 1 second gap. Each image was planned to be shown up to 3 times over the course of the experiment, and participants saw around 9,000-10,000 unique images each, depending on how many sessions they completed. The task was a continuous recognition task: on every trial, participants judged whether they had seen the image before at any point in the experiment. That keeps people attentive and also gives you memory data for free.
 
 THINGS-fMRI (part of THINGS-data; Hebart et al., 2023) scanned 3 participants over many sessions at 3T. They saw 8,740 unique images from 720 object concepts of the THINGS database (12 images per concept), each shown once, plus 100 test images that were repeated many times to estimate reliability. It used a rapid event-related design with images shown for 500 ms. To keep participants engaged, they had to respond to occasional catch images, which were artificially generated images mixed in among the real photographs.
 
+LAION-fMRI (Zerbe et al., 2026) scanned 5 participants at 7T with multi-echo fMRI, 1.8 mm isotropic voxels and a TR of 1.9 s, in 30 main sessions each. Its design combines both ideas above: 25,052 unique images for broad coverage, plus 1,492 shared images repeated up to 12 times for reliability. It also deliberately mixes in images from NSD and THINGS, so results can be compared across datasets, and out-of-distribution stimuli like abstract shapes and visual illusions that test how far models generalize. Retinotopic mapping and functional localizers were collected in the same people, which is exactly the setup described in the next section.
+
 ### What this means for your own designs
 
-Both datasets start from "how do I collect data that's useful for many questions?" rather than "how do I answer my one question with as little scanning as possible?" You probably won't scan 40 sessions per person, but some of the ideas transfer to smaller studies:
+All three start from "how do I collect data that's useful for many questions?" rather than "how do I answer my one question with as little scanning as possible?" You probably won't scan 40 sessions per person, but some of the ideas transfer to smaller studies:
 - Repeating stimuli lets you estimate reliability (and a noise ceiling) and helps single-trial modeling
 - Sampling stimuli broadly and systematically lets you study representational geometry, not just category selectivity
 - For computational approaches, lots of data from a few participants can be more useful than a little data from many
@@ -139,6 +141,10 @@ A vision study adds a few practical concerns on top of the general design questi
 You can't put a normal monitor next to the magnet. The most common setup is a projector outside the scanner room that projects onto a screen at the end of the bore (or behind the participant's head), which the participant sees through a mirror mounted on the head coil. Some centers have MR-compatible LCD displays instead, placed behind the scanner and also viewed through a mirror.
 
 Whatever the setup, you need to know the screen size and the viewing distance (from the eyes via the mirror to the screen), because stimulus size in vision research is reported in degrees of visual angle, not pixels or centimeters. For an object of size s at distance d, the visual angle is 2 · arctan(s / 2d):
+
+<img src="/blog/fmri-diagrams/visual-angle.svg" alt="Diagram of an eye looking at a stimulus on a screen at distance d, with the visual angle theta and the formula theta = 2 arctan(s / 2d)" />
+
+*Visual angle depends on both stimulus size and viewing distance, which is why stimuli are reported in degrees rather than centimeters or pixels.*
 
 ```python
 import numpy as np
@@ -169,6 +175,10 @@ If you don't have an eye tracker, you can still reduce the problem: give partici
 In a vision study you almost always add a functional localizer: a short block-design run with blocks of faces, scenes, bodies, objects and scrambled objects. Contrasts between these conditions define category-selective regions in each participant, like the fusiform face area (FFA; Kanwisher et al., 1997), the parahippocampal place area (PPA; Epstein & Kanwisher, 1998), the extrastriate body area (EBA; Downing et al., 2001) and the lateral occipital complex (LOC; Malach et al., 1995). These regions vary in location from person to person, so defining them individually is much more precise than using a group atlas.
 
 Often you'll also add a retinotopic mapping run to define early visual areas (V1, V2, V3, hV4). The classic approach uses a rotating wedge and an expanding ring, and the more recent population receptive field (pRF) approach typically uses bars sweeping across the visual field (Dumoulin & Wandell, 2008). As mentioned above, a small screen limits how much of the visual field you can map.
+
+<img src="/blog/fmri-diagrams/retinotopy-stimuli.svg" alt="Three retinotopic mapping stimuli: a rotating checkerboard wedge, an expanding checkerboard ring, and a sweeping checkerboard bar, each around a central fixation dot" />
+
+*Standard retinotopic mapping stimuli. The wedge maps polar angle, the ring maps eccentricity, and sweeping bars are used to fit population receptive fields.*
 
 Budget roughly 10-20 minutes of scanner time for localizers and retinotopy. They can also go into a separate session, which is a good option if you scan the same participants several times. I'll cover how to analyze them with the GLM in [Part 7](/blog/fmri-crash-course-7-analysis-glm).
 
@@ -259,7 +269,7 @@ It's extra effort up front, but if you're going to scan the same people many tim
 
 - 3T with multiband acceleration (TR around 0.8-1.2 s, flip angle adjusted to the short TR) and 2-3 mm voxels is a sensible default for most vision studies.
 - Block designs are best for detection and localizers, rapid event-related designs with jittered ISIs for most other questions.
-- Large datasets like NSD and THINGS-data show the value of repeated stimuli and broad stimulus sampling, even if your own study is much smaller.
+- Large datasets like NSD, THINGS-data and LAION-fMRI show the value of repeated stimuli and broad stimulus sampling, even if your own study is much smaller.
 - Vision studies need extra care: report stimulus size in degrees of visual angle, control fixation (ideally with an eye tracker), and plan scanner time for localizer and retinotopy runs.
 - Scanner synchronization, accurate timing logs and motion prevention are boring but make or break your data.
 
@@ -284,6 +294,7 @@ With data collected, the next step is preprocessing: getting the raw data ready 
 
 - Allen, E.J., St-Yves, G., Wu, Y. et al. (2022). A massive 7T fMRI dataset to bridge cognitive neuroscience and artificial intelligence. Nature Neuroscience, 25, 116-126. [DOI: 10.1038/s41593-021-00962-x](https://doi.org/10.1038/s41593-021-00962-x)
 - Hebart, M.N., Contier, O., Teichmann, L. et al. (2023). THINGS-data, a multimodal collection of large-scale datasets for investigating object representations in human brain and behavior. eLife, 12, e82580. [DOI: 10.7554/eLife.82580](https://doi.org/10.7554/eLife.82580)
+- Zerbe, J., Roth, J., Mell, M.M., Herholz, P., Knapen, T., & Hebart, M.N. (2026). LAION-fMRI: A densely sampled 7T-fMRI dataset providing broad coverage of natural image diversity. Talk 25.11, Vision Sciences Society Annual Meeting. [Dataset website](https://laion-fmri.hebartlab.com)
 
 ### Localizers and Retinotopic Mapping
 
