@@ -26,7 +26,7 @@ If the website is already running, start only the editing server with `npm run c
 
 `npm run build` exports the static site to `dist`. The GitHub Pages workflow builds and publishes pushes to `main`.
 
-Hosted editing at `/admin/` runs on the personal VPS with its own username/password.
+Hosted editing at `/blog/admin/` runs on the personal VPS with its own username/password.
 Posts and media are stored on the server and rebuild the site when published. See
 [ops/README.md](ops/README.md) for login-file location, content paths, deployment and backups.
 Local editing continues to use the local backend. Website code changes are pulled from

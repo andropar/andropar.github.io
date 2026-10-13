@@ -1,8 +1,8 @@
 backend:
-  name: proxy
+  name: private-files
   repo: andropar/andropar.github.io
   branch: main
-  proxy_url: /admin/api/v1
+  proxy_url: /blog/admin/api/v1
 
 local_backend:
   url: http://127.0.0.1:8085/api/v1

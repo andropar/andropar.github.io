@@ -39,7 +39,7 @@ if [ -d "$content/src/content/blog" ]; then
 fi
 npm ci --no-audit --no-fund > "$build/npm-install.log" 2>&1 || { tail -n 60 "$build/npm-install.log"; exit 1; }
 npm run build
-[ -s dist/index.html ] && [ -s dist/admin/decap.js ] && [ -s dist/cv.pdf ]
+[ -s dist/index.html ] && [ -s dist/blog/admin/decap.js ] && [ -s dist/cv.pdf ]
 if [ ! -d "$base/releases/$release" ]; then mv dist "$base/releases/$release"; fi
 ln -s "$base/releases/$release" "$base/.current-$release"
 mv -Tf "$base/.current-$release" "$base/current"

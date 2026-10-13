@@ -1,5 +1,5 @@
 ---
-import previewStyles from '../../styles/v2.css?raw';
+import previewStyles from '../../../styles/v2.css?raw';
 ---
 <!doctype html>
 <html lang="en">
@@ -9,16 +9,12 @@ import previewStyles from '../../styles/v2.css?raw';
     <meta name="robots" content="noindex, nofollow" />
     <title>Writing editor · Johannes Roth</title>
     <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="cms-config-url" type="text/yaml" href="/admin/config.yml" />
-    <script is:inline>
-      if (window.location.hostname === 'jroth.space' || window.location.hostname === 'www.jroth.space') {
-        window.location.replace('https://admin.jroth.space/admin/' + window.location.hash);
-      }
-      window.CMS_MANUAL_INIT = true;
-    </script>
+    <link rel="cms-config-url" type="text/yaml" href="/blog/admin/config.yml" />
+    <script is:inline>window.CMS_MANUAL_INIT = true;</script>
   </head>
   <body>
-    <script is:inline src="/admin/decap.js"></script>
+    <script is:inline src="/blog/admin/decap.js"></script>
+    <script is:inline src="/blog/admin/session-login.js"></script>
     <script is:inline define:vars={{ previewStyles }}>
       CMS.registerPreviewStyle('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..600;1,14..32,400..600&family=JetBrains+Mono:wght@400&display=swap');
       CMS.registerPreviewStyle(previewStyles, { raw: true });
