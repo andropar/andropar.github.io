@@ -18,7 +18,7 @@ My goal is to provide you with a foundational set of tools and workflows that ca
 
 Throughout the series, we'll use real code examples and reference the kinds of large-scale datasets that are driving modern vision research - particularly the Natural Scenes Dataset (NSD) and THINGS-data, which have become essential resources for computational approaches to visual neuroscience.
 
-![Flowchart showing the 8 parts of the fMRI Crash Course series: Introduction, Neuroimaging for Vision, Basics of MRI and fMRI, Recording and Experiments, Preprocessing, Quality Assessment, GLM Analysis, and Multivariate Analysis](/blog/fmri-diagrams/pipeline-overview.svg)
+![Overview of the 8 parts of the series: introduction, neuroimaging for vision, MRI basics, recording and design, preprocessing, quality assessment, GLM analysis, and multivariate analysis](/blog/fmri-diagrams/pipeline-overview.svg)
 
 ## Technical prerequisites
 

@@ -18,7 +18,7 @@ Information in the brain is distributed, though. One voxel responding more to fa
 
 The analogy I like: univariate analysis measures how loud the orchestra is, multivariate analysis tries to recognize the melody. Two pieces can be equally loud and still sound completely different.
 
-<img src="/blog/fmri-diagrams/univariate-vs-multivariate.svg" alt="Comparison of univariate vs multivariate analysis - univariate shows same mean activation for two conditions, while multivariate reveals distinct patterns across voxels" />
+<img src="/blog/fmri-diagrams/univariate-vs-multivariate.svg" alt="Bar chart with equal mean responses for faces and houses, next to two different 5 by 5 voxel activity patterns for the same conditions" />
 
 *Two conditions can have identical mean activation (left) while showing different patterns across voxels (right). A univariate analysis can't see this difference.*
 
@@ -105,15 +105,15 @@ Decoding tells you whether information is present. RSA (Kriegeskorte et al., 200
 
 The central object is the representational dissimilarity matrix (RDM). For every pair of conditions you compute how different their activity patterns are, most often as 1 minus the Pearson correlation. Put all pairs together and you get a symmetric matrix that describes the geometry of the representation.
 
-<img src="/blog/fmri-diagrams/rdm-matrix.svg" alt="Representational dissimilarity matrix showing category structure - similar items (fruits, vehicles, animals) cluster together" />
+<img src="/blog/fmri-diagrams/rdm-matrix.svg" alt="Representational dissimilarity matrix for twelve items in four categories, with low dissimilarity within categories" />
 
-*Illustrative (simulated) RDM. Dark squares along the diagonal show within-category similarity (fruits, vehicles, animals), lighter off-diagonal blocks show between-category dissimilarity. That apples are more similar to bananas than to cars is the kind of structure RSA captures.*
+*Illustrative (simulated) RDM. Light blocks along the diagonal mean low dissimilarity within each category, and darker cells mean more dissimilar patterns. Animals and faces are closer to each other than to fruits or vehicles. That apples are more similar to bananas than to cars is the kind of structure RSA captures.*
 
 You can also project this geometry into 2D with multidimensional scaling (MDS) to look at it:
 
-<img src="/blog/fmri-diagrams/mds-representational-space.svg" alt="MDS plot showing category clusters in representational space - fruits, vehicles, animals, tools, and faces form distinct clusters" />
+<img src="/blog/fmri-diagrams/mds-representational-space.svg" alt="Two-dimensional MDS plot of the same twelve items, with fruits, vehicles, animals and faces forming separate clusters" />
 
-*Illustrative (simulated) MDS plot of a representational space. Items from the same category cluster together and different categories occupy different regions.*
+*Illustrative (simulated) MDS of the RDM above. Items from the same category cluster together, and the two animate categories sit next to each other.*
 
 What makes RSA useful is that RDMs can be compared across very different sources. Compute an RDM from your neural data, compute another from a model (a semantic embedding, a CNN layer, human similarity judgments), and correlate the two. Because you only compare dissimilarity structures, you never need a mapping between voxels and model units. The usual comparison is a Spearman correlation over the lower triangle.
 
@@ -248,9 +248,9 @@ The other common choice is to work on the cortical surface instead of in the vol
 
 Deep convolutional neural networks (CNNs) trained on object recognition turned out to be surprisingly good models of the ventral visual stream. In 2014, Yamins et al. showed that a CNN optimized for object recognition predicted neural responses in monkey IT cortex, and Khaligh-Razavi & Kriegeskorte showed that representations of deep supervised networks matched human and monkey IT representations in RSA. Güçlü & van Gerven (2015) then showed in fMRI that there's a layer-to-area correspondence: early CNN layers best predict early visual cortex, later layers best predict higher ventral areas, so the model hierarchy roughly mirrors the cortical one.
 
-<img src="/blog/fmri-diagrams/dnn-brain-heatmap.svg" alt="Heatmap showing correlations between CNN layers and brain ROIs - early layers correlate with V1/V2, late layers with IT cortex" />
+<img src="/blog/fmri-diagrams/dnn-brain-heatmap.svg" alt="Heatmap of model-brain correspondence between CNN layers and visual areas, with the best-matching layer moving deeper for higher areas" />
 
-*Illustrative (simulated) layer-by-region comparison. Each cell would be the correlation between a CNN layer's representations and a brain region's activity patterns. The diagonal structure is the pattern reported in the literature: early layers (conv1-2) match early visual cortex (V1-V2) best, late layers (fc6-8) match higher visual areas (IT) best.*
+*Illustrative (simulated) layer-by-region comparison. Each cell would be the correlation between a CNN layer's representations and a brain region's activity patterns. The diagonal structure is the pattern reported in the literature: early layers match early visual cortex best, and later layers match higher, category-selective areas like LOC, FFA and PPA best.*
 
 Since then, a lot of work has compared DNNs to brains: which architecture predicts neural activity best, which layer, and whether the training task or data changes the correspondence. [thingsvision](https://github.com/ViCCo-Group/thingsvision) makes the feature extraction part easy. You pick a model and a layer, extract features for your images, and can go straight into encoding or RSA.
 

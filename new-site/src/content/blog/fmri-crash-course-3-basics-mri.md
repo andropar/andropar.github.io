@@ -16,7 +16,7 @@ Your body is mostly water, and water contains hydrogen. Each hydrogen atom has a
 
 Normally these tiny magnets point in random directions and cancel out. Inside an MRI scanner they sit in a field of typically 1.5 to 7 Tesla, tens of thousands of times stronger than Earth's. In this field, slightly more protons align with the field than against it. The excess is tiny, only a few parts per million, but there are so many protons in a brain that it adds up to a measurable net magnetization pointing along the field. This net magnetization is what MRI works with.
 
-<img src="/blog/fmri-diagrams/proton-alignment.svg" alt="Proton alignment before and after magnetic field application" />
+<img src="/blog/fmri-diagrams/proton-alignment.svg" alt="Spins point in random directions without a field; inside the scanner a tiny excess aligns with the main field and produces a net magnetization" />
 
 The protons also precess: like a slightly tilted spinning top, they wobble around the direction of the magnetic field at a specific frequency, the Larmor frequency, which depends on the field strength and the type of nucleus. For hydrogen in a 3T scanner it's about 128 MHz.
 
@@ -34,7 +34,7 @@ T2 relaxation (transverse relaxation) describes how quickly the protons lose the
 
 In a real scanner, the protons also get out of sync because the magnetic field isn't perfectly uniform: small local field inhomogeneities make neighbouring protons precess at slightly different frequencies. The decay you actually observe, including this extra dephasing, is called T2* ("T2-star"). T2* is always shorter than T2. This is what fMRI exploits.
 
-<img src="/blog/fmri-diagrams/t1-t2-curves.svg" alt="T1 recovery and T2 decay curves for different brain tissues" />
+<img src="/blog/fmri-diagrams/t1-t2-curves.svg" alt="T1 recovery and T2 decay curves for white matter, gray matter and CSF at 3T" />
 
 By changing the timing of RF pulses and signal readout, you can make an image sensitive mostly to T1, T2, or T2*.
 
@@ -121,7 +121,7 @@ An fMRI dataset is a 4D volume: three spatial dimensions (x, y, z) plus time. At
 
 A typical scan might be 64 x 64 x 40 voxels, acquired every 2 seconds for 10 minutes. That gives you 300 time points, i.e. 300 complete 3D brain images.
 
-<img src="/blog/fmri-diagrams/4d-volume.svg" alt="4D fMRI volume structure showing brain volumes over time" />
+<img src="/blog/fmri-diagrams/4d-volume.svg" alt="A stack of brain volumes acquired over time, with one voxel highlighted and its signal plotted as a time series" />
 
 *Each 3D volume contains ~160,000 voxels. A 10-minute scan with TR=2s yields 300 volumes, which together form a 4D dataset.*
 

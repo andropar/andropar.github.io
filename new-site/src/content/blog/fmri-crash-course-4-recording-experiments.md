@@ -51,7 +51,7 @@ The flip angle trades off signal against T1 saturation, and the optimum (the Ern
 
 Slice orientation is a bit more interesting for vision research. Signal dropout near the sinuses and ear canals can affect parts of ventral temporal cortex, and tilting the slice stack relative to the AC-PC line can reduce it in some regions. This is worth discussing with the physicist at your center, especially if your ROIs are in the inferior temporal lobe.
 
-<img src="/blog/fmri-diagrams/slice-orientations.svg" alt="MRI slice orientations: axial, coronal, and tilted" />
+<img src="/blog/fmri-diagrams/slice-orientations.svg" alt="Sagittal brain slice with axial slice positions parallel to the AC-PC line, and the same brain with a tilted slice prescription" />
 
 ## Experimental design for fMRI
 
@@ -105,7 +105,7 @@ Sometimes you want to study both sustained and transient effects. Mixed designs 
 | **Analysis complexity** | Simple | Moderate | Complex | Complex |
 | **Best for** | Localizers, strong effects | Shape of response, trial variability | Most cognitive studies | State + event effects |
 
-<img src="/blog/fmri-diagrams/design-types.svg" alt="fMRI experimental design types: block, event-related, and rapid event-related" />
+<img src="/blog/fmri-diagrams/design-types.svg" alt="Stimulus timing and predicted BOLD response for block, slow event-related, and rapid event-related designs" />
 
 ## Naturalistic paradigms
 

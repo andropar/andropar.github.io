@@ -29,7 +29,7 @@ Fitting means finding the betas that minimize the squared error, which is ordina
 
 <img src="/blog/fmri-diagrams/design-matrix.svg" alt="Example GLM design matrix showing HRF-convolved task regressors, motion parameters, and intercept" />
 
-*A simulated design matrix for a faces vs. houses experiment. The first two columns are HRF-convolved task regressors, the middle columns are motion nuisance regressors, and the last column is the intercept.*
+*A simulated design matrix for a faces vs. houses experiment. The first two columns are HRF-convolved task regressors, followed by six motion regressors, cosine drift terms for high-pass filtering, and the intercept.*
 
 ## Building the design matrix
 
@@ -41,9 +41,9 @@ Your main regressors describe the experimental conditions. You can't just use a 
 
 So you start with a boxcar (an on/off indicator of when each condition occurred) and convolve it with the hemodynamic response function (HRF). Convolution smears the boxcar out in time according to the HRF's shape, and the result is a smooth, delayed predictor that looks like what the BOLD signal should do.
 
-<img src="/blog/fmri-diagrams/hrf-convolution-demo.svg" alt="Three-panel figure showing HRF convolution: (a) boxcar stimulus function with on/off periods, (b) canonical hemodynamic response function with peak and undershoot, (c) resulting convolved regressor that predicts BOLD signal" />
+<img src="/blog/fmri-diagrams/hrf-convolution-demo.svg" alt="Three panels: a boxcar stimulus function, the canonical HRF, and the regressor that results from convolving them" />
 
-*The convolution process: (a) A boxcar stimulus function marks when stimuli were presented. (b) The canonical HRF captures the delayed, sluggish BOLD response. (c) Convolving them produces a regressor that matches what we expect the brain signal to look like.*
+*The boxcar (left) marks when stimuli were on. The canonical HRF (middle) describes the delayed, sluggish BOLD response to a brief event. Convolving the two gives the regressor (right), our prediction of what the signal should look like.*
 
 ```python
 import numpy as np
@@ -268,9 +268,9 @@ st_model.fit(run_imgs=fmri_img, events=events_trials,
 
 The problem is that when trials are close together in time (fast event-related designs), their regressors overlap: the HRF of trial 1 is still going when trial 2 starts. The regressors become correlated, and collinearity inflates the variance of the beta estimates. The estimates are unbiased on average, but any single one can be far off.
 
-<img src="/blog/fmri-diagrams/design-matrix-collinearity.svg" alt="Comparison of design matrices: slow design with well-separated regressors and low correlation versus fast design with overlapping regressors and high correlation" />
+<img src="/blog/fmri-diagrams/design-matrix-collinearity.svg" alt="Single-trial regressors for four trials: well separated in a slow design, strongly overlapping in a fast design" />
 
-*Simulated illustration of the collinearity problem. (a) In slow designs with long inter-trial intervals, neighbouring regressors are only weakly correlated (r = -0.27 in this simulation). (b) In fast designs, the overlapping HRFs create highly correlated regressors (r = 0.74), inflating the variance of beta estimates.*
+*Simulated single-trial regressors. With 12 s between trials (left), neighbouring regressors barely overlap (r = -0.21 in this simulation). With 3 s between trials (right), the HRFs overlap and neighbouring regressors are strongly correlated (r = 0.57), which inflates the variance of the beta estimates.*
 
 ### LSS: Least Squares Separate
 

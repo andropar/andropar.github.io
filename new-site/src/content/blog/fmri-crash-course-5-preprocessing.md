@@ -82,7 +82,7 @@ Motion correction aligns every volume in the time series to a reference volume. 
 
 <img src="/blog/fmri-diagrams/motion-traces.svg" alt="Simulated motion parameter traces showing translations and rotations over time" />
 
-*Simulated motion traces, for illustration. Slow drift plus a few sudden movements is a typical pattern. The 6 parameters (3 translations, 3 rotations) describe any rigid-body movement.*
+*Simulated motion traces, for illustration. Slow drift plus the occasional sudden movement is a typical pattern. The 6 parameters (3 translations, 3 rotations) describe any rigid-body movement.*
 
 Two limitations to keep in mind. Realignment uses interpolation, which smooths your data slightly. And it can only correct for movement between volumes, not within them: if the subject moved while a volume was being acquired, that volume is corrupted in a way realignment can't fix.
 

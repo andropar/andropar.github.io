@@ -94,7 +94,7 @@ The result should match fMRIPrep's `framewise_displacement` column (which has `n
 The difference between a low-motion and a high-motion subject is easy to see:
 
 ![FD comparison between subjects](/blog/fmri-diagrams/fd-comparison.svg)
-*Simulated FD traces for two illustrative subjects (not real data). The low-motion subject (top) stays well below 0.2 mm with only occasional small spikes. The high-motion subject (bottom) has extended stretches above 0.5 mm and several spikes above 1.5 mm, and would likely be flagged for exclusion or heavy censoring.*
+*Simulated FD traces for two illustrative subjects (not real data). The low-motion subject (top) stays well below 0.2 mm with only occasional small spikes. The high-motion subject (bottom) has restless stretches above 0.5 mm and spikes above 1 mm, and would likely be flagged for exclusion or heavy censoring.*
 
 ### Signal dropout near air-tissue interfaces
 
@@ -116,7 +116,9 @@ Spatial normalization is supposed to align everyone's brain to a common template
 - The anatomical image doesn't line up with the template (T1-to-template failure)
 - Brain extraction was too aggressive, or not aggressive enough
 
-<!-- TODO (Johannes): Image needed - good vs bad registration comparison showing functional-anatomical alignment -->
+<img src="/blog/fmri-diagrams/registration-check.svg" alt="Two sagittal slices of a functional image with the anatomical white-matter boundary drawn on top: aligned on the left, shifted and rotated on the right" />
+
+*Simulated registration check. On the left the white-matter boundary from the T1w image follows the functional image; on the right the functional image is shifted and rotated, so the boundary cuts across tissue. This is what the fMRIPrep report overlays let you check.*
 
 These failures are usually obvious once you look, but you do have to look.
 
@@ -160,7 +162,9 @@ What to look for:
 - Horizontal bands are expected. They come from the grouping of voxels by tissue class, so different compartments look a bit different. Because every voxel is z-scored, they don't reflect differences in baseline signal level.
 - A fairly uniform, random-looking texture is what clean data looks like.
 
-<!-- TODO (Johannes): Image needed - carpet plots, clean example vs one with motion artifacts (vertical stripes) -->
+<img src="/blog/fmri-diagrams/carpet-plot.svg" alt="Two simulated carpet plots with framewise displacement on top: a clean run with uniform texture, and a run with motion showing vertical bands at the FD spikes" />
+
+*Simulated carpet plots. Each row is one voxel's z-scored time series, grouped by tissue class. The motion spikes in FD line up with vertical bands that cut across every tissue class.*
 
 ### Manual inspection with FSLeyes
 

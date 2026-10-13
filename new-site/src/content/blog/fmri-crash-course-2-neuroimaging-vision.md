@@ -24,7 +24,7 @@ There's a second limitation. A behavioral response is the end result of a long c
 
 Before talking about imaging techniques, it helps to know what we're trying to image. The visual system is a cascade of brain regions that each do something a bit different.
 
-<img src="/blog/fmri-diagrams/visual-hierarchy.svg" alt="Visual processing hierarchy from Retina to IT cortex" />
+<img src="/blog/fmri-diagrams/visual-hierarchy.svg" alt="Visual processing hierarchy from retina through LGN, V1, V2 and V4 to IT, with receptive fields growing at each stage" />
 
 Light hits the retina and gets converted into neural signals. These travel through the optic nerve to the **lateral geniculate nucleus (LGN)** in the thalamus, and from there to the primary visual cortex, **V1**, at the very back of the brain.
 
@@ -36,7 +36,7 @@ The **ventral stream** (the "what" pathway) runs from V1 through V2 and V4 into 
 
 The **dorsal stream** (the "where" or "how" pathway) runs from V1 and V2 towards the parietal cortex. It handles spatial information: where things are, how they move, and how you might act on them. A well-known stop along the way is the motion area MT (also called V5; its human counterpart is usually labeled hMT+), where most neurons are tuned to the direction and speed of motion.
 
-<img src="/blog/fmri-diagrams/visual-streams.svg" alt="Ventral and dorsal visual processing streams" />
+<img src="/blog/fmri-diagrams/visual-streams.svg" alt="Lateral view of the left hemisphere with the dorsal stream running from early visual cortex to posterior parietal cortex and the ventral stream running to inferotemporal cortex" />
 
 This hierarchical organization is supported by lesion studies, single-unit recordings in animals and a lot of human neuroimaging, and it loosely inspired deep neural networks (more on that later). Still, the hierarchy is not a simple feedforward pipeline. There are massive feedback and lateral connections and a lot of recurrent processing. "Simple to complex" is a useful first approximation, and the real thing is messier than any diagram.
 
@@ -61,7 +61,7 @@ So how do we study these regions in living, behaving humans? There are several t
 | **fMRI** | ~1-3mm | ~1-2s | Non-invasive | High | Where processing happens |
 | **Invasive recordings** | Single neurons | <1ms | Very invasive | Very high | Precise neural coding |
 
-<img src="/blog/fmri-diagrams/spatial-temporal-tradeoff.svg" alt="Spatial vs temporal resolution trade-off between EEG, MEG, fMRI, and invasive recordings" />
+<img src="/blog/fmri-diagrams/spatial-temporal-tradeoff.svg" alt="Approximate spatial and temporal resolution of EEG, MEG, fMRI, and single-unit and LFP recordings on log scales" />
 
 ### EEG (Electroencephalography)
 
