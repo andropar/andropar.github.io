@@ -82,9 +82,11 @@ In simulations, slice timing effects were largest for event-related designs, sho
 
 Motion correction aligns every volume in the time series to a reference volume. The head is treated as a rigid body, so it can rotate and translate but not deform. That gives 6 motion parameters per volume: translations in x, y and z, and rotations around each axis ([FSL MCFLIRT docs](https://fsl.fmrib.ox.ac.uk/fsl/docs/registration/mcflirt.html); [fMRIPrep outputs docs](https://fmriprep.org/en/stable/outputs.html)).
 
-<img src="/blog/fmri-diagrams/motion-traces.svg" alt="Simulated motion parameter traces showing translations and rotations over time" />
+<img src="/blog/fmri-diagrams/things-motion.svg" alt="Real motion parameters of a localizer run: translations below 0.15 mm and rotations below 0.2 degrees, with a fast zig-zag in the y translation" />
 
-*Simulated motion traces, for illustration. Slow drift plus the occasional sudden movement is a typical pattern. The 6 parameters (3 translations, 3 rotations) describe any rigid-body movement.*
+*Motion parameters of the running example (THINGS-fMRI participant 1, localizer run 1), estimated with FSL's MCFLIRT. THINGS-data doesn't publish fMRIPrep outputs for the functional runs, so for the running example I use MCFLIRT directly.*
+
+This participant moved very little: the largest translation is about 0.12 mm and the largest rotation about 0.2°. The fast zig-zag in the y translation isn't head movement. Breathing changes the magnetic field, which shifts the image along the phase-encoding direction, and motion correction reports that shift as motion (Fair et al., 2020). In this run, the phase-encoding direction is y (`PhaseEncodingDirection: j` in the JSON sidecar), and the respiration recording that comes with the run shows the participant breathing about 20 times per minute (0.34 Hz). That's almost exactly half the sampling rate at a TR of 1.5 s (0.33 Hz), so breathing shows up as an alternation from one volume to the next. Fair et al. (2020) suggest filtering the respiratory frequency out of the motion estimates before using them for censoring decisions.
 
 Two limitations to keep in mind. Realignment resamples the images, and interpolation smooths the data slightly; fMRIPrep therefore combines all spatial transforms into a single resampling step with Lanczos interpolation (Esteban et al., 2019). And the motion estimates are computed per volume, so motion that affects only some slices of a volume isn't captured by them (Power et al., 2015).
 
@@ -379,6 +381,7 @@ Preprocessing turns raw data into something you can analyze, but that doesn't me
 - Hajnal, J.V., Myers, R., Oatridge, A., Schwieso, J.E., Young, I.R., & Bydder, G.M. (1994). Artifacts due to stimulus correlated motion in functional imaging of the brain. *Magnetic Resonance in Medicine*, 31(3), 283-291. [https://doi.org/10.1002/mrm.1910310307](https://doi.org/10.1002/mrm.1910310307)
 - Bullmore, E.T., Brammer, M.J., Rabe-Hesketh, S., et al. (1999). Methods for diagnosis and treatment of stimulus-correlated motion in generic brain activation studies using fMRI. *Human Brain Mapping*, 7(1), 38-48. [https://pmc.ncbi.nlm.nih.gov/articles/PMC6873318/](https://pmc.ncbi.nlm.nih.gov/articles/PMC6873318/)
 - Power, J.D., Barnes, K.A., Snyder, A.Z., Schlaggar, B.L., & Petersen, S.E. (2012). Spurious but systematic correlations in functional connectivity MRI networks arise from subject motion. *NeuroImage*, 59(3), 2142-2154. [https://doi.org/10.1016/j.neuroimage.2011.10.018](https://pmc.ncbi.nlm.nih.gov/articles/PMC3254728/)
+- Fair, D.A., Miranda-Dominguez, O., Snyder, A.Z., et al. (2020). Correction of respiratory artifacts in MRI head motion estimates. *NeuroImage*, 208, 116400. [https://doi.org/10.1016/j.neuroimage.2019.116400](https://pmc.ncbi.nlm.nih.gov/articles/PMC7307712/)
 - Power, J.D., Schlaggar, B.L., & Petersen, S.E. (2015). Recent progress and outstanding issues in motion correction in resting state fMRI. *NeuroImage*, 105, 536-551. [https://doi.org/10.1016/j.neuroimage.2014.10.044](https://pmc.ncbi.nlm.nih.gov/articles/PMC4262543/)
 
 ### Confound regression

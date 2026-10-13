@@ -117,11 +117,11 @@ Higher field strength gives you a higher signal-to-noise ratio (SNR; Fera et al.
 
 An fMRI dataset is a 4D volume: three spatial dimensions (x, y, z) plus time. At each time point you have a 3D image of the brain divided into small cubes called voxels (volumetric pixels), typically 2-4 mm on each side.
 
-A typical scan might be 64 x 64 x 40 voxels, with a new volume acquired every 2 seconds (the repetition time, TR) for 10 minutes. That gives you 300 time points, i.e. 300 complete 3D brain images.
+In the running example (see [Part 1](/blog/fmri-crash-course-1-introduction)), one run of the THINGS experiment is 96 x 96 x 60 voxels of 2 mm, with a new volume acquired every 1.5 seconds (the repetition time, TR). The run has 284 volumes, so about 7 minutes of scanning, and as 32-bit floats it takes about 0.6 GB in memory.
 
-<img src="/blog/fmri-diagrams/4d-volume.svg" alt="A stack of brain volumes acquired over time, with one voxel highlighted and its signal plotted as a time series" />
+<img src="/blog/fmri-diagrams/things-volume-timeseries.svg" alt="Left: an axial slice of a raw EPI volume with one occipital voxel marked. Right: that voxel's signal over a seven-minute run, fluctuating by a few percent, with vertical lines at each image onset" />
 
-*Each 3D volume contains ~160,000 voxels. A 10-minute scan with TR=2s yields 300 volumes, which together form a 4D dataset.*
+*Real data: THINGS-fMRI participant 1, session 1, run 1, without any preprocessing. The voxel is the one in this occipital slice whose time series best follows the image onsets, and even so the response to individual images is hard to see by eye in a single run. That is why the rest of the series is about modeling and averaging.*
 
 ### Time series
 
@@ -138,30 +138,30 @@ import nibabel as nib
 import numpy as np
 
 # Load an fMRI NIfTI file
-img = nib.load('sub-01_task-visual_bold.nii.gz')
+img = nib.load('sub-01_ses-things01_task-things_run-01_bold.nii.gz')
 
 # Get the data as a numpy array
-data = img.get_fdata()
+data = img.get_fdata(dtype=np.float32)
 
 # Check the shape: (x, y, z, time)
 print(f"Data shape: {data.shape}")
-# Output: Data shape: (64, 64, 40, 300)
+# Output: Data shape: (96, 96, 60, 284)
 
 # Get the voxel size from the header
 voxel_size = img.header.get_zooms()
-print(f"Voxel size (mm): {voxel_size[:3]}")
+print(f"Voxel size (mm): {voxel_size[:3]}")  # (2.0, 2.0, 2.0)
 # The 4th zoom is only the TR if the header's time units are set correctly
 # (check img.header.get_xyzt_units()). For BIDS data, the RepetitionTime
-# field in the JSON sidecar (sub-01_task-visual_bold.json) is the reliable source.
+# field in the JSON sidecar (..._bold.json) is the reliable source. Here both say 1.5.
 print(f"TR (seconds, from header): {voxel_size[3]}")
 
 # Extract the time series from a single voxel
-voxel_timeseries = data[32, 32, 20, :]
-print(f"Time series length: {len(voxel_timeseries)}")
+voxel_timeseries = data[48, 20, 30, :]
+print(f"Time series length: {len(voxel_timeseries)}")  # 284
 
 # Compute mean signal across time for a single volume
 mean_volume = np.mean(data, axis=3)
-print(f"Mean volume shape: {mean_volume.shape}")
+print(f"Mean volume shape: {mean_volume.shape}")  # (96, 96, 60)
 ```
 
 Everything that follows in this series (preprocessing, modeling, statistics) comes down to manipulating 4D arrays like this one. The large datasets from [Part 2](/blog/fmri-crash-course-2-neuroimaging-vision), NSD, THINGS-data and LAION-fMRI, come in exactly this form.

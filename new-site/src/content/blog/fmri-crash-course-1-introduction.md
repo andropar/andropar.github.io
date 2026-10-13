@@ -26,6 +26,26 @@ Throughout the series, we'll use real code examples and reference the kinds of l
 
 In this series, we'll use Python, an easy-to-learn, general-purpose programming language, and I'll assume some familiarity with programming and working with command line tools. You should be able to follow along even if you don't have much coding experience, but learning to code is more or less a prerequisite for doing research, so I recommend starting sooner rather than later!
 
+## The running example
+
+To keep things concrete, the series follows one real dataset through the whole pipeline: participant 1 of THINGS-fMRI (Hebart et al., 2023). The raw data is openly available in BIDS format on OpenNeuro (dataset [ds004192](https://openneuro.org/datasets/ds004192)), and the THINGS-data authors also share derivatives on figshare. The real-data figures and numbers in Parts 3 to 8 come from these files:
+
+- one run of the main experiment (`ses-things01`, run 1) and the two category localizer runs from `ses-localizer1`, all from OpenNeuro
+- the published [regions of interest](https://doi.org/10.25452/figshare.plus.20492769.v1), [noise ceilings](https://doi.org/10.25452/figshare.plus.20492775.v1), [brain masks](https://doi.org/10.25452/figshare.plus.20492757.v1) and [single-trial responses to the test images in IT](https://doi.org/10.25452/figshare.plus.23284622.v1)
+
+The OpenNeuro files can be downloaded directly from its public S3 bucket, for example:
+
+```bash
+base=https://s3.amazonaws.com/openneuro.org/ds004192/sub-01
+run=ses-localizer1/func/sub-01_ses-localizer1_task-6cat_run-01
+mkdir -p $(dirname $run)
+for ext in bold.nii.gz bold.json events.tsv; do
+    curl -o ${run}_${ext} ${base}/${run}_${ext}
+done
+```
+
+Each functional run is around 150-270 MB. Everything here runs on a laptop.
+
 ## Parts of the series
 
 The series is divided into 8 separate posts (including this introduction). These are meant to be read in sequence, as each post builds on concepts from the previous ones, but you can also just pick whatever interests you most.

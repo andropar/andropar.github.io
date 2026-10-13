@@ -96,6 +96,14 @@ The difference between a low-motion and a high-motion subject is easy to see:
 ![FD comparison between subjects](/blog/fmri-diagrams/fd-comparison.svg)
 *Simulated FD traces for two illustrative subjects (not real data). The low-motion subject (top) stays well below 0.2 mm with only occasional small spikes. The high-motion subject (bottom) has restless stretches above 0.5 mm and spikes above 1 mm, and would likely be flagged for exclusion or heavy censoring.*
 
+For comparison, here is the same set of checks on a real run from the running example (THINGS-fMRI participant 1, localizer run 1), after motion correction with MCFLIRT. I computed FD with Power's formula from the motion parameters and standardized DVARS following Nichols' definition.
+
+<img src="/blog/fmri-diagrams/things-qc.svg" alt="Real quality check of one run: framewise displacement mostly between 0.1 and 0.3 mm with no value above 0.5 mm, standardized DVARS close to 1 throughout, and a carpet plot with uniform texture and no vertical bands" />
+
+*Real data, one localizer run of THINGS-fMRI participant 1. Dashed lines: the 0.5 mm FD and 1.5 standardized DVARS flags from the table below.*
+
+This run is clean. Mean FD is 0.16 mm, the largest value is 0.47 mm, and no volume crosses 0.5 mm. Standardized DVARS never exceeds 1.13, and the carpet plot has no vertical bands. 46 of the 180 volumes do exceed the stricter 0.2 mm, but much of that comes from the breathing-related apparent motion described in [Part 5](/blog/fmri-crash-course-5-preprocessing), which is a good example of why a single threshold shouldn't be applied blindly.
+
 ### Signal dropout near air-tissue interfaces
 
 The brain sits right next to air-filled cavities and bone: the sinuses behind your forehead and the ear canals. Near these structures the magnetic field becomes inhomogeneous, which causes signal loss in gradient-echo EPI (Ojemann et al., 1997). Orbitofrontal cortex and the medial and inferior temporal lobes are hit hardest (Volz et al., 2019).
@@ -226,9 +234,13 @@ def split_half_reliability(betas):
 
 Plotting `r` on the brain is a good sanity check in itself: reliability should be highest in visual cortex and fall off elsewhere. NSD uses a more principled version of the same idea, the noise ceiling SNR (ncsnr), which estimates the ratio of signal variability across images to trial-to-trial noise variability across repetitions and converts that into a noise ceiling for each voxel (Allen et al., 2022). Allen et al. also point out the direct link to split-half reliability: the correlation between two sets of responses to the same images, times 100, equals the single-trial noise ceiling in percent.
 
-<img src="/blog/fmri-diagrams/split-half-reliability.svg" alt="Histograms of split-half reliability: voxels outside visual cortex center on zero, early visual cortex voxels center around 0.5" />
+THINGS-data publishes its noise ceilings, estimated separately for single trials and for averages over more repetitions, because the ceiling depends on how many trials you average (Hebart et al., 2023). For participant 1 of the running example, that dependence looks like this:
 
-*Simulated. In a healthy dataset, voxels in early visual cortex have clearly positive split-half reliability while the rest of the brain centers on zero. If visual cortex looks like the gray distribution, something went wrong.*
+<img src="/blog/fmri-diagrams/things-noise-ceiling.svg" alt="Median noise ceiling as a function of the number of averaged repetitions: rising from about 3 to 27 percent in V1 and from about 1 to 10 percent across all voxels" />
+
+*Published noise ceilings for THINGS-fMRI participant 1 (median and interquartile range). V1 is the pRF-based V1 ROI that THINGS-data also publishes.*
+
+For a single trial, the median V1 voxel has a noise ceiling of only about 3% explainable variance, and the median voxel across the brain about 1%. Averaging all 12 repetitions raises that to about 27% in V1 and 10% across the brain, and the best voxels in early visual cortex reach up to 80% (Hebart et al., 2023). Single-trial fMRI responses are noisy, and repeating stimuli is how you get reliable estimates.
 
 ### Eye tracking
 

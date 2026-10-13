@@ -167,13 +167,24 @@ You fit a regular GLM to the localizer runs and compute contrasts like these (th
 - objects > scrambled objects: the lateral occipital complex, LOC (Malach et al., 1995)
 
 ```python
-loc_model = FirstLevelModel(t_r=2.0, hrf_model='spm', drift_model='cosine',
-                            high_pass=0.01, smoothing_fwhm=4, mask_img=brain_mask)
-loc_model.fit(localizer_runs, events=localizer_events,
-              confounds=localizer_confounds)
+import numpy as np
+import pandas as pd
+from nilearn.glm.first_level import FirstLevelModel
 
-# 'face' and 'object' must match the trial_type labels in your events files
-faces_z = loc_model.compute_contrast('face - object', output_type='z_score')
+# Running example: the two localizer runs of session 1, motion-corrected with MCFLIRT
+runs = ['loc_run-01_mc.nii.gz', 'loc_run-02_mc.nii.gz']
+events = [pd.read_csv(f'sub-01_ses-localizer1_task-6cat_run-0{r}_events.tsv', sep='\t')
+          for r in (1, 2)]
+# The six MCFLIRT motion parameters of each run as confounds
+confounds = [pd.DataFrame(np.loadtxt(f'loc_run-0{r}_mc.par')) for r in (1, 2)]
+
+loc_model = FirstLevelModel(t_r=1.5, hrf_model='spm', drift_model='cosine',
+                            high_pass=0.01, smoothing_fwhm=4, mask_img=brain_mask)
+loc_model.fit(runs, events=events, confounds=confounds)
+
+# Condition names must match the trial_type labels in the events files
+faces_z = loc_model.compute_contrast('faces - objects', output_type='z_score')
+scenes_z = loc_model.compute_contrast('scenes - objects', output_type='z_score')
 ```
 
 Julian et al. (2012) smoothed their localizer data (6 mm FWHM), though they also found the major regions without smoothing. A thresholded contrast map usually has more than one blob, and deciding by hand which cluster is "the FFA" is subjective (Julian et al., 2012). A cleaner option is their group-constrained subject-specific (GSS) method: group-derived parcels mark where each region tends to be, and you intersect a parcel with the subject's thresholded contrast map ([Kanwisher lab GSS page](https://web.mit.edu/bcs/nklab/GSS.shtml)). A common variant skips the fixed threshold and keeps the most selective voxels inside the parcel, such as the top 10% (Marvi et al., 2025) or a fixed number like the top 100 (Kamps et al., 2022). A fixed number of voxels also gives ROIs of the same size in every subject.
@@ -191,9 +202,13 @@ roi_mask = np.zeros(z.shape, dtype=bool)
 roi_mask.flat[top_idx] = True
 ```
 
-<img src="/blog/fmri-diagrams/localizer-rois.svg" alt="Ventral view of an inflated left hemisphere with simulated face-selective regions OFA and FFA in orange and scene-selective PPA in blue" />
+In the running example, this gives 319 voxels with z > 3.1 (p < 0.001, uncorrected) for faces > objects and 2,195 for scenes > objects. The face-selective voxels form small clusters in ventral and lateral temporal cortex, while the scene map is much larger and extends over posterior occipital cortex, which is a good illustration of why picking "the PPA" from a thresholded map needs a principled rule:
 
-*Simulated localizer results on an inflated surface. Face-selective FFA sits on the lateral fusiform gyrus, scene-selective PPA medial to it near the collateral sulcus (Grill-Spector & Weiner, 2014), and OFA further back in occipital cortex.*
+<img src="/blog/fmri-diagrams/things-localizer.svg" alt="Two axial slices of a mean EPI with real localizer results: small orange face-selective clusters in ventral temporal cortex on the left slice, and large blue scene-selective clusters in posterior occipital cortex on the right slice" />
+
+*Real localizer results for THINGS-fMRI participant 1 (two runs, native EPI space, 4 mm smoothing, z > 3.1 uncorrected, for display only). Left: the slice with the most face-selective voxels. Right: the slice with the most scene-selective voxels. Face-selective FFA typically sits on the lateral fusiform gyrus and scene-selective PPA medial to it near the collateral sulcus (Grill-Spector & Weiner, 2014).*
+
+THINGS-data also publishes the localizer-defined ROIs for each participant, including FFA, OFA, STS, PPA, RSC, TOS, EBA and LOC ([figshare](https://doi.org/10.25452/figshare.plus.20492769.v1); Hebart et al., 2023), so you don't have to define them yourself to work with the dataset.
 
 One rule you must not break: define the ROI on data that is independent of the data you analyze afterwards. If you select voxels because they respond more to faces and then report that the same data shows a stronger response to faces, the result is largely produced by the selection. Kriegeskorte et al. (2009) showed that this "double dipping" gives distorted statistics and spurious effects even in pure noise. Their fix is to use independent data for the final analysis: separate localizer runs, or, if you must localize with the main experiment, split the runs (e.g. define the ROI on odd runs, analyze even runs).
 

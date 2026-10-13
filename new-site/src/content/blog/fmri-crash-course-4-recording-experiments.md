@@ -147,6 +147,12 @@ The Natural Scenes Dataset (Allen et al., 2022) scanned 8 participants at 7T wit
 
 THINGS-fMRI (part of THINGS-data; Hebart et al., 2023) scanned 3 participants in 12 main sessions at 3T. They saw 8,740 unique images of 720 object concepts from the THINGS database, each shown once, plus 100 test images that were shown in every session to estimate reliability. Images were shown for 500 ms followed by 4 s of fixation. To keep participants engaged, they had to respond to occasional catch images, which were unrecognizable objects generated with a neural network and mixed in among the real photographs.
 
+You can see this design directly in the running example. The `events.tsv` of the first run of participant 1 lists 92 trials, one every 4.5 s: 72 main-experiment images, 10 test images and 10 catch images. The JSON sidecar of the same run records the acquisition: 3T, TR 1.5 s, TE 33 ms, flip angle 75°, multiband factor 3. The category localizer runs from the same participant are a classic block design, with 15 s blocks of body parts, words, scrambled objects, faces, scenes and objects.
+
+<img src="/blog/fmri-diagrams/things-design.svg" alt="Top: event onsets in the first two minutes of a THINGS run, one image every 4.5 seconds, colored by trial type. Bottom: the block sequence of a category localizer run with 15-second blocks" />
+
+*Real event timing from THINGS-fMRI participant 1, read from the `events.tsv` files of session 1, run 1 (top) and localizer session 1, run 1 (bottom).*
+
 LAION-fMRI (Zerbe et al., 2026) scanned 5 participants at 7T with multi-echo fMRI, 1.8 mm isotropic voxels and a TR of 1.9 s, in 30 main sessions each. Its design combines both ideas above: 25,052 unique images for broad coverage, plus 1,492 shared images repeated up to 12 times for reliability. It also includes images from NSD and THINGS, which makes comparisons with those datasets possible, and out-of-distribution test stimuli like abstract shapes and visual illusions. Retinotopic mapping and functional localizers were collected in the same people, which is exactly the setup described in the next section.
 
 ### What this means for your own designs

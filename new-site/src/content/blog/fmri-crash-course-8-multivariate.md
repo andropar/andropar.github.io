@@ -65,6 +65,14 @@ print(f"Mean accuracy: {accuracies.mean():.2f} (+/- {accuracies.std():.2f})")
 print(f"Chance level: {1/len(np.unique(y)):.2f}")
 ```
 
+Here's what this looks like with the running example. THINGS-data publishes single-trial responses to its 100 test images for the IT voxels of each participant: 1,200 trials (each image in each of 12 sessions) by 4,145 voxels for participant 1 ([figshare](https://doi.org/10.25452/figshare.plus.23284622.v1); Hebart et al., 2023). Leaving out one session at a time, I asked two questions. Which of the 100 images was shown? For that I correlated each held-out trial with the average pattern of every image in the remaining sessions and picked the best match. And was it an animal or a food item? For that I trained a regularized logistic regression on the 14 animal and 20 food images.
+
+<img src="/blog/fmri-diagrams/things-it-decoding.svg" alt="Two bar charts of decoding accuracy per held-out session: 100-way image identification around 10 percent against 1 percent chance, and animal versus food classification around 81 percent against 50 percent chance" />
+
+*Real decoding results from IT of THINGS-fMRI participant 1, with leave-one-session-out cross-validation (one bar per held-out session).*
+
+Image identification is right about 10% of the time, ten times chance but far from perfect, because a single trial is noisy. Animal vs. food decoding reaches a balanced accuracy of 81% (chance 50%), between 70% and 90% depending on the held-out session.
+
 ### Searchlight analysis
 
 Decoding from one big set of voxels tells you that information is there, but not where. Searchlight analysis, introduced by Kriegeskorte et al. (2006), handles this by centering a small sphere on each voxel in turn and running your analysis on the voxels inside it. The result is a whole-brain map of decoding accuracy (or whatever you compute in the sphere), without having to define ROIs in advance. The downside is compute: you fit one classifier (with its full cross-validation) for every voxel in the mask.
@@ -194,6 +202,14 @@ Your data is noisy, so even the true model wouldn't correlate perfectly with you
 If you only have one subject, you can split the data (e.g. odd vs. even runs), compute an RDM for each half and correlate them. That correlation is the reliability of half the data, though, so it underestimates the reliability of the full dataset. The usual correction for split-half estimates is the Spearman-Brown formula, r_full = 2r / (1 + r), which Lage-Castellanos et al. (2019) apply to split-half noise ceilings for voxel responses; the same logic carries over to RDMs.
 
 Either way, the point is to report model performance relative to the ceiling. A correlation of 0.3 means something very different when the ceiling is 0.35 than when it's 0.8.
+
+The running example shows why this matters. Below is the RDM of the 100 test images in IT for participant 1, computed from the responses averaged over all 12 repetitions:
+
+<img src="/blog/fmri-diagrams/things-it-rdm.svg" alt="A 100 by 100 representational dissimilarity matrix of the THINGS test images in IT, ordered into animals, food and other objects, with weak block structure" />
+
+*Real RDM (1 minus Pearson correlation) for THINGS-fMRI participant 1, IT voxels, ordered into animals, food and other objects and clustered within each group.*
+
+The category structure is weak, and the split-half reliability tells you why. Correlating the RDMs from odd and even sessions gives a Spearman correlation of 0.12, or 0.21 after the Spearman-Brown correction. Spearman's correction for attenuation says that a measure can't correlate with anything more strongly than the square root of its own reliability allows (Spearman, 1904). Here that's about √0.21 ≈ 0.46, so even a perfect model of this participant's IT representations would only reach a correlation of around 0.46 with this RDM, and a model reaching 0.3 would be doing well.
 
 ## Cross-validated MANOVA
 
@@ -391,6 +407,7 @@ From here, the best way to learn is to pick a dataset and a question and start w
 ### Representational Similarity Analysis (RSA)
 - Kriegeskorte, N., Mur, M., & Bandettini, P. (2008). [Representational similarity analysis - connecting the branches of systems neuroscience](https://doi.org/10.3389/neuro.06.004.2008). *Frontiers in Systems Neuroscience*, 2, 4.
 - Nili, H., Wingfield, C., Walther, A., Su, L., Marslen-Wilson, W., & Kriegeskorte, N. (2014). [A toolbox for representational similarity analysis](https://doi.org/10.1371/journal.pcbi.1003553). *PLOS Computational Biology*, 10(4), e1003553.
+- Spearman, C. (1904). The proof and measurement of association between two things. *The American Journal of Psychology*, 15(1), 72-101. [https://doi.org/10.2307/1412159](https://doi.org/10.2307/1412159)
 - Walther, A., Nili, H., Ejaz, N., Alink, A., Kriegeskorte, N., & Diedrichsen, J. (2016). [Reliability of dissimilarity measures for multi-voxel pattern analysis](https://doi.org/10.1016/j.neuroimage.2015.12.012). *NeuroImage*, 137, 188-200.
 - Lage-Castellanos, A., Valente, G., Formisano, E., & De Martino, F. (2019). [Methods for computing the maximum performance of computational models of fMRI responses](https://doi.org/10.1371/journal.pcbi.1006397). *PLOS Computational Biology*, 15(3), e1006397.
 - [rsatoolbox documentation](https://rsatoolbox.readthedocs.io/) ([dissimilarities](https://rsatoolbox.readthedocs.io/en/latest/distances.html), [inference](https://rsatoolbox.readthedocs.io/en/latest/inference.html)) | [GitHub repository](https://github.com/rsagroup/rsatoolbox)
