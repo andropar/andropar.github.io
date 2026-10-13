@@ -55,6 +55,8 @@ If you have DICOM files from the scanner, use a tool like [`heudiconv`](https://
 
 ## Core preprocessing steps
 
+Preprocessing was the part I was most confused about when I started, and the one that took me longest to get comfortable with. Two things in particular: what fMRIPrep actually does to my data, since it felt like a black box, and in which order the different steps happen and why. This section and the next one are what I wish I had read back then.
+
 Here's an overview of the standard steps. I'll go through each one below.
 
 | Step | What it does | Why it matters |

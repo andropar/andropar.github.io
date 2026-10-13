@@ -8,6 +8,8 @@ tags: ["fMRI", "neuroscience", "methods", "vision"]
 
 When I started my PhD in computational cognitive neuroscience, I felt quite lost. Coming from a Computer Science background, I had never touched a functional MRI (fMRI) dataset before, designed an experiment, or moved a person into an MRI scanner. But suddenly, I had to learn how to do all this, and fast. Over the course of a couple of weeks, I read countless books, articles, tutorials and papers, until finally I gained some confidence in working with this modality. However, it wasn't easy and I spent way too much time on figuring out how to properly do things - making many mistakes along the way.
 
+My first own fMRI study is a good example of what can go wrong. We tried several "improvements" at once, among them a very fast TR, without really knowing what we were doing, and without deciding in advance what exactly we wanted to measure or how we would judge whether the data was any good. If there's one piece of advice that runs through this whole series, it's this: stick to sensible, well-tested defaults until you understand why you'd want to deviate from them, and change one thing at a time.
+
 In this series of blog posts, I want to remove the pain from this process and share what I learned about using fMRI for vision research. This crash course should be right for you if:
 
 - You've just started as a PhD candidate and don't have a neuroscience/psychology background

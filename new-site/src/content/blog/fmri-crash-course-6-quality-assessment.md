@@ -179,6 +179,8 @@ Scroll through the time series and look for sudden jumps, check alignment with t
 
 ## Checks specific to vision experiments
 
+A personal note before the vision-specific part: in my first study, I didn't know how to measure data quality properly, and we hadn't decided beforehand how we would. In hindsight, I'd define all of these metrics before collecting any data: tSNR, motion (FD, DVARS, carpet plots), the reliability of responses to repeated stimuli, and how well you can read out the effect you actually care about. Each of them can look fine while another one shows a problem, so data quality has to be judged holistically, not by a single number.
+
 Everything above applies to any fMRI study. For vision experiments there are a few extra checks that I'd always run, because they test whether the experiment itself worked rather than just whether the images look OK.
 
 ### Does early visual cortex respond?

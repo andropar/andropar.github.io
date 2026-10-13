@@ -109,15 +109,7 @@ It's loud, because of the switched gradient fields (Glover, 2011): a survey of 1
 
 ### Field strength
 
-A rough comparison of the field strengths you'll come across (SNR is the signal-to-noise ratio; voxel sizes based on Glover, 2011, Hebart et al., 2023, and Dumoulin et al., 2018):
-
-| Field Strength | Typical voxel size | SNR | Availability | Mostly used for |
-|----------------|-------------------|-----|--------------|----------|
-| 1.5T | ~3-4 mm | Lower | Common in hospitals | Clinical scanning |
-| 3T | ~2-3 mm | Good | Most research centers | Standard cognitive fMRI |
-| 7T | <1 mm possible | Highest | Specialized centers | High-resolution mapping, layer studies |
-
-Higher field strength gives you a higher SNR (Fera et al., 2004, measured a 100-110% increase from 1.5T to 3T), and the BOLD contrast itself grows with field strength too (Trattnig et al., 2018). You can spend that on smaller voxels or faster scanning. It also brings stronger susceptibility artifacts and signal loss in regions with large field inhomogeneities, such as near air-tissue boundaries (Trattnig et al., 2018). Of the large vision datasets from Part 2, THINGS-fMRI was recorded at 3T (Hebart et al., 2023) and NSD at 7T (Allen et al., 2022). [Part 4](/blog/fmri-crash-course-4-recording-experiments) goes into the trade-offs in more detail.
+Higher field strength gives you a higher signal-to-noise ratio (SNR; Fera et al., 2004, measured a 100-110% increase from 1.5T to 3T), and the BOLD contrast itself grows with field strength too (Trattnig et al., 2018). You can spend that on smaller voxels or faster scanning. It also brings stronger susceptibility artifacts and signal loss in regions with large field inhomogeneities, such as near air-tissue boundaries (Trattnig et al., 2018). Of the large vision datasets from Part 2, THINGS-fMRI was recorded at 3T (Hebart et al., 2023) and NSD at 7T (Allen et al., 2022). [Part 4](/blog/fmri-crash-course-4-recording-experiments) covers what this means when you choose a scanner.
 
 ## What does fMRI data actually look like?
 

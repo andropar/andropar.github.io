@@ -20,7 +20,17 @@ Let's start with the hardware and sequence settings. These get decided before yo
 
 ### Field strength
 
-I covered the differences between 1.5T, 3T and 7T in [Part 3](/blog/fmri-crash-course-3-basics-mri), so here's just the practical side. 7T buys you SNR that you can spend on higher spatial resolution (Dumoulin et al., 2018). The catch is that the magnetic field distortions near air cavities get worse with field strength, and at 7T the RF field is also weak over the temporal lobes (Uğurbil, 2018). Inferior temporal cortex is already one of the regions that loses signal at 3T (Weiskopf et al., 2006), which is awkward if you study object recognition.
+[Part 3](/blog/fmri-crash-course-3-basics-mri) explains why a stronger field gives you more signal. Here's the practical side.
+
+A rough comparison of the field strengths you'll come across (voxel sizes based on Glover, 2011, Hebart et al., 2023, and Dumoulin et al., 2018):
+
+| Field Strength | Typical voxel size | SNR | Availability | Mostly used for |
+|----------------|-------------------|-----|--------------|----------|
+| 1.5T | ~3-4 mm | Lower | Common in hospitals | Clinical scanning |
+| 3T | ~2-3 mm | Good | Most research centers | Standard cognitive fMRI |
+| 7T | <1 mm possible | Highest | Specialized centers | High-resolution mapping, layer studies |
+
+7T buys you SNR that you can spend on higher spatial resolution (Dumoulin et al., 2018). The catch is that the magnetic field distortions near air cavities get worse with field strength, and at 7T the RF field is also weak over the temporal lobes (Uğurbil, 2018). Inferior temporal cortex is already one of the regions that loses signal at 3T (Weiskopf et al., 2006), which is awkward if you study object recognition.
 
 The SNR advantage also depends on voxel size. Triantafyllou et al. (2005) found that at 3 × 3 × 3 mm, going from 3T to 7T gave only modest gains in time-series SNR, because physiological noise dominates at that resolution. The benefit of 7T showed up once voxels were small enough for thermal noise to matter again. So 7T mainly pays off when your question needs small voxels, such as cortical layers or columns (Dumoulin et al., 2018). For standard-resolution work, 3T is enough: THINGS-fMRI, for example, was recorded at 3T with 2 mm voxels (Hebart et al., 2023).
 
@@ -33,6 +43,8 @@ Multiband (or simultaneous multi-slice) acceleration changed this. The scanner e
 Faster sampling gives you more data points per unit time and denser sampling of physiological noise like cardiac and respiratory signals, which makes it easier to model and remove (Smith et al., 2013). The costs are noise amplification from separating the simultaneously acquired slices and signal leaking between them (Smith et al., 2013). These costs grow with the multiband factor. At 1.5 mm and 3T, Todd et al. (2016) found that multiband factors of 2, 4 and 6 all increased temporal SNR and t-scores, but false positives from slice leakage rose from 1 to 35 to 70 instances across ten participants (fewer with an improved reconstruction). They concluded that MB 2 is safe, while MB 3-4 can give more sensitivity but needs careful optimization. Risk et al. (2021) found that noise amplification was worst in deep brain regions and recommended MB 4 as a reasonable balance for resting-state studies.
 
 Faster isn't automatically better for task fMRI either. At 3 mm, Demetriou et al. (2018) compared multiband factors of 1-6 and found only modest and inconsistent benefits for standard GLM statistics. The exception was MVPA, where the multiband protocols did better. They recommend using multiband conservatively. The large vision datasets fit this picture: both NSD (7T, 1.8 mm) and THINGS-fMRI (3T, 2 mm) used a multiband factor of 3 with TRs of 1.6 s and 1.5 s (Allen et al., 2022; Hebart et al., 2023). A moderate factor of around 2-4 with a TR somewhere between 1 and 1.6 s is a reasonable place to start the discussion with your physicist.
+
+I learned this the hard way. In my first own study, which was about how the rate of stimulus presentation affects data quality, we used a TR of 0.5 s. It looked like a free upgrade at the time: more samples, better temporal resolution. In practice it cost us a lot of SNR, and it wasn't the only thing we changed from a standard protocol. We had also picked an unusual experimental design without being clear about what exactly we wanted to measure, and we hadn't decided in advance which data quality metrics we would use to evaluate the result. With several non-standard choices at once and no predefined way to judge them, it was very hard to tell afterwards what had helped and what had hurt. If you're starting out, use your center's well-tested protocol, and if you want to change something, change one thing and know how you'll measure whether it was worth it.
 
 ### Voxel size
 
@@ -295,6 +307,7 @@ With data collected, the next step is preprocessing: getting the raw data ready 
 
 ### Acquisition parameters
 
+- Glover, G.H. (2011). Overview of functional magnetic resonance imaging. Neurosurgery Clinics of North America, 22(2), 133-139. [PMC3073717](https://pmc.ncbi.nlm.nih.gov/articles/PMC3073717/)
 - Demetriou, L., Kowalczyk, O.S., Tyson, G., Bello, T., Newbould, R.D., & Wall, M.B. (2018). A comprehensive evaluation of increasing temporal resolution with multiband-accelerated protocols and effects on statistical outcome measures in fMRI. NeuroImage, 176, 404-416. [DOI: 10.1016/j.neuroimage.2018.05.011](https://doi.org/10.1016/j.neuroimage.2018.05.011)
 - Deichmann, R., Gottfried, J.A., Hutton, C., & Turner, R. (2003). Optimized EPI for fMRI studies of the orbitofrontal cortex. NeuroImage, 19(2), 430-441. [DOI: 10.1016/S1053-8119(03)00073-9](https://doi.org/10.1016/S1053-8119(03)00073-9)
 - Dumoulin, S.O., Fracasso, A., van der Zwaag, W., Siero, J.C.W., & Petridou, N. (2018). Ultra-high field MRI: Advancing systems neuroscience towards mesoscopic human brain function. NeuroImage, 168, 345-357. [DOI: 10.1016/j.neuroimage.2017.01.028](https://doi.org/10.1016/j.neuroimage.2017.01.028)
