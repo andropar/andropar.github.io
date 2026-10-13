@@ -428,6 +428,122 @@ def fig_it_rsa():
     save(fig, "things-it-rdm")
 
 
+ALL_LOC = LOC + [RAW / f"ses-localizer2/func/sub-01_ses-localizer2_task-6cat_run-0{r}" for r in range(1, 7)]
+T1W = RAW / "ses-localizer1/anat/sub-01_ses-localizer1_acq-prescannormalized_rec-pydeface_T1w.nii.gz"
+
+
+def _fsl(tool, *args):
+    exe = Path(os.environ.get("FSLDIR", "/usr/local/fsl")) / "bin" / tool
+    log.info("%s %s", tool, " ".join(map(str, args)))
+    subprocess.run([str(exe), *map(str, args)], check=True,
+                   env={**os.environ, "FSLOUTPUTTYPE": "NIFTI_GZ"})
+
+
+def preprocess_localizers():
+    """All 8 localizer runs: MCFLIRT per run, then one rigid transform per run into the
+    space of localizer-1 run-1's mean; finally register that mean EPI to the T1w."""
+    ref = PROC / "loc_ref_mean.nii.gz"
+    for i, src in enumerate(ALL_LOC):
+        tag = f"locall_{i:02d}"
+        if not (PROC / f"{tag}_mc.nii.gz").exists():
+            _fsl("mcflirt", "-in", f"{src}_bold.nii.gz", "-out", PROC / f"{tag}_mc", "-meanvol",
+                 "-plots")
+        if i == 0 and not ref.exists():
+            subprocess.run(["cp", PROC / f"{tag}_mc_mean_reg.nii.gz", ref], check=True)
+        out = PROC / f"{tag}_ref.nii.gz"
+        if not out.exists():
+            mat = PROC / f"{tag}_to_ref.mat"
+            _fsl("flirt", "-in", PROC / f"{tag}_mc_mean_reg.nii.gz", "-ref", ref, "-dof", "6",
+                 "-omat", mat)
+            _fsl("applyxfm4D", PROC / f"{tag}_mc.nii.gz", ref, out, mat, "-singlematrix")
+    if not (PROC / "epi2t1.mat").exists():
+        # skull-strip with the published brain mask (same world space as the raw T1w)
+        from nilearn.image import resample_to_img
+
+        t1 = nib.load(T1W)
+        bm = resample_to_img(nib.load(DER / "brainmasks/brainmasks/sub-01_space-T1w_brainmask.nii.gz"),
+                             t1, interpolation="nearest", force_resample=True, copy_header=True)
+        nib.Nifti1Image(t1.get_fdata() * (bm.get_fdata() > 0), t1.affine).to_filename(PROC / "t1_brain.nii.gz")
+        _fsl("flirt", "-in", ref, "-ref", PROC / "t1_brain.nii.gz", "-dof", "6", "-cost",
+             "normmi", "-omat", PROC / "epi2t1.mat", "-out", PROC / "ref_in_t1.nii.gz")
+
+
+def fig_localizer_t1():
+    """Part 7: localizer GLM on all 8 runs, shown on the T1w with published ROI outlines."""
+    from nilearn.glm.first_level import FirstLevelModel
+    from nilearn.image import resample_to_img
+    from nilearn.masking import compute_epi_mask
+    from scipy.ndimage import binary_dilation
+
+    runs = [str(PROC / f"locall_{i:02d}_ref.nii.gz") for i in range(len(ALL_LOC))]
+    events = [pd.read_csv(f"{p}_events.tsv", sep="\t") for p in ALL_LOC]
+    conf = [pd.DataFrame(np.loadtxt(PROC / f"locall_{i:02d}_mc.par"),
+                         columns=["rx", "ry", "rz", "tx", "ty", "tz"]) for i in range(len(ALL_LOC))]
+    ref = nib.load(PROC / "loc_ref_mean.nii.gz")
+    mask = compute_epi_mask(ref)
+    model = FirstLevelModel(t_r=TR, hrf_model="spm", drift_model="cosine", high_pass=0.01,
+                            noise_model="ar1", smoothing_fwhm=4, mask_img=mask, n_jobs=4)
+    model.fit(runs, events=events, confounds=conf)
+    maps = {}
+    for name, con in (("faces", "faces - objects"), ("scenes", "scenes - objects")):
+        z = model.compute_contrast(con, output_type="z_score")
+        f = PROC / f"z_{name}.nii.gz"
+        z.to_filename(f)
+        _fsl("flirt", "-in", f, "-ref", T1W, "-applyisoxfm", "1.6", "-init", PROC / "epi2t1.mat",
+             "-out", PROC / f"z_{name}_t1.nii.gz")
+        maps[name] = nib.load(PROC / f"z_{name}_t1.nii.gz")
+    grid = maps["faces"]
+    t1 = resample_to_img(nib.load(T1W), grid, force_resample=True, copy_header=True).get_fdata()
+    roi_dir = DER / "rois/rois/category_localizer/sub-01"
+    rois = {}
+    for name, files in (("faces", ["face_parcels/sub-01_lFFA.nii.gz", "face_parcels/sub-01_rFFA.nii.gz"]),
+                        ("scenes", ["scene_parcels/sub-01_lPPA.nii.gz", "scene_parcels/sub-01_rPPA.nii.gz"])):
+        m = np.zeros(grid.shape, bool)
+        for f in files:
+            m |= resample_to_img(nib.load(roi_dir / f), grid, interpolation="nearest",
+                                 force_resample=True, copy_header=True).get_fdata() > 0
+        rois[name] = m
+    thr = 3.1
+    for name in ("faces", "scenes"):
+        z = maps[name].get_fdata()
+        hit = (z[rois[name]] > thr).mean()
+        log.info("localizer (8 runs): %s>objects voxels z>%.1f (EPI space) %d; published ROI voxels "
+                 "with z>%.1f: %.0f%%", name, thr,
+                 (nib.load(PROC / f"z_{name}.nii.gz").get_fdata() > thr).sum(), thr, 100 * hit)
+    # axial slices through the published FFA and PPA
+    kf = int(np.argmax(rois["faces"].sum((0, 1))))
+    kp = int(np.argmax(rois["scenes"].sum((0, 1))))
+    fig, axs = plt.subplots(1, 2, figsize=(WIDTH, 5.4))
+    for ax, k, title in ((axs[0], kf, "through the published FFA"), (axs[1], kp, "through the published PPA")):
+        bg = t1[:, :, k].T[::-1]
+        rows, cols = np.nonzero(bg > np.percentile(bg[bg > 0], 5))
+        pad = 3
+        ax.set_xlim(cols.min() - pad, cols.max() + pad)
+        ax.set_ylim(rows.max() + pad, rows.min() - pad)
+        ax.imshow(bg, cmap=GRAYS, interpolation="bilinear")
+        for name, c in (("faces", ORANGE), ("scenes", BLUE)):
+            z = maps[name].get_fdata()[:, :, k].T[::-1]
+            ax.imshow(np.ma.masked_less(z, thr), cmap=plt.matplotlib.colors.ListedColormap([c]),
+                      alpha=0.75, interpolation="nearest")
+            r = rois[name][:, :, k].T[::-1]
+            if r.any():
+                ax.contour(r.astype(float), levels=[0.5], colors=[INK if name == "faces" else "#0b1d3a"],
+                           linewidths=1.0)
+                ax.contour(binary_dilation(r).astype(float), levels=[0.5], colors=[PAPER],
+                           linewidths=0.6)
+        ax.set_title(title, loc="center", color=MUTED, fontsize=9.5)
+        ax.set_xticks([])
+        ax.set_yticks([])
+        for sp in ax.spines.values():
+            sp.set_visible(False)
+    fig.text(0.02, 0.985, "faces > objects", color=ORANGE, fontsize=11, weight="medium", va="top")
+    fig.text(0.2, 0.985, "scenes > objects", color=BLUE, fontsize=11, weight="medium", va="top")
+    fig.text(0.98, 0.985, "z > 3.1 uncorrected · outlines: published ROIs", color=MUTED,
+             fontsize=9, va="top", ha="right")
+    fig.tight_layout(rect=(0, 0, 1, 0.93))
+    save(fig, "things-localizer")
+
+
 STEPS = {
     "preprocess": preprocess,
     "volume": fig_volume_timeseries,
@@ -435,7 +551,9 @@ STEPS = {
     "motion": fig_motion,
     "qc": fig_fd_dvars_carpet,
     "noiseceiling": fig_noise_ceiling,
-    "localizer": fig_localizer,
+    "localizer_old": fig_localizer,
+    "prep_localizers": preprocess_localizers,
+    "localizer": fig_localizer_t1,
     "decoding": fig_it_decoding,
     "rsa": fig_it_rsa,
 }

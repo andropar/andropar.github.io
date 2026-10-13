@@ -167,16 +167,19 @@ You fit a regular GLM to the localizer runs and compute contrasts like these (th
 - objects > scrambled objects: the lateral occipital complex, LOC (Malach et al., 1995)
 
 ```python
+from glob import glob
+
 import numpy as np
 import pandas as pd
 from nilearn.glm.first_level import FirstLevelModel
 
-# Running example: the two localizer runs of session 1, motion-corrected with MCFLIRT
-runs = ['loc_run-01_mc.nii.gz', 'loc_run-02_mc.nii.gz']
-events = [pd.read_csv(f'sub-01_ses-localizer1_task-6cat_run-0{r}_events.tsv', sep='\t')
-          for r in (1, 2)]
+# Running example: all 8 localizer runs (2 in session 1, 6 in session 2), each
+# motion-corrected with MCFLIRT and then aligned to one reference volume
+event_files = sorted(glob('sub-01_ses-localizer*_task-6cat_run-*_events.tsv'))
+runs = [f'loc_{i:02d}_ref.nii.gz' for i in range(len(event_files))]
+events = [pd.read_csv(f, sep='\t') for f in event_files]
 # The six MCFLIRT motion parameters of each run as confounds
-confounds = [pd.DataFrame(np.loadtxt(f'loc_run-0{r}_mc.par')) for r in (1, 2)]
+confounds = [pd.DataFrame(np.loadtxt(f'loc_{i:02d}_mc.par')) for i in range(len(event_files))]
 
 loc_model = FirstLevelModel(t_r=1.5, hrf_model='spm', drift_model='cosine',
                             high_pass=0.01, smoothing_fwhm=4, mask_img=brain_mask)
@@ -202,11 +205,13 @@ roi_mask = np.zeros(z.shape, dtype=bool)
 roi_mask.flat[top_idx] = True
 ```
 
-In the running example, this gives 319 voxels with z > 3.1 (p < 0.001, uncorrected) for faces > objects and 2,195 for scenes > objects. The face-selective voxels form small clusters in ventral and lateral temporal cortex, while the scene map is much larger and extends over posterior occipital cortex, which is a good illustration of why picking "the PPA" from a thresholded map needs a principled rule:
+In the running example, this gives 4,323 voxels with z > 3.1 (p < 0.001, uncorrected) for faces > objects and 4,362 for scenes > objects. To check whether they're in the right place, I registered the mean functional image to the participant's T1-weighted scan with FSL's FLIRT and drew the ROIs that the THINGS-data authors defined for this participant on top:
 
-<img src="/blog/fmri-diagrams/things-localizer.svg" alt="Two axial slices of a mean EPI with real localizer results: small orange face-selective clusters in ventral temporal cortex on the left slice, and large blue scene-selective clusters in posterior occipital cortex on the right slice" />
+<img src="/blog/fmri-diagrams/things-localizer.svg" alt="Two axial slices of the participant's T1-weighted scan with real localizer results: bilateral orange face-selective clusters on the fusiform gyri inside the outlines of the published FFA, and bilateral blue scene-selective clusters inside the outlines of the published PPA" />
 
-*Real localizer results for THINGS-fMRI participant 1 (two runs, native EPI space, 4 mm smoothing, z > 3.1 uncorrected, for display only). Left: the slice with the most face-selective voxels. Right: the slice with the most scene-selective voxels. Face-selective FFA typically sits on the lateral fusiform gyrus and scene-selective PPA medial to it near the collateral sulcus (Grill-Spector & Weiner, 2014).*
+*Real localizer results for THINGS-fMRI participant 1: all 8 localizer runs, 4 mm smoothing, z > 3.1 uncorrected for display, on the participant's T1w scan. Black outlines are the FFA and PPA published by the THINGS-data authors. Face-selective FFA typically sits on the lateral fusiform gyrus and scene-selective PPA medial to it near the collateral sulcus (Grill-Spector & Weiner, 2014).*
+
+The match is good: 39% of the voxels in the published FFA and 70% of those in the published PPA pass the threshold in my analysis, and the blobs sit where the outlines are. An earlier version of this figure used only the 2 localizer runs from the first session and found just 319 face-selective voxels, scattered and hard to interpret. Localizer contrasts need enough data, which is one reason the THINGS-data authors collected a second localizer session.
 
 THINGS-data also publishes the localizer-defined ROIs for each participant, including FFA, OFA, STS, PPA, RSC, TOS, EBA and LOC ([figshare](https://doi.org/10.25452/figshare.plus.20492769.v1); Hebart et al., 2023), so you don't have to define them yourself to work with the dataset.
 

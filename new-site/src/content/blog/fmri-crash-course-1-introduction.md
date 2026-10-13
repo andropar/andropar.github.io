@@ -30,7 +30,7 @@ In this series, we'll use Python, an easy-to-learn, general-purpose programming 
 
 To keep things concrete, the series follows one real dataset through the whole pipeline: participant 1 of THINGS-fMRI (Hebart et al., 2023). The raw data is openly available in BIDS format on OpenNeuro (dataset [ds004192](https://openneuro.org/datasets/ds004192)), and the THINGS-data authors also share derivatives on figshare. The real-data figures and numbers in Parts 3 to 8 come from these files:
 
-- one run of the main experiment (`ses-things01`, run 1) and the two category localizer runs from `ses-localizer1`, all from OpenNeuro
+- one run of the main experiment (`ses-things01`, run 1), all 8 category localizer runs (`ses-localizer1` and `ses-localizer2`) and the T1-weighted anatomical scan, all from OpenNeuro
 - the published [regions of interest](https://doi.org/10.25452/figshare.plus.20492769.v1), [noise ceilings](https://doi.org/10.25452/figshare.plus.20492775.v1), [brain masks](https://doi.org/10.25452/figshare.plus.20492757.v1) and [single-trial responses to the test images in IT](https://doi.org/10.25452/figshare.plus.23284622.v1)
 
 The OpenNeuro files can be downloaded directly from its public S3 bucket, for example:
