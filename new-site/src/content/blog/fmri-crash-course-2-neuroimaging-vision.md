@@ -8,143 +8,127 @@ tags: ["fMRI", "neuroscience", "methods", "vision"]
 
 *This is Part 2 of an [8-part crash course on fMRI for vision research](/blog/fmri-crash-course-1-introduction).*
 
-You can learn a lot about the visual system by showing people images and asking them questions. Reaction times, accuracy, what they see versus what they miss. Behavioral experiments have been the bread and butter of vision science for over a century. But here's the thing: they can only tell you *what* the system does, not *how* it does it.
+You can learn a lot about the visual system by showing people images and asking them questions. Reaction times, accuracy, what they see and what they miss: behavioral experiments have been the bread and butter of vision science for over a century. But on their own, they mostly tell you *what* the system does, and much less about *how* it does it.
 
-I think of it like studying a car by only looking at the speedometer. You can figure out acceleration, top speed, how quickly it brakes. Useful information. But you'll never understand how the engine works, how the transmission shifts, or why it makes that weird noise when you turn left.
-
-That's where neuroimaging comes in.
+I like to think of it as studying a car by only looking at the speedometer. You can work out acceleration, top speed and braking distance, which is useful. You won't learn much about the engine or the gearbox, though, or why it makes that weird noise when you turn left. Neuroimaging is one way of opening the hood.
 
 ## Why behavioral experiments aren't enough
 
-Let me give you a concrete example. In the 1980s, researchers discovered that people are remarkably fast at detecting animals in natural scenes. Flash an image for just 20 milliseconds and people can reliably say whether there's an animal in it. Behavioral experiments told us this was possible. They told us it was fast - faster than we'd expect if the brain had to carefully analyze every part of the image.
+A concrete example. In 1996, Simon Thorpe and colleagues showed that people are remarkably fast at detecting animals in natural scenes (Thorpe, Fize & Marlot, 1996). Images were flashed for only 20 milliseconds, and participants could still reliably say whether there was an animal in them. The behavioral data showed that this was possible and that it was fast, faster than you'd expect if the brain had to carefully analyze every part of the image. (In the same study, EEG recordings already showed a difference between animal and non-animal trials about 150 ms after image onset, which is a nice example of behavior and imaging working together.)
 
-But they couldn't tell us *how*. What parts of the brain are involved? What computations happen first? Is there a dedicated "animal detector" somewhere, or does it emerge from more general-purpose processing?
+What behavior alone can't tell you is which parts of the brain are involved, what gets computed first, or whether there is a dedicated "animal detector" somewhere versus something that falls out of more general-purpose processing.
 
-> Behavioral experiments reveal the *what*. Neuroimaging reveals the *where* and *when*. Combining both gets us closer to the *how*.
-
-Here's another limitation: behavioral responses are the end result of a long chain of processing. By the time someone presses a button to say "yes, I saw a face," information has traveled through dozens of brain regions, been transformed multiple ways, and finally been converted into a motor command. The behavior you measure is like reading the last page of a book - you know how it ends, but you've missed the entire story.
-
-Neuroimaging lets us read the middle pages.
+There's a second limitation. A behavioral response is the end result of a long chain of processing. By the time someone presses a button to say "yes, I saw a face", the information has passed through many brain regions, been transformed several times, and finally been turned into a motor command. Measuring only the button press is a bit like reading the last page of a book: you know how it ends, but you've missed everything in between. Neuroimaging gives us (blurry) access to the middle pages.
 
 ## The visual system: a hierarchy of increasingly complex representations
 
-Before we talk about imaging techniques, you need to understand what we're trying to image. The visual system isn't a single thing - it's a cascade of brain regions, each doing something different.
+Before talking about imaging techniques, it helps to know what we're trying to image. The visual system is a cascade of brain regions that each do something a bit different.
 
 <img src="/blog/fmri-diagrams/visual-hierarchy.svg" alt="Visual processing hierarchy from Retina to IT cortex" />
 
-Light hits your retina and gets converted to neural signals. Those signals travel through the optic nerve to the **lateral geniculate nucleus (LGN)** in the thalamus - essentially a relay station. From there, information flows to the primary visual cortex, called **V1**, located at the very back of your brain.
+Light hits the retina and gets converted into neural signals. These travel through the optic nerve to the **lateral geniculate nucleus (LGN)** in the thalamus, and from there to the primary visual cortex, **V1**, at the very back of the brain.
 
-V1 is where things get interesting. Neurons here respond to simple features: edges, orientations, basic shapes. A famous set of experiments by Hubel and Wiesel in the 1960s (which won them a Nobel Prize) showed that individual V1 neurons are tuned to specific orientations - one neuron might fire strongly for vertical lines but not at all for horizontal ones.
+Neurons in V1 respond to simple features like edges at particular orientations. In a famous series of experiments in the late 1950s and 1960s, Hubel and Wiesel showed that individual neurons in cat (and later monkey) visual cortex are tuned to specific orientations: one neuron might fire strongly for a vertical bar and barely at all for a horizontal one. This work later earned them a Nobel Prize.
 
-From V1, visual information splits into two main pathways:
+From V1, visual information roughly splits into two pathways.
 
-**The ventral stream** (the "what" pathway) flows from V1 through areas V2 and V4 into the inferotemporal cortex (IT). This pathway is crucial for object recognition. As you move along it, neurons respond to increasingly complex features:
-- **V2**: Still relatively simple features, but starting to combine information from V1
-- **V4**: Color processing, moderate shape complexity, some texture selectivity
-- **IT (inferotemporal cortex)**: Complex object representations, face-selective regions, category-level coding
+The **ventral stream** (the "what" pathway) runs from V1 through V2 and V4 into the inferotemporal cortex (IT) and is central to object recognition. Along the way, neurons respond to increasingly complex features. V2 still codes relatively simple features but starts combining information from V1. V4 is involved in color, intermediate shape and texture. IT contains complex object representations, including face-selective regions and category-level coding.
 
-**The dorsal stream** (the "where" pathway) goes from V1 through V2 into the parietal cortex. This pathway handles spatial information - where things are, how they're moving, and how you might interact with them. It's essential for visually guided action.
+The **dorsal stream** (the "where" or "how" pathway) runs from V1 and V2 towards the parietal cortex. It handles spatial information: where things are, how they move, and how you might act on them. A well-known stop along the way is the motion area MT (also called V5; its human counterpart is usually labeled hMT+), where most neurons are tuned to the direction and speed of motion.
 
 <img src="/blog/fmri-diagrams/visual-streams.svg" alt="Ventral and dorsal visual processing streams" />
 
-This hierarchical organization is one of the most robust findings in visual neuroscience. We've confirmed it through lesion studies, single-unit recordings in animals, and extensive neuroimaging in humans. It's also become a blueprint for deep neural networks - more on that connection in later posts.
+This hierarchical organization is supported by lesion studies, single-unit recordings in animals and a lot of human neuroimaging, and it loosely inspired deep neural networks (more on that later). Still, the hierarchy is not a simple feedforward pipeline. There are massive feedback and lateral connections and a lot of recurrent processing. "Simple to complex" is a useful first approximation, and the real thing is messier than any diagram.
 
-But here's what's important to understand: this hierarchy isn't a simple feedforward pipeline. There's massive feedback, lateral connections, and recurrent processing. The "simple to complex" story is useful, but it's also an oversimplification. The brain is messier than any diagram can capture.
+### Maps and modules
 
-## Neuroimaging modalities: your toolkit for studying the brain
+Two more organizing principles will come up again and again in this series.
 
-So how do we actually study these brain regions in living, behaving humans? We have several tools, each with different strengths and weaknesses. Choosing the right one depends entirely on what question you're asking.
+First, the early visual areas are **retinotopic**: neighbouring points in the visual field are represented by neighbouring points on the cortex, so V1, V2 and V3 each contain a map of the visual field. The boundaries between these areas can't be seen in an anatomical scan, but they show up as reversals in these maps. That's why people run a retinotopic mapping experiment (for example with population receptive field mapping; Dumoulin & Wandell, 2008) to delineate V1, V2 and V3 in each participant.
+
+Second, further along the ventral stream there are regions that respond much more strongly to some categories than to others. The best known are the fusiform face area (FFA; Kanwisher, McDermott & Chun, 1997), the parahippocampal place area (PPA), which prefers scenes and places (Epstein & Kanwisher, 1998), and the lateral occipital complex (LOC), which responds more to intact objects than to scrambled versions of them (Malach et al., 1995). These regions are usually identified per participant with a **functional localizer**, a short experiment contrasting, say, faces against objects.
+
+Both retinotopic maps and localizer-defined regions are what most fMRI vision studies use as their regions of interest. Later parts of the series show how to actually define them.
+
+## Neuroimaging modalities
+
+So how do we study these regions in living, behaving humans? There are several tools, each with different strengths and weaknesses, and which one is right depends on the question you're asking.
 
 | Modality | Spatial Resolution | Temporal Resolution | Invasiveness | Cost | Best For |
 |----------|-------------------|---------------------|--------------|------|----------|
-| **EEG** | ~10mm | ~1ms | Non-invasive | Low | Timing of neural processes |
-| **MEG** | ~5mm | ~1ms | Non-invasive | High | Timing with better source localization |
+| **EEG** | ~cm scale, source localization ambiguous | ~1ms | Non-invasive | Low | Timing of neural processes |
+| **MEG** | ~5-10mm, better localization than EEG | ~1ms | Non-invasive | High | Timing with better source localization |
 | **fMRI** | ~1-3mm | ~1-2s | Non-invasive | High | Where processing happens |
 | **Invasive recordings** | Single neurons | <1ms | Very invasive | Very high | Precise neural coding |
 
 <img src="/blog/fmri-diagrams/spatial-temporal-tradeoff.svg" alt="Spatial vs temporal resolution trade-off between EEG, MEG, fMRI, and invasive recordings" />
 
-Let me break these down.
-
 ### EEG (Electroencephalography)
 
-EEG measures electrical activity through electrodes placed on the scalp. It's been around since the 1920s and remains one of the most widely used techniques in cognitive neuroscience. The big advantage? **Temporal resolution**. You can track neural activity with millisecond precision, which lets you see the temporal dynamics of visual processing.
+EEG measures electrical activity with electrodes placed on the scalp. It has been around since the 1920s and is still one of the most widely used techniques in cognitive neuroscience. Its main advantage is temporal resolution: you can follow neural activity with millisecond precision.
 
-The downside is spatial resolution. Those electrical signals have to pass through the skull and scalp before reaching your electrodes, and they get smeared together in the process. Figuring out *where* the signals come from (called "source localization") is mathematically tricky and inherently ambiguous. You're essentially trying to figure out what's happening inside a room by listening at the door.
+The downside is spatial resolution. The electrical signals have to pass through the skull and scalp before reaching the electrodes, and they get smeared together along the way. Working out where a signal came from ("source localization") is mathematically ill-posed, a bit like trying to figure out what's going on inside a room by listening at the door.
 
-For vision research, EEG is great for questions about timing. When does the brain first distinguish faces from objects? How quickly does attention modulate visual processing? These are EEG questions.
+For vision, EEG is great for questions about timing. When does the brain first distinguish faces from objects? How quickly does attention modulate visual responses?
 
 ### MEG (Magnetoencephalography)
 
-MEG measures the magnetic fields generated by neural activity. Since magnetic fields pass through the skull without distortion, MEG has better spatial resolution than EEG while maintaining the same excellent temporal resolution.
+MEG measures the magnetic fields generated by neural activity. Magnetic fields are much less distorted by the skull and scalp than electrical potentials, so MEG localizes sources better than EEG while keeping the same millisecond temporal resolution.
 
-The catch? The magnetic fields are incredibly weak - about a billion times weaker than Earth's magnetic field. You need superconducting sensors cooled to near absolute zero, housed in a magnetically shielded room. MEG setups cost millions of dollars. Most researchers don't have access to one.
+The catch is that these fields are incredibly weak, about a billion times weaker than the Earth's magnetic field. You need superconducting sensors cooled with liquid helium, inside a magnetically shielded room. MEG systems cost millions, and many researchers don't have access to one.
 
 ### fMRI (Functional Magnetic Resonance Imaging)
 
-Here's where this crash course is heading. fMRI measures changes in blood oxygenation, which tracks (indirectly) with neural activity. I'll explain exactly how this works in the next post, but the key points for now:
+This is where the crash course is heading. fMRI measures changes in blood oxygenation, which track neural activity indirectly. I'll explain how that works in the next post, but for now the main points are these.
 
-**Spatial resolution is excellent** - we can reliably localize activity to specific brain regions, even specific subregions a few millimeters across. With high-field scanners (7 Tesla and above), you can image individual cortical columns.
+Spatial resolution is good. We can localize activity to specific brain regions and even subregions a few millimeters across. With high-field scanners (7 Tesla and above), specialized studies have resolved columnar structure such as ocular dominance columns in V1, though that's far from routine.
 
-**Temporal resolution is poor** - the blood oxygenation response is slow, peaking about 5-6 seconds after neural activity. We're measuring a sluggish metabolic proxy, not the electrical activity itself.
+Temporal resolution is poor. The blood oxygenation response is slow and peaks about 5-6 seconds after the neural activity that caused it. We're measuring a sluggish metabolic proxy, not the electrical activity itself.
 
-fMRI is non-invasive and relatively safe (no radiation, no injections for basic studies). It's become the workhorse of human cognitive neuroscience because it gives us a detailed map of where things happen in the brain.
-
-> fMRI trades temporal precision for spatial precision. It's the right tool when your question is "where in the brain" rather than "when in time."
+fMRI is non-invasive and relatively safe (no radiation, no injections for standard studies), and it has become the workhorse of human cognitive neuroscience because it gives a detailed map of where things happen. If your question is "where in the brain" rather than "when", it's usually the right tool.
 
 ### Invasive recordings
 
-The gold standard for understanding neural coding is sticking electrodes directly into the brain. Single-unit and multi-unit recordings can measure the activity of individual neurons with sub-millisecond precision. This is how Hubel and Wiesel discovered orientation selectivity in V1. It's how we know about face cells in IT cortex. Much of our foundational knowledge about visual processing comes from invasive recordings in monkeys.
+The most direct way to study neural coding is to put electrodes into the brain. Single-unit and multi-unit recordings measure the activity of individual neurons with sub-millisecond precision. This is how Hubel and Wiesel found orientation selectivity, and how we know about face cells in IT. Much of our foundational knowledge about visual processing comes from invasive recordings in monkeys.
 
-Obviously, you can't do this routinely in healthy humans. Invasive recordings in humans are limited to clinical contexts - typically epilepsy patients who have electrodes implanted for surgical planning. These studies have been invaluable, but they're rare and the electrode locations are determined by clinical needs, not research questions.
+You obviously can't do this routinely in healthy humans. Human invasive recordings are limited to clinical settings, typically epilepsy patients who have electrodes implanted for surgical planning. These studies are very valuable, but they're rare and the electrode locations are chosen for clinical reasons, not research ones.
 
-For vision research specifically, the combination of invasive recordings in animal models plus fMRI in humans has been incredibly powerful. We can establish detailed mechanisms in animals and then verify that similar principles hold in human brains.
+For vision research, combining invasive recordings in animals with fMRI in humans has worked well: mechanisms can be worked out in detail in animals, and fMRI can then test whether similar principles hold in the human brain.
 
-## What questions is fMRI particularly good at answering?
+## What is fMRI good at?
 
-Given its strengths (spatial resolution) and limitations (temporal resolution, indirect measurement), what should you use fMRI for?
+Given its strengths (spatial resolution) and limitations (temporal resolution, indirect measurement), these are the kinds of questions fMRI is well suited for:
 
-**Localization questions**: Where in the brain does face processing happen? Which regions respond more to tools than to animals? fMRI excels at these.
+- Localization: where in the brain does face processing happen? Which regions respond more to tools than to animals?
+- Representation: what information is contained in a region's activity patterns? This is where MVPA (multivariate pattern analysis) and RSA (representational similarity analysis) come in, which we'll cover later in the course.
+- Connectivity: how do different regions interact, and which ones share information during a task?
+- Individual differences: why are some people better at recognizing faces than others? How does expertise change neural representations?
+- Comparing models to brains: does a deep neural network trained on ImageNet represent images similarly to human V4? fMRI lets us test this kind of hypothesis directly.
 
-**Representational questions**: What information is contained in a brain region's activity patterns? This is where techniques like MVPA (multivariate pattern analysis) and RSA (representational similarity analysis) come in - we'll cover these later in the course.
+## Large-scale datasets: NSD and THINGS
 
-**Connectivity questions**: How do different brain regions interact? Which regions share information during a task?
+I want to end with something that has changed how a lot of us work: large, densely sampled fMRI datasets.
 
-**Individual differences**: Why do some people have better face recognition than others? How do expertise and training change neural representations?
+A traditional fMRI study might scan 20-30 participants, each viewing a few hundred images or fewer. That's enough for many questions, but it limits how much you can learn about how the brain represents the huge variety of things we see.
 
-**Comparing models to brains**: This is where modern computational neuroscience gets exciting. We can ask: does a deep neural network trained on ImageNet represent images similarly to human V4? fMRI lets us test these hypotheses directly.
+The **Natural Scenes Dataset (NSD)** went the other way: 8 participants, each scanned in roughly 30-40 one-hour sessions at 7 Tesla, each viewing 9,000-10,000 unique natural images from the COCO dataset (Allen et al., 2022). Each image was shown up to three times, so you can estimate how reliable the responses are. The data is publicly available and widely used.
 
-## The dataset revolution: NSD and THINGS
+With this much data per person, models that predict brain activity from images finally have enough data to generalize.
 
-I want to end with something that's transforming the field right now: large-scale, densely-sampled fMRI datasets.
+The **THINGS** initiative takes a related approach centered on objects (Hebart et al., 2019, 2023). The THINGS database contains 1,854 object concepts with more than 26,000 naturalistic images. In THINGS-fMRI, 3 participants viewed 8,740 images of 720 of these concepts (12 images per concept); THINGS-MEG used the same 720 concepts. The full set of 1,854 concepts is covered by the behavioral part of THINGS-data, millions of odd-one-out similarity judgments collected online.
 
-Traditional fMRI studies might scan 20-30 participants, each viewing a few hundred images. That's enough for many questions, but it limits what you can learn about how the brain represents the full diversity of visual experience.
+Datasets like these (and others, such as BOLD5000; Chang et al., 2019) mark a shift towards "condition-rich" designs: instead of a handful of tightly controlled stimuli, participants see thousands of naturalistic images. If you're getting into vision neuroscience now, there is more high-quality public data available than ever before, which also means you can do a lot of research without collecting your own.
 
-Enter the **Natural Scenes Dataset (NSD)**. This is a massive undertaking: 8 participants, each scanned for 30-40 hours, viewing 10,000 unique natural images. The same images were shown multiple times, so you can assess reliability. The data is publicly available. It's become the ImageNet of vision neuroscience.
+## Summary
 
-What can you do with NSD that you couldn't do before? Train machine learning models to predict brain activity from images - and actually have enough data for the models to generalize. Analyze fine-grained representational structure. Compare different brain regions' tuning properties across thousands of image dimensions.
-
-Similarly, the **THINGS** initiative provides a carefully curated set of 1,854 object images spanning diverse categories, with extensive behavioral and neural data. The THINGS-fMRI dataset scanned participants viewing these objects, creating a standardized benchmark for studying object representations.
-
-> We're in a new era of "condition-rich" neuroimaging. Instead of showing participants a handful of carefully controlled stimuli, we're throwing thousands of naturalistic images at them and letting the data speak.
-
-These datasets are enabling research that simply wasn't possible five years ago. If you're getting into vision neuroscience now, you're entering at an exciting time - there's more high-quality data publicly available than ever before.
-
-## Key Takeaways
-
-- **Behavioral experiments tell us what the visual system does, but not how.** Neuroimaging lets us open the black box and see the mechanisms.
-
-- **The visual system is hierarchically organized.** Information flows from V1 through increasingly complex representations in the ventral stream (objects, categories) and dorsal stream (space, action).
-
-- **Different imaging modalities have different strengths.** EEG/MEG for timing, fMRI for spatial localization, invasive recordings for single-neuron precision. Choose based on your question.
-
-- **fMRI is ideal for "where" questions.** Its excellent spatial resolution and non-invasive nature make it the workhorse of human vision neuroscience, despite its poor temporal resolution.
-
-- **Large-scale datasets are changing the game.** NSD, THINGS, and similar initiatives provide the data needed for machine learning approaches and detailed representational analyses.
+- Behavioral experiments tell us what the visual system does; neuroimaging helps us get at where and how it does it.
+- Visual processing is roughly hierarchical, with a ventral "what" stream towards IT and a dorsal "where/how" stream through MT towards parietal cortex. Early areas are retinotopic maps, and higher areas include category-selective regions like FFA, PPA and LOC.
+- EEG and MEG are best for timing, fMRI for spatial localization, invasive recordings for single-neuron precision.
+- Large public datasets like NSD and THINGS-data make data-hungry, model-based analyses feasible.
 
 ---
 
-In the next post, we'll dive into the specifics of how fMRI actually works - how magnets let us measure brain activity, and what that "brain activity" really means.
+In the next post, we'll look at how fMRI actually works: how magnets let us measure brain activity, and what that "brain activity" really is.
 
 **Next:** [Part 3: Basics of (functional) MRI](/blog/fmri-crash-course-3-basics-mri)
 
@@ -154,6 +138,8 @@ In the next post, we'll dive into the specifics of how fMRI actually works - how
 
 ### Visual System Hierarchy
 
+- Thorpe, S., Fize, D., & Marlot, C. (1996). Speed of processing in the human visual system. *Nature*, 381, 520-522. [DOI: 10.1038/381520a0](https://doi.org/10.1038/381520a0)
+
 - Hubel, D. H., & Wiesel, T. N. (1962). Receptive fields, binocular interaction and functional architecture in the cat's visual cortex. *The Journal of Physiology*, 160(1), 106-154. [DOI: 10.1113/jphysiol.1962.sp006837](https://doi.org/10.1113/jphysiol.1962.sp006837) | [PMC Free Article](https://pmc.ncbi.nlm.nih.gov/articles/PMC1359523/)
 
 - Felleman, D. J., & Van Essen, D. C. (1991). Distributed hierarchical processing in the primate cerebral cortex. *Cerebral Cortex*, 1(1), 1-47. [DOI: 10.1093/cercor/1.1.1](https://doi.org/10.1093/cercor/1.1.1) | [Oxford Academic](https://academic.oup.com/cercor/article/1/1/1/408896)
@@ -161,6 +147,16 @@ In the next post, we'll dive into the specifics of how fMRI actually works - how
 - Mishkin, M., Ungerleider, L. G., & Macko, K. A. (1983). Object vision and spatial vision: two cortical pathways. *Trends in Neurosciences*, 6, 414-417. [DOI: 10.1016/0166-2236(83)90190-X](https://doi.org/10.1016/0166-2236(83)90190-X)
 
 - Goodale, M. A., & Milner, A. D. (1992). Separate visual pathways for perception and action. *Trends in Neurosciences*, 15(1), 20-25. [DOI: 10.1016/0166-2236(92)90344-8](https://doi.org/10.1016/0166-2236(92)90344-8) | [PDF](https://cnbc.cmu.edu/braingroup/papers/goodale_milner_1992.pdf)
+
+### Retinotopy and Category-Selective Regions
+
+- Kanwisher, N., McDermott, J., & Chun, M. M. (1997). The fusiform face area: a module in human extrastriate cortex specialized for face perception. *Journal of Neuroscience*, 17(11), 4302-4311.
+
+- Epstein, R., & Kanwisher, N. (1998). A cortical representation of the local visual environment. *Nature*, 392, 598-601.
+
+- Malach, R., Reppas, J. B., Benson, R. R., Kwong, K. K., Jiang, H., Kennedy, W. A., ... & Tootell, R. B. H. (1995). Object-related activity revealed by functional magnetic resonance imaging in human occipital cortex. *Proceedings of the National Academy of Sciences*, 92(18), 8135-8139.
+
+- Dumoulin, S. O., & Wandell, B. A. (2008). Population receptive field estimates in human visual cortex. *NeuroImage*, 39(2), 647-660.
 
 ### Neuroimaging Methods
 

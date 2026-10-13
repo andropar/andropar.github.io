@@ -8,142 +8,94 @@ tags: ["fMRI", "neuroscience", "methods", "vision", "experimental design"]
 
 *This is Part 4 of an [8-part crash course on fMRI for vision research](/blog/fmri-crash-course-1-introduction).*
 
-Now that we understand how fMRI measures brain activity - the BOLD signal, the sluggish hemodynamic response, the tradeoffs in spatial and temporal resolution - it's time to actually collect some data.
+In the last post we looked at how fMRI measures brain activity: the BOLD signal, the slow hemodynamic response, and the tradeoffs between spatial and temporal resolution. Now it's time to actually collect some data.
 
-You've got scanner time booked. Maybe it cost you thousands of dollars. Maybe you waited months. Either way, you don't want to screw this up.
+Scanner time is expensive and often hard to get, so you really don't want to waste it. Unfortunately, recording fMRI data involves dozens of parameters that interact in non-obvious ways, and the "right" settings depend on your research question. There is no universally optimal configuration, only tradeoffs you need to understand.
 
-The thing is, collecting fMRI data involves dozens of parameters that interact in non-obvious ways. And the "right" settings depend entirely on your research question. There's no universal optimal configuration - just tradeoffs you need to understand.
+In this post, I'll go through the most important scanning parameters, the main experimental design paradigms, what's specific to running a vision experiment in the scanner, and some practical tips I wish someone had told me before my first study.
 
-In this post, I'll walk through the key scanning parameters, the major experimental design paradigms, and some practical tips I wish someone had told me before my first study.
+## Scanning parameters
 
-## Scanning Parameters
+Let's start with the hardware and sequence settings. These get decided before you ever see a participant, usually together with the physicist or staff at your imaging center.
 
-Let's start with the hardware and sequence settings. These decisions get made before you even see a participant.
+### Field strength
 
-### Field Strength: The Magnet Wars
+I covered the differences between 1.5T, 3T and 7T in [Part 3](/blog/fmri-crash-course-3-basics-mri), so here's just the practical advice. For most vision studies, 3T is the default and probably what you'll use. 7T buys you higher resolution or SNR, but comes with more signal dropout and distortion near air-tissue boundaries (ventral temporal cortex is one of the problem areas, which is awkward if you study object recognition), and the scanners are rarer and harder to book. Unless your question really needs the resolution, for example cortical layers or columns, I'd go with 3T.
 
-MRI scanners come in different field strengths, measured in Tesla (T). The three you'll encounter most are 1.5T, 3T, and 7T.
+### Repetition time (TR) and multiband acceleration
 
-**1.5T** is the workhorse of clinical imaging. For research, it's mostly obsolete - the signal is just too weak for modern fMRI standards. You might use it if that's genuinely all you have access to, but you'll be fighting an uphill battle.
+The TR is how often you acquire a complete brain volume. Traditional fMRI used TRs of 2-3 seconds, which works for block designs but samples the hemodynamic response quite coarsely.
 
-**3T** is the current standard for fMRI research. It offers a good balance of signal strength, image quality, and practical considerations. Most published vision studies use 3T scanners. If you're starting out, this is probably what you'll use.
+Multiband (or simultaneous multi-slice) acceleration changed this. The scanner excites and acquires several slices at once and then separates them during reconstruction. This lets you cut the TR a lot - TRs of 500-800 ms are now common.
 
-**7T** is where things get interesting - and complicated. The higher field strength means stronger signal, which translates to either better spatial resolution or faster scanning. You can resolve cortical layers. You can see fine-grained patterns that disappear at 3T. But there are real downsides: increased susceptibility artifacts (especially in ventral temporal cortex, which is awkward if you study object recognition), more severe signal dropout near air-tissue boundaries, and the scanners are less common and more expensive to run.
+Faster TRs give you better temporal sampling for event-related designs, more data points per unit time, and they make it easier to model and remove physiological noise like cardiac and respiratory signals. The cost is lower SNR per volume (each volume has less time for the magnetization to recover) and potential artifacts if the acceleration is pushed too far. For most studies I'd use a multiband factor of around 4-6 and a TR of 800-1200 ms. Longer TRs are still fine for simple block designs, but I don't see much reason to go back to them.
 
-My honest take: unless you specifically need high resolution for your scientific question, 3T is probably the right choice. The 7T papers look impressive, but they come with headaches that aren't always worth it.
+### Voxel size
 
-### Repetition Time (TR) and Multiband Acceleration
-
-The TR is how often you acquire a complete brain volume. Traditional fMRI used TRs of 2-3 seconds. This was fine for block designs, but it meant you were severely undersampling the hemodynamic response.
-
-Then came **multiband (simultaneous multi-slice) acceleration**. The basic idea: excite and acquire multiple slices at once, then use clever math to separate them. This lets you cut TR dramatically - from 2 seconds down to 500-800ms is now common.
-
-Why does this matter? Faster TRs give you:
-- Better temporal resolution for event-related designs
-- More data points per unit time (more statistical power)
-- Better separation of overlapping responses
-- Improved physiological noise removal
-
-The tradeoff is slightly lower SNR per volume and increased reconstruction complexity. But for most modern studies, multiband with TR around 1 second is the sweet spot.
-
-A typical setup I'd recommend: multiband factor of 4-6, TR of 800-1200ms. This gives you good temporal sampling without sacrificing too much signal quality.
-
-### Voxel Size: Resolution vs. SNR vs. Coverage
-
-This one trips people up. The temptation is to go for the highest resolution possible. Don't.
-
-Voxel size involves a three-way tradeoff:
-
-**Smaller voxels** give you finer spatial detail - you can distinguish activity in adjacent regions. But smaller voxels mean less signal per voxel (SNR drops), and you need more slices to cover the same brain volume (longer TR or less coverage).
-
-**Larger voxels** mean better SNR and faster coverage, but you blur together neural populations that might have different response properties.
+The temptation is to go for the highest resolution possible. I'd resist it. Smaller voxels give you finer spatial detail, but each voxel contains less tissue and therefore less signal, and you need more slices to cover the same brain volume, which means a longer TR or less coverage. Larger voxels have better SNR and faster coverage, but they blur together neural populations that might respond differently.
 
 For typical vision research at 3T:
-- **3mm isotropic**: Good SNR, whole-brain coverage, sufficient for most ROI-based analyses
-- **2mm isotropic**: Better resolution for MVPA and retinotopic mapping, some SNR cost
-- **1.5mm or smaller**: High-resolution studies, usually requires 7T or accepting limited coverage
+- 3 mm isotropic: good SNR, whole-brain coverage, enough for most ROI-based analyses
+- 2 mm isotropic: better for MVPA and retinotopic mapping, at some SNR cost
+- 1.5 mm or smaller: high-resolution studies, usually needs 7T or limited coverage
 
-Here's my rule of thumb: if you're doing univariate analyses or standard ROI comparisons, 2.5-3mm is fine. If you're doing MVPA or need to resolve fine spatial patterns, push toward 2mm. If you're doing cortical layer studies, you need sub-millimeter - and probably 7T.
+My rule of thumb: for univariate analyses or standard ROI comparisons, 2.5-3 mm is fine. For MVPA or fine spatial patterns, push toward 2 mm. For cortical layer studies you need sub-millimeter voxels and almost certainly 7T.
 
-### TE, Flip Angle, and Slice Orientation
+### TE, flip angle, and slice orientation
 
-These parameters matter, but they're more "set it and forget it" compared to the ones above.
+These matter, but they're closer to "set it and forget it" than the parameters above, and your center's standard protocol will usually have reasonable values.
 
-**Echo Time (TE)** determines your BOLD contrast sensitivity. The optimal TE depends on field strength - roughly 30ms at 3T, 25ms at 7T. Too short and you lose BOLD sensitivity; too long and signal decay kills you. Most standard protocols have this dialed in.
+The echo time (TE) determines your sensitivity to the BOLD contrast. The optimum depends on field strength: roughly 30 ms at 3T and somewhat shorter, around 20-25 ms, at 7T. Too short and you lose BOLD sensitivity, too long and the signal has decayed too much.
 
-**Flip angle** affects the tradeoff between SNR and T1-weighting. For typical fMRI with TR around 1-2 seconds, flip angles of 60-90 degrees work well. Again, standard protocols usually handle this.
+The flip angle trades off signal against T1 saturation, and the optimum (the Ernst angle) depends on the TR. With the multiband TRs around 1 second that I recommended above, it's lower than people often expect, roughly 50-65 degrees at 3T. The 60-90 degree range you sometimes see quoted applies to longer TRs of 2 seconds or more.
 
-**Slice orientation** is more interesting for vision research. You want your slices oriented to minimize signal dropout in your regions of interest. For ventral visual cortex, tilting slices 30 degrees from the AC-PC line (toward coronal) can help reduce susceptibility artifacts. Some groups use carefully optimized slice prescriptions for their specific ROIs.
+Slice orientation is a bit more interesting for vision research. Signal dropout near the sinuses and ear canals can affect parts of ventral temporal cortex, and tilting the slice stack relative to the AC-PC line can reduce it in some regions. This is worth discussing with the physicist at your center, especially if your ROIs are in the inferior temporal lobe.
 
 <img src="/blog/fmri-diagrams/slice-orientations.svg" alt="MRI slice orientations: axial, coronal, and tilted" />
 
-## Experimental Design for fMRI
+## Experimental design for fMRI
 
-Now for the fun part. You've got your scanner settings sorted. How do you structure your experiment?
+With the scanner settings sorted, how do you structure your experiment?
 
-The hemodynamic response is sluggish - it takes 5-6 seconds to peak after neural activity starts, and another 10+ seconds to return to baseline. This fundamentally shapes everything about fMRI experimental design.
+The hemodynamic response peaks around 5-6 seconds after neural activity starts and takes well over 10 seconds to return to baseline. This shapes everything about fMRI experimental design.
 
-### Block Designs
+### Block designs
 
-The oldest and simplest approach. You present the same condition for an extended period (10-30 seconds), then switch to another condition, and repeat.
+The oldest and simplest approach. You present stimuli from the same condition for an extended period (10-30 seconds), switch to another condition, and repeat. The sustained activity lets the hemodynamic response build up, which gives you the most statistical power for detecting differences between conditions. Analysis is simple, since you're essentially comparing average activity between blocks, and it's forgiving about small timing errors.
 
-**Why blocks work well:**
-- Maximum statistical power for detecting differences between conditions
-- The sustained activity lets the hemodynamic response "build up"
-- Simple to analyze - you're essentially comparing average activity between blocks
-- Robust to timing uncertainties
+On the downside, you get no information about responses to individual trials, participants can predict what's coming (which can introduce expectation or attention confounds), and you can't study things that only exist as isolated events, like errors or surprises.
 
-**The downsides:**
-- No information about single-trial responses
-- Participants can predict what's coming (potential confounds from expectation)
-- Can't study things that require isolated events (like error trials, surprise, etc.)
-
-Blocks are your friend when you care about detection: "Is region X more active for faces than houses?" They're less useful when you care about the shape of responses or trial-by-trial variability.
+Blocks are great when you care about detection: is region X more active for faces than houses? That's also why functional localizers are almost always block designs. They're less useful when you care about the shape of the response or trial-by-trial variability.
 
 <img src="/blog/fmri-diagrams/block-design-bold.svg" alt="Block design showing alternating stimulus blocks and the predicted BOLD response after HRF convolution" />
 
-### Event-Related Designs
+### Slow event-related designs
 
-Present stimuli as discrete, brief events with substantial gaps between them (typically 10-20 seconds). This lets the hemodynamic response rise and fall for each trial independently.
+Here you present stimuli as brief, discrete events with long gaps between them (slow event-related designs, with ISIs of 12 seconds or more), so the hemodynamic response can rise and fall for each trial. You can estimate the response to individual trial types or even single trials, randomize trial order, and study transient events.
 
-**Why event-related designs work:**
-- You can estimate the response to individual trial types
-- You can analyze single trials
-- Randomized trial order eliminates expectation effects
-- Flexibility to study transient phenomena
+The price is efficiency. You spend most of the time waiting for the response to come back down, so you get far fewer trials per run and much lower power than with blocks. I'd only use a slow design when I really need clean estimates of the response shape on each trial.
 
-**The downsides:**
-- Much lower statistical power than blocks (less time "on condition")
-- Slower data collection - you spend most of your time waiting for the HRF to recover
-- You need many more trials to get reliable estimates
+### Rapid event-related designs with jittered ISIs
 
-I'd use event-related designs when I need to understand the shape of the response, analyze trial-by-trial variability, or my paradigm fundamentally requires isolated events.
+What if you present events quickly (every few seconds) but vary the time between them? With randomized inter-stimulus intervals, the overlapping hemodynamic responses can be separated statistically, because the jitter makes the regressors for different events less correlated. You get many more trials than in a slow design while still being able to estimate responses to individual events.
 
-### Rapid Event-Related Designs with Jittered ISIs
-
-Here's where things get clever. What if you present events rapidly (every 2-4 seconds) but vary the timing between events randomly?
-
-The magic is in the jitter. With randomized inter-stimulus intervals (ISIs), overlapping hemodynamic responses can be mathematically separated through deconvolution. You get the efficiency of rapid presentation with the estimation power of event-related designs.
-
-**Key principles:**
-- Jitter ISIs from a distribution (e.g., 2-8 seconds, exponentially distributed)
+A few principles:
+- Jitter ISIs from a distribution (e.g., 2-8 seconds, roughly exponentially distributed so that short ISIs are most common)
 - Randomize trial order
-- Include some longer "null" periods for baseline estimation
-- Use design optimization tools to find efficient sequences
+- Include some longer null periods for baseline estimation
+- Use design optimization tools to check that your sequence is efficient (Dale, 1999)
 
-This is the workhorse design for modern cognitive fMRI. It's more complex to analyze but gives you the best of both worlds.
+This is the standard design for most modern cognitive fMRI, including the large datasets discussed below. It takes a bit more care to analyze, which we'll get to in [Part 7](/blog/fmri-crash-course-7-analysis-glm).
 
 <img src="/blog/fmri-diagrams/jittered-design.svg" alt="Jittered event-related design showing rapidly presented events with variable ISIs and overlapping HRF responses" />
 
-### Mixed Designs
+### Mixed designs
 
-Sometimes you want to study both sustained and transient effects. Mixed designs combine blocks of trials with jittered events within blocks.
+Sometimes you want to study both sustained and transient effects. Mixed designs combine blocks with jittered events inside the blocks. For example, you could have blocks of face trials and blocks of house trials, with individual images presented as jittered events within each block. This lets you separately estimate the sustained "state" effect of the block and the transient responses to individual events (Petersen & Dubis, 2012).
 
-For example: blocks of face trials vs. house trials, but within each block, individual images are presented as jittered events. This lets you separately estimate the sustained "state" effect and the transient event-related responses.
+### Comparing design types
 
-### Comparing Design Types
-
-| Aspect | Block Design | Event-Related | Rapid Event-Related | Mixed |
+| Aspect | Block Design | Slow Event-Related | Rapid Event-Related | Mixed |
 |--------|-------------|---------------|---------------------|-------|
 | **Power for detection** | Excellent | Poor | Moderate | Good |
 | **HRF estimation** | Poor | Excellent | Good | Good |
@@ -155,56 +107,79 @@ For example: blocks of face trials vs. house trials, but within each block, indi
 
 <img src="/blog/fmri-diagrams/design-types.svg" alt="fMRI experimental design types: block, event-related, and rapid event-related" />
 
-## The Rise of Naturalistic Paradigms
+## Naturalistic paradigms
 
-For decades, fMRI experiments used tightly controlled stimuli: isolated images on gray backgrounds, carefully counterbalanced, stripped of context. It made the statistics clean. It also made the experiments artificial.
+For decades, fMRI experiments used tightly controlled stimuli: isolated images on gray backgrounds, carefully counterbalanced and stripped of context. That keeps the statistics clean, but it's also pretty artificial. Naturalistic paradigms like movies, stories or virtual reality have become more popular, with the idea that if we want to understand how the brain processes real-world experience, we should study something closer to it.
 
-The field is shifting. Naturalistic paradigms - movies, stories, podcasts, virtual reality - are becoming increasingly popular. The logic: if we want to understand how the brain processes real-world experience, maybe we should study real-world experience.
+Movies are the most common naturalistic stimulus in vision research. You show the same movie to multiple participants and look for brain regions that respond consistently across people, using inter-subject correlation (Hasson et al., 2004; Nastase et al., 2019). Movies drive large parts of the visual hierarchy at once, participants usually find them easier to sit through than a long task, and you can study temporal dynamics and narrative processing.
 
-Movies are the dominant naturalistic stimulus for vision research. You present the same movie to multiple participants, then look for brain regions that respond reliably across people (inter-subject correlation analysis). This reveals the "shared" neural response to naturalistic input.
+The problems are the flip side of the same coin. You can't counterbalance or randomize a movie, and confounds are everywhere: a scary scene has faces, motion, emotion and narrative tension all at once. You also need different analysis tools than the standard GLM approach. My take is that naturalistic and controlled experiments complement each other, and most questions benefit from having both.
 
-The advantages are compelling:
-- Ecological validity - this is closer to how we actually see
-- Rich, dynamic stimuli that engage the full visual hierarchy
-- No task demands (just watch), which can be easier for participants
-- Potential to study temporal dynamics and narrative processing
+## Design lessons from large datasets
 
-The challenges are real too:
-- You can't counterbalance or randomize a movie
-- Confounds are everywhere - a scary scene has faces, motion, emotion, and narrative tension all at once
-- Analysis requires different tools than traditional GLM approaches
+The two large datasets I keep mentioning, NSD and THINGS-data, follow a different design philosophy from the classic small experiment, and it's worth looking at what they did.
 
-I think naturalistic paradigms are the future, but they complement rather than replace controlled experiments. You need both.
+The Natural Scenes Dataset (Allen et al., 2022) scanned 8 participants for 30-40 sessions each at 7T, with 1.8 mm isotropic voxels and a TR of 1.6 s. Images of natural scenes were shown for 3 seconds with a 1 second gap. Each image was planned to be shown up to 3 times over the course of the experiment, and participants saw around 9,000-10,000 unique images each, depending on how many sessions they completed. The task was a continuous recognition task: on every trial, participants judged whether they had seen the image before at any point in the experiment. That keeps people attentive and also gives you memory data for free.
 
-## Design lessons from modern datasets
-
-The large-scale datasets I mentioned earlier - NSD and THINGS - represent a fundamental shift in experimental design philosophy. Let me highlight what they teach us.
-
-**NSD's approach**: Instead of scanning many participants briefly, they scanned 8 participants extensively (30-40 sessions each). Key design choices:
-- 10,000 unique images per participant
-- Each image repeated 3 times across sessions (enabling reliability estimation)
-- 1.8mm voxels at 7T for high resolution
-- Rapid event-related design with a simple attention task
-
-**THINGS' approach**: Rather than naturalistic complexity, they systematically sampled 1,854 object concepts to span the semantic space. The rapid event-related design with catch trials (detect repeated images) kept participants engaged while maximizing efficiency.
+THINGS-fMRI (part of THINGS-data; Hebart et al., 2023) scanned 3 participants over many sessions at 3T. They saw 8,740 unique images from 720 object concepts of the THINGS database (12 images per concept), each shown once, plus 100 test images that were repeated many times to estimate reliability. It used a rapid event-related design with images shown for 500 ms. To keep participants engaged, they had to respond to occasional catch images, which were artificially generated images mixed in among the real photographs.
 
 ### What this means for your own designs
 
-These datasets embody a new philosophy: instead of "how do I answer my specific question with minimal scanning," ask "how do I collect data that's useful for many questions?"
+Both datasets start from "how do I collect data that's useful for many questions?" rather than "how do I answer my one question with as little scanning as possible?" You probably won't scan 40 sessions per person, but some of the ideas transfer to smaller studies:
+- Repeating stimuli lets you estimate reliability (and a noise ceiling) and helps single-trial modeling
+- Sampling stimuli broadly and systematically lets you study representational geometry, not just category selectivity
+- For computational approaches, lots of data from a few participants can be more useful than a little data from many
 
-Practical takeaways:
-- **More repetitions** enable reliability estimation and single-trial modeling
-- **Systematic stimulus sampling** lets you study representational geometry, not just category selectivity
-- **Dense individual sampling** may be more valuable than large N for computational approaches
+## Running a vision experiment in the scanner
 
-## Practical Tips
+A vision study adds a few practical concerns on top of the general design questions above.
 
-### Stimulus Presentation with PsychoPy
+### Displaying stimuli in the scanner
 
-PsychoPy is the de facto standard for fMRI stimulus presentation. It's free, Python-based, and has good timing precision. Here's a conceptual example of a simple trial structure:
+You can't put a normal monitor next to the magnet. The most common setup is a projector outside the scanner room that projects onto a screen at the end of the bore (or behind the participant's head), which the participant sees through a mirror mounted on the head coil. Some centers have MR-compatible LCD displays instead, placed behind the scanner and also viewed through a mirror.
+
+Whatever the setup, you need to know the screen size and the viewing distance (from the eyes via the mirror to the screen), because stimulus size in vision research is reported in degrees of visual angle, not pixels or centimeters. For an object of size s at distance d, the visual angle is 2 · arctan(s / 2d):
 
 ```python
-from psychopy import visual, core, event, parallel
+import numpy as np
+
+def visual_angle_deg(size_cm, distance_cm):
+    """Visual angle (degrees) of an object of a given size at a given distance."""
+    return np.degrees(2 * np.arctan(size_cm / (2 * distance_cm)))
+
+# Approximate degrees per pixel for your setup (fine near the screen center)
+screen_width_cm, screen_width_px, distance_cm = 40.0, 1920, 100.0
+deg_per_px = visual_angle_deg(screen_width_cm, distance_cm) / screen_width_px
+```
+
+PsychoPy can do this conversion for you if you define a monitor with the right width and distance and use `units='deg'`. Check the numbers with your imaging center, because they're often surprising: in many setups the whole screen only covers something like 15-20 degrees of visual angle. That limits how large your stimuli can be and how far into the periphery you can map, which matters a lot for retinotopy.
+
+You'll almost always want a fixation point that stays visible throughout the run, either a small cross or a dot. A small dot is often preferred for retinotopic mapping because it covers less of the central visual field.
+
+### Eye tracking and fixation
+
+In a vision experiment, where people look determines what lands on the retina. If participants move their eyes, the retinal input changes, retinotopic responses shift, and you can end up with effects that come from eye movements rather than from the stimulus. This can also confound category comparisons: people look at faces differently than at scenes, so differences in eye movement patterns between categories can show up as differences in brain responses.
+
+MR-compatible eye trackers exist (the EyeLink 1000 Plus with a long-range mount is a common one), and many centers have one installed. If you have access, calibrate it at the start of each session and record throughout, even if you don't plan to analyze the eye data right away. At the very least, it lets you check fixation quality and exclude bad runs. Getting a good calibration through a mirror inside a head coil can be fiddly, so budget some setup time.
+
+If you don't have an eye tracker, you can still reduce the problem: give participants a task that requires fixation (for example, detecting a color change of the fixation dot), keep stimulus durations short so there's little time for exploratory eye movements, and present stimuli at fixation.
+
+### Localizer and retinotopy runs
+
+In a vision study you almost always add a functional localizer: a short block-design run with blocks of faces, scenes, bodies, objects and scrambled objects. Contrasts between these conditions define category-selective regions in each participant, like the fusiform face area (FFA; Kanwisher et al., 1997), the parahippocampal place area (PPA; Epstein & Kanwisher, 1998), the extrastriate body area (EBA; Downing et al., 2001) and the lateral occipital complex (LOC; Malach et al., 1995). These regions vary in location from person to person, so defining them individually is much more precise than using a group atlas.
+
+Often you'll also add a retinotopic mapping run to define early visual areas (V1, V2, V3, hV4). The classic approach uses a rotating wedge and an expanding ring, and the more recent population receptive field (pRF) approach typically uses bars sweeping across the visual field (Dumoulin & Wandell, 2008). As mentioned above, a small screen limits how much of the visual field you can map.
+
+Budget roughly 10-20 minutes of scanner time for localizers and retinotopy. They can also go into a separate session, which is a good option if you scan the same participants several times. I'll cover how to analyze them with the GLM in [Part 7](/blog/fmri-crash-course-7-analysis-glm).
+
+## Practical tips
+
+### Stimulus presentation with PsychoPy
+
+PsychoPy is the most common tool for fMRI stimulus presentation. It's free, Python-based, and has good timing precision if used carefully. Here's a conceptual example of a simple trial structure:
+
+```python
+from psychopy import visual, core, event
 
 # Setup
 win = visual.Window(fullscr=True, color='gray')
@@ -238,73 +213,59 @@ for trial in trials:
     win.flip()
 ```
 
-A few critical points:
-- **Synchronize with the scanner trigger**. The scanner sends a pulse (usually TTL or keyboard character) at the start of each run. Your experiment must wait for this before starting.
-- **Log precise timing**. Don't rely on intended timing - log when stimuli actually appeared.
-- **Use a fast display**. 60Hz is minimum; 120Hz is better. Display lag varies by monitor.
-- **Test timing thoroughly**. Use a photodiode on the screen to verify actual display timing.
+This uses `core.wait()` for simplicity, but that timing is only approximate: the actual duration depends on when the next screen refresh happens, and small errors can add up over a run. For precise durations, count frames instead (draw and call `win.flip()` a fixed number of times, e.g. 30 flips for 500 ms at 60 Hz), or use non-slip timing, where you schedule each event relative to the run start rather than relative to the previous event.
 
-### Scanner Synchronization
+A few more points:
+- Synchronize with the scanner trigger. The scanner sends a pulse (usually a TTL signal or a keyboard character) at the start of each volume, and your experiment must wait for the first one before starting.
+- Log the timing of what actually happened, not what you intended. Use the time of the `win.flip()` that showed the stimulus.
+- Know your display. Projectors and monitors have refresh rates (60 Hz is the minimum, 120 Hz is nicer) and some input lag.
+- Test your timing. A photodiode on the screen tells you when stimuli really appeared.
 
-The scanner-experiment synchronization deserves special attention. The scanner sends trigger pulses at each TR. You have two options:
+### Scanner synchronization
 
-1. **Start on first trigger, free-run thereafter**: Wait for the first pulse to start your experiment, then run on your own clock. Simple, but timing can drift over long runs.
+The scanner sends a trigger pulse at every TR, and there are two ways to use them:
 
-2. **Lock to every trigger**: Advance your experiment based on incoming triggers. More complex, but guarantees synchronization. Essential for very long runs.
+1. Start on the first trigger, then run on your own clock. Simple, but the two clocks can drift apart over long runs.
+2. Lock to every trigger, advancing the experiment based on incoming pulses. More work, but guarantees synchronization.
 
-For most studies, option 1 is fine if your runs are under 10 minutes. For longer runs or when precise timing is critical, use option 2.
+For most studies, option 1 is fine if runs are under 10 minutes or so. For longer runs, or when precise timing matters, I'd go with option 2 or at least log every trigger so you can check for drift afterwards.
 
-### Motion and Participant Comfort
+### Motion and participant comfort
 
-Motion is the enemy of fMRI data quality. A few practical tips:
+Head motion is one of the biggest threats to data quality. A few things help:
 
-- **Padding**: Use foam padding around the head. Snug but not uncomfortable.
-- **Practice**: Let participants experience the scanner (or a mock scanner) before the real thing.
-- **Short runs**: 8-12 minutes maximum per run. Breaks let participants move, swallow, and refocus.
-- **Minimize swallowing**: Provide water between runs, not during.
-- **Feedback**: Some studies show participants their motion in real-time. Controversial but can help.
+- Foam padding around the head, snug but not uncomfortable
+- A practice session in the scanner, or in a mock scanner if your center has one
+- Short runs, around 8-12 minutes at most, with breaks in between so participants can move a bit and refocus
+- Water between runs rather than during them, to reduce swallowing
+- Some centers show participants their own motion in real time, which can help but isn't standard
 
-Tell participants explicitly: "It's okay to blink. Try not to move your head. If you need to swallow, do it quickly between trials when possible."
+It also helps to tell participants explicitly: "It's okay to blink. Try not to move your head. If you need to swallow, try to do it quickly between trials."
 
-### Advanced: Custom HeadCases
+### Custom head cases
 
-For studies requiring minimal motion - longitudinal studies, high-resolution imaging, or participants who struggle to stay still - consider using custom-fitted head restraints called HeadCases.
+For studies where motion has to be really minimal (dense sampling with many sessions per person, high-resolution imaging, or participants who struggle to stay still) you can use custom-fitted head cases. You make a 3D scan of the participant's head and 3D print a foam case that fits both the head and the inside of the head coil, so the head has very little room to move without any uncomfortable pressure points.
 
-The idea is simple: 3D scan the participant's head, then 3D print a custom foam case that fits precisely inside the head coil. The participant's head slots into this case like a key in a lock. No pressure points, no wiggle room.
-
-The [Gallant Lab's headcase-pipeline](https://github.com/gallantlab/headcase-pipeline) provides an open-source automated workflow:
-1. Capture a 3D scan of the participant's head (using a Structure Sensor or similar)
+The [Gallant Lab's headcase-pipeline](https://github.com/gallantlab/headcase-pipeline) is an open-source workflow for this:
+1. Capture a 3D scan of the participant's head (with a Structure Sensor or similar)
 2. Run the pipeline to generate printable STL files
 3. 3D print the case (typically in 2 or 4 pieces that assemble around the coil)
 
-HeadCases are particularly valuable for:
-- **Dense sampling studies** where you scan the same person repeatedly (like NSD)
-- **High-resolution imaging** where even sub-millimeter motion matters
-- **Populations prone to movement** (though extreme cases may need other solutions)
-
-The upfront investment (scanner time, 3D printing) pays off in cleaner data and less motion-related exclusions.
+It's extra effort up front, but if you're going to scan the same people many times, cleaner data and fewer excluded runs can make it worth it.
 
 ---
 
-## Key Takeaways
+## Summary
 
-1. **Field strength**: 3T is the standard for most vision research. 7T offers higher resolution but comes with significant challenges.
-
-2. **Use multiband acceleration**: Modern sequences with TR of 0.8-1.2 seconds are standard. There's little reason to use 2+ second TRs anymore.
-
-3. **Match voxel size to your question**: 2-3mm for most studies. Go smaller only if you specifically need high resolution for your scientific question.
-
-4. **Design type matters**: Block designs for detection/localizers, rapid event-related for most other studies. Jittered ISIs are your friend.
-
-5. **Naturalistic paradigms are rising**: Movies and stories offer ecological validity but require different analytical approaches.
-
-6. **Modern datasets use intensive sampling**: NSD and THINGS show the power of scanning fewer participants more extensively with more stimuli.
-
-7. **Get the practical details right**: Scanner synchronization, precise timing logs, and motion minimization are unsexy but essential.
+- 3T with multiband acceleration (TR around 0.8-1.2 s, flip angle adjusted to the short TR) and 2-3 mm voxels is a sensible default for most vision studies.
+- Block designs are best for detection and localizers, rapid event-related designs with jittered ISIs for most other questions.
+- Large datasets like NSD and THINGS-data show the value of repeated stimuli and broad stimulus sampling, even if your own study is much smaller.
+- Vision studies need extra care: report stimulus size in degrees of visual angle, control fixation (ideally with an eye tracker), and plan scanner time for localizer and retinotopy runs.
+- Scanner synchronization, accurate timing logs and motion prevention are boring but make or break your data.
 
 ---
 
-With data collected, the next step is preprocessing - preparing the raw data for analysis. That's where we'll head next.
+With data collected, the next step is preprocessing: getting the raw data ready for analysis. That's where we'll head next.
 
 ## References
 
@@ -318,6 +279,19 @@ With data collected, the next step is preprocessing - preparing the raw data for
 - Moeller, S., et al. (2010). [Multiband multislice GE-EPI at 7 tesla, with 16-fold acceleration using partial parallel imaging with application to high spatial and temporal whole-brain fMRI](https://pubmed.ncbi.nlm.nih.gov/20027588/). Magnetic Resonance in Medicine, 63(5), 1144-1153.
 - Feinberg, D.A., et al. (2010). [Multiplexed echo planar imaging for sub-second whole brain fMRI and fast diffusion imaging](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0015710). PLoS ONE, 5(12), e15710.
 - Feinberg, D.A. & Setsompop, K. (2013). [Ultra-fast MRI of the human brain with simultaneous multi-slice imaging](https://pubmed.ncbi.nlm.nih.gov/23702822/). Journal of Magnetic Resonance, 229, 90-100.
+
+### Large-Scale Datasets
+
+- Allen, E.J., St-Yves, G., Wu, Y. et al. (2022). A massive 7T fMRI dataset to bridge cognitive neuroscience and artificial intelligence. Nature Neuroscience, 25, 116-126. [DOI: 10.1038/s41593-021-00962-x](https://doi.org/10.1038/s41593-021-00962-x)
+- Hebart, M.N., Contier, O., Teichmann, L. et al. (2023). THINGS-data, a multimodal collection of large-scale datasets for investigating object representations in human brain and behavior. eLife, 12, e82580. [DOI: 10.7554/eLife.82580](https://doi.org/10.7554/eLife.82580)
+
+### Localizers and Retinotopic Mapping
+
+- Kanwisher, N., McDermott, J. & Chun, M.M. (1997). The fusiform face area: a module in human extrastriate cortex specialized for face perception. Journal of Neuroscience, 17(11), 4302-4311.
+- Epstein, R. & Kanwisher, N. (1998). A cortical representation of the local visual environment. Nature, 392, 598-601.
+- Downing, P.E., Jiang, Y., Shuman, M. & Kanwisher, N. (2001). A cortical area selective for visual processing of the human body. Science, 293(5539), 2470-2473.
+- Malach, R., et al. (1995). Object-related activity revealed by functional magnetic resonance imaging in human occipital cortex. Proceedings of the National Academy of Sciences, 92(18), 8135-8139.
+- Dumoulin, S.O. & Wandell, B.A. (2008). Population receptive field estimates in human visual cortex. NeuroImage, 39(2), 647-660.
 
 ### Motion Reduction
 

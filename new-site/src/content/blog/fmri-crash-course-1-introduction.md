@@ -34,15 +34,15 @@ The series is divided into 8 separate posts (including this introduction). These
 
 3. **[Basics of (functional) MRI](/blog/fmri-crash-course-3-basics-mri)** - Introducing the fundamentals of MRI and fMRI, explaining how we can record neural activity using magnets(!). We'll discuss the pros and cons of fMRI and look at what fMRI data actually looks like.
 
-4. **[Recording fMRI data and designing experiments](/blog/fmri-crash-course-4-recording-experiments)** - Collecting fMRI data involves many interdependent decisions, and optimal scanning parameters aren't always clear. We'll explain these parameters and make suggestions for how to set them, plus a detour into experimental design for fMRI.
+4. **[Recording fMRI data and designing experiments](/blog/fmri-crash-course-4-recording-experiments)** - Collecting fMRI data involves many interdependent decisions, and optimal scanning parameters aren't always clear. We'll explain these parameters and make suggestions for how to set them, then cover experimental design, stimulus display, eye tracking, and the localizer and retinotopy runs that most vision studies need.
 
-5. **[Preprocessing fMRI data](/blog/fmri-crash-course-5-preprocessing)** - Probably the most important step. We'll look at the reasoning behind each common preprocessing step, the tools required, and how to organize data neatly. I'll also introduce advanced preprocessing options for parallelization and re-use.
+5. **[Preprocessing fMRI data](/blog/fmri-crash-course-5-preprocessing)** - Probably the most important step. We'll look at the reasoning behind each common preprocessing step, the tools required, and how to organize data neatly. I'll also show how to run fMRIPrep in parallel on a SLURM cluster and when to work on the cortical surface instead of in the volume.
 
-6. **[Assessing the quality of fMRI data](/blog/fmri-crash-course-6-quality-assessment)** - Even with the best planning, preprocessing and data collection can run into problems. We'll go over typical issues and how to check your data for artifacts.
+6. **[Assessing the quality of fMRI data](/blog/fmri-crash-course-6-quality-assessment)** - Even with the best planning, preprocessing and data collection can run into problems. We'll go over typical issues, how to check your data for artifacts, and a few checks that are specific to vision experiments.
 
-7. **[Analyzing fMRI data with the GLM](/blog/fmri-crash-course-7-analysis-glm)** - We're finally at the stage where we can run analyses. You'll learn about the General Linear Model (GLM), the primary tool for task-based fMRI analysis, and use it to extract single-trial response estimates for multivariate analysis.
+7. **[Analyzing fMRI data with the GLM](/blog/fmri-crash-course-7-analysis-glm)** - We're finally at the stage where we can run analyses. You'll learn about the General Linear Model (GLM), the primary tool for task-based fMRI analysis, and use it to define regions of interest with localizers, run group-level statistics, and extract single-trial response estimates for multivariate analysis.
 
-8. **[Multivariate analysis](/blog/fmri-crash-course-8-multivariate)** - In the final post, we'll go over examples showing how to actually use the preprocessed and analyzed data, with pointers to more advanced material at the edge of current research.
+8. **[Multivariate analysis](/blog/fmri-crash-course-8-multivariate)** - In the final post, we'll use the single-trial estimates for decoding, representational similarity analysis and encoding models, and compare brain responses to deep neural networks.
 
 ---
 
@@ -65,4 +65,4 @@ Let's get started with [Part 2: Using neuroimaging for understanding the visual 
 ### Online tutorials
 
 - [Andy's Brain Book](https://andysbrainbook.readthedocs.io/) - Comprehensive tutorials for fMRI analysis with FSL, SPM, and AFNI, designed for beginners.
-- [Mumford Brain Stats](https://www.youtube.com/@mumaborinstats) - Video tutorials on fMRI statistics and analysis, including mixed models and study design.
+- [Mumford Brain Stats](https://www.youtube.com/@mumfordbrainstats) - Video tutorials on fMRI statistics and analysis, including mixed models and study design.

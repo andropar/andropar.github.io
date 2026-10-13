@@ -8,43 +8,38 @@ tags: ["fMRI", "neuroscience", "methods", "GLM", "analysis"]
 
 *This is Part 7 of an [8-part crash course on fMRI for vision research](/blog/fmri-crash-course-1-introduction).*
 
-We've preprocessed our data, quality-checked it, and now comes the part you've been waiting for: actually analyzing the thing. The workhorse of task-based fMRI analysis is the General Linear Model, or GLM. It sounds intimidating if you haven't encountered it before, but here's the secret: it's just regression. Really. If you understand y = mx + b from high school, you're already 80% of the way there.
+At this point the data is preprocessed and quality-checked, so we can finally analyze it. The standard tool for task-based fMRI is the General Linear Model (GLM). The name sounded intimidating to me at first, but it's just linear regression, applied to every voxel separately.
 
-## The GLM: It's Just Regression
+## The GLM is regression
 
-Let me demystify this. At each voxel in your brain, you have a timeseries - a sequence of BOLD signal values, one per TR. The question we're trying to answer is: can we explain that timeseries as a weighted combination of our experimental conditions?
+Each voxel gives you a timeseries: one BOLD value per TR. The question the GLM asks is whether that timeseries can be explained as a weighted sum of predictors that describe your experiment.
 
-Think of it like this. You show someone pictures of faces and houses in an alternating pattern. If a voxel responds to faces, its timeseries should go up when faces appear and down when houses appear (roughly - there's that pesky hemodynamic delay). The GLM formalizes this intuition.
-
-Here's the equation:
+Say you show someone faces and houses in alternation. If a voxel prefers faces, its signal should go up a few seconds after faces appear and down during houses. The GLM turns this intuition into a model:
 
 ```
 Y = X * B + E
 ```
 
-Where:
-- **Y** is your voxel's timeseries (what you measured)
-- **X** is your design matrix (what you think should be happening)
-- **B** are beta weights (how much each thing in X contributes)
-- **E** is the error (everything you can't explain)
+- Y is the voxel's timeseries (what you measured)
+- X is the design matrix (what you think is driving the signal)
+- B are the beta weights (how much each column of X contributes)
+- E is the error (everything the model can't explain)
 
-The goal? Find the beta weights that minimize the error. That's it. That's linear regression.
-
-The magic is in building X - the design matrix. This is where you encode your experimental design, and getting it right is crucial.
+Fitting means finding the betas that minimize the squared error, which is ordinary least squares (with a correction for autocorrelated noise, more on that below). Most of the actual work goes into building X.
 
 <img src="/blog/fmri-diagrams/design-matrix.svg" alt="Example GLM design matrix showing HRF-convolved task regressors, motion parameters, and intercept" />
 
-*A design matrix for a faces vs. houses experiment. The first two columns show HRF-convolved task regressors (note the smooth peaks). The middle columns are motion nuisance regressors. The final column is the intercept (constant term).*
+*A simulated design matrix for a faces vs. houses experiment. The first two columns are HRF-convolved task regressors, the middle columns are motion nuisance regressors, and the last column is the intercept.*
 
-## Building the Design Matrix
+## Building the design matrix
 
-The design matrix is a table where rows are timepoints (TRs) and columns are different things you want to model. Let's break down what goes in there.
+The design matrix is a table with one row per timepoint (TR) and one column per thing you want to model.
 
-### Task Regressors: The Main Event
+### Task regressors
 
-Your primary regressors represent your experimental conditions. But here's the catch - you can't just create a column that's 1 when faces are shown and 0 otherwise. Remember that hemodynamic delay from Part 2? The BOLD response peaks 5-6 seconds after neural activity, not instantly.
+Your main regressors describe the experimental conditions. You can't just use a column that is 1 when a face is on screen and 0 otherwise, because of the hemodynamic delay we covered in [Part 3](/blog/fmri-crash-course-3-basics-mri): the BOLD response peaks around 5-6 seconds after neural activity.
 
-So we start with a "boxcar" function - a simple on/off indicator of when each condition occurred - and convolve it with the Hemodynamic Response Function (HRF). Convolution is just a fancy way of saying we smear the boxcar in time according to the shape of the HRF. The result is a smooth, delayed predictor that actually matches what the BOLD signal should look like.
+So you start with a boxcar (an on/off indicator of when each condition occurred) and convolve it with the hemodynamic response function (HRF). Convolution smears the boxcar out in time according to the HRF's shape, and the result is a smooth, delayed predictor that looks like what the BOLD signal should do.
 
 <img src="/blog/fmri-diagrams/hrf-convolution-demo.svg" alt="Three-panel figure showing HRF convolution: (a) boxcar stimulus function with on/off periods, (b) canonical hemodynamic response function with peak and undershoot, (c) resulting convolved regressor that predicts BOLD signal" />
 
@@ -66,11 +61,9 @@ regressor, _ = compute_regressor(
 )
 ```
 
-### Parametric Modulators: Beyond On/Off
+### Parametric modulators
 
-Sometimes you want to model not just *whether* something happened, but *how much* of something happened. Maybe reaction time, or stimulus intensity, or emotional valence. These are parametric modulators.
-
-You create them by scaling your boxcar by a continuous variable before convolving. If you're modeling reaction time, trials with long RTs get a bigger value than trials with fast RTs. The resulting beta tells you: does this voxel's response scale with reaction time?
+Sometimes you care about how much of something happened, not just whether it happened: reaction time, stimulus contrast, rated valence. For these you scale each trial's boxcar by a continuous value before convolving. The resulting beta tells you whether the voxel's response scales with that variable.
 
 ```python
 # Parametric modulator: reaction time effect
@@ -82,21 +75,21 @@ regressor_rt, _ = compute_regressor(
 )
 ```
 
-### Nuisance Regressors: Cleaning Up the Mess
+### Nuisance regressors
 
-Here's where things get practical. Your data contains noise from many sources that have nothing to do with your experiment. You want to model these out so they don't corrupt your estimates.
+The data also contains plenty of signal that has nothing to do with your experiment, and you want to model it so it doesn't leak into your estimates.
 
-**Motion parameters**: During preprocessing, you estimated 6 motion parameters (3 translation, 3 rotation) per TR. Include these as regressors. Head movement causes signal changes, and if subjects move more during one condition than another, you'll get spurious "activations." Some researchers also include the temporal derivatives (how fast motion is changing) and squared terms, giving you 24 motion regressors total.
+Motion is the obvious one. Preprocessing gives you 6 motion parameters per TR (3 translations, 3 rotations), and these go in as regressors. Head movement changes the signal, and if people move more in one condition than another you get fake "activations". Many people also add the temporal derivatives and squared terms, for 24 motion regressors in total.
 
-**Physiological noise**: If you recorded pulse and respiration (you should), you can model their effects with tools like RETROICOR. The beating heart and breathing lungs cause periodic signal fluctuations that can look like neural activity if you're not careful.
+If you recorded pulse and respiration, you can model cardiac and breathing effects with methods like RETROICOR. Both cause periodic fluctuations that can be mistaken for neural signal.
 
-**High-pass filtering**: Slow drifts in the scanner signal (from heating, subject movement, etc.) are modeled with a discrete cosine transform (DCT) basis set. Typically we use a cutoff around 0.01 Hz (100s period), removing anything slower than that. In nilearn, this is handled with the `high_pass` parameter rather than explicit regressors.
+Slow scanner drifts are handled with a high-pass filter, usually a discrete cosine transform (DCT) basis with a cutoff around 0.01 Hz (100 s period). In nilearn you set this with the `high_pass` parameter instead of adding the regressors yourself.
 
-**Scrubbing/censoring**: Remember those framewise displacement calculations from quality assessment? Some researchers add "spike regressors" - a column of all zeros except a 1 at timepoints with excessive motion. This effectively removes those volumes from the analysis.
+Finally, you can censor high-motion volumes with "spike regressors": a column of zeros with a single 1 at a bad timepoint, one column per volume you want to drop. This uses the framewise displacement values from [Part 6](/blog/fmri-crash-course-6-quality-assessment).
 
-## First-Level Analysis with Nilearn
+## First-level analysis with nilearn
 
-Let's put this together. First-level analysis means fitting the GLM to each run of each subject individually. Here's how it looks in practice with nilearn:
+First-level analysis means fitting the GLM to the data of a single subject (one or several runs). In nilearn it looks like this:
 
 ```python
 from nilearn.glm.first_level import FirstLevelModel
@@ -138,11 +131,11 @@ from nilearn.plotting import plot_design_matrix
 plot_design_matrix(design_matrix)
 ```
 
-### Contrasts and T-maps
+Do look at the design matrix plot every time. A lot of analysis bugs (wrong onsets, a condition that never appears, confounds with NaNs in the first row) are obvious once you see the matrix.
 
-Once the model is fit, you have beta weights for each regressor at each voxel. But raw betas aren't that useful - their scale is arbitrary and they don't account for noise. Enter contrasts.
+### Contrasts and t-maps
 
-A contrast is a weighted combination of betas that tests a specific hypothesis. Want to know where faces activate more than houses? That's a contrast: `[1, -1]` for face and house betas respectively.
+After fitting you have a beta for every regressor at every voxel. Raw betas are hard to interpret on their own: their scale is somewhat arbitrary and they say nothing about noise. To test a hypothesis you define a contrast, a weighted combination of betas. "Where do faces activate more than houses?" is the contrast `[1, -1]` on the face and house betas.
 
 ```python
 # Define contrasts
@@ -158,19 +151,108 @@ for name, contrast in contrasts.items():
     # stat_map is now a t-statistic image
 ```
 
-The output is a t-map: at each voxel, you get a t-statistic indicating how confidently that voxel shows the effect you're testing. High positive values mean the effect is reliably present; high negative values mean the opposite effect.
+The output is a t-map: each voxel gets a t-statistic for the effect you're testing. Large positive values mean the effect is reliably present, large negative values mean the reverse effect.
 
-## Single-Trial Estimation: The MVPA Prerequisite
+## Defining ROIs with a functional localizer
 
-Here's where things get interesting for vision researchers. The standard GLM gives you one beta per condition - one "face" response, one "house" response, averaged across all trials of that type. But for multivariate pattern analysis (MVPA), you often want response estimates for each individual trial. You want to ask: can I decode *which specific face* someone saw, not just whether they saw a face at all?
+In vision research you'll rarely look at the whole brain. Much more often you want the responses of a specific region, like the fusiform face area (FFA) or V1, in each participant. Category-selective regions vary in location and size across people, so the usual approach is to define them per subject with a functional localizer: a few short block-design runs (see [Part 4](/blog/fmri-crash-course-4-recording-experiments)) showing faces, scenes, bodies, objects and scrambled objects.
 
-This is single-trial estimation, and there are several approaches.
+You fit a regular GLM to the localizer runs and compute contrasts:
+
+- faces > objects: FFA and OFA (Kanwisher et al., 1997)
+- scenes > objects: PPA, OPA (also called TOS) and RSC/MPA (Epstein & Kanwisher, 1998)
+- bodies > objects: EBA (Downing et al., 2001)
+- objects > scrambled objects: LOC (Malach et al., 1995)
+
+```python
+loc_model = FirstLevelModel(t_r=2.0, hrf_model='spm', drift_model='cosine',
+                            high_pass=0.01, smoothing_fwhm=4, mask_img=brain_mask)
+loc_model.fit(localizer_runs, events=localizer_events,
+              confounds=localizer_confounds)
+
+# 'face' and 'object' must match the trial_type labels in your events files
+faces_z = loc_model.compute_contrast('face - object', output_type='z_score')
+```
+
+A bit of smoothing is common for localizers, since you want contiguous blobs and not single voxels. A thresholded contrast map usually has more than one blob, though, and picking "the FFA" by eye is subjective. A cleaner option is the group-constrained subject-specific approach of Julian et al. (2012): they provide group-derived parcels that mark where each region tends to be. You bring a parcel into the subject's space, intersect it with the subject's contrast map, and then either threshold or keep the top N most selective voxels inside the parcel. Taking a fixed number of voxels has the nice side effect that ROIs have the same size across subjects, which helps when you compare decoding accuracies.
+
+```python
+import numpy as np
+
+z = faces_z.get_fdata()
+# Parcel already resampled to the subject's functional space
+parcel = parcel_img.get_fdata() > 0
+
+z_in_parcel = np.where(parcel, z, -np.inf)
+top_idx = np.argsort(z_in_parcel, axis=None)[-100:]  # top 100 voxels
+roi_mask = np.zeros(z.shape, dtype=bool)
+roi_mask.flat[top_idx] = True
+```
+
+One rule you must not break: define the ROI on data that is independent of the data you analyze afterwards. If you select voxels because they respond more to faces and then report that the same data shows a stronger response to faces, the result is guaranteed by the selection. Kriegeskorte et al. (2009) wrote the standard paper on this "double dipping" problem. Separate localizer runs solve it; if you must localize with the main experiment, split the runs (e.g. define the ROI on odd runs, analyze even runs).
+
+## Retinotopic mapping
+
+Early visual areas (V1, V2, V3, and beyond) aren't defined by category contrasts but by their maps of the visual field. To find them you run retinotopic mapping: stimuli like rotating wedges and expanding rings, analyzed either with a phase-encoded analysis (which phase of the stimulus cycle drives each voxel most) or with population receptive field (pRF) modeling (Dumoulin & Wandell, 2008). The pRF approach fits a small model of each voxel's receptive field and gives you polar angle, eccentricity and pRF size per voxel.
+
+The borders between V1, V2 and V3 sit where the polar angle map reverses direction, which you trace on an inflated or flattened cortical surface. For fitting, analyzePRF (MATLAB, from Kendrick Kay's lab) and prfpy (Python) are common choices.
+
+If you don't have mapping data, the anatomical retinotopy template in neuropythy (Benson et al., 2014; Benson & Winawer, 2018) predicts V1-V3 boundaries and retinotopic coordinates from a subject's FreeSurfer reconstruction. For V1-V3 it works reasonably well, and it's a good fallback or starting point.
+
+## Group-level analysis and multiple comparisons
+
+So far everything has been within one subject. If you want to claim that an effect holds in the population, you run a second-level (random-effects) analysis: take each subject's contrast map (the effect size, not the t-map) in a common space like MNI, and test across subjects whether the mean effect differs from zero. In nilearn:
+
+```python
+import pandas as pd
+from nilearn.glm.second_level import SecondLevelModel
+from nilearn.glm import threshold_stats_img
+
+# subject_maps: list of per-subject contrast images in MNI space,
+# e.g. model.compute_contrast('face - house', output_type='effect_size')
+design = pd.DataFrame({'intercept': [1] * len(subject_maps)})
+group_model = SecondLevelModel(smoothing_fwhm=6)
+group_model.fit(subject_maps, design_matrix=design)
+z_map = group_model.compute_contrast('intercept', output_type='z_score')
+
+# FDR-corrected threshold, optionally dropping clusters smaller than 10 voxels
+thresholded_map, threshold = threshold_stats_img(
+    z_map, alpha=0.05, height_control='fdr', cluster_threshold=10
+)
+```
+
+The catch is that you're running one test per voxel, so tens of thousands of tests. At p < 0.05 uncorrected you'd expect thousands of false positives. The main ways to deal with this:
+
+- Voxelwise family-wise error (FWE) control, e.g. Bonferroni (`height_control='bonferroni'`) or random field theory as in SPM. Strict, so you lose sensitivity.
+- False discovery rate (FDR; Benjamini & Hochberg, 1995; Genovese et al., 2002), which controls the expected proportion of false positives among the voxels you call significant. Less strict than FWE.
+- Cluster-level inference: threshold the map at a cluster-forming threshold and then ask whether a cluster is larger than you'd expect by chance.
+
+Cluster inference needs care. Eklund et al. (2016) showed that parametric cluster inference, as implemented in the common packages, gave false-positive rates far above the nominal 5% when combined with a lenient cluster-forming threshold like p < 0.01. Use a cluster-forming threshold of p < 0.001, or better, nonparametric permutation testing (nilearn has `non_parametric_inference` in `nilearn.glm.second_level`), which held up well in their comparison.
+
+Note that the `cluster_threshold` in the snippet above just removes small clusters for display. It isn't a cluster-level test.
+
+Also, many vision studies never do whole-brain group statistics at all. Dense-sampling datasets like NSD and THINGS-data scan a few people for many hours, define ROIs within each person and report results per subject, treating each subject as a replication. If your question is about specific visual areas, ROI-based analysis within individuals is often the more sensible design.
+
+## Single-trial estimation for MVPA
+
+The standard GLM gives you one beta per condition: one "face" response and one "house" response, averaged over all trials of that type. For multivariate pattern analysis (MVPA, [Part 8](/blog/fmri-crash-course-8-multivariate)) you usually want a response estimate for each individual trial, for example to decode which specific face someone saw or to build a representational similarity matrix over hundreds of images. There are several ways to get these.
 
 ### LSA: Least Squares All
 
-The simplest approach: put every single trial as its own regressor in one massive design matrix. Trial 1 face, trial 2 house, trial 3 face, etc. - each gets its own column.
+The simplest approach is to give every trial its own regressor in one big design matrix. For MVPA you also want unsmoothed data (see [Part 5](/blog/fmri-crash-course-5-preprocessing)), so use a separate model with `smoothing_fwhm=None`:
 
 ```python
+# Unsmoothed model for single-trial estimation
+st_model = FirstLevelModel(
+    t_r=2.0,
+    hrf_model='spm',
+    drift_model='cosine',
+    high_pass=0.01,
+    noise_model='ar1',
+    smoothing_fwhm=None,   # no smoothing for MVPA
+    mask_img=brain_mask
+)
+
 # Create trial-by-trial events
 events_trials = pd.DataFrame({
     'onset': [0, 5, 10, 15, 20, 25],
@@ -180,117 +262,119 @@ events_trials = pd.DataFrame({
 })
 
 # Fit with one regressor per trial
-model.fit(run_imgs=fmri_img, events=events_trials, confounds=confounds)
+st_model.fit(run_imgs=fmri_img, events=events_trials,
+             confounds=confounds[confound_cols])
 ```
 
-**The problem**: When trials are close together in time (fast event-related designs), their regressors become highly correlated. The HRF for trial 1 hasn't finished by the time trial 2 starts. This collinearity inflates noise in your beta estimates. Think of it like trying to separate overlapping voices in a crowded room - possible, but noisy.
+The problem is that when trials are close together in time (fast event-related designs), their regressors overlap: the HRF of trial 1 is still going when trial 2 starts. The regressors become correlated, and collinearity inflates the variance of the beta estimates. The estimates are unbiased on average, but any single one can be far off.
 
 <img src="/blog/fmri-diagrams/design-matrix-collinearity.svg" alt="Comparison of design matrices: slow design with well-separated regressors and low correlation versus fast design with overlapping regressors and high correlation" />
 
-*The collinearity problem visualized. (a) In slow designs with long inter-trial intervals, regressors are nearly uncorrelated (r = -0.27). (b) In fast designs, the overlapping HRFs create highly correlated regressors (r = 0.74), inflating variance in beta estimates.*
+*Simulated illustration of the collinearity problem. (a) In slow designs with long inter-trial intervals, neighbouring regressors are only weakly correlated (r = -0.27 in this simulation). (b) In fast designs, the overlapping HRFs create highly correlated regressors (r = 0.74), inflating the variance of beta estimates.*
 
 ### LSS: Least Squares Separate
 
-Mumford et al. (2012) proposed a clever solution: fit each trial separately. For trial N, your design matrix has one regressor for trial N and another regressor for "all other trials" combined. Repeat for each trial.
+Mumford et al. (2012) proposed fitting one model per trial. For trial N, the design matrix has one regressor for trial N and a single nuisance regressor for all other trials together. Because the target regressor only has to compete with one other regressor, collinearity is much lower and the estimates are less noisy. The price is some bias (the estimates tend to be shrunk a bit), plus you have to fit N models instead of one. In fast designs this trade-off usually works out in LSS's favour. A common variant models the other trials by condition rather than lumping them together.
+
+With nilearn it's a short loop:
 
 ```python
-# Pseudocode for LSS
+import numpy as np
+from nilearn.image import concat_imgs
+
 betas_lss = []
-for trial in trials:
-    # One regressor for this trial
-    # One regressor for all other trials combined
-    # Fit model
-    # Extract beta for this trial
-    betas_lss.append(beta)
+for i in range(len(events)):
+    ev = events.copy()
+    # Current trial is 'target', everything else is 'other'
+    ev['trial_type'] = np.where(np.arange(len(ev)) == i, 'target', 'other')
+    st_model.fit(run_imgs=fmri_img, events=ev,
+                 confounds=confounds[confound_cols])
+    betas_lss.append(st_model.compute_contrast('target', output_type='effect_size'))
+
+betas_lss = concat_imgs(betas_lss)  # 4D image, one volume per trial
 ```
 
-This reduces collinearity at the expense of losing information about the relationships between different trials. It's more computationally intensive (you fit N models instead of 1), but often produces better single-trial estimates than LSA.
+This refits the whole model every iteration, so it's slow for long runs with many trials, but it needs nothing beyond nilearn.
 
-### GLMsingle: The Modern Approach
+### GLMsingle
 
-And then there's [GLMsingle](https://github.com/cvnlab/GLMsingle), developed by Prince et al. (2022) and published in eLife. I think this is the state-of-the-art for single-trial estimation, and if you're doing MVPA with an event-related design, you should seriously consider using it.
+Then there's [GLMsingle](https://github.com/cvnlab/GLMsingle) (Prince et al., 2022). For event-related designs where you need single-trial betas, I think it's currently the best option, and I'd use it by default for MVPA. It combines three ideas.
 
-GLMsingle improves on traditional approaches with three key innovations:
+First, voxel-wise HRF selection. Instead of assuming one HRF shape for the whole brain, GLMsingle tries a library of 20 HRFs at each voxel and picks the one that fits best. The HRF really does vary across voxels and regions, so this helps.
 
-**1. Voxel-wise HRF optimization**: Instead of assuming the same HRF shape across the brain (a major simplification), GLMsingle tests a library of 20 different HRF shapes for each voxel and picks the one that best explains the data. The HRF actually varies across brain regions - visual cortex and prefrontal cortex don't have identical hemodynamics. This matters.
+Second, GLMdenoise (Kay et al., 2013). It finds voxels that don't respond to the task, takes principal components of their timeseries, and uses those as nuisance regressors. The reasoning is that whatever fluctuates in task-unresponsive voxels is probably noise, so it can be regressed out everywhere. The number of components is chosen by cross-validation.
 
-**2. GLMdenoise**: This technique, originally developed by Kay et al., finds noise regressors in a data-driven way. It identifies voxels that don't respond to your task, extracts principal components from their timeseries, and uses these as nuisance regressors. Think of it as: "whatever is happening in task-unresponsive voxels is probably noise, so regress it out everywhere."
+Third, fractional ridge regression. As described above, collinearity between neighbouring trials inflates the variance of the beta estimates. Ridge regression shrinks the betas to reduce that variance, and GLMsingle picks the amount of shrinkage separately for each voxel by cross-validation.
 
-**3. Fracridge regularization**: Here's the clever part. When trials are close together, the resulting collinearity inflates beta estimates - they become unreliably large. GLMsingle applies ridge regression to dampen this, but critically, it finds the optimal regularization strength for each voxel using cross-validation. Some voxels need more shrinkage, some need less.
-
-The result? Substantially more reliable single-trial estimates. In their paper, they show dramatic improvements in beta reliability across three major datasets (Natural Scenes Dataset, BOLD5000, and StudyForrest). Downstream analyses - representational similarity, decoding - all benefit.
+Prince et al. showed clear improvements in the reliability of single-trial betas on several datasets, including NSD and BOLD5000, and downstream analyses like RSA and decoding benefited too.
 
 ```python
-# Using GLMsingle (Python version)
-from glmsingle.glmsingle import GLMsingle
+from glmsingle.glmsingle import GLM_single
 
-# Prepare data
-data = [run1_data, run2_data, run3_data]  # list of 4D arrays
-design = [run1_design, run2_design, run3_design]  # design matrices
+# data: list of runs, each an array of shape (X, Y, Z, time)
+# design: list of runs, each a binary array of shape (time, n_conditions)
+#         with a 1 at the TR where a trial of that condition starts
+data = [run1_data, run2_data, run3_data]
+design = [run1_design, run2_design, run3_design]
 
-# Create and run GLMsingle
-glm = GLMsingle(dict(
-    wantlibrary=1,      # use HRF library
-    wantglmdenoise=1,   # use GLMdenoise
-    wantfracridge=1,    # use ridge regression
-))
+opt = {
+    'wantlibrary': 1,      # voxel-wise HRF selection
+    'wantglmdenoise': 1,   # GLMdenoise
+    'wantfracridge': 1,    # ridge regularization
+    'wantmemoryoutputs': [0, 0, 0, 1],  # return the final model in memory
+}
+glm = GLM_single(opt)
 
 results = glm.fit(
-    design=design,
-    data=data,
-    stimdur=2.0,        # stimulus duration
-    tr=2.0              # TR
+    design,
+    data,
+    2.0,   # stimdur: stimulus duration in seconds
+    2.0,   # tr: repetition time in seconds
+    outputdir='glmsingle_outputs',
 )
 
-# Get the optimized betas
-betas = results['betasmd']  # denoised, regularized single-trial betas
+# Results come back per model type ('typea' ... 'typed');
+# 'typed' is the final model with HRF fitting, GLMdenoise and ridge
+betas = results['typed']['betasmd']  # shape (X, Y, Z, n_trials)
 ```
 
-Note: GLMsingle requires your design matrices in a specific format (timepoints x conditions, binary). Check their [documentation](https://glmsingle.readthedocs.io) for details. There's also a size limit in the Python version - if your outputs exceed 4GB, you'll need to handle file saving manually.
+The design format is the main thing to get right. Each design matrix is a binary onset matrix of time x conditions, where each unique condition (e.g. each image) is a column, and the matrices are sampled at the TR, so trial onsets have to line up with volume acquisitions. GLMsingle uses repeated presentations of the same condition for its cross-validation, so it works best when conditions repeat across runs; with no repeats at all, it can't tune the denoising and ridge steps in the usual way. The [documentation](https://glmsingle.readthedocs.io) and the example notebooks in the repo cover the details.
 
 ## Comparison: LSA vs. LSS vs. GLMsingle
 
 | Aspect | LSA | LSS | GLMsingle |
 |--------|-----|-----|-----------|
-| **Approach** | All trials in one model | Separate model per trial | Unified framework with denoising |
-| **Collinearity handling** | None | Reduced by design separation | Ridge regression with cross-validation |
-| **HRF** | Fixed (canonical) | Fixed (canonical) | Voxel-wise optimization from library |
+| **Approach** | All trials in one model | Separate model per trial | One framework with HRF selection, denoising, ridge |
+| **Collinearity handling** | None | Other trials collapsed into one regressor | Ridge regression tuned by cross-validation |
+| **HRF** | Fixed (canonical) | Fixed (canonical) | Voxel-wise choice from a library |
 | **Denoising** | Standard confounds only | Standard confounds only | Data-driven noise regressors |
-| **Computation** | Single fit | N fits (slow) | Single fit + cross-validation |
-| **When to use** | Slow designs, simple analysis | Fast designs, moderate improvement needed | Best results, especially for MVPA |
-| **Ease of use** | Easy (nilearn) | Moderate (loop required) | Easy (dedicated toolbox) |
+| **Computation** | Single fit | N fits (slow) | Several fits + cross-validation |
+| **When to use** | Slow designs, simple analyses | Fast designs, no extra toolbox | Best estimates, especially for MVPA |
+| **Ease of use** | Easy (nilearn) | Easy (short loop in nilearn) | Moderate (dedicated toolbox, specific design format) |
 
-## When to Use What
+## When to use what
 
-Let me give you some practical guidance:
+For standard condition-level analyses (activation maps, localizers, group studies) you don't need single-trial estimates at all. A regular GLM in nilearn or SPM is fine.
 
-**Standard condition-level analysis** (group studies, activation maps): Stick with the standard GLM in nilearn or SPM. You don't need single-trial estimates.
+For MVPA with a slow event-related design (6+ seconds between trials), LSA is probably fine, since well-spaced trials don't overlap much.
 
-**MVPA with slow event-related design** (6+ seconds between trials): LSA is probably fine. Collinearity isn't a major issue with well-spaced trials.
+For MVPA with a fast event-related design (the typical 2-4 second ITI), I'd use GLMsingle unless there's a specific reason not to. The collinearity is real, HRF variation matters, and the denoising helps.
 
-**MVPA with fast event-related design** (typical 2-4 second ITI): This is where GLMsingle shines. The collinearity is real, the HRF variation matters, and the denoising helps. I'd use GLMsingle unless you have a specific reason not to.
+For large datasets with thousands of images, like NSD, GLMsingle is the obvious choice. It was developed with exactly this kind of data in mind.
 
-**Massive datasets** (thousands of images, like NSD): Definitely GLMsingle. It was literally developed for this use case. The improvements compound when you have lots of trials to estimate.
+If you want something quick without another toolbox, LSS with nilearn only takes the short loop above and works well enough for pilot analyses before you set up GLMsingle.
 
-**Quick and dirty analysis**: LSS with nilearn is surprisingly effective and doesn't require additional toolboxes. Good for pilot analyses before committing to GLMsingle.
+## Summary
 
-## Key Takeaways
-
-- **The GLM is just regression.** You're explaining each voxel's timeseries as a weighted combination of predictors.
-
-- **The design matrix encodes your experiment.** Task regressors (convolved with the HRF), parametric modulators, and nuisance regressors (motion, physiological noise) all go in there.
-
-- **Contrasts test hypotheses.** They transform betas into interpretable t-statistics that tell you where effects are reliable.
-
-- **Single-trial estimation is essential for MVPA.** You need per-trial betas, not condition averages.
-
-- **GLMsingle is the current gold standard for single-trial estimation.** If you're doing serious MVPA work, the combination of HRF optimization, GLMdenoise, and ridge regression is worth the effort. Check out the [paper](https://elifesciences.org/articles/77599) and [GitHub repo](https://github.com/cvnlab/GLMsingle).
-
-- **Always visualize your design matrix.** Seriously. So many analysis problems can be caught by just looking at what you're actually modeling.
+- The GLM explains each voxel's timeseries as a weighted sum of HRF-convolved task regressors and nuisance regressors, and contrasts on the betas test your hypotheses.
+- Always plot the design matrix before trusting any results.
+- Localizer contrasts plus group-derived parcels give you subject-specific ROIs like FFA and PPA; retinotopic mapping (or an anatomical template) gives you V1-V3. Keep ROI definition independent of the data you analyze.
+- Whole-brain group maps need multiple comparisons correction; avoid lenient cluster-forming thresholds, and consider permutation tests.
+- For MVPA you need single-trial betas from unsmoothed data. LSS is a reasonable quick option, GLMsingle usually gives the most reliable estimates.
 
 ---
 
-With beta estimates in hand - whether condition-level from a standard GLM or single-trial from GLMsingle - we're ready for the fun part. In the final post, we'll explore multivariate methods that let us decode what people are seeing from their brain activity patterns.
+With beta estimates in hand, whether condition-level from a standard GLM or single-trial from GLMsingle, we can move on to multivariate methods. In the final post we'll look at how to decode what people are seeing from their brain activity patterns.
 
 ## References
 
@@ -305,9 +389,25 @@ With beta estimates in hand - whether condition-level from a standard GLM or sin
 - [FirstLevelModel API Reference](https://nilearn.github.io/stable/modules/generated/nilearn.glm.first_level.FirstLevelModel.html)
 - [GLM First Level Examples](https://nilearn.github.io/stable/auto_examples/04_glm_first_level/index.html)
 
+### Functional Localizers and ROI Definition
+
+- Kanwisher, N., McDermott, J., & Chun, M.M. (1997). The fusiform face area: A module in human extrastriate cortex specialized for face perception. *Journal of Neuroscience*, 17(11), 4302-4311.
+- Epstein, R., & Kanwisher, N. (1998). A cortical representation of the local visual environment. *Nature*, 392, 598-601.
+- Downing, P.E., Jiang, Y., Shuman, M., & Kanwisher, N. (2001). A cortical area selective for visual processing of the human body. *Science*, 293(5539), 2470-2473.
+- Malach, R., Reppas, J.B., Benson, R.R., Kwong, K.K., Jiang, H., Kennedy, W.A., Ledden, P.J., Brady, T.J., Rosen, B.R., & Tootell, R.B. (1995). Object-related activity revealed by functional magnetic resonance imaging in human occipital cortex. *PNAS*, 92(18), 8135-8139.
+- Julian, J.B., Fedorenko, E., Webster, J., & Kanwisher, N. (2012). An algorithmic method for functionally defining regions of interest in the ventral visual pathway. *NeuroImage*, 60(4), 2357-2364.
+- Kriegeskorte, N., Simmons, W.K., Bellgowan, P.S., & Baker, C.I. (2009). Circular analysis in systems neuroscience: The dangers of double dipping. *Nature Neuroscience*, 12(5), 535-540.
+
+### Retinotopic Mapping
+
+- Dumoulin, S.O., & Wandell, B.A. (2008). Population receptive field estimates in human visual cortex. *NeuroImage*, 39(2), 647-660.
+- Benson, N.C., Butt, O.H., Brainard, D.H., & Aguirre, G.K. (2014). Correction of distortion in flattened representations of the cortical surface allows prediction of V1-V3 functional organization from anatomy. *PLoS Computational Biology*, 10(3), e1003538.
+- Benson, N.C., & Winawer, J. (2018). Bayesian analysis of retinotopic maps. *eLife*, 7, e40224.
+
 ### Single-Trial Estimation
 
 - Mumford, J.A., Turner, B.O., Ashby, F.G., & Poldrack, R.A. (2012). Deconvolving BOLD activation in event-related designs for multivoxel pattern classification analyses. *NeuroImage*, 59(3), 2636-2643. [PMC](https://pmc.ncbi.nlm.nih.gov/articles/PMC3251697/)
+- Kay, K.N., Rokem, A., Winawer, J., Dougherty, R.F., & Wandell, B.A. (2013). GLMdenoise: A fast, automated technique for denoising task-based fMRI data. *Frontiers in Neuroscience*, 7, 247.
 - Prince, J.S., Charest, I., Kurzawski, J.W., Pyles, J.A., Tarr, M.J., & Kay, K.N. (2022). Improving the accuracy of single-trial fMRI response estimates using GLMsingle. *eLife*, 11, e77599. [Paper](https://elifesciences.org/articles/77599) | [GitHub](https://github.com/cvnlab/GLMsingle) | [Documentation](https://glmsingle.readthedocs.io)
 
 ### Multiple Comparisons Correction

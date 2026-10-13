@@ -8,44 +8,39 @@ tags: ["fMRI", "neuroscience", "methods", "MVPA", "decoding", "deep learning"]
 
 *This is Part 8 of an [8-part crash course on fMRI for vision research](/blog/fmri-crash-course-1-introduction).*
 
-We've come a long way - from raw data to preprocessed, quality-checked, and GLM-analyzed brain images. Now for the exciting part: using multivariate methods to understand how the brain represents visual information.
+We've gone from raw data to preprocessed, quality-checked and GLM-analyzed brain images. In this last part we'll look at multivariate methods, which is where most of my own work happens and where a lot of current vision neuroscience is done: asking how the brain represents visual information, not just where it responds.
 
-This is where modern vision neuroscience really comes alive.
+## Why multivariate?
 
-## Beyond univariate: why multivariate?
+The GLM analysis from [Part 7](/blog/fmri-crash-course-7-analysis-glm) asks questions like "does this region respond more to faces than houses?" That's useful, but it treats each voxel independently. You end up with a map of significant voxels and not much else.
 
-Traditional GLM analysis asks a simple question: "Does this region respond more to faces than houses?" It's a powerful approach, and we covered it in [Part 7](/blog/fmri-crash-course-7-analysis-glm). But it treats each voxel independently. You get a map of "significant" voxels, and that's it.
+Information in the brain is distributed, though. One voxel responding more to faces doesn't tell you how face representations are organized, how they relate to other object categories, or which features drive them. Multivariate methods change the question from "does this region respond?" to "what information is carried by the pattern of activity across voxels?" A region can have the same average response to faces and houses and still show patterns that reliably tell them apart.
 
-The problem? Information in the brain is distributed. A single voxel responding more to faces doesn't tell us much about how face representations are organized, how they differ from other object categories, or what features drive those representations. We're leaving information on the table.
-
-Multivariate methods flip the question. Instead of asking "does this region respond?", we ask "what information is represented in the pattern of activity across voxels?" It's a subtle but profound shift. A region might show similar average activation to faces and houses while still containing patterns that reliably distinguish between them.
-
-Here's an analogy I like: univariate analysis is like measuring the overall loudness of an orchestra. Multivariate analysis is like recognizing the melody. The total volume might be the same for two pieces, but the patterns are completely different.
+The analogy I like: univariate analysis measures how loud the orchestra is, multivariate analysis tries to recognize the melody. Two pieces can be equally loud and still sound completely different.
 
 <img src="/blog/fmri-diagrams/univariate-vs-multivariate.svg" alt="Comparison of univariate vs multivariate analysis - univariate shows same mean activation for two conditions, while multivariate reveals distinct patterns across voxels" />
 
-*The key insight: two conditions can have identical mean activation (left) while showing completely different patterns across voxels (right). Univariate analysis misses this distinction entirely.*
+*Two conditions can have identical mean activation (left) while showing different patterns across voxels (right). A univariate analysis can't see this difference.*
 
-This matters enormously for vision research. We want to understand not just where processing happens, but what computational transformations occur at each stage. What features are encoded? How do representations change from early visual cortex to object-selective regions? Multivariate methods let us tackle these questions head-on.
+For vision research this is what we usually care about. We don't just want to know where processing happens, but what transformations happen along the way: which features are encoded, and how representations change from early visual cortex to object-selective regions.
 
 ## MVPA: Multi-Voxel Pattern Analysis
 
-MVPA is the umbrella term for multivariate approaches to fMRI data. The core idea is simple: treat the activity pattern across many voxels as a single observation, like a point in high-dimensional space. Different experimental conditions become different points. The question becomes: can we reliably separate these points?
+MVPA is the umbrella term for multivariate approaches to fMRI. The basic idea is to treat the activity pattern across many voxels as one observation, a point in a high-dimensional space. Different conditions are different points, and the question becomes whether we can reliably tell them apart.
 
 ### Decoding with classifiers
 
-The most intuitive MVPA approach is decoding. Can we train a classifier to predict what someone is looking at based on their brain activity?
+The most intuitive approach is decoding: can a classifier predict what someone was looking at from their brain activity? The workflow:
 
-Here's the workflow:
-1. Run an experiment where participants view different categories (faces, houses, objects, etc.)
-2. Extract the pattern of activity (beta weights from GLM) for each trial
-3. Train a classifier to predict category from pattern
-4. Test on held-out data
+1. Run an experiment where participants view different categories (faces, houses, objects, ...)
+2. Extract an activity pattern (GLM beta weights) for each trial
+3. Train a classifier to predict the category from the pattern
+4. Test it on held-out data
 5. If accuracy is above chance, the region contains information about category
 
-The standard classifier choices are Support Vector Machines (SVM) and logistic regression. Both work well. SVMs are more common in older papers; logistic regression is arguably more interpretable. In practice, they usually give similar results.
+Linear SVMs and logistic regression are the usual choices. SVMs are more common in older papers, and in practice the two give similar results.
 
-Cross-validation is critical. You absolutely cannot train and test on the same data - you'll massively overfit. The gold standard is leave-one-run-out cross-validation: train on all runs except one, test on the held-out run, rotate through all runs. This respects the temporal structure of fMRI data and avoids inflated accuracy from autocorrelated noise.
+You can't train and test on the same data, and you also can't split trials randomly, because trials from the same run share autocorrelated noise and that inflates accuracy. The standard is leave-one-run-out cross-validation: train on all runs but one, test on the held-out run, and rotate through all runs.
 
 ```python
 from sklearn.svm import SVC
@@ -68,126 +63,196 @@ print(f"Chance level: {1/len(np.unique(y)):.2f}")
 
 ### Searchlight analysis
 
-Whole-brain decoding treats the entire brain as one pattern. But what if you want to find where information is represented? Enter searchlight analysis.
+Decoding from one big set of voxels tells you that information is there, but not where. Searchlight analysis, introduced by Kriegeskorte et al. (2006), handles this by moving a small sphere through the brain and running your analysis at every location. The result is a whole-brain map of decoding accuracy (or whatever you compute in the sphere), without having to define ROIs in advance. The downside is compute: you're fitting thousands of classifiers.
 
-The idea, introduced by Kriegeskorte et al. (2006), is elegant: move a small sphere through the brain, running your analysis at each location. This gives you a map of decoding accuracy (or whatever metric you're computing) across the entire brain.
-
-It's computationally expensive - you're fitting thousands of classifiers - but extremely powerful. You get a data-driven answer to "where does the brain represent this distinction?" without having to predefine ROIs.
-
-I built [pysearchlight](https://github.com/andropar/pysearchlight) to make this easier. It handles the sphere-moving overhead, lets you plug in any function, and supports parallel processing. The key inputs are your 4D data, a function to apply within each sphere, and the radius.
+I wrote [pysearchlight](https://github.com/andropar/pysearchlight) to take care of the sphere bookkeeping and parallelization. You give it your 4D data, a binary mask, a radius in voxels, and a function that gets called on the data inside each sphere. Extra arguments (labels, run indices) get bound with `functools.partial`.
 
 ```python
-from pysearchlight import Searchlight
+from functools import partial
+
+from pysearchlight import SearchLight
 from sklearn.svm import SVC
 from sklearn.model_selection import cross_val_score, LeaveOneGroupOut
 
-def decode_accuracy(data, labels, runs):
-    """Compute decoding accuracy within a searchlight sphere."""
+
+def decode_accuracy(sphere_data, labels, runs):
+    """Leave-one-run-out decoding accuracy within one searchlight sphere.
+
+    Assumes sphere_data is (n_trials, n_voxels_in_sphere) - check the
+    pysearchlight README for the exact shape passed to sl_fn.
+    """
     clf = SVC(kernel='linear')
-    logo = LeaveOneGroupOut()
-    scores = cross_val_score(clf, data, labels, cv=logo, groups=runs)
+    scores = cross_val_score(clf, sphere_data, labels, cv=LeaveOneGroupOut(), groups=runs)
     return scores.mean()
 
-# Initialize searchlight
-sl = Searchlight(radius=3, n_jobs=8)
 
-# Run searchlight across the brain
-accuracy_map = sl.run(
-    data=beta_maps,  # (x, y, z, n_trials)
-    func=decode_accuracy,
-    func_args={'labels': conditions, 'runs': run_indices},
-    mask=brain_mask
+sl_fn = partial(decode_accuracy, labels=conditions, runs=run_indices)
+
+sl = SearchLight(
+    data=beta_maps,   # 4D: (x, y, z, n_trials)
+    sl_fn=sl_fn,      # takes a single argument: the data in the sphere
+    radius=2,         # in voxels
+    mask=brain_mask,  # binary 3D mask
 )
+accuracy_map = sl.fit(n_jobs=8, n_chunks=10, verbose=1)  # 3D array
 ```
 
-Nilearn also has a [SearchLight implementation](https://nilearn.github.io/stable/modules/generated/nilearn.decoding.SearchLight.html) that's well-documented and integrates nicely with the rest of their ecosystem.
+Nilearn also has a [SearchLight implementation](https://nilearn.github.io/stable/modules/generated/nilearn.decoding.SearchLight.html) that's well documented and fits into the rest of its ecosystem.
 
 ## Representational Similarity Analysis (RSA)
 
-Decoding tells you whether information is present. RSA, developed by Kriegeskorte et al. (2008), tells you about the structure of representations.
+Decoding tells you whether information is present. RSA (Kriegeskorte et al., 2008) tells you something about how it's structured.
 
-The core concept is the Representational Dissimilarity Matrix (RDM). For each pair of conditions, you compute how dissimilar their neural patterns are (usually 1 minus Pearson correlation). Stack these up, and you get a symmetric matrix showing the geometry of the representational space.
+The central object is the representational dissimilarity matrix (RDM). For every pair of conditions you compute how different their activity patterns are, most often as 1 minus the Pearson correlation. Put all pairs together and you get a symmetric matrix that describes the geometry of the representation.
 
 <img src="/blog/fmri-diagrams/rdm-matrix.svg" alt="Representational dissimilarity matrix showing category structure - similar items (fruits, vehicles, animals) cluster together" />
 
-*An example RDM. Dark squares along the diagonal show within-category similarity (fruits, vehicles, animals). The lighter off-diagonal blocks reveal between-category dissimilarity. This structure - that apples are more similar to bananas than to cars - is what RSA captures.*
+*Illustrative (simulated) RDM. Dark squares along the diagonal show within-category similarity (fruits, vehicles, animals), lighter off-diagonal blocks show between-category dissimilarity. That apples are more similar to bananas than to cars is the kind of structure RSA captures.*
 
-You can also visualize this structure using multidimensional scaling (MDS), which projects the high-dimensional representational geometry into 2D for inspection:
+You can also project this geometry into 2D with multidimensional scaling (MDS) to look at it:
 
 <img src="/blog/fmri-diagrams/mds-representational-space.svg" alt="MDS plot showing category clusters in representational space - fruits, vehicles, animals, tools, and faces form distinct clusters" />
 
-*MDS visualization of representational space. Items from the same category cluster together (fruits near fruits, vehicles near vehicles), while different categories occupy distinct regions. This is the geometry that RSA quantifies.*
+*Illustrative (simulated) MDS plot of a representational space. Items from the same category cluster together and different categories occupy different regions.*
 
-Why is this powerful? Because you can compare RDMs. Build an RDM from your neural data. Build another RDM from a computational model (e.g., a semantic model, a CNN layer, human similarity judgments). Correlate them. If they match, your model captures something about how that brain region organizes information.
+What makes RSA useful is that RDMs can be compared across very different sources. Compute an RDM from your neural data, compute another from a model (a semantic embedding, a CNN layer, human similarity judgments), and correlate the two. Because you only compare dissimilarity structures, you never need a mapping between voxels and model units. The usual comparison is a Spearman correlation over the lower triangle.
 
 ```python
 import numpy as np
 from scipy.spatial.distance import pdist, squareform
-from scipy.stats import spearmanr
+
 
 def compute_rdm(patterns):
-    """Compute RDM from patterns (n_conditions x n_voxels)."""
-    # 1 - correlation = dissimilarity
-    dissimilarities = pdist(patterns, metric='correlation')
-    return squareform(dissimilarities)
+    """RDM (1 - Pearson r) from patterns of shape (n_conditions, n_features)."""
+    return squareform(pdist(patterns, metric='correlation'))
 
-def compare_rdms(rdm1, rdm2):
-    """Compare two RDMs using Spearman correlation on lower triangle."""
-    # Extract lower triangle (excluding diagonal)
-    tril_idx = np.tril_indices(rdm1.shape[0], k=-1)
-    vec1 = rdm1[tril_idx]
-    vec2 = rdm2[tril_idx]
-    return spearmanr(vec1, vec2)
 
-# Compute neural RDM
-neural_rdm = compute_rdm(roi_betas)  # (n_conditions, n_voxels)
-
-# Compare to model RDM (e.g., from a CNN layer)
-model_rdm = compute_rdm(cnn_features)  # (n_conditions, n_features)
-
-rho, pval = compare_rdms(neural_rdm, model_rdm)
-print(f"RSA correlation: r={rho:.3f}, p={pval:.4f}")
+neural_rdm = compute_rdm(roi_betas)     # (n_conditions, n_voxels)
+model_rdm = compute_rdm(cnn_features)   # (n_conditions, n_features)
 ```
+
+### Testing RDM correlations
+
+A tempting shortcut is to take the p-value from `scipy.stats.spearmanr` on the two lower triangles. Don't. That p-value assumes the n(n-1)/2 dissimilarities are independent observations, but every condition shows up in n-1 of them, so they clearly aren't, and the p-value comes out too small. The standard fix (used in Nili et al., 2014) is a permutation test over condition labels: shuffle the order of conditions in one RDM, permuting rows and columns together, and recompute the correlation each time to build a null distribution.
+
+```python
+import numpy as np
+from scipy.stats import rankdata
+
+
+def rsa_permutation_test(neural_rdm, model_rdm, n_perm=10000, seed=0):
+    """Spearman correlation between two RDMs, with a condition-label permutation test.
+
+    Returns the observed correlation and a one-sided p-value.
+    """
+    n = neural_rdm.shape[0]
+    tril = np.tril_indices(n, k=-1)
+
+    # Spearman = Pearson on ranks. Permuting the conditions only reorders the
+    # model dissimilarities, so we can rank once and permute the rank matrix.
+    a = rankdata(neural_rdm[tril])
+    a = (a - a.mean()) / a.std()
+    ranks = np.zeros((n, n))
+    ranks[tril] = rankdata(model_rdm[tril])
+    ranks = ranks + ranks.T
+    b = ranks[tril]
+    mu, sd = b.mean(), b.std()
+
+    def corr(rank_mat):
+        return np.mean(a * (rank_mat[tril] - mu) / sd)
+
+    observed = corr(ranks)
+    rng = np.random.default_rng(seed)
+    null = np.empty(n_perm)
+    for i in range(n_perm):
+        p = rng.permutation(n)
+        null[i] = corr(ranks[np.ix_(p, p)])
+
+    p_value = (np.sum(null >= observed) + 1) / (n_perm + 1)
+    return observed, p_value
+
+
+rho, p = rsa_permutation_test(neural_rdm, model_rdm)
+```
+
+This tests one subject's RDM. For group-level inference you'd usually compute the correlation per subject and test across subjects (e.g. a Wilcoxon signed-rank test), or bootstrap over subjects and conditions. In practice I'd let [rsatoolbox](https://github.com/rsagroup/rsatoolbox) handle this, since it implements these inference methods and the noise ceiling below.
+
+One more thing worth knowing about: correlation distance between noisy patterns is biased, because noise alone makes two patterns look dissimilar. Cross-validated distances avoid this. The most common one is the crossnobis distance, a Mahalanobis distance that is noise-normalized using the GLM residuals and computed across independent runs, so its expected value is zero when two conditions don't differ (Walther et al., 2016). rsatoolbox supports it via `calc_rdm(..., method='crossnobis')`.
 
 ### Noise ceilings
 
-A crucial concept in RSA is the noise ceiling. Your neural data is noisy. Even the perfect model can't achieve r=1 because the data itself isn't perfectly reliable. The noise ceiling gives you an upper bound: given the noise in your data, what's the maximum correlation you could possibly observe?
+Your data is noisy, so even the true model wouldn't correlate perfectly with your neural RDM. The noise ceiling estimates how well the best possible model could do given that noise. The standard version from Nili et al. (2014) works across subjects. The upper bound is the average correlation of each subject's RDM with the group-average RDM (including that subject, which makes it slightly optimistic). The lower bound is the same, but with each subject's RDM compared to the average of all *other* subjects (leave-one-subject-out). A model that reaches the lower bound explains about as much as the data can tell you.
 
-You estimate it by splitting your data (e.g., odd vs. even runs), computing RDMs for each split, and correlating them. This gives you a sense of how much signal there is to explain. If your model achieves 80% of the noise ceiling, that's excellent. If it achieves 20%, there's a lot your model is missing.
+If you only have one subject, you can split the data (e.g. odd vs. even runs), compute an RDM for each half and correlate them. That correlation is the reliability of half the data, though, so it underestimates the reliability of the full dataset. Correct it with the Spearman-Brown formula, r_full = 2r / (1 + r), before using it as a ceiling.
+
+Either way, the point is to report model performance relative to the ceiling. A correlation of 0.3 means something very different when the ceiling is 0.35 than when it's 0.8.
 
 ## Cross-validated MANOVA
 
-Decoding with classifiers is intuitive but has quirks. Accuracy depends on the number of categories, the specific classifier, and various hyperparameters. Cross-validated MANOVA (cvMANOVA), developed by Allefeld & Haynes (2014), offers an alternative.
+Classifier accuracy has some quirks: it depends on the number of categories, the classifier you pick, and its hyperparameters. Cross-validated MANOVA (cvMANOVA; Allefeld & Haynes, 2014) is an alternative. It estimates "pattern distinctness", the multivariate variance explained by your experimental conditions, uses cross-validation to make that estimate unbiased, and sits directly on top of the GLM.
 
-Instead of classification accuracy, cvMANOVA estimates "pattern distinctness" - the multivariate variance explained by your experimental conditions. It uses cross-validation to get an unbiased estimate, and it integrates naturally with the GLM framework we already know.
+The original implementation is in MATLAB. I wrote a [Python port](https://github.com/andropar/cvmanova_python) that supports searchlight and ROI analyses, handles factorial designs, and writes results to NIfTI. In my validation tests it reproduces the results of the MATLAB implementation (rank-identical, with small absolute differences from implementation details).
 
-The original implementation was in MATLAB, but I created a [Python port](https://github.com/andropar/cvmanova_python) to make it more accessible. The package supports searchlight and ROI analyses, handles factorial designs, and exports results to NIfTI for visualization. I validated it against the MATLAB implementation and the results correlate perfectly (Spearman rho = 1.0), though absolute values differ slightly due to preprocessing differences.
-
-When should you use cvMANOVA over classification? It's arguably more principled for statistical inference and doesn't require choosing a classifier. But it's less intuitive to explain, and classification accuracy is what most reviewers expect to see. Both have their place.
+Should you use cvMANOVA instead of classification? It's arguably the more principled choice for statistical inference and you don't have to pick a classifier. It's also harder to explain, and classification accuracy is what most reviewers expect. Both have their place.
 
 ## Encoding models
 
-Decoding and RSA ask: given brain activity, what can we infer about the stimulus? Encoding models flip this around: given stimulus features, can we predict brain activity?
+Decoding and RSA go from brain activity to the stimulus. Encoding models go the other way: given features of the stimulus, can we predict the brain's response? The advantage is that you're forced to state a specific hypothesis about which features drive the response, rather than only showing that some information is present.
 
-This might seem like a subtle distinction, but it's conceptually important. Encoding models let you test specific hypotheses about what features drive neural responses. You're building a model of computation, not just demonstrating that information is present.
+The standard setup is voxelwise encoding: for every voxel, fit a regression from stimulus features to that voxel's response, and evaluate on held-out stimuli, typically with the Pearson correlation between predicted and measured responses. That gives you a map of how well your feature space explains each part of the brain. The features can be anything: Gabor wavelets, semantic embeddings, DNN activations.
 
-The standard approach is voxelwise encoding: for each voxel, fit a regression model predicting its activity from stimulus features. Use cross-validation to evaluate prediction accuracy (typically Pearson correlation between predicted and actual responses). This gives you a map of how well your feature model explains responses across the brain.
+With thousands of features (a single CNN layer can easily have tens of thousands), you need regularization, and ridge regression with a cross-validated penalty per voxel is the default. Here's a minimal version with scikit-learn. `X` holds DNN features for each image and `Y` the single-trial betas (from Part 7), averaged over repetitions of the same image, so each image appears exactly once. The train/test split is over images, so no test image is ever seen during training.
 
-Feature spaces can be anything: Gabor wavelets, semantic embeddings, deep neural network activations. The more predictive your features, the better your model captures what the brain is computing.
+```python
+import numpy as np
+from sklearn.linear_model import RidgeCV
+from sklearn.preprocessing import StandardScaler
 
-Modern encoding models often use ridge regression with carefully tuned regularization. With thousands of features (e.g., from a CNN layer), regularization is essential to avoid overfitting. Libraries like [himalaya](https://gallantlab.github.io/himalaya/) are designed specifically for this kind of large-scale voxelwise modeling.
+# X: (n_images, n_features) DNN features
+# Y: (n_images, n_voxels) betas, averaged over repetitions of each image
+n_images = X.shape[0]
+rng = np.random.default_rng(0)
+test = rng.choice(n_images, size=n_images // 5, replace=False)
+train = np.setdiff1d(np.arange(n_images), test)
+
+scaler = StandardScaler().fit(X[train])
+X_train, X_test = scaler.transform(X[train]), scaler.transform(X[test])
+
+# Efficient leave-one-out CV over alphas, with a separate alpha per voxel
+model = RidgeCV(alphas=np.logspace(-1, 6, 15), alpha_per_target=True)
+model.fit(X_train, Y[train])
+Y_pred = model.predict(X_test)
+
+
+def columnwise_pearson(a, b):
+    """Pearson r between matching columns of two (n_samples, n_targets) arrays."""
+    a = (a - a.mean(0)) / a.std(0)
+    b = (b - b.mean(0)) / b.std(0)
+    return (a * b).mean(0)
+
+
+r = columnwise_pearson(Y_pred, Y[test])  # (n_voxels,) prediction accuracy
+```
+
+For whole-brain data with many voxels and features, [himalaya](https://gallantlab.github.io/himalaya/) does the same thing much faster (including on GPU) and also supports fitting several feature spaces jointly.
+
+As with RSA, raw prediction accuracy is hard to interpret without knowing how reliable each voxel is. NSD (Allen et al., 2022) provides a noise ceiling SNR (`ncsnr`) per voxel, estimated from the variability across image repetitions. From it you get the noise ceiling as a percentage of explainable variance, NC = 100 · ncsnr² / (ncsnr² + 1/n), where n is the number of trials averaged per image. You can then compare your model's variance explained on the test set against NC. Voxels with a low ceiling are mostly noise, and low prediction accuracy there doesn't say much about your model. (See also [Part 6](/blog/fmri-crash-course-6-quality-assessment).)
+
+### ROIs and the cortical surface
+
+In vision studies you rarely run these analyses on "the whole brain" in the abstract. Most of the time you work within ROIs: early visual areas (V1, V2, V3, hV4) delineated from retinotopic mapping or a retinotopy atlas (Benson & Winawer, 2018), and category-selective regions from functional localizers, like FFA for faces (Kanwisher et al., 1997), PPA for scenes (Epstein & Kanwisher, 1998) and LOC for objects (Malach et al., 1995). The scans for this are covered in [Part 4](/blog/fmri-crash-course-4-recording-experiments), and defining ROIs from localizers in [Part 7](/blog/fmri-crash-course-7-analysis-glm). Then you compare decoding accuracy, RDMs or encoding performance across areas, which is how you get at questions about the hierarchy.
+
+The other common choice is to work on the cortical surface instead of in the volume. Visual areas are laid out on a folded sheet, and two voxels that are close in 3D can sit on opposite banks of a sulcus. Surface-based ROIs and analyses follow the sheet, which is why retinotopic maps are almost always shown on (inflated or flattened) surfaces. fMRIPrep can output surface data for you, and NSD ships data in surface space as well.
 
 ## Connecting to deep learning
 
-Here's where things get exciting. Deep convolutional neural networks (CNNs) trained on object recognition turn out to be surprisingly good models of the ventral visual stream.
-
-The discovery, pioneered by researchers like Yamins and DiCarlo around 2014, was striking: layer-by-layer, CNN representations predict neural activity in corresponding brain regions. Early CNN layers predict V1 better than later layers; late CNN layers predict IT cortex better than early layers. The hierarchy matches.
+Deep convolutional neural networks (CNNs) trained on object recognition turned out to be surprisingly good models of the ventral visual stream. In 2014, Yamins et al. showed that a CNN optimized for object recognition predicted neural responses in monkey IT cortex, and Khaligh-Razavi & Kriegeskorte showed that representations of deep supervised networks matched human and monkey IT representations in RSA. Güçlü & van Gerven (2015) then showed in fMRI that there's a layer-to-area correspondence: early CNN layers best predict early visual cortex, later layers best predict higher ventral areas, so the model hierarchy roughly mirrors the cortical one.
 
 <img src="/blog/fmri-diagrams/dnn-brain-heatmap.svg" alt="Heatmap showing correlations between CNN layers and brain ROIs - early layers correlate with V1/V2, late layers with IT cortex" />
 
-*The signature finding of DNN-brain comparisons. Each cell shows the correlation between a CNN layer's representations and a brain region's activity patterns. The diagonal structure reveals hierarchical correspondence: early CNN layers (conv1-2) best predict early visual cortex (V1-V2), while late layers (fc6-8) best predict higher visual areas (IT). This is RSA applied to model comparison.*
+*Illustrative (simulated) layer-by-region comparison. Each cell would be the correlation between a CNN layer's representations and a brain region's activity patterns. The diagonal structure is the pattern reported in the literature: early layers (conv1-2) match early visual cortex (V1-V2) best, late layers (fc6-8) match higher visual areas (IT) best.*
 
-This launched a cottage industry of comparing DNNs to brains. Which architecture best predicts neural activity? Which layer? Does training on different tasks change the correspondence? Tools like [thingsvision](https://github.com/ViCCo-Group/thingsvision) make this easy: specify a model and layer, extract features for your images, and you're ready for encoding or RSA analyses.
+Since then, a lot of work has compared DNNs to brains: which architecture predicts neural activity best, which layer, and whether the training task or data changes the correspondence. [thingsvision](https://github.com/ViCCo-Group/thingsvision) makes the feature extraction part easy. You pick a model and a layer, extract features for your images, and can go straight into encoding or RSA.
 
 ```python
 from thingsvision import get_extractor
@@ -208,7 +273,7 @@ features = extractor.extract_features(
 )
 ```
 
-The standard approach is linearized encoding: extract DNN features for each image, then fit a linear model predicting voxel responses from those features. The assumption is that voxel responses are a linear readout of the underlying representation. This works remarkably well, though there's ongoing debate about what it really tells us about computation versus just pattern matching.
+The usual approach is the linearized encoding model from above: DNN features in, voxel responses out, with the assumption that voxel responses are a linear readout of the network's representation. This works well in practice, but there's an ongoing debate about how much good prediction tells us about the brain's actual computations.
 
 ## Comparing approaches
 
@@ -217,53 +282,47 @@ The standard approach is linearized encoding: extract DNN features for each imag
 | **Decoding** | Is information about X present? | Intuitive, easy to explain | Doesn't reveal structure; accuracy depends on # categories |
 | **RSA** | What is the structure of representations? | Model-comparative; geometry-focused | Requires many conditions; correlational |
 | **cvMANOVA** | How distinct are patterns? | Principled statistics; no classifier choice | Less intuitive; less common in literature |
-| **Encoding** | What features predict activity? | Mechanistic; tests specific models | Assumes linear readout; requires good features |
+| **Encoding** | What features predict activity? | Tests specific feature models | Assumes linear readout; requires good features |
 
-In practice, these methods are complementary. Decoding establishes that information exists. RSA and encoding characterize what that information looks like. Use all of them.
+These methods complement each other. Decoding shows that information is there, RSA and encoding models describe what it looks like. Many papers use more than one.
 
-## Modern datasets enabling this research
+## Datasets
 
-The methods I've described are only as good as the data. Fortunately, we're in a golden age of large-scale, publicly available fMRI datasets.
+These methods need a lot of data, ideally many stimuli with repeated presentations. Luckily there are now several large, public fMRI datasets for vision.
 
 ### Natural Scenes Dataset (NSD)
 
-The [Natural Scenes Dataset](https://naturalscenesdataset.org/) is a landmark. Eight subjects viewed 9,000-10,000 distinct natural images from COCO, each image presented 3 times. That's 30-40 scanning sessions per subject, collected at 7T with 1.8mm resolution. The scale is unprecedented.
-
-Why does this matter? With thousands of images and multiple repetitions, you can train serious encoding models. You can test fine-grained hypotheses about representation. You can characterize individual differences. NSD has become the de facto benchmark for brain encoding research.
+In the [Natural Scenes Dataset](https://naturalscenesdataset.org/) (Allen et al., 2022), eight participants each viewed 9,000-10,000 distinct natural images from COCO, with each image shown up to 3 times, over 30-40 scanning sessions per participant at 7T and 1.8mm resolution. With that many images and repetitions you can fit encoding models with large feature spaces, test fine-grained hypotheses, and look at individual participants. It has become the standard dataset for encoding model work (it was also the basis of the Algonauts 2023 challenge).
 
 ### THINGS-data
 
-[THINGS-data](https://things-initiative.org/) takes a different approach. Rather than naturalistic complexity, it focuses on object concepts - 1,854 of them, carefully sampled to represent the English lexicon. The dataset includes fMRI, MEG, and millions of behavioral similarity judgments.
+[THINGS-data](https://things-initiative.org/) (Hebart et al., 2023) is built around object concepts rather than natural scenes. The THINGS database has 1,854 concepts, sampled to cover concrete, nameable object concepts in American English. The fMRI data (3 participants) covers 720 of these concepts with 8,740 images, the MEG data (4 participants) covers the same 720 concepts, and 4.7 million behavioral odd-one-out similarity judgments cover all 1,854.
 
-It's ideal for RSA. With careful condition sampling and rich behavioral data, you can directly compare neural representations to human perception and computational models. The combination of modalities (fMRI for where, MEG for when) enables spatiotemporal investigations that neither alone could support.
+The broad concept sampling and the behavioral similarity data make it a good fit for RSA, since you can compare neural representations to human similarity judgments and to models. Having fMRI and MEG for the same concepts also lets you ask spatial and temporal questions about the same stimuli.
 
-Both datasets are freely available. If you're serious about vision neuroscience, you should be working with them.
+Both datasets are freely available, and if your question fits them, they're a much cheaper starting point than collecting your own data.
 
 ## Where the field is heading
 
-A few trends I see shaping the next decade:
+A few trends that I think will shape the next years:
 
-**Foundation models for the brain.** We're moving beyond comparing single DNN layers to brain regions. Newer work trains models specifically to predict brain activity across multiple subjects and datasets. These "brain foundation models" may enable better encoding, better alignment across individuals, and even brain-to-brain comparisons.
+Models are increasingly trained to predict brain activity directly, across many subjects and datasets, rather than taking an off-the-shelf DNN layer and mapping it to one region. These "brain foundation models" might give better encoding, better alignment across individuals, and new ways to compare brains.
 
-**Naturalistic paradigms.** Static images are giving way to movies and dynamic naturalistic stimuli. This requires new methods - temporal encoding models, inter-subject correlation, narrative-level representations - but captures cognition in a more ecologically valid setting.
+Static images are being complemented by movies and other dynamic, naturalistic stimuli. That needs different methods (temporal encoding models, inter-subject correlation) but gets closer to how vision actually works outside the scanner.
 
-**Individual differences.** Most studies average across subjects. But individual brains differ substantially. Understanding these differences - in architecture, in representation, in how they map to behavior - is becoming a focus.
+Most studies still average across subjects, but individual brains differ a lot, and understanding how they differ in anatomy, representation and behavior is becoming a research topic of its own.
 
-**Interpretability and causality.** Predictive accuracy isn't explanation. We want to know why certain features predict activity, not just that they do. Causal perturbation methods (TMS, targeted lesions in silico) are increasingly used alongside correlational encoding analyses.
+Finally, good prediction isn't the same as explanation. People increasingly want to know why certain features predict activity, and combine encoding analyses with causal manipulations, both in the brain (e.g. TMS) and in silico (lesioning or perturbing model units).
 
 ---
 
-## Key Takeaways
+## Summary
 
-1. **Multivariate methods reveal what's represented, not just where.** They treat patterns across voxels as the unit of analysis, capturing distributed information that univariate methods miss.
-
-2. **Decoding, RSA, and encoding are complementary.** Decoding establishes information is present. RSA reveals representational geometry. Encoding tests mechanistic hypotheses about features.
-
-3. **Cross-validation is non-negotiable.** Leave-one-run-out respects fMRI's temporal structure and prevents inflated results.
-
-4. **DNNs are useful models of vision.** Comparing CNN layers to brain regions has become standard practice, enabled by tools like thingsvision.
-
-5. **Modern datasets are a gift.** NSD and THINGS provide the scale needed for serious encoding work. Use them.
+- Multivariate methods treat the pattern across voxels as the unit of analysis and pick up distributed information that univariate analysis misses.
+- Decoding shows that information is present, RSA describes representational geometry, and encoding models test which features drive responses.
+- Cross-validate across runs (or images), test RSA results with condition-label permutations rather than naive p-values, and report performance relative to a noise ceiling.
+- In vision you'll usually do all of this within retinotopic and localizer-defined ROIs, or on the cortical surface.
+- NSD and THINGS-data, together with tools like thingsvision, make comparing DNNs to visual cortex accessible.
 
 ---
 
@@ -278,28 +337,27 @@ A few trends I see shaping the next decade:
 - [pysearchlight](https://github.com/andropar/pysearchlight) - flexible searchlight analysis
 - [cvmanova_python](https://github.com/andropar/cvmanova_python) - cross-validated MANOVA in Python
 - [thingsvision](https://github.com/ViCCo-Group/thingsvision) - extracting DNN features
-- [rsatoolbox](https://github.com/rsagroup/rsatoolbox) - comprehensive RSA toolkit
+- [rsatoolbox](https://github.com/rsagroup/rsatoolbox) - RSA toolkit, including inference and noise ceilings
 - [himalaya](https://gallantlab.github.io/himalaya/) - voxelwise encoding models
 
 **Datasets:**
 - [Natural Scenes Dataset](https://naturalscenesdataset.org/)
 - [THINGS-data](https://things-initiative.org/)
-- [BOLD5000](https://bold5000.github.io/) - another large-scale image viewing dataset
+- [BOLD5000](https://bold5000-dataset.github.io/website/) - another large-scale image viewing dataset
 
-**Key papers:**
+**Papers to start with:**
 - Haxby et al. (2001) - distributed representations in ventral cortex
 - Kriegeskorte et al. (2006) - searchlight analysis
 - Kriegeskorte et al. (2008) - RSA framework
+- Nili et al. (2014) - RSA toolbox, inference and noise ceilings
 - Yamins & DiCarlo (2016) - DNNs and the ventral stream
 - Allefeld & Haynes (2014) - cross-validated MANOVA
 
 ---
 
-**Congratulations** - you've made it through the entire crash course! You now have a solid foundation for working with fMRI data: understanding what fMRI measures, designing experiments that work with its constraints, preprocessing data properly, checking quality, running GLM analyses, and using multivariate methods to probe neural representations.
+That's the end of the crash course. If you've read all eight parts, you should now have a decent picture of the whole pipeline: what fMRI measures, how to design experiments around its constraints, how to preprocess and quality-check data, how to run GLM analyses, and how to use multivariate methods to look at neural representations.
 
-From here, the possibilities are vast. Pick a dataset, pick a question, and dive in. The tools are accessible, the community is active, and there's never been a better time to study how the brain represents the visual world.
-
-Good luck.
+From here, the best way to learn is to pick a dataset and a question and start working on it. Most of the tools are free and the community is helpful. Good luck!
 
 ---
 
@@ -310,18 +368,33 @@ Good luck.
 
 ### Representational Similarity Analysis (RSA)
 - Kriegeskorte, N., Mur, M., & Bandettini, P. (2008). [Representational similarity analysis - connecting the branches of systems neuroscience](https://www.frontiersin.org/journals/systems-neuroscience/articles/10.3389/neuro.06.004.2008/full). *Frontiers in Systems Neuroscience*, 2, 4.
+- Nili, H., Wingfield, C., Walther, A., Su, L., Marslen-Wilson, W., & Kriegeskorte, N. (2014). A toolbox for representational similarity analysis. *PLOS Computational Biology*, 10(4), e1003553.
+- Walther, A., Nili, H., Ejaz, N., Alink, A., Kriegeskorte, N., & Diedrichsen, J. (2016). Reliability of dissimilarity measures for multi-voxel pattern analysis. *NeuroImage*, 137, 188-200.
 - [rsatoolbox documentation](https://rsatoolbox.readthedocs.io/) | [GitHub repository](https://github.com/rsagroup/rsatoolbox)
 
-### Searchlight Analysis
+### Searchlight Analysis and cvMANOVA
 - Kriegeskorte, N., Goebel, R., & Bandettini, P. (2006). [Information-based functional brain mapping](https://www.pnas.org/doi/10.1073/pnas.0600244103). *Proceedings of the National Academy of Sciences*, 103(10), 3863-3868.
+- Allefeld, C., & Haynes, J.-D. (2014). Searchlight-based multi-voxel pattern analysis of fMRI by cross-validated MANOVA. *NeuroImage*, 89, 345-357.
 
 ### Encoding Models
 - Kay, K. N., Naselaris, T., Prenger, R. J., & Gallant, J. L. (2008). [Identifying natural images from human brain activity](https://www.nature.com/articles/nature06713). *Nature*, 452, 352-355.
 - Naselaris, T., Kay, K. N., Nishimoto, S., & Gallant, J. L. (2011). [Encoding and decoding in fMRI](https://www.sciencedirect.com/science/article/abs/pii/S1053811910010657). *NeuroImage*, 56(2), 400-410.
 
+### Visual ROIs
+- Kanwisher, N., McDermott, J., & Chun, M. M. (1997). The fusiform face area: a module in human extrastriate cortex specialized for face perception. *Journal of Neuroscience*, 17(11), 4302-4311.
+- Epstein, R., & Kanwisher, N. (1998). A cortical representation of the local visual environment. *Nature*, 392, 598-601.
+- Malach, R., Reppas, J. B., Benson, R. R., et al. (1995). Object-related activity revealed by functional magnetic resonance imaging in human occipital cortex. *Proceedings of the National Academy of Sciences*, 92(18), 8135-8139.
+- Benson, N. C., & Winawer, J. (2018). Bayesian analysis of retinotopic maps. *eLife*, 7, e40224.
+
 ### DNN-Brain Correspondence
-- Yamins, D. L. K., & DiCarlo, J. J. (2016). [Using goal-driven deep learning models to understand sensory cortex](https://www.nature.com/articles/nn.4244). *Nature Neuroscience*, 19, 356-365.
+- Yamins, D. L. K., Hong, H., Cadieu, C. F., Solomon, E. A., Seibert, D., & DiCarlo, J. J. (2014). Performance-optimized hierarchical models predict neural responses in higher visual cortex. *Proceedings of the National Academy of Sciences*, 111(23), 8619-8624.
 - Khaligh-Razavi, S.-M., & Kriegeskorte, N. (2014). [Deep supervised, but not unsupervised, models may explain IT cortical representation](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003915). *PLOS Computational Biology*, 10(11), e1003915.
+- Güçlü, U., & van Gerven, M. A. J. (2015). Deep neural networks reveal a gradient in the complexity of neural representations across the ventral stream. *Journal of Neuroscience*, 35(27), 10005-10014.
+- Yamins, D. L. K., & DiCarlo, J. J. (2016). [Using goal-driven deep learning models to understand sensory cortex](https://www.nature.com/articles/nn.4244). *Nature Neuroscience*, 19, 356-365.
+
+### Datasets
+- Allen, E. J., St-Yves, G., Wu, Y., et al. (2022). A massive 7T fMRI dataset to bridge cognitive neuroscience and artificial intelligence. *Nature Neuroscience*, 25, 116-126.
+- Hebart, M. N., Contier, O., Teichmann, L., et al. (2023). THINGS-data, a multimodal collection of large-scale datasets for investigating object representations in human brain and behavior. *eLife*, 12, e82580.
 
 ### Software Documentation
 - [Nilearn: Decoding and MVPA](https://nilearn.github.io/stable/decoding/decoding_intro.html) - Introduction to decoding with nilearn

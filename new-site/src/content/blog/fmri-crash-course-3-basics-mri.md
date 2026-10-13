@@ -8,136 +8,132 @@ tags: ["fMRI", "neuroscience", "methods", "vision"]
 
 *This is Part 3 of an [8-part crash course on fMRI for vision research](/blog/fmri-crash-course-1-introduction).*
 
-Now we get to the fun part: understanding how we can use giant magnets to measure brain activity. It sounds almost magical when you first hear it. A person lies in a tube, magnets do their thing, and somehow we get beautiful images of their brain lighting up. But the physics behind it is surprisingly elegant, and once you grasp the core principles, everything else clicks into place.
+In this post we'll look at how a giant magnet can measure brain activity. When I first heard about it, it sounded a bit like magic, but you only need a handful of physics ideas to follow the rest of this series.
 
 ## MRI basics: spins, magnets, and radio waves
 
-Here's the fundamental insight: your body is mostly water, and water contains hydrogen atoms. Each hydrogen atom has a single proton in its nucleus, and protons have a property called **spin**. You can think of each proton as a tiny bar magnet, constantly spinning on its axis.
+Your body is mostly water, and water contains hydrogen. Each hydrogen atom has a single proton in its nucleus, and protons have a property called spin. For our purposes, you can think of each proton as a tiny bar magnet.
 
-Normally, these tiny magnets point in random directions, canceling each other out. But when you place someone inside an MRI scanner, something interesting happens. The scanner generates an incredibly strong magnetic field - typically 1.5 to 7 Tesla, which is tens of thousands of times stronger than Earth's magnetic field. This field forces all those randomly oriented protons to align with it, like compass needles pointing north.
+Normally these tiny magnets point in random directions and cancel out. Inside an MRI scanner they sit in a field of typically 1.5 to 7 Tesla, tens of thousands of times stronger than Earth's. In this field, slightly more protons align with the field than against it. The excess is tiny, only a few parts per million, but there are so many protons in a brain that it adds up to a measurable net magnetization pointing along the field. This net magnetization is what MRI works with.
 
 <img src="/blog/fmri-diagrams/proton-alignment.svg" alt="Proton alignment before and after magnetic field application" />
 
-But here's where it gets clever. The protons don't just align - they also **precess**. Imagine a spinning top that's slightly tilted: it wobbles in a circle while it spins. Protons do the same thing, wobbling around the axis of the magnetic field at a very specific frequency called the Larmor frequency. This frequency depends on the strength of the magnetic field and the type of atom. For hydrogen in a 3T scanner, it's about 128 MHz.
+The protons also precess: like a slightly tilted spinning top, they wobble around the direction of the magnetic field at a specific frequency, the Larmor frequency, which depends on the field strength and the type of nucleus. For hydrogen in a 3T scanner it's about 128 MHz.
 
-Now comes the radio frequency (RF) pulse. The scanner sends out a burst of radio waves at exactly the Larmor frequency. This is resonance - the same principle that lets an opera singer shatter a glass by hitting the right note. The RF pulse tips the protons away from their aligned state, essentially giving them a push.
+To get a signal, the scanner sends a short burst of radio waves at exactly this frequency (an RF pulse). Because it matches the precession frequency, the pulse is absorbed efficiently (resonance) and tips the net magnetization away from the direction of the main field.
 
-When the RF pulse stops, the protons want to return to their aligned state. As they do, they release energy in the form of radio waves, which the scanner detects. This is the MRI signal.
+When the pulse stops, the magnetization returns to its original state, and the precessing protons emit radio waves that the scanner's coils pick up. This is the MRI signal.
 
-### T1 and T2 relaxation: the source of contrast
+### T1, T2, and T2* relaxation: where contrast comes from
 
-The brilliance of MRI is that different tissues relax at different rates, giving us contrast. There are two types of relaxation:
+Different tissues return to equilibrium at different rates, and that's what gives MRI images their contrast. There are two main kinds of relaxation.
 
-**T1 relaxation** (longitudinal relaxation) is how quickly protons realign with the main magnetic field. Fat relaxes quickly; water relaxes slowly. This gives us T1-weighted images where fat appears bright and cerebrospinal fluid appears dark.
+T1 relaxation (longitudinal relaxation) describes how quickly the magnetization realigns with the main field. Fat recovers quickly, water slowly, so in T1-weighted images fat appears bright and cerebrospinal fluid appears dark. The anatomical scans you'll use for registration and cortical surface reconstruction are usually T1-weighted.
 
-**T2 relaxation** (transverse relaxation) is how quickly the protons lose their synchrony with each other after the RF pulse. Think of it like a group of runners who start together but gradually spread out. Different tissues lose sync at different rates, giving us T2-weighted images where fluids appear bright.
+T2 relaxation (transverse relaxation) describes how quickly the protons lose their synchrony after the RF pulse, like runners who start together and gradually spread out. In T2-weighted images, fluids appear bright.
+
+In a real scanner, the protons also get out of sync because the magnetic field isn't perfectly uniform: small local field inhomogeneities make neighbouring protons precess at slightly different frequencies. The decay you actually observe, including this extra dephasing, is called T2* ("T2-star"). T2* is always shorter than T2. This is what fMRI exploits.
 
 <img src="/blog/fmri-diagrams/t1-t2-curves.svg" alt="T1 recovery and T2 decay curves for different brain tissues" />
 
-By adjusting the timing of RF pulses and signal acquisition, we can emphasize either T1 or T2 contrast. This is why radiologists can see different things by running different MRI sequences - the physics is the same, but the timing reveals different tissue properties.
+By changing the timing of RF pulses and signal readout, you can make an image sensitive mostly to T1, T2, or T2*.
 
 ## From structure to function: the BOLD signal
 
-Structural MRI gives us gorgeous images of brain anatomy. But what we really want for cognitive neuroscience is to see the brain *doing* things. That's where functional MRI comes in.
+fMRI relies on the fact that active neurons need energy and oxygen. When a brain region becomes more active, local blood flow increases, and it increases by more than the extra oxygen consumption requires. This is the hemodynamic response.
 
-The key insight that makes fMRI possible is beautifully simple: **active neurons need oxygen**. When a brain region becomes active, local blood flow increases to deliver more oxygenated blood. This is called the hemodynamic response.
+Hemoglobin, the molecule in red blood cells that carries oxygen, has different magnetic properties depending on whether it's carrying oxygen. Oxygenated hemoglobin is diamagnetic and barely affects the local magnetic field. Deoxygenated hemoglobin is paramagnetic: it creates small distortions in the field around blood vessels. These local field inhomogeneities make nearby protons dephase faster, which shortens T2* and reduces the signal in a T2*-weighted image.
 
-Here's where physics helps us again. Hemoglobin - the molecule in red blood cells that carries oxygen - has different magnetic properties depending on whether it's carrying oxygen or not. Oxygenated hemoglobin (oxyhemoglobin) is **diamagnetic**, meaning it barely affects the local magnetic field. But deoxygenated hemoglobin (deoxyhemoglobin) is **paramagnetic** - it distorts the magnetic field around it, which speeds up T2 relaxation and reduces the MRI signal.
+So the logic goes:
+1. Neurons in some region become more active
+2. Blood flow increases, bringing in more oxygenated blood than is used up
+3. The proportion of deoxyhemoglobin in the local blood drops
+4. Less field distortion means slower T2* decay
+5. The T2*-weighted MRI signal increases
 
-So here's the logic:
-1. Neurons fire in some brain region
-2. Blood flow increases, bringing fresh oxygenated blood
-3. The ratio of oxy- to deoxyhemoglobin shifts toward more oxygenated blood
-4. Less magnetic distortion means slower T2 relaxation
-5. The MRI signal increases
-
-This is the **Blood Oxygen Level Dependent (BOLD)** signal. We're not measuring neural activity directly - we're measuring changes in blood oxygenation that correlate with neural activity. It's indirect, but it works remarkably well.
+This is the Blood Oxygen Level Dependent (BOLD) signal, first described by Ogawa and colleagues in 1990. To be sensitive to it, fMRI uses T2*-weighted gradient-echo sequences, almost always echo-planar imaging (EPI), which can acquire a whole brain volume in a second or two. We're measuring changes in blood oxygenation that follow neural activity, not the activity itself. Visual cortex was one of the first places this was shown in humans (Kwong et al., 1992, with flashing-light stimulation), and its strong, reliable responses are one reason vision has been such a productive area for fMRI.
 
 ### A recent complication: discordant voxels
 
-I should mention an important recent finding that complicates this picture. A [2025 paper in Nature Neuroscience](https://www.nature.com/articles/s41593-025-02132-9) by Poser and colleagues found that the relationship between BOLD signal and neural activity is more complex than the standard model suggests.
+A [2025 paper in Nature Neuroscience](https://www.nature.com/articles/s41593-025-02132-9) by Epp and colleagues showed that the relationship between BOLD and the underlying physiology can be messier than the standard model suggests.
 
-Using quantitative imaging that measures both BOLD signal and actual oxygen consumption (cerebral metabolic rate of oxygen, or CMRO₂), they discovered that about **40% of voxels** showing significant BOLD changes during tasks exhibited what they call "discordant" behavior - the BOLD signal went in the *opposite* direction from oxygen metabolism. This was particularly common in the **default mode network**.
+They used quantitative imaging to measure both the BOLD signal and oxygen metabolism (the cerebral metabolic rate of oxygen, CMRO₂) during tasks. In about 40% of voxels with significant BOLD changes, the BOLD signal went in the opposite direction from oxygen metabolism. They called these voxels "discordant", and they were particularly common in the default mode network.
 
-What's happening? In "concordant" voxels (the majority), BOLD increases track with increased neural activity and oxygen consumption, as the textbook model predicts. But in discordant voxels, the relationship is inverted - likely because these regions regulate oxygen delivery differently, relying more on changes in oxygen extraction fraction rather than blood flow.
+In concordant voxels, BOLD tracks oxygen consumption as the textbook model predicts. In discordant voxels, the authors' interpretation is that these regions meet changing oxygen demand mostly by extracting more oxygen from the blood that's already there, instead of increasing blood flow, which flips the sign of the BOLD change.
 
-This doesn't invalidate fMRI - the technique remains invaluable. But it's a reminder that BOLD is a complex physiological signal, not a simple neural activity meter. The relationship between BOLD and neural firing varies across brain regions, and interpreting "deactivation" (BOLD decreases) requires particular caution. For most vision research in sensory cortex, the standard model holds well.
+This doesn't make fMRI useless, but the coupling between BOLD and neural activity can differ between regions, and BOLD decreases ("deactivations") deserve extra caution. In sensory cortex, which is where most vision research happens, the standard model seems to hold reasonably well.
 
 ### The hemodynamic response function
 
-The BOLD response doesn't happen instantly. The hemodynamic response function (HRF) describes how the BOLD signal changes over time after a brief neural event.
+The hemodynamic response function (HRF) describes how the BOLD signal evolves over time after a brief neural event.
 
 <img src="/blog/fmri-diagrams/hrf-curve.svg" alt="Hemodynamic response function showing the characteristic BOLD signal shape over time" />
 
-The typical HRF looks something like this:
-- **Initial dip (0-2 seconds):** A small decrease in signal as local oxygen is consumed before blood flow catches up. This is subtle and not always observed.
-- **Rise to peak (2-6 seconds):** Blood flow overshoots the demand, flooding the area with oxygenated blood. The signal peaks around 5-6 seconds after the neural event.
-- **Return to baseline (6-12 seconds):** Blood flow normalizes.
-- **Post-stimulus undershoot (12-30 seconds):** The signal dips slightly below baseline as the vascular system settles. This is why you can't present stimuli too rapidly - you need time for the HRF to recover.
+A typical HRF has these phases:
+- Initial dip (0-2 seconds): a small, brief signal decrease, possibly because oxygen is consumed before blood flow catches up. It's subtle and often not observed.
+- Rise to peak (2-6 seconds): blood flow overshoots demand and the signal peaks around 5-6 seconds after the neural event.
+- Return to baseline (6-12 seconds): blood flow normalizes.
+- Post-stimulus undershoot (12-30 seconds): the signal dips slightly below baseline before it settles.
 
-This sluggish response has major implications for experimental design. If you show someone two images 500ms apart, their BOLD responses will overlap and blend together. The brain can do a lot in half a second, but fMRI smooths it all together. We'll deal with this constraint extensively when we design experiments.
+So if you show someone two images 500 ms apart, their BOLD responses overlap almost completely. This doesn't mean you have to wait 30 seconds between stimuli, though. To a first approximation, overlapping responses add up linearly, which is what allows the analysis to separate them later in rapid event-related designs, especially if you jitter the timing between trials. At very fast presentation rates this linearity starts to break down and responses saturate, so there are limits. We'll get into this properly in [Part 4](/blog/fmri-crash-course-4-recording-experiments).
 
 ## Pros and cons of fMRI
 
-Let's be honest about what fMRI can and cannot do. I've seen too many papers oversell their findings by ignoring the method's limitations, and too many researchers dismiss fMRI entirely without appreciating its unique strengths.
-
 ### The good stuff
 
-**Non-invasive and safe.** No radiation, no injections (usually), no surgery. You can scan the same person hundreds of times. This is huge for longitudinal studies and for building the large datasets that modern computational approaches require.
+It's non-invasive and safe. There's no ionizing radiation, usually no injections, and no surgery, so you can scan the same person many times. That makes longitudinal studies and large, densely sampled datasets possible.
 
-**Excellent spatial resolution.** Standard fMRI gives you 2-3mm voxels. High-field scanners can push below 1mm. That's not single-neuron resolution, but it's good enough to distinguish between cortical layers and fine-grained patterns within brain regions.
+The spatial resolution is good. Standard fMRI at 3T gives you 2-3 mm voxels, which is enough to map visual field maps, category-selective regions, and fine-grained activity patterns within a region. With 7T scanners and sub-millimeter voxels, specialized studies can even look at differences between cortical layers, but that's far from routine.
 
-**Whole-brain coverage.** Unlike electrophysiology, where you sample from a few locations, fMRI gives you the entire brain in every scan. You can discover unexpected activations. You can study network interactions across distant regions. This matters more than people often appreciate.
+You get whole-brain coverage. Unlike electrophysiology, where you sample from a few locations, fMRI records from (more or less) the whole brain in every volume.
 
-**Widespread availability.** Most research universities have access to an MRI scanner. The analysis software is mature and well-documented. There's a large community to learn from.
+It's widely available, the analysis software is mature, and there's a large community to learn from.
 
 ### The not-so-good stuff
 
-**Poor temporal resolution.** The BOLD response peaks 5-6 seconds after neural activity. Even with fast acquisition (TR of 1 second or less), you're measuring a sluggish, smoothed version of neural dynamics. EEG and MEG can capture millisecond-level changes; fMRI cannot.
+The temporal resolution is poor. The BOLD response peaks 5-6 seconds after neural activity, and even with fast acquisition (TR of 1 second or less) you're measuring a slow, smoothed version of neural dynamics.
 
-**Indirect measurement.** You're measuring blood flow changes, not neural firing. The relationship between BOLD and neural activity is complex and can vary across brain regions, populations, and conditions. Always remember: BOLD is a proxy.
+It's an indirect measure. You're measuring changes in blood oxygenation, not neural firing, and as the discordant voxel results show, the relationship between the two can vary across brain regions, populations, and conditions.
 
-**Expensive.** Scanner time typically costs $500-1000 per hour. A full research study can easily run into six figures. This isn't a hobby.
+It's expensive. Scanner time typically costs somewhere around $500-1000 per hour, and a full study can easily run into six figures.
 
-**Motion sensitivity.** Head movement of even 1-2mm can ruin your data. Participants have to lie very still for extended periods, which is challenging. Motion correction helps but doesn't eliminate the problem, and differential motion between conditions can create spurious results.
+It's sensitive to motion. Head movement of even 1-2 mm can ruin your data. Motion correction helps but doesn't fully solve the problem, and if participants move more in one condition than another, you can get spurious effects.
 
-**Loud and uncomfortable.** The scanner makes a rhythmic banging sound (around 100 dB) as gradient coils switch rapidly. Participants wear earplugs and headphones. The bore is narrow and claustrophobic. Some people simply can't tolerate it.
+It's loud (around 100 dB from the switching gradient coils) and the bore is narrow, which some people can't tolerate.
 
-### Field strength comparison
+### Field strength
 
-Not all MRI scanners are created equal. Here's how the main field strengths compare:
+A rough comparison of the field strengths you'll come across:
 
-| Field Strength | Spatial Resolution | SNR | Availability | Best For |
+| Field Strength | Typical voxel size | SNR | Availability | Mostly used for |
 |----------------|-------------------|-----|--------------|----------|
-| **1.5T** | ~3-4mm typical | Lower | Common in hospitals | Clinical scanning, basic research |
-| **3T** | ~2-3mm typical | Good | Most research centers | Standard cognitive fMRI, good balance |
-| **7T** | <1mm possible | Highest | Specialized centers | High-resolution cortical mapping, layers |
+| 1.5T | ~3-4 mm | Lower | Common in hospitals | Clinical scanning |
+| 3T | ~2-3 mm | Good | Most research centers | Standard cognitive fMRI |
+| 7T | <1 mm possible | Highest | Specialized centers | High-resolution mapping, layer studies |
 
-Higher field strength means stronger signal, which translates to better spatial resolution or faster scanning. But it also means more artifacts, especially near air-tissue boundaries, and more expensive hardware. For vision research, 3T is the workhorse; 7T is the luxury option when you need to resolve fine-grained cortical organization.
+Higher field strength gives you more signal, which you can spend on smaller voxels or faster scanning. It also brings more artifacts, especially near air-tissue boundaries, and more expensive hardware. For vision research, 3T is the standard choice. [Part 4](/blog/fmri-crash-course-4-recording-experiments) goes into the trade-offs in more detail.
 
 ## What does fMRI data actually look like?
 
-Let's get concrete. When you run an fMRI experiment, what do you actually get?
-
 ### 4D volumes and voxels
 
-An fMRI dataset is a **4D volume**: three spatial dimensions (x, y, z) plus time. At each time point, you have a 3D brain image divided into small cubes called **voxels** (volumetric pixels). Each voxel is typically 2-3mm on each side.
+An fMRI dataset is a 4D volume: three spatial dimensions (x, y, z) plus time. At each time point you have a 3D image of the brain divided into small cubes called voxels (volumetric pixels), typically 2-3 mm on each side.
 
-A typical fMRI scan might be 64 x 64 x 40 voxels, acquired every 2 seconds for 10 minutes. That's 300 time points, or 300 complete 3D brain images.
+A typical scan might be 64 x 64 x 40 voxels, acquired every 2 seconds for 10 minutes. That gives you 300 time points, i.e. 300 complete 3D brain images.
 
 <img src="/blog/fmri-diagrams/4d-volume.svg" alt="4D fMRI volume structure showing brain volumes over time" />
 
-*Each 3D volume contains ~160,000 voxels. A 10-minute scan with TR=2s yields 300 volumes – a 4D dataset.*
+*Each 3D volume contains ~160,000 voxels. A 10-minute scan with TR=2s yields 300 volumes, which together form a 4D dataset.*
 
 ### Time series
 
-For each voxel, you have a **time series** - a sequence of signal intensities across the scan. This is what you analyze. You're looking for voxels whose time series correlate with your experimental conditions.
+For each voxel you have a time series of signal intensities across the scan, and the analysis looks for voxels whose time series relate to your experimental conditions.
 
-The signal values are arbitrary units. What matters is the relative change: a 1-2% signal change between conditions is typical and meaningful. This is why we often work with percent signal change rather than raw values.
+The raw values are in arbitrary units, so what matters is the relative change. Differences of 1-2% between conditions are typical for task effects at 3T, which is why people often convert to percent signal change.
 
 ### Loading fMRI data in Python
 
-Let's look at some actual code. The standard library for working with neuroimaging data in Python is **nibabel**. Here's how you'd load and inspect an fMRI volume:
+The standard library for reading neuroimaging files in Python is nibabel. Here's how you'd load and inspect an fMRI run:
 
 ```python
 import nibabel as nib
@@ -156,7 +152,10 @@ print(f"Data shape: {data.shape}")
 # Get the voxel size from the header
 voxel_size = img.header.get_zooms()
 print(f"Voxel size (mm): {voxel_size[:3]}")
-print(f"TR (seconds): {voxel_size[3]}")
+# The 4th zoom is only the TR if the header's time units are set correctly
+# (check img.header.get_xyzt_units()). For BIDS data, the RepetitionTime
+# field in the JSON sidecar (sub-01_task-visual_bold.json) is the reliable source.
+print(f"TR (seconds, from header): {voxel_size[3]}")
 
 # Extract the time series from a single voxel
 voxel_timeseries = data[32, 32, 20, :]
@@ -167,33 +166,21 @@ mean_volume = np.mean(data, axis=3)
 print(f"Mean volume shape: {mean_volume.shape}")
 ```
 
-This is the foundation. Everything else - preprocessing, analysis, statistics - builds on manipulating these 4D arrays.
-
-## Modern datasets: A quick note
-
-I mentioned NSD and THINGS in [Part 2](/blog/fmri-crash-course-2-neuroimaging-vision) - these large-scale, densely-sampled datasets are transforming what's possible in computational vision neuroscience. They'll come up throughout the rest of this course.
-
-The key insight is scale: with 10,000+ images per participant (NSD) or systematic coverage of object concept space (THINGS), you can train meaningful encoding and decoding models, study representational geometry in detail, and compare brain representations to deep neural networks. Both are publicly available and well-documented.
+Everything that follows in this series (preprocessing, modelling, statistics) comes down to manipulating 4D arrays like this one. The large datasets from [Part 2](/blog/fmri-crash-course-2-neuroimaging-vision), NSD and THINGS-data, come in exactly this form.
 
 ---
 
-## Key Takeaways
+## Summary
 
-- **MRI uses strong magnetic fields and RF pulses** to detect hydrogen atoms in tissue. Different relaxation rates (T1, T2) create contrast between tissue types.
-
-- **fMRI measures the BOLD signal** - changes in blood oxygenation that correlate with neural activity. It's indirect but non-invasive and provides whole-brain coverage.
-
-- **The hemodynamic response is slow**, peaking 5-6 seconds after neural activity. This limits temporal resolution but allows us to detect even brief events.
-
-- **fMRI data is a 4D volume**: 3D brain images sampled over time, typically every 1-2 seconds with 2-3mm spatial resolution.
-
-- **Trade-offs are real**: fMRI offers good spatial resolution and whole-brain coverage, but poor temporal resolution, indirect measurement, and significant cost.
-
-- **Modern datasets like NSD and THINGS** provide densely-sampled data with rich annotations, enabling computational approaches that weren't possible before.
+- MRI uses a strong magnetic field and RF pulses to measure signal from hydrogen protons, and differences in relaxation (T1, T2, T2*) between tissues create image contrast.
+- fMRI measures the BOLD signal with T2*-weighted EPI. Deoxyhemoglobin shortens T2*, so when blood flow brings in extra oxygenated blood, the signal goes up.
+- BOLD is an indirect measure of neural activity, and its coupling to metabolism isn't the same everywhere in the brain.
+- The hemodynamic response peaks 5-6 seconds after neural activity, but overlapping responses add up roughly linearly, so rapid designs still work.
+- fMRI data is a 4D array: 3D brain volumes sampled every 1-2 seconds, typically at 2-3 mm resolution.
 
 ---
 
-Now that we understand what fMRI measures, the next post will cover how to actually record fMRI data and design experiments that work well with this modality.
+Now that we know what fMRI measures, the next post covers how to actually record fMRI data and design experiments that work well with it.
 
 **Next:** [Part 4: Recording fMRI data and designing experiments](/blog/fmri-crash-course-4-recording-experiments)
 
@@ -205,9 +192,9 @@ Now that we understand what fMRI measures, the next post will cover how to actua
 
 ### Foundational MRI Physics Resources
 
-- Brown RW, Cheng YC, Haacke EM, Thompson MR, Venkatesan R. [Magnetic Resonance Imaging: Physical Principles and Sequence Design](https://www.wiley.com/en-us/Magnetic+Resonance+Imaging:+Physical+Principles+and+Sequence+Design,+2nd+Edition-p-9780471720850) (2nd ed). Wiley, 2014. *The definitive technical reference for MRI physics.*
+- Brown RW, Cheng YC, Haacke EM, Thompson MR, Venkatesan R. [Magnetic Resonance Imaging: Physical Principles and Sequence Design](https://www.wiley.com/en-us/Magnetic+Resonance+Imaging:+Physical+Principles+and+Sequence+Design,+2nd+Edition-p-9780471720850) (2nd ed). Wiley, 2014. *The standard technical reference for MRI physics.*
 
-- Huettel SA, Song AW, McCarthy G. [Functional Magnetic Resonance Imaging](https://global.oup.com/academic/product/functional-magnetic-resonance-imaging-9780878936274) (3rd ed). Sinauer Associates/Oxford University Press. *The standard fMRI textbook, accessible yet comprehensive.*
+- Huettel SA, Song AW, McCarthy G. [Functional Magnetic Resonance Imaging](https://global.oup.com/academic/product/functional-magnetic-resonance-imaging-9780878936274) (3rd ed). Sinauer Associates/Oxford University Press. *The standard fMRI textbook, and very readable.*
 
 - Poldrack RA, Mumford JA, Nichols TE. [Handbook of Functional MRI Data Analysis](https://www.cambridge.org/core/books/handbook-of-functional-mri-data-analysis/8EDF966C65811FCCC306F7C916228529). Cambridge University Press, 2011. *Practical guide to fMRI analysis methods.*
 
@@ -217,15 +204,15 @@ Now that we understand what fMRI measures, the next post will cover how to actua
 
 - Ogawa S, Lee TM, Kay AR, Tank DW. [Brain magnetic resonance imaging with contrast dependent on blood oxygenation](https://www.pnas.org/doi/10.1073/pnas.87.24.9868). PNAS 1990;87(24):9868-9872. *The original paper introducing BOLD contrast.*
 
-- Kwong KK, Belliveau JW, Chesler DA, et al. [Dynamic magnetic resonance imaging of human brain activity during primary sensory stimulation](https://pubmed.ncbi.nlm.nih.gov/1608978/). PNAS 1992;89(12):5675-5679. *First demonstration of BOLD fMRI in humans.*
+- Kwong KK, Belliveau JW, Chesler DA, et al. [Dynamic magnetic resonance imaging of human brain activity during primary sensory stimulation](https://pubmed.ncbi.nlm.nih.gov/1608978/). PNAS 1992;89(12):5675-5679. *One of the first demonstrations of BOLD fMRI in humans, using visual and motor tasks.*
 
-- Logothetis NK, Pauls J, Augath M, Trinath T, Oeltermann A. [Neurophysiological investigation of the basis of the fMRI signal](https://www.nature.com/articles/35084005). Nature 2001;412(6843):150-157. *Landmark study linking BOLD to neural activity via simultaneous electrophysiology.*
+- Logothetis NK, Pauls J, Augath M, Trinath T, Oeltermann A. [Neurophysiological investigation of the basis of the fMRI signal](https://www.nature.com/articles/35084005). Nature 2001;412(6843):150-157. *Simultaneous electrophysiology and fMRI linking BOLD to neural activity.*
 
-- Glover GH. Deconvolution of impulse response in event-related BOLD fMRI. NeuroImage 1999;9(4):416-429. *Foundational work on hemodynamic response function estimation.*
+- Glover GH. Deconvolution of impulse response in event-related BOLD fMRI. NeuroImage 1999;9(4):416-429. *Foundational work on estimating the hemodynamic response function.*
 
 ### Discordant Voxels and BOLD Interpretation
 
-- Poser BA, et al. [Discordant BOLD responses and oxygen metabolism in the human brain](https://www.nature.com/articles/s41593-025-02132-9). Nature Neuroscience 2025. *Important recent finding about the complexity of BOLD-neural activity relationships.*
+- Epp SM, Castrillón G, Yuan B, Andrews-Hanna J, Preibisch C, Riedl V. [BOLD signal changes can oppose oxygen metabolism across the human cortex](https://www.nature.com/articles/s41593-025-02132-9). Nature Neuroscience 2025. *Shows that BOLD and oxygen metabolism can change in opposite directions in a large fraction of voxels.*
 
 ### Scanner Field Strength Comparisons
 
