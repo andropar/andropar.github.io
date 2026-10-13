@@ -1,0 +1,28 @@
+[Unit]
+Description=Private personal website writing editor
+After=network-online.target
+[Service]
+User=cmseditor
+Group=website
+WorkingDirectory=/srv/jroth-editor
+ExecStart=/usr/bin/node /opt/jroth-cms-editor/server.js
+Environment=GIT_REPO_DIRECTORY=/srv/jroth-editor
+Environment=ORIGIN=https://jroth.space
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/srv/jroth-editor
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+LockPersonality=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+CapabilityBoundingSet=
+MemoryMax=300M
+CPUQuota=50%
+UMask=0027
+[Install]
+WantedBy=multi-user.target

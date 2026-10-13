@@ -1,0 +1,1 @@
+{"name":"personal-site-writing-editor","private":true,"type":"module","scripts":{"start":"node server.js"},"dependencies":{"decap-server":"3.11.3","express":"^4.21.2"}}

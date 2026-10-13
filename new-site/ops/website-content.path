@@ -1,0 +1,8 @@
+[Unit]
+Description=Rebuild the personal website when writing or media changes
+[Path]
+PathModified=/srv/jroth-editor/new-site/src/content/blog
+PathModified=/srv/jroth-editor/new-site/public/blog/uploads
+Unit=website-deploy.service
+[Install]
+WantedBy=multi-user.target

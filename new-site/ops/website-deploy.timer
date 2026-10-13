@@ -1,0 +1,9 @@
+[Unit]
+Description=Check GitHub for website updates every two minutes
+[Timer]
+OnBootSec=1min
+OnUnitInactiveSec=2min
+RandomizedDelaySec=15s
+Persistent=true
+[Install]
+WantedBy=timers.target

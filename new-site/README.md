@@ -26,9 +26,11 @@ If the website is already running, start only the editing server with `npm run c
 
 `npm run build` exports the static site to `dist`. The GitHub Pages workflow builds and publishes pushes to `main`.
 
-Hosted editing at `/admin/` uses a fine-grained GitHub personal access token directly with GitHub's API. The login screen links to token setup with the owner (`andropar`), Contents write permission and a 90-day expiry prefilled. Select **Only select repositories → andropar.github.io**, with **Contents: Read and write** and **Metadata: Read-only**, generate the token and paste it into the editor. Keep the token in your password manager; Decap remembers the login in this browser until **Log out**. Renew it when it expires.
-
-Decap commits published posts to `main`, which triggers the existing Pages build. The `github-token` adapter in `public/admin/token-login.js` reuses Decap's GitHub backend for file operations. Local editing continues to use the local backend.
+Hosted editing at `/admin/` runs on the personal VPS with its own username/password.
+Posts and media are stored on the server and rebuild the site when published. See
+[ops/README.md](ops/README.md) for login-file location, content paths, deployment and backups.
+Local editing continues to use the local backend. Website code changes are pulled from
+GitHub automatically; online writing lives in the VPS content directory.
 
 ## Design
 

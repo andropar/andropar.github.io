@@ -1,0 +1,7 @@
+[Unit]
+Description=Back up private writing and server configuration
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/backup-personal-site
+UMask=0077
+Nice=10

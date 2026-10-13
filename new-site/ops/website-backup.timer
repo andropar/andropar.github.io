@@ -1,0 +1,8 @@
+[Unit]
+Description=Daily backup of private writing and website configuration
+[Timer]
+OnCalendar=*-*-* 03:00:00 UTC
+Persistent=true
+RandomizedDelaySec=15min
+[Install]
+WantedBy=timers.target

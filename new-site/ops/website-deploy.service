@@ -1,0 +1,28 @@
+[Unit]
+Description=Build and atomically deploy jroth.space from GitHub
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=website
+Group=website
+ExecStart=/usr/local/bin/deploy-personal-site
+Environment=HOME=/srv/jroth.space/.home
+Environment=ASTRO_TELEMETRY_DISABLED=1
+TimeoutStartSec=15min
+UMask=0022
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/srv/jroth.space
+ReadOnlyPaths=/srv/jroth-editor
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+LockPersonality=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+CapabilityBoundingSet=
+MemoryMax=2500M
+CPUQuota=150%
