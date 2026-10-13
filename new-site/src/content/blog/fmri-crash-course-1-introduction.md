@@ -16,7 +16,7 @@ In this series of blog posts, I want to remove the pain from this process and sh
 
 My goal is to provide you with a foundational set of tools and workflows that can easily be extended for your own research purposes, as well as a general intuition for working with fMRI data. Note that, although we'll focus on vision, many of the tools we'll talk about will also be relevant for other research areas.
 
-Throughout the series, we'll use real code examples and reference the kinds of large-scale datasets that are driving modern vision research - particularly the Natural Scenes Dataset (NSD), THINGS-data and LAION-fMRI, which have become essential resources for computational approaches to visual neuroscience.
+Throughout the series, we'll use real code examples and reference the kinds of large-scale datasets used in modern vision research - particularly the Natural Scenes Dataset (NSD; Allen et al., 2022), THINGS-data (Hebart et al., 2023) and LAION-fMRI (Zerbe et al., 2026), large public datasets that were built with computational approaches to visual neuroscience in mind.
 
 ![Overview of the 8 parts of the series: introduction, neuroimaging for vision, MRI basics, recording and design, preprocessing, quality assessment, GLM analysis, and multivariate analysis](/blog/fmri-diagrams/pipeline-overview.svg)
 
@@ -60,10 +60,10 @@ Let's get started with [Part 2: Using neuroimaging for understanding the visual 
 
 ### Textbooks
 
-- Huettel, S.A., Song, A.W., & McCarthy, G. (2014). *Functional Magnetic Resonance Imaging* (3rd ed.). Sinauer Associates. The standard introduction to fMRI physics, the BOLD response, and experimental design.
-- Poldrack, R.A., Mumford, J.A., & Nichols, T.E. (2011). *Handbook of Functional MRI Data Analysis*. Cambridge University Press. [Book website](https://www.fmri-data-analysis.org/). A practical guide to fMRI analysis methods and software.
+- Huettel, S.A., Song, A.W., & McCarthy, G. (2014). *Functional Magnetic Resonance Imaging* (3rd ed.). Sinauer Associates. ISBN 978-0-87893-627-4. An introductory textbook covering the physics and physiology of fMRI and experimental design and analysis ([BIAC announcement](https://biac.duke.edu/news/functional-magnetic-resonance-imaging-3rd-edition)).
+- Poldrack, R.A., Mumford, J.A., & Nichols, T.E. (2011). *Handbook of Functional MRI Data Analysis*. Cambridge University Press. [DOI: 10.1017/CBO9780511895029](https://doi.org/10.1017/CBO9780511895029). A handbook of fMRI data analysis methods.
 
 ### Online tutorials
 
-- [Andy's Brain Book](https://andysbrainbook.readthedocs.io/) - Comprehensive tutorials for fMRI analysis with FSL, SPM, and AFNI, designed for beginners.
-- [Mumford Brain Stats](https://www.youtube.com/@mumfordbrainstats) - Video tutorials on fMRI statistics and analysis, including mixed models and study design.
+- [Andy's Brain Book](https://andysbrainbook.readthedocs.io/) - Tutorials for fMRI analysis with FSL, SPM, AFNI and other packages, written for fMRI beginners.
+- [Mumford Brain Stats](https://www.youtube.com/@mumfordbrainstats) - Jeanette Mumford's short video tutorials and lessons on neuroimaging data analysis strategies.

@@ -244,16 +244,16 @@ def surface_vs_volume():
 
 def fixation_qc():
     rng = np.random.default_rng(14)
-    good = rng.normal(0, 0.35, (900, 2))
+    good = rng.normal(0, 0.3, (900, 2))
     poor = np.r_[rng.normal(0, 0.7, (600, 2)), rng.normal((2.8, 1.6), 0.4, (150, 2)),
                  rng.normal((-2.2, -1.4), 0.45, (150, 2))]
     fig, axs = plt.subplots(1, 2, figsize=(WIDTH, 4.0), sharey=True)
     for ax, g, title in ((axs[0], good, "Good fixation"), (axs[1], poor, "Poor fixation")):
-        inside = (np.hypot(*g.T) <= 1.5).mean() * 100
+        inside = (np.hypot(*g.T) <= 1.0).mean() * 100
         ax.scatter(*g.T, s=6, color=BLUE, alpha=0.35, lw=0)
-        ax.add_patch(Circle((0, 0), 1.5, fc="none", ec=ORANGE, lw=1.4))
+        ax.add_patch(Circle((0, 0), 1.0, fc="none", ec=ORANGE, lw=1.4))
         ax.plot(0, 0, "+", color=INK, ms=10, mew=1.5)
-        ax.set_title(f"{title}: {inside:.0f}% of samples within 1.5°")
+        ax.set_title(f"{title}: {inside:.0f}% of samples within 1°")
         ax.set_xlim(-5, 5)
         ax.set_ylim(-4, 4)
         ax.set_aspect("equal")
@@ -262,7 +262,7 @@ def fixation_qc():
         ax.axvline(0, color=LINE, lw=0.8, zorder=0)
     axs[0].set_ylabel("Vertical gaze (°)")
     note(axs[1], 2.8, 3.1, "looking at the stimuli", ha="center")
-    fig.text(0.5, -0.02, "Simulated gaze samples during one run. Orange circle: 1.5° fixation "
+    fig.text(0.5, -0.02, "Simulated gaze samples during one run. Orange circle: 1° fixation "
              "window around the fixation point.", ha="center", fontsize=9, color=MUTED)
     fig.tight_layout(w_pad=2)
     save(fig, "fixation-qc")
