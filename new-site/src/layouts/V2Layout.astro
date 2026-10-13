@@ -1,0 +1,173 @@
+---
+import '../styles/v2.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description = 'Johannes Roth is a machine learning engineer and PhD researcher in Leipzig, working on computer vision, data systems, and computational neuroscience.' } = Astro.props;
+const canonicalPath = Astro.url.pathname.replace(/^\/v2(?=\/|$)/, '') || '/';
+const canonicalURL = new URL(canonicalPath, Astro.site);
+const homeAnchor = /^\/(?:v2\/?)?$/.test(Astro.url.pathname) ? '' : '/';
+const onWritingPage = canonicalPath.startsWith('/blog');
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="author" content="Johannes Roth" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <link rel="canonical" href={canonicalURL} />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..600;1,14..32,400..600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+    <title>{title}</title>
+    <script is:inline>
+      (() => {
+        const mode = /^#(?:life|personal)(?:-|$)/.test(location.hash) ? 'life' : 'work';
+        document.documentElement.dataset.v2Mode = mode;
+        let theme = 'light';
+        try { theme = localStorage.getItem('v2-theme') === 'dark' ? 'dark' : 'light'; } catch {}
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <nav class="container navigation" aria-label="Main navigation">
+        <a class="wordmark" href="/">Johannes Roth</a>
+        <div class="nav-links" id="v2-navigation">
+          <a href={`${homeAnchor}#selected-work`} data-work-href={`${homeAnchor}#selected-work`} data-life-href={`${homeAnchor}#life-about`} data-work-label="Projects" data-life-label="About">Projects</a>
+          <a href={`${homeAnchor}#research`} data-work-href={`${homeAnchor}#research`} data-life-href={`${homeAnchor}#life-shelves`} data-work-label="Research" data-life-label="Shelves">Research</a>
+          <a href={`${homeAnchor}#writing`} data-work-href={`${homeAnchor}#writing`} data-life-href={`${homeAnchor}#life-notes`} data-work-label="Writing" data-life-label="Writing" aria-current={onWritingPage ? 'page' : undefined}>Writing</a>
+          <a href="/cv.pdf">CV</a>
+        </div>
+        <div class="nav-actions">
+          <div class="view-switch" role="group" aria-label="Choose a side of the site">
+            <a href={`${homeAnchor}#work`} data-mode-link="work" aria-current="true">Work</a>
+            <a href={`${homeAnchor}#life`} data-mode-link="life">Life</a>
+          </div>
+          <button class="icon-button theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+            <svg class="theme-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M20.8 13.2A8.5 8.5 0 0 1 10.8 3a8.5 8.5 0 1 0 10 10.2Z" /></svg>
+            <svg class="theme-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg>
+          </button>
+          <button class="icon-button menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="v2-navigation"><span></span><span></span></button>
+        </div>
+      </nav>
+    </header>
+    <main id="main-content" class="container"><slot /></main>
+    <footer class="container site-footer">
+      <p>© {new Date().getFullYear()} Johannes Roth · Leipzig, Germany</p>
+      <a href="#main-content">Back to top</a>
+    </footer>
+    <script>
+      const root = document.documentElement;
+      const modeLinks = document.querySelectorAll<HTMLAnchorElement>('[data-mode-link]');
+      const views = document.querySelectorAll<HTMLElement>('[data-view]');
+      const navLinks = document.querySelectorAll<HTMLAnchorElement>('[data-work-href]');
+      const navigation = document.getElementById('v2-navigation');
+      const menuToggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+      const themeToggle = document.querySelector<HTMLButtonElement>('.theme-toggle');
+
+      // Both views reserve the taller hero's space, including after fonts load or the viewport changes.
+      const heroes = [...views].map(view => view.querySelector<HTMLElement>('.hero')).filter((hero): hero is HTMLElement => Boolean(hero));
+      const main = document.getElementById('main-content');
+      if (heroes.length > 1 && main) {
+        function sizeHeroes() {
+          const measurements = heroes.map(hero => {
+            const copy = hero.cloneNode(true) as HTMLElement;
+            copy.classList.add('hero-measure');
+            copy.style.width = `${main!.clientWidth}px`;
+            copy.setAttribute('aria-hidden', 'true');
+            copy.inert = true;
+            copy.removeAttribute('aria-labelledby');
+            copy.querySelectorAll('[id]').forEach(element => element.removeAttribute('id'));
+            main!.append(copy);
+            return copy;
+          });
+          const height = Math.max(...measurements.map(copy => copy.querySelector<HTMLElement>('.hero-body')!.getBoundingClientRect().height));
+          root.style.setProperty('--hero-body-height', `${height}px`);
+          measurements.forEach(copy => copy.remove());
+        }
+        let measuredWidth = 0;
+        new ResizeObserver(([entry]) => {
+          if (entry.contentRect.width !== measuredWidth) {
+            measuredWidth = entry.contentRect.width;
+            sizeHeroes();
+          }
+        }).observe(main);
+        sizeHeroes();
+        document.fonts.ready.then(sizeHeroes);
+      }
+
+      function closeMenu() {
+        navigation?.removeAttribute('data-open');
+        menuToggle?.setAttribute('aria-expanded', 'false');
+        menuToggle?.setAttribute('aria-label', 'Open navigation');
+      }
+
+      function syncMode() {
+        const sharedAnchor = ['#contact', '#main-content'].includes(location.hash);
+        const mode = sharedAnchor ? (root.dataset.v2Mode || 'work') : /^#(?:life|personal)(?:-|$)/.test(location.hash) ? 'life' : 'work';
+        root.dataset.v2Mode = mode;
+        let focusWasHidden = false;
+        views.forEach(view => {
+          const active = view.dataset.view === mode;
+          if (!active && view.contains(document.activeElement)) focusWasHidden = true;
+          view.hidden = !active;
+          view.inert = !active;
+        });
+        modeLinks.forEach(link => {
+          if (link.dataset.modeLink === mode) link.setAttribute('aria-current', 'true');
+          else link.removeAttribute('aria-current');
+        });
+        navLinks.forEach(link => {
+          link.href = (mode === 'life' ? link.dataset.lifeHref : link.dataset.workHref)!;
+          link.textContent = (mode === 'life' ? link.dataset.lifeLabel : link.dataset.workLabel)!;
+        });
+        if (focusWasHidden) document.querySelector<HTMLElement>(`[data-view="${mode}"] h1`)?.focus({ preventScroll: true });
+        if (location.hash === '#work' || location.hash === '#life') {
+          requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+        }
+        closeMenu();
+      }
+
+      function syncTheme() {
+        const dark = root.dataset.theme === 'dark';
+        themeToggle?.setAttribute('aria-pressed', String(dark));
+        themeToggle?.setAttribute('aria-label', `Switch to ${dark ? 'light' : 'dark'} mode`);
+      }
+      themeToggle?.addEventListener('click', () => {
+        const theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+        root.dataset.theme = theme;
+        try { localStorage.setItem('v2-theme', theme); } catch {}
+        syncTheme();
+      });
+      menuToggle?.addEventListener('click', () => {
+        const open = menuToggle.getAttribute('aria-expanded') !== 'true';
+        navigation?.toggleAttribute('data-open', open);
+        menuToggle.setAttribute('aria-expanded', String(open));
+        menuToggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+      });
+      navigation?.addEventListener('click', closeMenu);
+      document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && menuToggle?.getAttribute('aria-expanded') === 'true') {
+          closeMenu();
+          menuToggle.focus();
+        }
+      });
+      window.addEventListener('hashchange', syncMode);
+      syncMode();
+      syncTheme();
+    </script>
+  </body>
+</html>

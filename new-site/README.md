@@ -1,43 +1,35 @@
-# Astro Starter Kit: Minimal
+# Johannes Roth's website
+
+Astro site for [jroth.space](https://jroth.space). The homepage is at `/`, with writing at `/blog` and the editor at `/admin`. The `/v2` URLs remain working aliases.
+
+## Local website and writing editor
+
+From `new-site`, use Node 20.19.1 (`nvm use`), then run:
 
 ```sh
-npm create astro@latest -- --template minimal
+npm ci
+npm run dev:cms
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+- Website: <http://127.0.0.1:4321/>
+- Writing editor: <http://127.0.0.1:4321/admin/>
 
-## 🚀 Project Structure
+The editor uses [Decap CMS](https://decapcms.org/docs/decap-proxy/). Click **Login**, choose a post under **Writing**, and edit its title, description, date, tags, and body. The body has **Rich Text** and **Markdown** modes, with a preview using the site's design system. Use Markdown mode for existing HTML figures and image layouts.
 
-Inside of your Astro project, you'll see the following folders and files:
+Click **Publish → Publish now** to save locally. Astro picks up the saved Markdown file immediately. New posts start with **Draft** enabled; turn it off when the post should appear on the site. Images uploaded through **Media** go to `public/blog/uploads`.
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+Content lives in `src/content/blog/*.md`. Existing filenames remain the post URLs. The local editing server runs on `127.0.0.1:8085` and saves directly into this checkout. Stop both servers with Ctrl+C.
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+If the website is already running, start only the editing server with `npm run cms:server`. For website-only work, use `npm run dev`.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Build and hosted editing
 
-Any static assets, like images, can be placed in the `public/` directory.
+`npm run build` exports the static site to `dist`. The GitHub Pages workflow builds and publishes pushes to `main`.
 
-## 🧞 Commands
+Hosted editing at `/admin/` uses a fine-grained GitHub personal access token directly with GitHub's API. The login screen links to token setup with the owner (`andropar`), Contents write permission and a 90-day expiry prefilled. Select **Only select repositories → andropar.github.io**, with **Contents: Read and write** and **Metadata: Read-only**, generate the token and paste it into the editor. Keep the token in your password manager; Decap remembers the login in this browser until **Log out**. Renew it when it expires.
 
-All commands are run from the root of the project, from a terminal:
+Decap commits published posts to `main`, which triggers the existing Pages build. The `github-token` adapter in `public/admin/token-login.js` reuses Decap's GitHub backend for file operations. Local editing continues to use the local backend.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## Design
 
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+The shared v2 tokens and layout rules are documented in [docs/V2_DESIGN_SYSTEM.md](docs/V2_DESIGN_SYSTEM.md).

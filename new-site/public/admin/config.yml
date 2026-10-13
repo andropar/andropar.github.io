@@ -1,0 +1,51 @@
+backend:
+  name: github-token
+  repo: andropar/andropar.github.io
+  branch: main
+
+local_backend:
+  url: http://127.0.0.1:8085/api/v1
+
+site_url: https://jroth.space
+display_url: /blog
+publish_mode: simple
+media_folder: new-site/public/blog/uploads
+public_folder: /blog/uploads
+
+collections:
+  - name: blog
+    label: Writing
+    label_singular: Post
+    folder: new-site/src/content/blog
+    create: true
+    delete: true
+    extension: md
+    format: frontmatter
+    slug: '{{slug}}'
+    preview_path: blog/{{slug}}
+    summary: '{{title}} · {{date}}'
+    sortable_fields: [date, title, draft]
+    view_filters:
+      - label: Drafts
+        field: draft
+        pattern: true
+      - label: Published
+        field: draft
+        pattern: false
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Description, name: description, widget: text, hint: 'The short introduction shown on the writing page.' }
+      - label: Date
+        name: date
+        widget: datetime
+        date_format: YYYY-MM-DD
+        time_format: false
+        picker_utc: true
+        default: '{{now}}'
+      - { label: Draft, name: draft, widget: boolean, default: true, hint: 'Keep this on while writing. Turn it off to include the post on the site.' }
+      - { label: Tags, name: tags, widget: list, required: false, default: [], hint: 'Add one or more topics.' }
+      - label: Body
+        name: body
+        widget: richtext
+        modes: [rich_text, raw]
+        hint: 'Use Rich Text for writing and formatting, or Markdown to edit HTML figures and custom layouts.'

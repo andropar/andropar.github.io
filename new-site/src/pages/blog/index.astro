@@ -1,109 +1,22 @@
 ---
 import { getCollection } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
-
-const posts = (await getCollection('blog'))
-  .filter((post) => !post.data.draft)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+import V2Layout from '../../layouts/V2Layout.astro';
+const posts = (await getCollection('blog')).filter(post => !post.data.draft).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
-
-<Layout
-  title="Blog - Johannes Roth"
-  description="Notes, essays, and technical deep dives by Johannes Roth."
->
-  <header class="page-header blog-header">
-    <h1 class="page-title">Blog</h1>
-    <p class="page-description">
-      Notes, essays, and things I am thinking through in public.
-    </p>
+<V2Layout title="Writing — Johannes Roth" description="Notes and essays on research, software, and life.">
+  <header class="page-head">
+    <h1>Writing</h1>
+    <p class="page-lede">Things I've learned, built, and been thinking about.</p>
   </header>
-
-  <section class="section">
-    {posts.length > 0 ? (
-      <div class="post-list">
-        {posts.map((post) => {
-          const formattedDate = post.data.date.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          });
-          return (
-            <a href={`/blog/${post.slug}`} class="post-item">
-              <span class="post-date">{formattedDate}</span>
-              <h2 class="post-title">
-                {post.data.title}
-                {post.data.draft && <span class="draft-badge">Draft</span>}
-              </h2>
-              <p class="post-excerpt">{post.data.description}</p>
-              {post.data.tags.length > 0 && (
-                <div class="post-tags">
-                  {post.data.tags.map((tag: string) => (
-                    <span class="post-tag">{tag}</span>
-                  ))}
-                </div>
-              )}
-            </a>
-          );
-        })}
-      </div>
-    ) : (
-      <div class="empty-state">
-        <p>Nothing here yet. Check back soon.</p>
-      </div>
-    )}
-  </section>
-</Layout>
-
-<style>
-  .blog-header {
-    max-width: 620px;
-  }
-
-  .empty-state {
-    padding: var(--space-3xl) 0;
-    color: var(--color-text-secondary);
-  }
-
-  .post-title {
-    display: flex;
-    align-items: baseline;
-    gap: var(--space-sm);
-    flex-wrap: wrap;
-    font-family: var(--font-sans);
-    font-size: clamp(1.35rem, 3.2vw, 2rem);
-    line-height: 1.16;
-    margin-bottom: var(--space-sm);
-  }
-
-  .post-tags {
-    display: flex;
-    gap: var(--space-xs);
-    flex-wrap: wrap;
-    margin-top: var(--space-md);
-  }
-
-  .post-tag,
-  .draft-badge {
-    display: inline-flex;
-    align-items: center;
-    width: fit-content;
-    border-radius: 4px;
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    line-height: 1.2;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .post-tag {
-    color: var(--color-accent);
-    background: color-mix(in srgb, var(--color-accent) 12%, transparent);
-    padding: 3px 6px;
-  }
-
-  .draft-badge {
-    color: var(--color-text-tertiary);
-    background: var(--color-bg-subtle);
-    padding: 2px 6px;
-  }
-</style>
+  <ul class="entries writing-index">
+    {posts.map(post => (
+      <li class="entry">
+        <time class="entry-meta" datetime={post.data.date.toISOString()}>{post.data.date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</time>
+        <div>
+          <h2 class="entry-title"><a class="stretched" href={`/blog/${post.slug}`}>{post.data.title}</a></h2>
+          <p class="entry-text">{post.data.description}</p>
+        </div>
+      </li>
+    ))}
+  </ul>
+</V2Layout>

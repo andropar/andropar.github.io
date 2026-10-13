@@ -1,0 +1,45 @@
+---
+import previewStyles from '../../styles/v2.css?raw';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Writing editor · Johannes Roth</title>
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="cms-config-url" type="text/yaml" href="/admin/config.yml" />
+    <script is:inline>window.CMS_MANUAL_INIT = true;</script>
+  </head>
+  <body>
+    <script is:inline src="/admin/decap.js"></script>
+    <script is:inline src="/admin/token-login.js"></script>
+    <script is:inline define:vars={{ previewStyles }}>
+      CMS.registerPreviewStyle('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..600;1,14..32,400..600&family=JetBrains+Mono:wght@400&display=swap');
+      CMS.registerPreviewStyle(previewStyles, { raw: true });
+      CMS.registerPreviewStyle('body { padding: 24px; } .article { padding-top: 0; } .article-head { margin-bottom: 32px; }', { raw: true });
+      CMS.registerRemarkPlugin({ settings: { bullet: '-', rule: '-', ruleSpaces: false } });
+
+      const PostPreview = createClass({
+        render() {
+          const data = this.props.entry.get('data');
+          const date = new Date(data.get('date'));
+          const dateLabel = Number.isNaN(date.valueOf()) ? '' : date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+          const tags = data.get('tags');
+          const tagsLabel = tags?.join(', ') || '';
+          return h('article', { className: 'article' },
+            h('header', { className: 'article-head' },
+              h('h1', {}, data.get('title')),
+              h('p', { className: 'article-lede' }, data.get('description')),
+              h('p', { className: 'meta article-meta' }, `${dateLabel}${tagsLabel ? ` · ${tagsLabel}` : ''}${data.get('draft') ? ' · Draft' : ''}`)
+            ),
+            h('div', { className: 'prose' }, this.props.widgetFor('body'))
+          );
+        }
+      });
+      CMS.registerPreviewTemplate('blog', PostPreview);
+      CMS.init({ config: { site_url: window.location.origin } });
+    </script>
+  </body>
+</html>
