@@ -6,7 +6,14 @@
 \usepackage{tabularx}
 \usepackage{ragged2e}
 \usepackage{fancyhdr}
-\setmainfont{Helvetica}
+\IfFontExistsTF{Helvetica}{\setmainfont{Helvetica}}{%
+  \setmainfont{texgyreheros}[
+    Extension=.otf,
+    UprightFont=*-regular,
+    BoldFont=*-bold,
+    ItalicFont=*-italic,
+    BoldItalicFont=*-bolditalic]
+}
 \hypersetup{pdftitle={Johannes Roth - Machine Learning Engineer},pdfauthor={Johannes Roth},pdfsubject={Machine learning engineering, applied data science, and research},colorlinks=true,urlcolor=black}
 \pagestyle{fancy}
 \fancyhf{}
@@ -51,7 +58,7 @@ Machine learning engineer with experience taking ML and data projects from initi
 \end{samepage}
 
 \begin{samepage}
-\role{Research Assistant - Machine Learning in Medicine}{Jun 2021 -- May 2022}{ScaDS.AI Dresden/Leipzig}
+\role{Research Scientist - Machine Learning in Medicine}{Jun 2021 -- May 2022}{ScaDS.AI Dresden/Leipzig}
 \begin{itemize}
 \item Developed and evaluated deep-learning models for \textbf{medical image analysis}, including brain-tumor segmentation.
 \item Built predictive models for clinical data, with a focus on mortality prediction and uncertainty estimation.
