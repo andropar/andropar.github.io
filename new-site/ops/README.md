@@ -13,8 +13,9 @@ recent releases are retained.
 
 The writing editor at `https://jroth.space/blog/admin/` uses its own username/password.
 Login details are stored locally in `~/.ssh/personal-vps-editor-login.txt` (mode 600).
-The server stores a bcrypt password hash in `/etc/nginx/.editor-htpasswd`.
-To change the password: `ssh -t personal_vps 'sudo htpasswd /etc/nginx/.editor-htpasswd johannes'`.
+The server stores a salted scrypt password hash in `/etc/personal-editor-auth.env`
+(root-only). The login creates a secure, HttpOnly session cookie lasting twelve hours;
+logging out invalidates the session.
 
 The editor's content is the source of truth for online posts and uploads:
 `/srv/jroth-editor/new-site/src/content/blog` and
@@ -24,7 +25,8 @@ website code remains in GitHub. Initial content was imported from the repository
 The site keeps serving the preceding release if a build fails.
 
 The pinned Decap file service listens on loopback only. nginx protects both the editor
-and API with HTTP authentication. The API accepts only the website and editor Origins. Its endpoint stays under `/blog/admin/` to share the browser login scope. Its service
+and API with the same session login. The API accepts requests from `https://jroth.space`.
+Its endpoint stays under `/blog/admin/` to share the browser login scope. Its service
 user can write only under `/srv/jroth-editor` and runs with a filesystem sandbox and
 resource limits. Uploaded files and saved posts are never executed by the API.
 
@@ -46,10 +48,10 @@ Download a backup over SSH before server maintenance or deletion; a backup on th
 is saved under `new-site/.local/vps-setup-2026-10-13/` during initial setup.
 
 Only TCP 22, 80 and 443 are opened, with SSH connection throttling. SSH uses keys,
-root and password login are disabled, and Fail2ban blocks repeated failed SSH and editor logins.
+root and password login are disabled, and Fail2ban blocks repeated failed SSH logins. The editor limits login attempts to five per minute.
 Security updates run daily; required automatic reboots are scheduled for 04:00 server time when no users are logged in. nginx applies request/connection limits, TLS, HTTPS redirects,
 and security headers. Deployment and editing run without root privileges.
 
-DNS admin A → `178.104.48.146`; apex A → `178.104.48.146`; www CNAME → `jroth.space`. TLS certificates renew
+DNS apex A → `178.104.48.146`; www CNAME → `jroth.space`. TLS certificates renew
 through certbot's timer. Templates under this directory describe the service setup;
 the installed nginx vhost additionally contains certbot's certificate paths.
