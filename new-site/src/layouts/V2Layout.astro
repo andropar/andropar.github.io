@@ -37,6 +37,9 @@ const onWritingPage = canonicalPath.startsWith('/blog');
         let theme = 'light';
         try { theme = localStorage.getItem('v2-theme') === 'dark' ? 'dark' : 'light'; } catch {}
         document.documentElement.dataset.theme = theme;
+        if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          document.documentElement.classList.add('reveal-ready');
+        }
       })();
     </script>
   </head>
@@ -165,6 +168,18 @@ const onWritingPage = canonicalPath.startsWith('/blog');
           menuToggle.focus();
         }
       });
+      // Reveal graphics and timeline bars once, as they scroll into view.
+      if (root.classList.contains('reveal-ready')) {
+        const revealer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('is-visible');
+            revealer.unobserve(entry.target);
+          });
+        }, { rootMargin: '0px 0px -8% 0px' });
+        document.querySelectorAll('.graphic, .span-bar').forEach(element => revealer.observe(element));
+      }
+
       window.addEventListener('hashchange', syncMode);
       syncMode();
       syncTheme();

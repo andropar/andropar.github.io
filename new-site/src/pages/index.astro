@@ -201,31 +201,38 @@ const lifeStories = [
         <h2 id="experience-heading">Experience & education</h2>
         <a class="link" href="/cv.pdf">Full CV</a>
       </div>
-      <ul class="entries">
-        {roles.map(role => (
-          <li class="entry">
-            <span class="entry-meta">{role.date}<span class:list={['span-bar', { 'span-bar--current': !role.span[1] }]} style={spanStyle(role.span)} aria-hidden="true"></span></span>
-            <div>
-              <h3 class="entry-title">{role.title}</h3>
-              <p class="entry-text">{role.organization}</p>
-              <p class="entry-text">{role.description}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
-      <h3 class="section-subhead">Education</h3>
-      <ul class="entries">
-        {education.map(degree => (
-          <li class="entry">
-            <span class="entry-meta">{degree.date}<span class:list={['span-bar', { 'span-bar--current': !degree.span[1] }]} style={spanStyle(degree.span)} aria-hidden="true"></span></span>
-            <div>
-              <h3 class="entry-title">{degree.title}</h3>
-              <p class="entry-text">{degree.organization}</p>
-              {degree.description && <p class="entry-text">{degree.description}</p>}
-            </div>
-          </li>
-        ))}
-      </ul>
+      <div class="cv-columns breakout" style={`--row-end: ${Math.max(roles.length, education.length) + 2}`}>
+        <div>
+          <h3 class="section-subhead">Experience</h3>
+          <ul class="entries">
+            {roles.map(role => (
+              <li class="entry">
+                <span class="entry-meta">{role.date}<span class:list={['span-bar', { 'span-bar--current': !role.span[1] }]} style={spanStyle(role.span)} aria-hidden="true"></span></span>
+                <div>
+                  <h3 class="entry-title">{role.title}</h3>
+                  <p class="entry-text">{role.organization}</p>
+                  <p class="entry-text">{role.description}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h3 class="section-subhead">Education</h3>
+          <ul class="entries">
+            {education.map(degree => (
+              <li class="entry">
+                <span class="entry-meta">{degree.date}<span class:list={['span-bar', { 'span-bar--current': !degree.span[1] }]} style={spanStyle(degree.span)} aria-hidden="true"></span></span>
+                <div>
+                  <h3 class="entry-title">{degree.title}</h3>
+                  <p class="entry-text">{degree.organization}</p>
+                  {degree.description && <p class="entry-text">{degree.description}</p>}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
     </section>
 
     <section class="section" id="writing" aria-labelledby="writing-heading">

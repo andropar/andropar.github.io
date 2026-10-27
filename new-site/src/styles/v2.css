@@ -421,6 +421,13 @@ h1:focus { outline: none; }
 .award-note svg { flex: none; }
 .section-subhead { margin-block: var(--space-7) var(--space-5); }
 
+/* Experience and education side by side on wide screens; stacked below 960px. */
+/* Both columns share one row grid (subgrid), so the nth role and the nth degree have the same height. */
+.cv-columns { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); column-gap: var(--space-8); }
+.cv-columns > div { display: grid; grid-row: 1 / var(--row-end); grid-template-rows: subgrid; }
+.cv-columns .entries { display: grid; grid-row: 2 / var(--row-end); grid-template-rows: subgrid; }
+.cv-columns .section-subhead { margin-top: 0; }
+
 /* A role's span on a shared 2014–now scale, drawn under its date. */
 .span-bar { position: relative; display: block; width: 100%; height: 2px; margin-top: var(--space-2); border-radius: 1px; background: var(--line); }
 .span-bar::after { content: ''; position: absolute; top: 0; bottom: 0; left: var(--from); right: calc(100% - var(--to)); min-width: 3px; border-radius: 1px; background: var(--ink); }
@@ -666,6 +673,12 @@ summary::-webkit-details-marker { display: none; }
 .site-footer a { text-decoration: none; transition: color var(--duration); }
 .site-footer a:hover { color: var(--ink); }
 
+@media (max-width: 960px) {
+  .cv-columns { grid-template-columns: minmax(0, 1fr); }
+  .cv-columns > div, .cv-columns .entries { display: block; grid-row: auto; }
+  .cv-columns > div + div .section-subhead { margin-top: var(--space-7); }
+}
+
 @media (max-width: 1000px) {
   .article--contents .article-body { display: block; }
   .article--contents .prose > * { max-width: var(--measure); }
@@ -740,7 +753,37 @@ summary::-webkit-details-marker { display: none; }
   .icon-button { width: 32px; height: 32px; }
 }
 
+/* ---------- Motion: small and purposeful; all of it is off with prefers-reduced-motion ---------- */
+:root { --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1); }
+
+/* Hovering a card dims the ink so the graphic's one accent element stands out. */
+.graphic > span { transition: opacity 400ms ease, transform 600ms var(--ease-out); }
+@media (hover: hover) {
+  :is(.card, .shelf-note):hover .graphic > .graphic-ink { opacity: 0.35; }
+  :is(.card, .shelf-note):hover .graphic > span { transform: scale(1.025); }
+  .story-media img { transition: transform 1.2s var(--ease-out); }
+  .story:hover .story-media img { transform: scale(1.03); }
+}
+
+/* Graphics draw in and timeline bars grow once they scroll into view. The head script sets
+   .reveal-ready before first paint; the layout script adds .is-visible. */
+.reveal-ready .graphic > span { clip-path: inset(0 100% 0 0); }
+.reveal-ready .graphic.is-visible > span {
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 1s var(--ease-out), opacity 400ms ease, transform 600ms var(--ease-out);
+}
+.reveal-ready .graphic.is-visible > .graphic-accent { transition-delay: 450ms, 0ms, 0ms; }
+.reveal-ready .span-bar::after { transform: scaleX(0); transform-origin: left; }
+.reveal-ready .span-bar.is-visible::after { transform: scaleX(1); transition: transform 900ms var(--ease-out) 150ms; }
+
+/* The availability dot breathes. */
+@keyframes status-pulse {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent); }
+  70%, 100% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--accent) 0%, transparent); }
+}
+.status::before { animation: status-pulse 2.6s ease-out infinite; }
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  *, *::before, *::after { transition: none !important; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
 }

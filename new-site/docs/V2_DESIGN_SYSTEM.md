@@ -117,8 +117,14 @@ inside it switch to `--paper`.
   image, dialog), `--radius-pill` (buttons, view switch, icon buttons). Archive thumbnails use 2px.
 - Borders are 1px. Sections, list rows, and disclosures are separated by `--line` hairlines.
   Cards have no border or shadow; their media frame carries the shape.
-- Transitions are 150ms on color, background, and border only. `prefers-reduced-motion` turns off
-  smooth scrolling and all transitions.
+- Transitions are 150ms on color, background, and border, with a few deliberate motions:
+  - Data graphics draw in once with a left-to-right `clip-path` wipe (1s, accent 450ms later) and
+    timeline bars grow from the left, both when they scroll into view. The head script adds
+    `.reveal-ready` before first paint; the layout script's IntersectionObserver adds `.is-visible`.
+  - Hovering a card dims a graphic's ink to 35% and scales it 2.5%, so its accent element stands out.
+    Life story photos zoom 3% on hover.
+  - The availability dot pulses every 2.6s.
+- `prefers-reduced-motion` turns off smooth scrolling, all transitions and animations, and the reveal.
 
 ## Grid and breakpoints
 
@@ -263,8 +269,10 @@ Both use native `<details>`, so they work with the keyboard and without JavaScri
   row of `.pills` (13px, hairline border, pill radius) listing the skills that used to sit on cards.
 - **Research:** the three first- or shared-first-author papers as graphic cards, the remaining paper
   as a list row, then the "Earlier publications" disclosure.
-- **Experience & education:** role dates and descriptions follow `cv.tex` and the linked CV. Education
-  uses the same row pattern below a subsection heading.
+- **Experience & education:** role dates and descriptions follow `cv.tex` and the linked CV.
+  `.cv-columns` (a `.breakout`) puts Experience (1.6fr) and Education (1fr) side by side under their own
+  subheadings. Both columns are subgrids of one row grid, so the nth role and nth degree share a
+  height. Below 960px they stack.
 - **Life outside work:** `.split` with a 3:2 photo and copy (h2, text, secondary button). The whole
   block links to `#life`.
 
