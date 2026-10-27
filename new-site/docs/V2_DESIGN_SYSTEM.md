@@ -112,11 +112,11 @@ headings and text keep the column edge while visuals use more of wide screens. `
 overflow so full-bleed elements never cause sideways scrolling.
 
 **Homepage edge.** The homepage passes `wide` to `V2Layout`, which adds `.layout-wide` to `<body>` and
-sets `--width-page` to 1200px. Header, hero, every section rule and the footer then share one left edge.
-Sections whose content is visual are `.section--wide` (Selected work, Research, Experience & education,
-A bit about me, On my shelves): all their children span the full width, heading included. Text-only
-sections (Expertise, Writing, the Life teaser, Contact) keep their children to 920px from the same left
-edge. Writing pages keep the centered 920px column.
+sets `--width-page` to 1200px. Header, hero, every section and the footer then share one width and one
+left edge. Running text keeps its own cap (`--measure` for ledes, `--width-text` for list descriptions),
+so blocks align while lines stay readable. `.section--wide` marks sections whose content also breaks out
+of the 920px column on other pages and draws their top rule at the full width. Writing pages keep the
+centered 920px column.
 
 `.section--band` paints a full-bleed `--surface` band behind a section (Selected work on Work, On my
 shelves on Life). It drops the section's hairline and the next section's, and frames and covers

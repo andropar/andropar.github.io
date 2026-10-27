@@ -140,10 +140,9 @@ h1:focus { outline: none; }
   margin-inline: calc((100% - var(--breakout)) / 2);
 }
 
-/* The homepage shares one 1200px left edge: header, hero, wide sections and footer use the full
-   width, and text-only sections keep a 920px width from that same edge. */
+/* The homepage uses one 1200px column for everything; running text keeps its own max-width
+   (--measure, --width-text), so lines stay readable while blocks share the same width. */
 .layout-wide { --width-page: var(--width-grid); }
-.layout-wide .section:not(.section--wide) > * { max-width: 57.5rem; }
 
 /* A wide section's top rule spans its content, not the narrow column. */
 .section.section--wide:not(.section--band) {
