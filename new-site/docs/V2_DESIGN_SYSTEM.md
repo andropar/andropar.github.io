@@ -162,7 +162,7 @@ inside it switch to `--paper`.
 | ≤ 1000px | The article contents list is hidden and prose returns to the single-column layout |
 | ≤ 860px | Hero portrait column 10–15rem with a 48px gap; focus areas drop to two columns |
 | ≤ 720px | Navigation collapses into a menu panel; project cards stack into one column with 16:10 media |
-| ≤ 600px | Section headings and their action links, hero, card grids, focus areas, shelves, the Life teaser, Life stories, cover rows, year groups, list rows, and article image rows stack into one column; the hero portrait moves above the name as a square up to 240px wide on its own hairline; the floated article image stops floating |
+| ≤ 600px | Section headings and their action links, hero, card grids, focus areas, shelves, the Life teaser, Life stories, cover rows, year groups, list rows, and article image rows stack into one column; the hero becomes a two-column grid with the name and lede beside a 3:4 tinted portrait tile (42% wide, cropped head to waist) and the intro, buttons and now row full width below; the floated article image stops floating |
 | ≤ 380px | 15px wordmark and tighter header controls |
 
 ## Components
@@ -228,7 +228,7 @@ child images set to `object-fit: cover`. Aspect ratios:
 
 | Context | Ratio |
 | --- | --- |
-| Hero portrait | 4:5 (1:1 at ≤ 600px) |
+| Hero portrait | 4:5 (a 3:4 tinted tile at ≤ 600px) |
 | Headline project cards | 16:10 |
 | Small project cards, paper cards | 4:3 (small project cards 16:10 at ≤ 720px) |
 | Life story photos | 4:3, with per-photo `object-position` |
