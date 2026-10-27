@@ -1,22 +1,31 @@
 ---
 import { getCollection } from 'astro:content';
 import V2Layout from '../../layouts/V2Layout.astro';
+import { readingTime } from '../../data/reading-time';
 const posts = (await getCollection('blog')).filter(post => !post.data.draft).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const years = [...new Set(posts.map(post => post.data.date.getFullYear()))];
 ---
 <V2Layout title="Writing — Johannes Roth" description="Notes and essays on research, software, and life.">
-  <header class="page-head">
+  <header class="page-head page-head--display">
     <h1>Writing</h1>
     <p class="page-lede">Things I've learned, built, and been thinking about.</p>
   </header>
-  <ul class="entries writing-index">
-    {posts.map(post => (
-      <li class="entry">
-        <time class="entry-meta" datetime={post.data.date.toISOString()}>{post.data.date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</time>
-        <div>
-          <h2 class="entry-title"><a class="stretched" href={`/blog/${post.slug}`}>{post.data.title}</a></h2>
-          <p class="entry-text">{post.data.description}</p>
-        </div>
-      </li>
+  <div class="writing-index">
+    {years.map(year => (
+      <section class="year-group" aria-label={String(year)}>
+        <h2 class="year-label">{year}</h2>
+        <ul class="post-list">
+          {posts.filter(post => post.data.date.getFullYear() === year).map(post => (
+            <li class="post-row">
+              <h3 class="post-title"><a class="stretched" href={`/blog/${post.slug}`}>{post.data.title}</a></h3>
+              <p class="post-text">{post.data.description}</p>
+              <p class="meta">
+                <time datetime={post.data.date.toISOString()}>{post.data.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}</time> · {readingTime(post.body)} min read
+              </p>
+            </li>
+          ))}
+        </ul>
+      </section>
     ))}
-  </ul>
+  </div>
 </V2Layout>

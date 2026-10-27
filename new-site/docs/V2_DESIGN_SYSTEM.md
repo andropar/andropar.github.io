@@ -7,9 +7,11 @@ component class in that stylesheet.
 
 ## Direction
 
-The site is a quiet editorial page: one sans-serif family, a single 920px column, hairline
-rules between sections, neutral paper tones, and one deep green accent. Personality comes from the
-writing, the two portraits, and the personal photography. Work and Life use the same hero, section,
+The site is a quiet editorial page: one sans-serif family, a 920px text column with visual elements
+(card grids, photo rows) widening to 1200px, hairline rules between sections, two full-bleed surface
+bands for rhythm, neutral paper tones, and one accent per side: deep green on Work, terracotta on Life.
+Personality comes from the writing, the two portraits, the personal photography, and data graphics drawn
+from the projects themselves. Work and Life use the same hero, section,
 card, and list components, so both views share one visual language. The
 writing index and articles use the same header, type scale, list rows, and link styles.
 
@@ -34,9 +36,14 @@ at the same vertical position on desktop and mobile.
 | `--accent` | `#34604a` | `#9fc4a8` | Hover color, focus ring, primary button hover, status dot |
 | `--on-ink` | `#fbfaf8` | `#141513` | Text on ink or accent fills |
 
-The accent appears on interaction (hover, focus), the availability dot, the publication's award note, and
-as the single highlight in each project graphic. Photos
-are shown without filters in both themes. Text colors meet WCAG AA on `--paper`; `--muted` is about
+The Life view (`[data-v2-mode='life']` on `<html>`) overrides three tokens: `--paper` `#fbf8f4` /
+`#161412`, `--surface` `#f3efe9` / `#201d1a`, and `--accent` terracotta `#a14d2c` / `#e2a07f`. The body
+background fades between them over 300ms.
+
+The accent appears on interaction (hover, focus), the availability dot, the dot of the active Work/Life
+segment, the current role's timeline bar, the award note, the "Reading now" cover ring, the active
+article contents entry, and as the single highlight in each data graphic. Life photos share one warm
+grade (`.photo-grade`: slight sepia, lower saturation and contrast; darker in dark mode). Text colors meet WCAG AA on `--paper`; `--muted` is about
 5:1 in light mode and 6:1 in dark mode.
 
 ### Typography
@@ -51,11 +58,13 @@ One family: **Inter** (Google Fonts, variable `opsz` 14–32 and weights 400–6
 | `--text-md` | 17px | Body text, article prose, list-row titles (`.entry-title`) |
 | `--text-lg` | 20px | `h3`, hero lede, page and article ledes, contact email |
 | `--text-xl` | 24–28px fluid | `h2` section titles, article `h2` |
-| `--text-2xl` | 32–44px fluid | `h1` (hero name, page titles, article titles) |
+| `--text-2xl` | 32–44px fluid | `h1` (article titles) |
+| `--text-display` | 40–72px fluid | Page titles such as "Writing" |
+| `--text-hero` | 44–96px fluid | Hero name, 600 weight, −0.045em, line height 0.95 |
 
 Rules:
 
-- All headings use weight 500. Tracking tightens with size: `h1` −0.022em, `h2` −0.016em,
+- All headings use weight 500, except the hero name (600). Tracking tightens with size: `h1` −0.022em, `h2` −0.016em,
   `h3` −0.01em. Headings use `text-wrap: balance`; paragraphs use `text-wrap: pretty`.
 - Body text is 400. `strong` is 600. Nothing on the site is set in uppercase or letter-spaced.
 - Line height is 1.65 for UI body text, 1.75 for article prose, 1.1–1.3 for headings, and 1.5 for
@@ -83,7 +92,9 @@ A 4px-based scale:
 
 | Token | Value | Use |
 | --- | --- | --- |
-| `--width-page` | 920px | The one page column: header, main, footer |
+| `--width-page` | 920px | The text column: header, main, footer |
+| `--width-grid` | 1200px | `.breakout` elements: project and paper grids, Life story rows |
+| `--width-text` | 736px | Cap for list-row descriptions |
 | `--width-wide` | 760px | Article header and article images |
 | `--measure` | 600px | Running text: article prose, ledes, card text on wide cards (about 68 characters at 17px) |
 | `--meta-col` | 120px | Left column of every list row |
@@ -92,6 +103,13 @@ A 4px-based scale:
 
 `.container` is `min(var(--width-page), 100% - 2 * var(--gutter))`, centered. Content inside the
 column is left-aligned on a shared edge; article text keeps that edge and is limited to `--measure`.
+`.breakout` widens an element to `min(--width-grid, 100vw − 2 × gutter)`, centered on the column, so
+headings and text keep the column edge while visuals use more of wide screens. `body` clips horizontal
+overflow so full-bleed elements never cause sideways scrolling.
+
+`.section--band` paints a full-bleed `--surface` band behind a section (Selected work on Work, On my
+shelves on Life). It drops the section's hairline and the next section's, and frames and covers
+inside it switch to `--paper`.
 
 ### Shape and motion
 
@@ -104,24 +122,30 @@ column is left-aligned on a shared edge; article text keeps that edge and is lim
 
 ## Grid and breakpoints
 
-- **Page column:** 920px max. Sections stack vertically, each with a top hairline and
-  `--section-space` padding.
-- **Hero:** two columns, `minmax(0, 1fr)` copy and a `minmax(12rem, 18rem)` portrait, 64px gap,
-  vertically centered.
+- **Page column:** 920px max, with `.breakout` visuals up to 1200px. Sections stack vertically, each
+  with a top hairline (or a surface band) and `--section-space` padding.
+- **Hero:** two columns, `minmax(0, 1fr)` copy and a `minmax(14rem, 25rem)` portrait, 64px gap. The
+  copy is vertically centered; the portrait is bottom-aligned with no padding below, so the cut-out
+  stands on the next section's top edge.
 - **Card grid:** two equal `minmax(0, 1fr)` columns, 32px column gap, 48px row gap. Selected work
   (`.card-grid--projects`) uses a six-column track: two headline cards span three columns each, and
   three `.card--small` cards span two. Small cards have no `.card-detail`. At ≤ 720px all five stack.
 - **List rows (`.entry`):** `120px | minmax(0, 1fr)`, 32px column gap, baseline-aligned so the date
   sits on the title's first line.
-- **Focus areas:** two equal columns, each topped by a hairline, with 20px titles and short descriptions.
+- **Focus areas:** three equal columns (two at ≤ 860px), each topped by a hairline, with 17px titles and
+  15px muted descriptions.
+- **Paper cards (`.card-grid--papers`):** three equal columns with 4:3 graphics; one column at ≤ 600px.
+- **Life stories (`.life-stories`):** one row per story, photo (1.3fr) and text (1fr) alternating sides.
+- **Cover rows:** `120px | 1fr` like list rows, with wrapping 48px covers.
 - **Book archive:** intrinsic `repeat(auto-fill, minmax(min(100%, 13rem), 1fr))`, which gives four
   columns at full width and fewer as space shrinks.
 
 | Breakpoint | Changes |
 | --- | --- |
-| ≤ 860px | Hero portrait column 10–15rem with a 48px gap; project media switches to 4:3 and the code sample to 12px |
+| ≤ 1000px | The article contents list is hidden and prose returns to the single-column layout |
+| ≤ 860px | Hero portrait column 10–15rem with a 48px gap; focus areas drop to two columns |
 | ≤ 720px | Navigation collapses into a menu panel; project cards stack into one column with 16:10 media |
-| ≤ 600px | Section headings and their action links, hero, card grids, focus areas, shelves, the Life teaser, list rows, and article image rows stack into one column; the hero portrait becomes a square up to 352px wide; the floated article image stops floating |
+| ≤ 600px | Section headings and their action links, hero, card grids, focus areas, shelves, the Life teaser, Life stories, cover rows, year groups, list rows, and article image rows stack into one column; the hero portrait moves above the name as a square up to 240px wide on its own hairline; the floated article image stops floating |
 | ≤ 380px | 15px wordmark and tighter header controls |
 
 ## Components
@@ -140,7 +164,8 @@ column is left-aligned on a shared edge; article text keeps that edge and is lim
 ### View switch
 
 A segmented control: `--surface` pill track, two 13px/500 segments, and the active segment on
-`--raised` with a hairline ring. It links to `#work` and `#life`. The inline head script sets the
+`--raised` with a hairline ring. Each segment reserves a 6px dot; only the active one is filled with
+the accent, so the control keeps its width when switching. It links to `#work` and `#life`. The inline head script sets the
 mode before first paint; the layout script syncs `aria-current`, `hidden`, and `inert`, and moves
 focus to the visible `h1` when focus was inside the hidden view. The Work and Life links open their
 respective views at the top of the page.
@@ -171,9 +196,9 @@ component sits 32px above the section content, with section titles in sentence c
 
 ### Hero
 
-Used by Work and Life alike: 13px meta line → `h1` → 20px lede → 17px secondary text (max 34rem) →
-button pair → optional status line with the 6px accent dot. The portrait sits in a `.frame` at 4:5
-with `object-position: 50% 0`, so the cutout reads as a studio portrait on `--surface`. Work uses the
+Used by Work and Life alike: `h1` at `--text-hero` → 24–28px lede → 20px secondary text (max 36rem) →
+button pair → optional status line with the 6px accent dot. The portrait is a transparent cut-out at
+4:5 with `object-position: 50% 0` and no frame background, standing on the next section's edge. Work uses the
 original-face Oxford-shirt portrait; Life uses the casual climbing portrait.
 
 ### Frames and media
@@ -185,14 +210,17 @@ child images set to `object-fit: cover`. Aspect ratios:
 | --- | --- |
 | Hero portrait | 4:5 (1:1 at ≤ 600px) |
 | Headline project cards | 16:10 |
-| Small project cards | 4:3 (16:10 at ≤ 720px) |
+| Small project cards, paper cards | 4:3 (small project cards 16:10 at ≤ 720px) |
 | Life story photos | 4:3, with per-photo `object-position` |
+| Movie-night graphic | 152px tall, matching the Spotify embed beside it |
 | Life teaser photo | 3:2 |
 | Book covers | 2:3 |
 
-Project cards use data graphics instead of photos or logos. Each is drawn from that project's real data
-(the Horrorverse atlas, a dithered ReLAION contact sheet, model scores from the LAION-fMRI replication,
-a brain slice with face- and scene-selective cortex, a ResNet-50 similarity matrix) and stored as two
+Project and paper cards use data graphics instead of photos or logos. Each is drawn from that project's
+real data (the Horrorverse atlas, a dithered ReLAION contact sheet, model scores from the LAION-fMRI
+replication, a brain slice with face- and scene-selective cortex, a ResNet-50 similarity matrix; for
+papers, a 10-model rerun of the universal-dimensions method, the sampling paper's coverage map rebuilt
+from its published figure, and LAION-fMRI's commit history) and stored as two
 alpha masks in `public/v2/graphics/`: `<name>-ink.png` and `<name>-accent.png`. `.graphic` paints them
 with `--ink` and `--accent` through CSS `mask`, inset 16px (12px for the contact sheet) and contained
 in the frame, so they follow the theme. Each graphic has exactly one accent element. ReLAION has
@@ -203,16 +231,17 @@ negatives. `scripts/card_graphics.py` regenerates the masks; it reads data outsi
 
 `.card` is a flex column: frame → `h3` (20px) → `.card-text` (17px
 secondary) → optional `.card-detail` (15px secondary) → optional `.card-footer`. The footer is pushed
-to the bottom so footers line up across a row, with role metadata on the left and the destination
-`.link` on the right. The same card is used for projects and for the four Life stories.
+to the bottom so footers line up across a row; it holds only the destination `.link`. Paper cards add a
+13px year and venue line above a 17px title, authors, the award note and the "About this paper" toggle.
 
 ### List rows
 
-`.entry` is the single row pattern for publications, earlier publications, roles, education,
-writing on Work and Life, and the writing index. Every row has a 13px
+`.entry` is the row pattern for the remaining publication, earlier publications, roles, education,
+and writing on Work and Life. Every row has a 13px
 `.entry-meta` (year, date range, or month), a 17px/500 `.entry-title`, and 15px `.entry-text` lines. Publication notes such as
 "Shared first author" or "Oral" are set inline in `--ink` within the venue line. Rows are separated
-by top hairlines.
+by top hairlines. Role and degree rows add a `.span-bar` under the date: a 2px track on a shared
+2014–now scale with the span in `--ink` (the current one in `--accent`).
 
 The CMBB Replication Award appears within its publication row as an `.award-note`: a small trophy,
 13px text, a surface background, and a hairline border. Eyebrow labels above heroes and cards are
@@ -222,17 +251,18 @@ omitted; metadata carries dates, authors, contribution areas, and availability.
 
 - `.toggle`: inline, 13px muted summary with a trailing `+`/`−`, used for "About this paper".
 - `.disclosure`: full-width 15px/500 summary row with a top hairline and a trailing `+`/`−`, used
-  for "Earlier publications" and "Books I've read".
+  for "Earlier publications" and "Books I found okay".
 
 Both use native `<details>`, so they work with the keyboard and without JavaScript.
 
 ### Work-specific compositions
 
-- **Selected work:** Horrorverse and ReLAION-natural as headline cards, then re:vision, LAION-fMRI and thingsvision as small cards.
-- **Expertise:** `<dl class="focus-grid">`, with each term at 20px/500 and the description at
-  15px secondary. Six areas cover ML and data science, production ML systems, data engineering,
-  backend and web development, research and experimental design, and project ownership and
-  collaboration. Each description summarizes a broad capability in one short sentence.
+- **Selected work:** on a surface band; Horrorverse and ReLAION-natural as headline cards, then
+  re:vision, LAION-fMRI and thingsvision as small cards.
+- **Expertise:** `<dl class="focus-grid">` with six areas, followed by "Methods & tools": a wrapping
+  row of `.pills` (13px, hairline border, pill radius) listing the skills that used to sit on cards.
+- **Research:** the three first- or shared-first-author papers as graphic cards, the remaining paper
+  as a list row, then the "Earlier publications" disclosure.
 - **Experience & education:** role dates and descriptions follow `cv.tex` and the linked CV. Education
   uses the same row pattern below a subsection heading.
 - **Life outside work:** `.split` with a 3:2 photo and copy (h2, text, secondary button). The whole
@@ -240,12 +270,13 @@ Both use native `<details>`, so they work with the keyboard and without JavaScri
 
 ### Life-specific compositions
 
-- **A bit about me:** a 2×2 card grid of photo stories.
-- **On my shelves:** `.shelf-grid` with current books (136px covers with a hairline ring, 15px/500
-  title, 13px author) beside the music and movie-night notes. Music includes the Discover Weekly
-  Spotify player in a responsive 152px frame. Below is the book archive disclosure:
-  group headings at 15px/500 and rows with a 44px cover thumbnail, a 13px/500 title, and a 13px
-  muted author. Missing covers show an empty `--surface` placeholder.
+- **A bit about me:** a photo essay; each story is a graded photo beside a 24–28px heading and text,
+  alternating sides.
+- **On my shelves:** on a surface band. Music (Spotify embed) and Horror movie night (the Horrorverse
+  atlas graphic, terracotta on Life) sit side by side at matching 152px heights. Below, "Books" is a
+  cover wall: one row per group, "Reading now" first with accent-ringed covers, 48px covers with the
+  title and author as a tooltip and alt text. Missing covers show the title on `--surface`. "Books I
+  found okay" stays in a disclosure.
 - **Writing:** the same label and list rows as Work's writing section.
 
 ### Contact and footer
@@ -256,13 +287,17 @@ location on the left and "Back to top" on the right, above a hairline.
 
 ### Writing index
 
-`.page-head` (64px top padding, `h1`, 20px lede) followed by list rows with full month dates. Each
-row is fully clickable.
+`.page-head--display` (`h1` at `--text-display`, 20px lede), then posts grouped by year: the year sits
+in the 120px meta column, and each post has a 20px title, a secondary description, and a 13px date and
+reading time. Each post is fully clickable; the title turns accent on hover.
 
 ### Article
 
-- Header (max `--width-wide`): back link → `h1` → 20px description lede → 13px meta with date and
-  tags, closed by a hairline 48px above the text.
+- Header (max `--width-wide`): back link → `h1` → 20px description lede → 13px date and reading time
+  beside tag `.pills`, closed by a hairline 48px above the text.
+- Posts with three or more `h2`s get a sticky contents list in the right column above 1000px. Prose
+  then keeps `--measure` for everything, including images, and the entry for the section in view is
+  marked with an accent rule.
 - `.prose`: 17px/1.75 Inter. Text blocks are capped at `--measure`, while images, image rows, and
   figures can widen to `--width-wide`. Paragraph spacing is 1.25em, `h2` sits 2em above and `h3`
   1.8em above, and both clear floats. Links have a 55%-accent underline and turn accent on hover.
@@ -274,7 +309,8 @@ row is fully clickable.
 - Image enlargement: the article script wraps each non-linked prose image in a zoom-in button and
   carries the float class across. The `<dialog>` uses `--raised`, an 8px radius, a 72% black
   backdrop, and a circular close button. It closes on the button, on a backdrop click, or with Escape.
-- Footer: hairline, then "All writing" and "Have a thought? Say hi".
+- Footer (max `--measure`): hairline, older and newer post links (13px label over a 500-weight
+  title), then "All writing" and "Have a thought? Say hi".
 
 ## Interaction and accessibility
 

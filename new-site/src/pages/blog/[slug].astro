@@ -1,27 +1,49 @@
 ---
 import { getCollection } from 'astro:content';
 import V2Layout from '../../layouts/V2Layout.astro';
+import { readingTime } from '../../data/reading-time';
 export async function getStaticPaths() {
-  return (await getCollection('blog')).filter(post => !post.data.draft).map(post => ({ params: { slug: post.slug }, props: { post } }));
+  const posts = (await getCollection('blog')).filter(post => !post.data.draft).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  return posts.map((post, i) => ({ params: { slug: post.slug }, props: { post, newer: posts[i - 1], older: posts[i + 1] } }));
 }
-const { post } = Astro.props;
-const { Content } = await post.render();
+const { post, newer, older } = Astro.props;
+const { Content, headings } = await post.render();
 const tags: string[] = post.data.tags;
+// Long posts get a table of contents in the right column on wide screens.
+const contents = headings.filter(heading => heading.depth === 2);
+const showContents = contents.length >= 3;
 ---
 <V2Layout title={`${post.data.title} — Johannes Roth`} description={post.data.description}>
-  <article class="article">
+  <article class:list={['article', { 'article--contents': showContents }]}>
     <header class="article-head">
       <a class="link-back" href="/blog">All writing</a>
       <h1>{post.data.title}</h1>
       <p class="article-lede">{post.data.description}</p>
-      <p class="meta article-meta">
-        <time datetime={post.data.date.toISOString()}>{post.data.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</time>{tags.length > 0 && <> · {tags.join(', ')}</>}
-      </p>
+      <div class="article-meta">
+        <p class="meta"><time datetime={post.data.date.toISOString()}>{post.data.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</time> · {readingTime(post.body)} min read</p>
+        {tags.length > 0 && <ul class="pills">{tags.map(tag => <li>{tag}</li>)}</ul>}
+      </div>
     </header>
-    <div class="prose"><Content /></div>
+    <div class="article-body">
+      <div class="prose"><Content /></div>
+      {showContents && (
+        <nav class="article-contents" aria-label="Contents">
+          <p class="meta">Contents</p>
+          <ol>{contents.map(heading => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ol>
+        </nav>
+      )}
+    </div>
     <footer class="article-foot">
-      <a class="link" href="/blog">All writing</a>
-      <a class="link" href="mailto:johannes@roth24.de">Have a thought? Say hi</a>
+      {(newer || older) && (
+        <nav class="post-nav" aria-label="More writing">
+          {older && <a class="post-nav-link" href={`/blog/${older.slug}`}><span class="meta">Older</span>{older.data.title}</a>}
+          {newer && <a class="post-nav-link post-nav-link--newer" href={`/blog/${newer.slug}`}><span class="meta">Newer</span>{newer.data.title}</a>}
+        </nav>
+      )}
+      <div class="link-row">
+        <a class="link" href="/blog">All writing</a>
+        <a class="link" href="mailto:johannes@roth24.de">Have a thought? Say hi</a>
+      </div>
     </footer>
   </article>
   <dialog class="image-viewer" aria-label="Expanded article image">
@@ -50,5 +72,17 @@ const tags: string[] = post.data.tags;
     });
   });
   viewer?.querySelector('button')?.addEventListener('click', () => viewer.close());
+
+  // Mark the section being read in the contents list.
+  const contentLinks = new Map([...document.querySelectorAll<HTMLAnchorElement>('.article-contents a')].map(link => [decodeURIComponent(link.hash.slice(1)), link]));
+  if (contentLinks.size) {
+    const observer = new IntersectionObserver(entries => {
+      entries.filter(entry => entry.isIntersecting).forEach(entry => {
+        contentLinks.forEach(link => link.removeAttribute('aria-current'));
+        contentLinks.get(entry.target.id)?.setAttribute('aria-current', 'true');
+      });
+    }, { rootMargin: '0px 0px -70% 0px' });
+    contentLinks.forEach((_, id) => { const heading = document.getElementById(id); if (heading) observer.observe(heading); });
+  }
   viewer?.addEventListener('click', event => { if (event.target === viewer) viewer.close(); });
 </script>

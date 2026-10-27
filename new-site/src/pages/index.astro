@@ -28,10 +28,11 @@ const focusAreas = [
   { title: 'Research & experimental design', description: 'Turning open questions into testable ideas, sound experiments, and clear conclusions.' },
   { title: 'Project ownership & collaboration', description: 'Shaping the work, coordinating with others, and seeing projects through.' },
 ];
+const skills = ['Recommender systems', 'Embeddings', 'Feature extraction', 'Model evaluation', 'Dataset curation', 'Data services', 'Experimental design', 'Research software', 'Full-stack development', 'Python'];
 const publications = [
-  { year: '2026', title: 'Characterizing Universal Object Representations Across Vision Models', authors: 'Mahner*, Roth* et al.', venue: 'NeurIPS 2026 (accepted)', href: 'https://arxiv.org/abs/2605.13675', note: 'Shared first author', summary: 'We compared the object similarity structure of 162 vision models to distinguish universal from model-specific dimensions, and related that structure to image properties, neural activity, and human judgments.' },
-  { year: '2025', title: 'How to sample the world for understanding the visual system', authors: 'Roth & Hebart', venue: 'CCN', href: 'https://openreview.net/forum?id=T9k6KkZoca', note: 'Oral', summary: 'How does the choice of images affect what we can learn about the visual brain? We compared image-sampling strategies using simulations and fMRI data to study dataset coverage and model generalization.' },
-  { year: '2025', title: 'Ten principles for reliable, efficient, and adaptable coding in psychology and cognitive neuroscience', authors: 'Roth*, Duan* et al.', venue: 'Communications Psychology', href: 'https://doi.org/10.1038/s44271-025-00236-3', note: 'Shared first author', award: 'CMBB Replication Award · 2025', summary: 'A practical guide to research software, covering project organization, testing, documentation, version control, and collaboration.' },
+  { year: '2026', title: 'Characterizing Universal Object Representations Across Vision Models', authors: 'Mahner*, Roth* et al.', venue: 'NeurIPS 2026 (accepted)', graphic: 'universal', graphicAlt: 'Dimensions of object-similarity structure in ten vision models, one row per model, placed by how consistently each recurs in the others; one shared dimension is traced across all models', href: 'https://arxiv.org/abs/2605.13675', note: 'Shared first author', summary: 'We compared the object similarity structure of 162 vision models to distinguish universal from model-specific dimensions, and related that structure to image properties, neural activity, and human judgments.' },
+  { year: '2025', title: 'How to sample the world for understanding the visual system', authors: 'Roth & Hebart', venue: 'CCN', graphic: 'sampling', graphicAlt: 'Clusters of natural photographs in a t-SNE map, with the clusters that THINGS and NSD barely cover highlighted', href: 'https://openreview.net/forum?id=T9k6KkZoca', note: 'Oral', summary: 'How does the choice of images affect what we can learn about the visual brain? We compared image-sampling strategies using simulations and fMRI data to study dataset coverage and model generalization.' },
+  { year: '2025', title: 'Ten principles for reliable, efficient, and adaptable coding in psychology and cognitive neuroscience', authors: 'Roth*, Duan* et al.', venue: 'Communications Psychology', graphic: 'coding', graphicAlt: 'Every commit to the LAION-fMRI package in order, lines added above the axis and deleted below, with commits that touched the tests highlighted', href: 'https://doi.org/10.1038/s44271-025-00236-3', note: 'Shared first author', award: 'CMBB Replication Award · 2025', summary: 'A practical guide to research software, covering project organization, testing, documentation, version control, and collaboration.' },
   { year: '2025', title: 'Fine-grained image and category information in ventral visual pathway', authors: 'Badwal, Bergmann, Roth et al.', venue: 'J Neuroscience', href: 'https://doi.org/10.1523/JNEUROSCI.0936-24.2024' },
 ];
 const olderPublications = [
@@ -40,18 +41,26 @@ const olderPublications = [
   { year: '2021', title: 'Preferred stimuli for individual voxels in the human visual system', authors: 'Roth, Seeliger, Schmid & Hebart', venue: 'Cosyne poster', href: 'https://jov.arvojournals.org/article.aspx?articleid=2777378' },
 ];
 const roles = [
-  { date: 'May 2022–present', title: 'PhD Researcher · Computational Cognitive Neuroscience', organization: 'Max Planck Institute for Human Cognitive and Brain Sciences & University of Giessen', description: 'Independent research on vision models and human brain activity, with GPU-based data pipelines, fMRI experiments, and public research software.' },
-  { date: 'Jun 2021–May 2022', title: 'Research Scientist · Machine Learning in Medicine', organization: 'ScaDS.AI Dresden/Leipzig', description: 'Deep-learning models for brain-tumor segmentation and predictive models for clinical data, including mortality prediction and uncertainty estimation.' },
-  { date: 'Nov 2019–May 2021', title: 'Data Scientist / ML Engineer · Working student', organization: 'CHECK24, Travel Vertical', description: 'Designed and deployed a production computer-vision service for 20 million hotel images. Improved recommendation-data pipelines, reducing update time by over 95%.' },
-  { date: 'Oct 2020–May 2021', title: 'Full-Stack Developer · Freelance', organization: 'Kimetric UG', description: 'Delivered Django websites for Hebart Lab and the THINGS Initiative, from client requirements to deployment, Linux hosting, and maintenance.' },
-  { date: 'Oct 2018–Sep 2019', title: 'Data Scientist · Working student', organization: 'Webdata Solutions GmbH (now Vistex)', description: 'Developed machine-learning models for product matching and image classification in e-commerce.' },
-  { date: 'Feb 2018–Aug 2018', title: 'Data Analyst · Working student', organization: 'Mercateo Services GmbH & Co. KG', description: 'Data integration, reporting, and testing for an AWS-based data warehouse using Apache NiFi and Pentaho.' },
+  { span: [2022.33, null], date: 'May 2022–present', title: 'PhD Researcher · Computational Cognitive Neuroscience', organization: 'Max Planck Institute for Human Cognitive and Brain Sciences & University of Giessen', description: 'Independent research on vision models and human brain activity, with GPU-based data pipelines, fMRI experiments, and public research software.' },
+  { span: [2021.42, 2022.33], date: 'Jun 2021–May 2022', title: 'Research Scientist · Machine Learning in Medicine', organization: 'ScaDS.AI Dresden/Leipzig', description: 'Deep-learning models for brain-tumor segmentation and predictive models for clinical data, including mortality prediction and uncertainty estimation.' },
+  { span: [2019.83, 2021.33], date: 'Nov 2019–May 2021', title: 'Data Scientist / ML Engineer · Working student', organization: 'CHECK24, Travel Vertical', description: 'Designed and deployed a production computer-vision service for 20 million hotel images. Improved recommendation-data pipelines, reducing update time by over 95%.' },
+  { span: [2020.75, 2021.33], date: 'Oct 2020–May 2021', title: 'Full-Stack Developer · Freelance', organization: 'Kimetric UG', description: 'Delivered Django websites for Hebart Lab and the THINGS Initiative, from client requirements to deployment, Linux hosting, and maintenance.' },
+  { span: [2018.75, 2019.67], date: 'Oct 2018–Sep 2019', title: 'Data Scientist · Working student', organization: 'Webdata Solutions GmbH (now Vistex)', description: 'Developed machine-learning models for product matching and image classification in e-commerce.' },
+  { span: [2018.08, 2018.58], date: 'Feb 2018–Aug 2018', title: 'Data Analyst · Working student', organization: 'Mercateo Services GmbH & Co. KG', description: 'Data integration, reporting, and testing for an AWS-based data warehouse using Apache NiFi and Pentaho.' },
 ];
 const education = [
-  { date: 'May 2022–present', title: 'Doctoral candidate · Dr. rer. nat.', organization: 'University of Giessen', description: 'Research focus: machine learning and computational neuroscience.' },
-  { date: '2017–2021', title: 'M.Sc. Computer Science', organization: 'Leipzig University · Grade 1.2', description: 'Master’s thesis: generative deep learning for visual processing in the human brain (grade 1.1).' },
-  { date: '2014–2017', title: 'B.Sc. Business Information Systems', organization: 'Leipzig University · Grade 1.5', description: '' },
+  { span: [2022.33, null], date: 'May 2022–present', title: 'Doctoral candidate · Dr. rer. nat.', organization: 'University of Giessen', description: 'Research focus: machine learning and computational neuroscience.' },
+  { span: [2017.75, 2021.42], date: '2017–2021', title: 'M.Sc. Computer Science', organization: 'Leipzig University · Grade 1.2', description: 'Master’s thesis: generative deep learning for visual processing in the human brain (grade 1.1).' },
+  { span: [2014.75, 2017.75], date: '2014–2017', title: 'B.Sc. Business Information Systems', organization: 'Leipzig University · Grade 1.5', description: '' },
 ];
+// Role and degree spans share one scale, so the bars in the date column are comparable.
+const now = new Date();
+const timelineStart = 2014;
+const timelineEnd = now.getFullYear() + now.getMonth() / 12;
+const spanStyle = ([from, to]: (number | null)[]) => {
+  const scale = (year: number) => ((year - timelineStart) / (timelineEnd - timelineStart)) * 100;
+  return `--from: ${scale(from!).toFixed(1)}%; --to: ${scale(to ?? timelineEnd).toFixed(1)}%`;
+};
 const lifeStories = [
   { title: 'Movement', image: bouldering, position: '35% 50%', alt: 'Johannes bouldering on a rock face in a mountain valley', copy: 'My love for moving my body started with joining a breakdance crew at 17. These days I mostly boulder, lift weights, and do yoga. A day in the mountains with some climbing is hard to beat.' },
   { title: 'Music', image: band, position: '50% 30%', alt: 'Johannes holding an electric guitar', copy: 'A few years ago, I asked some friends if they wanted to start a band. Everyone said yes. We mostly play pop punk covers at birthday parties, but the dream of writing our own songs is still alive.' },
@@ -74,23 +83,22 @@ const lifeStories = [
         <p class="meta status">Available from January 2027</p>
       </div>
       <div class="frame hero-portrait">
-        <Image src={workPortrait} alt="Johannes Roth smiling, in a light blue Oxford shirt with rolled sleeves and his arms crossed" widths={[320, 640, 960]} sizes="(max-width: 600px) 22rem, 18rem" width={640} format="webp" loading="eager" fetchpriority="high" />
+        <Image src={workPortrait} alt="Johannes Roth smiling, in a light blue Oxford shirt with rolled sleeves and his arms crossed" widths={[320, 640, 960]} sizes="(max-width: 600px) 22rem, 25rem" width={640} format="webp" loading="eager" fetchpriority="high" />
       </div>
     </section>
 
-    <section class="section" id="selected-work" aria-labelledby="work-heading">
+    <section class="section section--band" id="selected-work" aria-labelledby="work-heading">
       <div class="section-head">
         <h2 id="work-heading">Selected work</h2>
         <a class="link" href="https://github.com/andropar" target="_blank" rel="noopener">More on GitHub</a>
       </div>
-      <div class="card-grid card-grid--projects">
+      <div class="card-grid card-grid--projects breakout">
         <article class="card">
           <div class="frame card-media graphic graphic--horrorverse" role="img" aria-label="The Horrorverse atlas: about 19,000 horror films as dots, with the haunted-house region highlighted"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
           <h3>Horrorverse</h3>
           <p class="card-text">Horror film recommendations, mood search, and a map of 20,000 films.</p>
           <p class="card-detail">A side project I built end to end: collaborative-filtering picks, text-embedding search, an explorable film atlas, accounts, and deployment.</p>
           <div class="card-footer">
-            <p class="meta">Recommender systems · Embeddings · Full stack</p>
             <a class="link stretched" href="https://horrorverse.jroth.space/" target="_blank" rel="noopener">Open Horrorverse</a>
           </div>
         </article>
@@ -100,7 +108,6 @@ const lifeStories = [
           <p class="card-text">Naturalistic images and embeddings for vision research.</p>
           <p class="card-detail">I developed pipelines for image classification, quality checks, and feature extraction to curate the dataset.</p>
           <div class="card-footer">
-            <p class="meta">Dataset curation · Feature extraction</p>
             <a class="link stretched" href="https://huggingface.co/datasets/andropar/relaion2b-natural" target="_blank" rel="noopener">View dataset</a>
           </div>
         </article>
@@ -109,7 +116,6 @@ const lifeStories = [
           <h3>re:vision</h3>
           <p class="card-text">Website, data services, and annotation tools for a replication initiative.</p>
           <div class="card-footer">
-            <p class="meta">Research software · Model evaluation</p>
             <a class="link stretched" href="https://re-vision-initiative.org/" target="_blank" rel="noopener">Explore project</a>
           </div>
         </article>
@@ -118,7 +124,6 @@ const lifeStories = [
           <h3>LAION-fMRI</h3>
           <p class="card-text">A public brain-imaging dataset for visual neuroscience.</p>
           <div class="card-footer">
-            <p class="meta">Data services · Experimental design</p>
             <a class="link stretched" href="https://laion-fmri.hebartlab.com/" target="_blank" rel="noopener">Explore project</a>
           </div>
         </article>
@@ -127,7 +132,6 @@ const lifeStories = [
           <h3>thingsvision</h3>
           <p class="card-text">A common interface for extracting and comparing vision-model features.</p>
           <div class="card-footer">
-            <p class="meta">Contributor · Python</p>
             <a class="link stretched" href="https://github.com/ViCCo-Group/thingsvision" target="_blank" rel="noopener">View library</a>
           </div>
         </article>
@@ -141,6 +145,10 @@ const lifeStories = [
       <dl class="focus-grid">
         {focusAreas.map(area => <div><dt>{area.title}</dt><dd>{area.description}</dd></div>)}
       </dl>
+      <div class="skill-line">
+        <h3>Methods & tools</h3>
+        <ul class="pills">{skills.map(skill => <li>{skill}</li>)}</ul>
+      </div>
     </section>
 
     <section class="section" id="research" aria-labelledby="research-heading">
@@ -149,15 +157,25 @@ const lifeStories = [
         <a class="link" href="https://scholar.google.com/citations?user=U3Z3J2gAAAAJ" target="_blank" rel="noopener">Google Scholar</a>
         <p class="section-lede">At the Max Planck Institute and University of Giessen, I study how visual representations in models relate to the human brain.</p>
       </div>
+      <div class="card-grid card-grid--papers breakout">
+        {publications.filter(paper => paper.graphic).map(paper => (
+          <article class="card">
+            <div class={`frame card-media graphic graphic--paper-${paper.graphic}`} role="img" aria-label={paper.graphicAlt}><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
+            <p class="meta">{paper.year} · {paper.venue}</p>
+            <h3 class="paper-title"><a href={paper.href} target="_blank" rel="noopener">{paper.title}</a></h3>
+            <p class="card-detail">{paper.authors}{paper.note && <> · <span class="entry-note">{paper.note}</span></>}</p>
+            {paper.award && <p class="award-note"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M7 3h10v6a5 5 0 0 1-10 0V3ZM7 5H4v2a4 4 0 0 0 4 4m9-6h3v2a4 4 0 0 1-4 4M12 14v6m-4 1h8" /></svg>{paper.award}</p>}
+            {paper.summary && <details class="toggle"><summary>About this paper</summary><p>{paper.summary}</p></details>}
+          </article>
+        ))}
+      </div>
       <ul class="entries">
-        {publications.map(paper => (
+        {publications.filter(paper => !paper.graphic).map(paper => (
           <li class="entry">
             <span class="entry-meta">{paper.year}</span>
             <div>
               <h3 class="entry-title"><a href={paper.href} target="_blank" rel="noopener">{paper.title}</a></h3>
-              <p class="entry-text">{paper.authors} · {paper.venue}{paper.note && <> · <span class="entry-note">{paper.note}</span></>}</p>
-              {paper.award && <p class="award-note"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M7 3h10v6a5 5 0 0 1-10 0V3ZM7 5H4v2a4 4 0 0 0 4 4m9-6h3v2a4 4 0 0 1-4 4M12 14v6m-4 1h8" /></svg>{paper.award}</p>}
-              {paper.summary && <details class="toggle"><summary>About this paper</summary><p>{paper.summary}</p></details>}
+              <p class="entry-text">{paper.authors} · {paper.venue}</p>
             </div>
           </li>
         ))}
@@ -186,7 +204,7 @@ const lifeStories = [
       <ul class="entries">
         {roles.map(role => (
           <li class="entry">
-            <span class="entry-meta">{role.date}</span>
+            <span class="entry-meta">{role.date}<span class:list={['span-bar', { 'span-bar--current': !role.span[1] }]} style={spanStyle(role.span)} aria-hidden="true"></span></span>
             <div>
               <h3 class="entry-title">{role.title}</h3>
               <p class="entry-text">{role.organization}</p>
@@ -199,7 +217,7 @@ const lifeStories = [
       <ul class="entries">
         {education.map(degree => (
           <li class="entry">
-            <span class="entry-meta">{degree.date}</span>
+            <span class="entry-meta">{degree.date}<span class:list={['span-bar', { 'span-bar--current': !degree.span[1] }]} style={spanStyle(degree.span)} aria-hidden="true"></span></span>
             <div>
               <h3 class="entry-title">{degree.title}</h3>
               <p class="entry-text">{degree.organization}</p>
@@ -231,7 +249,7 @@ const lifeStories = [
     <section class="section" aria-labelledby="life-teaser-heading">
       <div class="split">
         <div class="frame split-media">
-          <Image src={bouldering} alt="Johannes bouldering in a mountain valley" widths={[600, 1000]} sizes="(max-width: 600px) 100vw, 444px" width={1000} format="webp" loading="lazy" />
+          <Image class="photo-grade" src={bouldering} alt="Johannes bouldering in a mountain valley" widths={[600, 1000]} sizes="(max-width: 600px) 100vw, 444px" width={1000} format="webp" loading="lazy" />
         </div>
         <div class="split-body">
           <h2 id="life-teaser-heading">Life outside work</h2>
@@ -254,7 +272,7 @@ const lifeStories = [
         </div>
       </div>
       <div class="frame hero-portrait">
-        <Image src={casualPortrait} alt="Johannes smiling in a T-shirt and climbing harness" widths={[320, 640, 960]} sizes="(max-width: 600px) 22rem, 18rem" width={640} format="webp" loading="eager" />
+        <Image src={casualPortrait} alt="Johannes smiling in a T-shirt and climbing harness" widths={[320, 640, 960]} sizes="(max-width: 600px) 22rem, 25rem" width={640} format="webp" loading="eager" />
       </div>
     </section>
 
@@ -262,93 +280,92 @@ const lifeStories = [
       <div class="section-head">
         <h2 id="life-about-heading">A bit about me</h2>
       </div>
-      <div class="card-grid">
+      <div class="life-stories breakout">
         {lifeStories.map(story => (
-          <article class="card">
-            <div class="frame card-media">
-              <Image src={story.image} alt={story.alt} widths={[480, 900]} sizes="(max-width: 600px) 100vw, 444px" width={900} format="webp" loading="lazy" style={`object-position: ${story.position}`} />
+          <article class="story">
+            <div class="frame story-media">
+              <Image class="photo-grade" src={story.image} alt={story.alt} widths={[600, 1000]} sizes="(max-width: 600px) 100vw, 680px" width={1000} format="webp" loading="lazy" style={`object-position: ${story.position}`} />
             </div>
-            <h3>{story.title}</h3>
-            <p class="card-text">{story.copy}</p>
+            <div class="story-body">
+              <h3>{story.title}</h3>
+              <p>{story.copy}</p>
+            </div>
           </article>
         ))}
       </div>
     </section>
 
-    <section class="section" id="life-shelves" aria-labelledby="shelves-heading">
+    <section class="section section--band" id="life-shelves" aria-labelledby="shelves-heading">
       <div class="section-head">
         <h2 id="shelves-heading">On my shelves</h2>
         <p class="section-lede">Books, music, and movies.</p>
       </div>
       <div class="shelf-grid">
-        <div>
-          <h3 class="shelf-title">Currently reading</h3>
-          <ul class="book-list">
+        <article class="shelf-note">
+          <h3>Music</h3>
+          <p class="card-text">I listen to a bit of everything. Spotify probably knows my taste better than I do.</p>
+          <div class="frame shelf-media">
+            <iframe
+              title="Johannes Roth Discover Weekly playlist"
+              src="https://open.spotify.com/embed/playlist/37i9dQZEVXcKBQMbsgdSz3?utm_source=generator&theme=0"
+              width="100%"
+              height="152"
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              allowfullscreen
+              loading="lazy"
+            ></iframe>
+          </div>
+          <div class="link-row">
+            <a class="link" href="https://open.spotify.com/playlist/37i9dQZEVXcKBQMbsgdSz3" target="_blank" rel="noopener">My Discover Weekly</a>
+          </div>
+        </article>
+        <article class="shelf-note">
+          <h3>Horror movie night</h3>
+          <p class="card-text">My wife and I watch horror movies with friends. I built a little recommender to help us choose.</p>
+          <div class="frame shelf-media graphic graphic--horrorverse" role="img" aria-label="The Horrorverse atlas of horror films, with the haunted-house region highlighted"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
+          <div class="link-row">
+            <a class="link" href="https://horrorverse.jroth.space/app/movie-night" target="_blank" rel="noopener">Find our next movie</a>
+            <a class="link" href="https://letterboxd.com/haukeman/" target="_blank" rel="noopener">My Letterboxd</a>
+          </div>
+        </article>
+      </div>
+
+      <h3 class="shelf-title">Books</h3>
+      <div class="cover-wall">
+        <div class="cover-row">
+          <h4>Reading now</h4>
+          <ul class="covers">
             {currentBooks.map((book, i) => (
-              <li class="book">
-                <Image class="book-cover" src={currentCovers[i]} alt={`${book.title} cover`} widths={[180, 280]} sizes="8.5rem" width={180} format="webp" loading="lazy" />
-                <h4>{book.title}</h4>
-                <p class="meta">{book.author}</p>
+              <li class="cover cover--current" title={`${book.title} · ${book.author}`}>
+                <Image src={currentCovers[i]} alt={`${book.title} by ${book.author}`} widths={[96, 144]} sizes="3rem" width={144} format="webp" loading="lazy" />
               </li>
             ))}
           </ul>
         </div>
-        <div class="shelf-notes">
-          <article>
-            <h3>Music</h3>
-            <p class="card-text">I listen to a bit of everything. Spotify probably knows my taste better than I do.</p>
-            <div class="frame spotify-player">
-              <iframe
-                title="Johannes Roth Discover Weekly playlist"
-                src="https://open.spotify.com/embed/playlist/37i9dQZEVXcKBQMbsgdSz3?utm_source=generator&theme=0"
-                width="100%"
-                height="152"
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                allowfullscreen
-                loading="lazy"
-              ></iframe>
-            </div>
-            <div class="link-row">
-              <a class="link" href="https://open.spotify.com/playlist/37i9dQZEVXcKBQMbsgdSz3" target="_blank" rel="noopener">My Discover Weekly</a>
-            </div>
-          </article>
-          <article>
-            <h3>Horror movie night</h3>
-            <p class="card-text">My wife and I watch horror movies with friends. I built a little recommender to help us choose.</p>
-            <div class="link-row">
-              <a class="link" href="https://horrorverse.jroth.space/app/movie-night" target="_blank" rel="noopener">Find our next movie</a>
-              <a class="link" href="https://letterboxd.com/haukeman/" target="_blank" rel="noopener">My Letterboxd</a>
-            </div>
-          </article>
-        </div>
-      </div>
-      <details class="disclosure book-archive">
-        <summary>Books I've read</summary>
-        <div class="book-archive-body">
-          {lovedBookGroups.map(group => (
-            <section class="book-group">
-              <h3>{group.label}</h3>
-              <ul class="book-grid">
-                {group.books.map(([title, author, ref]) => (
-                  <li class="archive-book">
-                    {ref ? <img src={coverURL(ref)} alt={`${title} cover`} width="90" height="132" loading="lazy" decoding="async" /> : <div class="cover-placeholder" aria-hidden="true"></div>}
-                    <div><p class="archive-title">{title}</p><p class="meta">{author}</p></div>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))}
-          <section class="book-group">
-            <h3>Found okay</h3>
-            <ul class="book-grid">
-              {okayBooks.map(([title, author, ref]) => (
-                <li class="archive-book">
-                  <img src={coverURL(ref)} alt={`${title} cover`} width="90" height="132" loading="lazy" decoding="async" />
-                  <div><p class="archive-title">{title}</p><p class="meta">{author}</p></div>
+        {lovedBookGroups.map(group => (
+          <div class="cover-row">
+            <h4>{group.label}</h4>
+            <ul class="covers">
+              {group.books.map(([title, author, ref]) => (
+                <li class="cover" title={`${title} · ${author}`}>
+                  {ref ? <img src={coverURL(ref)} alt={`${title} by ${author}`} width="96" height="144" loading="lazy" decoding="async" /> : <span class="cover-placeholder">{title}</span>}
                 </li>
               ))}
             </ul>
-          </section>
+          </div>
+        ))}
+      </div>
+      <details class="disclosure book-archive">
+        <summary>Books I found okay</summary>
+        <div class="book-archive-body">
+          <ul class="book-grid">
+            {okayBooks.map(([title, author, ref]) => (
+              <li class="archive-book">
+                <img src={coverURL(ref)} alt={`${title} cover`} width="90" height="132" loading="lazy" decoding="async" />
+                <div><p class="archive-title">{title}</p><p class="meta">{author}</p></div>
+              </li>
+            ))}
+          </ul>
         </div>
       </details>
     </section>
