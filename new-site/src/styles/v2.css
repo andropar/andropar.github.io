@@ -406,14 +406,6 @@ h1:focus { outline: none; }
 .paper-title a:hover { color: var(--accent); }
 .card-grid--papers .award-note { align-self: flex-start; }
 .card-grid--papers .toggle { margin-top: var(--space-3); }
-/* Earlier publications: a compact, always-visible row of text items under the paper cards. */
-.pub-more { margin-top: var(--space-7); }
-.pub-more .section-subhead { margin-top: 0; }
-.pub-list { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-5) var(--space-6); margin: 0; padding: 0; list-style: none; }
-.pub-list li { padding-top: var(--space-4); border-top: 1px solid var(--line); }
-.pub-title { display: block; margin-top: var(--space-1); font-size: var(--text-sm); font-weight: 600; line-height: 1.4; text-decoration: none; transition: color var(--duration); }
-.pub-title:hover { color: var(--accent); }
-.pub-authors { margin-top: var(--space-1); color: var(--muted); font-size: var(--text-xs); }
 
 /* Data graphics: alpha masks (scripts/card_graphics.py) filled with the theme's ink and accent */
 .graphic { position: relative; }
@@ -738,7 +730,6 @@ summary::-webkit-details-marker { display: none; }
   .nav-links { gap: var(--space-4); }
   .hero { grid-template-columns: minmax(0, 1fr) minmax(10rem, 15rem); gap: var(--space-7); }
   .focus-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .pub-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 720px) {
@@ -792,7 +783,6 @@ summary::-webkit-details-marker { display: none; }
   .story { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
   .story:nth-child(even) .story-media { order: 0; }
   .cover-row { grid-template-columns: minmax(0, 1fr); gap: var(--space-3); }
-  .pub-list { grid-template-columns: minmax(0, 1fr); }
   .year-group { grid-template-columns: minmax(0, 1fr); gap: var(--space-3); }
   .post-nav { grid-template-columns: minmax(0, 1fr); }
   .post-nav-link--newer { grid-column: auto; text-align: left; }
