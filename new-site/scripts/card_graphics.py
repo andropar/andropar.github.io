@@ -54,6 +54,33 @@ def save_mask(fig, name):
     log.info("wrote %s (%d KB)", path.name, path.stat().st_size // 1024)
 
 
+def save_hover(name, payload):
+    """Write the hover data for a graphic: positions in the mask's own pixel coordinates."""
+    path = OUT / f"{name}-hover.json"
+    path.write_text(json.dumps(payload, separators=(",", ":"), ensure_ascii=False))
+    log.info("wrote %s (%d KB)", path.name, path.stat().st_size // 1024)
+
+
+def figure_alpha(fig):
+    """Render a figure and return its alpha channel as floats in [0, 1]."""
+    fig.canvas.draw()
+    alpha = np.asarray(fig.canvas.buffer_rgba())[..., 3] / 255
+    plt.close(fig)
+    return alpha
+
+
+def save_sprite(alpha, name, levels=16):
+    """Save a wide sprite mask as lossless WebP with quantized alpha, about a third of the PNG size."""
+    q = np.round(np.clip(alpha, 0, 1) * (levels - 1)) * (255 // (levels - 1))
+    channel = Image.fromarray(q.astype(np.uint8), "L")
+    blank = Image.new("L", channel.size, 0)
+    path = OUT / f"{name}.webp"
+    Image.merge("RGBA", (blank, blank, blank, channel)).save(
+        path, "WEBP", lossless=True, method=6
+    )
+    log.info("wrote %s (%d KB)", path.name, path.stat().st_size // 1024)
+
+
 def save_array_mask(alpha, name, scale=1):
     img = Image.fromarray((np.clip(alpha, 0, 1) * 255).astype(np.uint8), "L")
     if scale != 1:
@@ -78,6 +105,38 @@ def horrorverse(w=1600, h=1000):
         ax.set_xlim(center[0] - span[0] / 2, center[0] + span[0] / 2)
         ax.set_ylim(center[1] - span[1] / 2, center[1] + span[1] / 2)
         save_mask(fig, f"horrorverse-{name}")
+
+    # Hover labels for the most-rated films, in the mask's pixel coordinates.
+    import sqlite3
+
+    catalogue = sqlite3.connect(
+        f"file:{HOME / 'horrorshow/data/v3/catalogue.sqlite'}?mode=ro", uri=True
+    )
+    counts = dict(
+        catalogue.execute("SELECT movie_id, COUNT(*) FROM ratings GROUP BY movie_id")
+    )
+    titles = {
+        movie_id: f"{title} ({year})" if year else title
+        for movie_id, title, year in catalogue.execute(
+            "SELECT movie_id, title, year FROM movies"
+        )
+    }
+    region_labels = {r["id"]: r["label"] for r in json.loads(str(data["regions"]))}
+    px = (xy[:, 0] - (center[0] - span[0] / 2)) / span[0] * w
+    py = (1 - (xy[:, 1] - (center[1] - span[1] / 2)) / span[1]) * h
+    order = sorted(
+        range(len(xy)), key=lambda i: -counts.get(str(data["movie_ids"][i]), 0)
+    )
+    points = []
+    for i in order:
+        movie_id = str(data["movie_ids"][i])
+        if movie_id not in titles or not (0 <= px[i] <= w and 0 <= py[i] <= h):
+            continue
+        region = region_labels.get(int(data["region_ids"][i]), "")
+        points.append([round(px[i]), round(py[i]), titles[movie_id], region])
+        if len(points) == 4000:
+            break
+    save_hover("horrorverse", {"w": w, "h": h, "kind": "points", "points": points})
 
 
 def relaion(cols=10, rows=6, tile=72, gap=6, w=1600, h=1000):
@@ -186,9 +245,27 @@ def revision(w=1200, h=900, metric="srpr"):
                 ax.axhline(level, color="k", alpha=0.12, linewidth=0.6)
         save_mask(fig, f"revision-{name}")
 
+    x0, x1 = -6, len(x) + 5
+    y0, y1 = per_model["min"].min() - 0.05, per_model["max"].max() + 0.05
+    points = [
+        [
+            round((i - x0) / (x1 - x0) * w),
+            round((1 - (row["mean"] - y0) / (y1 - y0)) * h),
+            model,
+            f"Score {row['mean']:.2f} (subjects {row['min']:.2f}–{row['max']:.2f})",
+        ]
+        for i, (model, row) in enumerate(per_model.iterrows())
+    ]
+    save_hover("revision", {"w": w, "h": h, "kind": "points", "points": points})
 
-def laion_fmri(w=1200, h=900, view="sagittal"):
-    """A T1 slice as smoothed contour lines, with face- and scene-selective cortex filled in."""
+
+def laion_fmri(w=1200, h=900, slices=16, tile_w=600, tile_h=450):
+    """Sagittal T1 slices as smoothed contour lines, with face- and scene-selective cortex filled in.
+
+    Writes the static card graphic (the lateral slice with most selective voxels) and a sprite of
+    ``slices`` slices from left to right for scrubbing on hover. All share one crop, so the brain
+    keeps its size and position while scrubbing.
+    """
     from nibabel.processing import resample_from_to
     from scipy.ndimage import gaussian_filter
 
@@ -200,48 +277,62 @@ def laion_fmri(w=1200, h=900, view="sagittal"):
         for f in ("z_faces_t1.nii.gz", "z_scenes_t1.nii.gz")
     )
     active = (faces > 3.1) | (scenes > 3.1)
-    axis = {"sagittal": 0, "axial": 2}[view]
-    counts = active.sum(axis=tuple(a for a in range(3) if a != axis))
-    mid = t1.shape[axis] // 2
-    if view == "sagittal":
-        counts[mid - 30 : mid + 30] = (
-            0  # lateral slice through ventral visual cortex, not the midline
-        )
-    idx = int(np.argmax(counts))
-    log.info("laion-fmri: %s slice %d of %d", view, idx, t1.shape[axis])
+    inside = np.nonzero((t1 > 0).any(axis=(1, 2)))[0]
+    lo, hi = inside.min(), inside.max()
+    sprite_idx = np.linspace(lo + 0.1 * (hi - lo), hi - 0.1 * (hi - lo), slices)
+    sprite_idx = sprite_idx.round().astype(int)
+    counts = active.sum(axis=(1, 2))
+    mid = t1.shape[0] // 2
+    counts[mid - 30 : mid + 30] = 0  # lateral slice through ventral visual cortex
+    static_idx = int(np.argmax(counts))
+    log.info("laion-fmri: static sagittal slice %d, sprite %s", static_idx, sprite_idx)
+
     # Transpose so rows run inferior to superior (contour draws row 0 at the bottom).
-    sl = np.take(t1, idx, axis=axis).T
-    act = np.take(active, idx, axis=axis).astype(float).T
-    brain = gaussian_filter((sl > 0).astype(float), 2)
-    sl = gaussian_filter(sl, 1.6)
-    ys, xs = np.nonzero(brain > 0.5)
+    union = (t1[sorted({*sprite_idx, static_idx})] > 0).any(axis=0).T
+    ys, xs = np.nonzero(gaussian_filter(union.astype(float), 2) > 0.5)
     pad = 10
     crop = (
         slice(ys.min() - pad, ys.max() + pad),
         slice(xs.min() - pad, xs.max() + pad),
     )
-    sl, act, brain = sl[crop], gaussian_filter(act[crop], 1.2), brain[crop]
-    levels = np.percentile(sl[brain > 0.5], [30, 55, 80])
-    for name in ("ink", "accent"):
-        fig, ax = canvas(w, h)
-        if name == "ink":
-            ax.contour(
-                np.where(brain > 0.5, sl, 0),
-                levels=levels,
-                colors="k",
-                linewidths=0.6,
-                alpha=0.55,
-            )
-            ax.contour(brain, levels=[0.5], colors="k", linewidths=1.2)
-        else:
-            ax.contourf(
-                np.where(brain > 0.5, act, 0), levels=[0.35, 2], colors="k", alpha=0.9
-            )
+
+    def render(idx, w, h):
+        sl = gaussian_filter(t1[idx].T, 1.6)[crop]
+        brain = gaussian_filter((t1[idx].T > 0).astype(float), 2)[crop]
+        act = gaussian_filter(active[idx].T.astype(float), 1.2)[crop]
+        levels = np.percentile(sl[brain > 0.5], [30, 55, 80])
         hh, ww = sl.shape
         span = max(hh * 1.12, ww * 1.12 * h / w)
-        ax.set_ylim(hh / 2 - span / 2, hh / 2 + span / 2)
-        ax.set_xlim(ww / 2 - span * w / h / 2, ww / 2 + span * w / h / 2)
-        save_mask(fig, f"laion-{name}")
+        masks = []
+        for name in ("ink", "accent"):
+            fig, ax = canvas(w, h)
+            if name == "ink":
+                ax.contour(
+                    np.where(brain > 0.5, sl, 0),
+                    levels=levels,
+                    colors="k",
+                    linewidths=0.6,
+                    alpha=0.55,
+                )
+                ax.contour(brain, levels=[0.5], colors="k", linewidths=1.2)
+            elif act[brain > 0.5].max() > 0.35:
+                ax.contourf(
+                    np.where(brain > 0.5, act, 0),
+                    levels=[0.35, 2],
+                    colors="k",
+                    alpha=0.9,
+                )
+            ax.set_ylim(hh / 2 - span / 2, hh / 2 + span / 2)
+            ax.set_xlim(ww / 2 - span * w / h / 2, ww / 2 + span * w / h / 2)
+            masks.append(figure_alpha(fig))
+        return masks
+
+    ink, accent = render(static_idx, w, h)
+    save_array_mask(ink, "laion-ink")
+    save_array_mask(accent, "laion-accent")
+    tiles = [render(idx, tile_w, tile_h) for idx in sprite_idx]
+    save_sprite(np.hstack([t[0] for t in tiles]), "laion-sprite-ink")
+    save_sprite(np.hstack([t[1] for t in tiles]), "laion-sprite-accent")
 
 
 def thingsvision(w=1200, h=900, per_category=10):
@@ -273,6 +364,7 @@ def thingsvision(w=1200, h=900, per_category=10):
     with torch.inference_mode():
         features = model(batch).numpy()
     sim = np.corrcoef(features)
+    raw = sim.copy()
     off = sim[~np.eye(len(sim), dtype=bool)]
     sim = np.clip(
         (sim - np.percentile(off, 5))
@@ -306,6 +398,41 @@ def thingsvision(w=1200, h=900, per_category=10):
         y0, x0 = (h - img.height) // 2, (w - img.width) // 2
         out[y0 : y0 + img.height, x0 : x0 + img.width] = np.asarray(img) / 255
         save_array_mask(out, f"thingsvision-{name}")
+
+    # Hover: mean feature correlation for each pair of categories (diagonal excluded).
+    k = len(categories)
+    labels = [c.replace("_", " ").replace("face close up", "faces") for c in categories]
+    values = [
+        [
+            round(
+                float(
+                    np.mean(
+                        raw[np.ix_(block == a, block == b)][
+                            ~np.eye(per_category, dtype=bool)
+                        ]
+                        if a == b
+                        else raw[np.ix_(block == a, block == b)]
+                    )
+                ),
+                2,
+            )
+            for b in range(k)
+        ]
+        for a in range(k)
+    ]
+    save_hover(
+        "thingsvision",
+        {
+            "w": w,
+            "h": h,
+            "kind": "grid",
+            "x0": x0,
+            "y0": y0,
+            "side": img.width,
+            "labels": labels,
+            "values": values,
+        },
+    )
 
 
 def _symnmf(S, rank, iters=400, seed=0):

@@ -2,7 +2,7 @@
 import Article from '../../blog/[slug].astro';
 import { getCollection } from 'astro:content';
 export async function getStaticPaths() {
-  return (await getCollection('blog')).filter(post => !post.data.draft).map(post => ({ params: { slug: post.slug }, props: { post } }));
+  return (await getCollection('blog')).filter(post => !post.data.draft && !post.data.link).map(post => ({ params: { slug: post.slug }, props: { post } }));
 }
 ---
 <Article post={Astro.props.post} />

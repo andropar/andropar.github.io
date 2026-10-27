@@ -203,7 +203,10 @@ component sits 32px above the section content, with section titles in sentence c
 ### Hero
 
 Used by Work and Life alike: `h1` at `--text-hero` → 24–28px lede → 20px secondary text (max 36rem) →
-button pair → optional status line with the 6px accent dot. The portrait is a transparent cut-out at
+button pair → `.now` row → optional status line with the 6px accent dot. `.now` is a three-column
+`<dl>` above a hairline: 13px muted labels over 15px/500 values (one labelled row each at ≤ 600px).
+Work shows Building (`src/data/now.ts`), Writing (the latest post) and Reading (the first current
+book); Life shows Reading, Writing and Listening. Only Building and Listening are edited by hand. The portrait is a transparent cut-out at
 4:5 with `object-position: 50% 0` and no frame background, standing on the next section's edge. Work uses the
 original-face Oxford-shirt portrait; Life uses the casual climbing portrait.
 
@@ -232,6 +235,14 @@ with `--ink` and `--accent` through CSS `mask`, inset 16px (12px for the contact
 in the frame, so they follow the theme. Each graphic has exactly one accent element. ReLAION has
 `-dark` masks with a positive dither, because light ink on dark paper would show the photos as
 negatives. `scripts/card_graphics.py` regenerates the masks; it reads data outside this repo.
+
+Some graphics can be explored with a mouse (`src/scripts/graphics.ts`; touch devices keep the static
+image). `data-hover="<name>"` loads `<name>-hover.json` on first hover, with positions in the mask's own
+pixels, and shows the nearest point's label in an ink tooltip with an accent ring: film and atlas region
+on the Horrorverse atlas (the 4,000 most-rated films), model and score on re:vision, and the category
+pair and mean feature correlation on the thingsvision matrix. `data-scrub="laion-sprite"` swaps the
+LAION-fMRI brain for a 16-frame WebP sprite of sagittal slices and moves through it with the pointer's
+horizontal position. Explorable graphics keep their ink at 60% on hover instead of dimming to 35%.
 
 ### Cards
 
@@ -294,6 +305,11 @@ underline, and a `.link-row` of external profiles. The footer is a 13px muted ro
 location on the left and "Back to top" on the right, above a hairline.
 
 ### Writing index
+
+Posts with a `link` in their front matter are pieces published elsewhere (such as the Horrorverse
+timeline essay): they get no article page, open the external page in a new tab, and show the host
+("On horrorverse.jroth.space") instead of a reading time. The CMS has an optional "External link"
+field for this.
 
 `.page-head--display` (`h1` at `--text-display`, 20px lede), then posts grouped by year: the year sits
 in the 120px meta column, and each post has a 20px title, a secondary description, and a 13px date and

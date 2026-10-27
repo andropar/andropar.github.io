@@ -338,6 +338,12 @@ h1:focus { outline: none; }
 .hero-lede { font-size: var(--text-xl); line-height: 1.3; letter-spacing: -0.016em; }
 .hero-text { max-width: 36rem; margin-top: var(--space-4); color: var(--secondary); font-size: var(--text-lg); line-height: 1.55; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-6); }
+/* What's current: three small columns under the hero buttons. */
+.now { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); max-width: 36rem; margin-top: var(--space-6); padding-top: var(--space-4); border-top: 1px solid var(--line); }
+.now dt { color: var(--muted); font-size: var(--text-xs); line-height: 1.5; }
+.now dd { margin-top: 2px; font-size: var(--text-sm); font-weight: 500; line-height: 1.35; }
+.now a { text-decoration: none; transition: color var(--duration); }
+.now a:hover { color: var(--accent); }
 .status { display: flex; align-items: center; gap: var(--space-2); margin-top: var(--space-4); }
 .status::before { content: ''; flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
 .hero-portrait { aspect-ratio: 4 / 5; border-radius: 0; background: none; }
@@ -379,7 +385,7 @@ h1:focus { outline: none; }
 
 /* Data graphics: alpha masks (scripts/card_graphics.py) filled with the theme's ink and accent */
 .graphic { position: relative; }
-.graphic > span {
+.graphic > :is(.graphic-ink, .graphic-accent) {
   position: absolute;
   inset: var(--space-4);
   background: var(--ink);
@@ -396,6 +402,7 @@ h1:focus { outline: none; }
 .graphic--paper-universal { --ink-mask: url(/v2/graphics/paper-universal-ink.png); --accent-mask: url(/v2/graphics/paper-universal-accent.png); }
 .graphic--paper-sampling { --ink-mask: url(/v2/graphics/paper-sampling-ink.png); --accent-mask: url(/v2/graphics/paper-sampling-accent.png); }
 .graphic--paper-coding { --ink-mask: url(/v2/graphics/paper-coding-ink.png); --accent-mask: url(/v2/graphics/paper-coding-accent.png); }
+.graphic--laion > :is(.graphic-ink, .graphic-accent) { inset: 0; }
 /* Light ink on dark paper would turn the photos into negatives, so dark mode gets a positive dither. */
 :root[data-theme='dark'] .graphic--relaion { --ink-mask: url(/v2/graphics/relaion-ink-dark.png); --accent-mask: url(/v2/graphics/relaion-accent-dark.png); }
 
@@ -517,7 +524,7 @@ summary::-webkit-details-marker { display: none; }
 .shelf-media { height: 152px; margin-top: auto; }
 .shelf-note .card-text { margin-bottom: var(--space-4); }
 .shelf-media iframe { display: block; width: 100%; height: 152px; border: 0; }
-.shelf-media.graphic > span { inset: var(--space-3); }
+.shelf-media.graphic > :is(.graphic-ink, .graphic-accent) { inset: var(--space-3); }
 
 .shelf-title { margin-top: var(--space-8); margin-bottom: var(--space-2); }
 .cover-row { display: grid; grid-template-columns: var(--meta-col) minmax(0, 1fr); gap: var(--space-6); padding-block: var(--space-4); border-bottom: 1px solid var(--line); }
@@ -727,6 +734,9 @@ summary::-webkit-details-marker { display: none; }
   .hero { gap: var(--space-5); }
   .hero-portrait { order: -1; width: 100%; max-width: 15rem; aspect-ratio: 1; border-bottom: 1px solid var(--line); }
   .hero-body { padding-bottom: var(--section-space); }
+  .now { grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
+  .now > div { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); align-items: baseline; }
+  .now dd { margin-top: 0; }
   .card-grid, .shelf-grid, .split, .focus-grid { grid-template-columns: minmax(0, 1fr); }
   .card-grid { row-gap: var(--space-6); }
   .split { gap: var(--space-5); }
@@ -757,24 +767,58 @@ summary::-webkit-details-marker { display: none; }
 :root { --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1); }
 
 /* Hovering a card dims the ink so the graphic's one accent element stands out. */
-.graphic > span { transition: opacity 400ms ease, transform 600ms var(--ease-out); }
+.graphic > :is(.graphic-ink, .graphic-accent) { transition: opacity 400ms ease, transform 600ms var(--ease-out); }
 @media (hover: hover) {
   :is(.card, .shelf-note):hover .graphic > .graphic-ink { opacity: 0.35; }
-  :is(.card, .shelf-note):hover .graphic > span { transform: scale(1.025); }
+  /* Explorable graphics keep their ink, since the hover is about reading them. */
+  :is(.card, .shelf-note):hover .graphic:is([data-hover], [data-scrub]) > .graphic-ink { opacity: 0.6; }
+  :is(.card, .shelf-note):hover .graphic > :is(.graphic-ink, .graphic-accent) { transform: scale(1.025); }
   .story-media img { transition: transform 1.2s var(--ease-out); }
   .story:hover .story-media img { transform: scale(1.03); }
 }
 
 /* Graphics draw in and timeline bars grow once they scroll into view. The head script sets
    .reveal-ready before first paint; the layout script adds .is-visible. */
-.reveal-ready .graphic > span { clip-path: inset(0 100% 0 0); }
-.reveal-ready .graphic.is-visible > span {
+.reveal-ready .graphic > :is(.graphic-ink, .graphic-accent) { clip-path: inset(0 100% 0 0); }
+.reveal-ready .graphic.is-visible > :is(.graphic-ink, .graphic-accent) {
   clip-path: inset(0 0 0 0);
   transition: clip-path 1s var(--ease-out), opacity 400ms ease, transform 600ms var(--ease-out);
 }
 .reveal-ready .graphic.is-visible > .graphic-accent { transition-delay: 450ms, 0ms, 0ms; }
 .reveal-ready .span-bar::after { transform: scaleX(0); transform-origin: left; }
 .reveal-ready .span-bar.is-visible::after { transform: scaleX(1); transition: transform 900ms var(--ease-out) 150ms; }
+
+/* Explorable graphics (scripts/graphics.ts): a label and marker follow the pointer on hover. */
+.graphic-tip {
+  position: absolute;
+  z-index: 2;
+  max-width: 16rem;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--ink);
+  color: var(--on-ink);
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  pointer-events: none;
+  white-space: nowrap;
+  transform: translate(-50%, calc(-100% - 10px));
+}
+.graphic-tip small { display: block; font-size: 0.75rem; opacity: 0.7; }
+.graphic-tip[data-below] { transform: translate(-50%, 10px); }
+.graphic-mark {
+  position: absolute;
+  z-index: 2;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  background: var(--paper);
+  pointer-events: none;
+}
+.graphic-mark[data-cell] { margin: 0; border-radius: 1px; background: none; }
+.graphic.is-scrubbing > :is(.graphic-ink, .graphic-accent) { -webkit-mask-size: auto 100%; mask-size: auto 100%; }
+.graphic-scrub-hint { position: absolute; z-index: 2; right: var(--space-3); bottom: var(--space-2); color: var(--muted); font-size: 0.75rem; pointer-events: none; }
 
 /* The availability dot breathes. */
 @keyframes status-pulse {

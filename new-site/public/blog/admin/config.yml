@@ -45,6 +45,7 @@ collections:
         default: '{{now}}'
       - { label: Draft, name: draft, widget: boolean, default: true, hint: 'Keep this on while writing. Turn it off to include the post on the site.' }
       - { label: Tags, name: tags, widget: list, required: false, default: [], hint: 'Add one or more topics.' }
+      - { label: External link, name: link, widget: string, required: false, hint: 'Only for a piece published elsewhere. The writing list then opens this address instead of an article page.' }
       - label: Body
         name: body
         widget: richtext

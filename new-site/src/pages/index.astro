@@ -3,6 +3,8 @@ import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import V2Layout from '../layouts/V2Layout.astro';
 import { currentBooks, lovedBookGroups, okayBooks } from '../data/books';
+import { postLinkProps } from '../data/posts';
+import { building, listening } from '../data/now';
 import workPortrait from '../../public/v2/portrait-oxford-original-face.png';
 import casualPortrait from '../../public/portrait-casual-hero.png';
 import artAndFear from '../../public/v2/art-and-fear.jpg';
@@ -14,6 +16,7 @@ import meditation from '../../public/personal/about-meditation.webp';
 
 const posts = (await getCollection('blog')).filter(post => !post.data.draft).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const featuredPosts = posts.slice(0, 2);
+const latestPost = posts[0];
 const dateLabel = (date: Date) => date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 const coverURL = (reference: string) => {
   const [kind, value] = reference.includes(':') ? reference.split(':') : ['isbn', reference];
@@ -80,6 +83,11 @@ const lifeStories = [
           <a class="button button--primary" href="#selected-work">Explore my work</a>
           <a class="button" href="#contact">Get in touch</a>
         </div>
+        <dl class="now">
+          <div><dt>Building</dt><dd><a href={building.href} target="_blank" rel="noopener">{building.title}</a></dd></div>
+          <div><dt>Writing</dt><dd><a {...postLinkProps(latestPost)}>{latestPost.data.title}</a></dd></div>
+          <div><dt>Reading</dt><dd>{currentBooks[0].title}</dd></div>
+        </dl>
         <p class="meta status">Available from January 2027</p>
       </div>
       <div class="frame hero-portrait">
@@ -94,7 +102,7 @@ const lifeStories = [
       </div>
       <div class="card-grid card-grid--projects breakout">
         <article class="card">
-          <div class="frame card-media graphic graphic--horrorverse" role="img" aria-label="The Horrorverse atlas: about 19,000 horror films as dots, with the haunted-house region highlighted"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
+          <div class="frame card-media graphic graphic--horrorverse" data-hover="horrorverse" role="img" aria-label="The Horrorverse atlas: about 19,000 horror films as dots, with the haunted-house region highlighted"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
           <h3>Horrorverse</h3>
           <p class="card-text">Horror film recommendations, mood search, and a map of 20,000 films.</p>
           <p class="card-detail">A side project I built end to end: collaborative-filtering picks, text-embedding search, an explorable film atlas, accounts, and deployment.</p>
@@ -112,7 +120,7 @@ const lifeStories = [
           </div>
         </article>
         <article class="card card--small">
-          <div class="frame card-media graphic graphic--revision" role="img" aria-label="Brain-predictivity scores of 118 vision models, sorted, with the ten best highlighted"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
+          <div class="frame card-media graphic graphic--revision" data-hover="revision" role="img" aria-label="Brain-predictivity scores of 118 vision models, sorted, with the ten best highlighted"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
           <h3>re:vision</h3>
           <p class="card-text">Website, data services, and annotation tools for a replication initiative.</p>
           <div class="card-footer">
@@ -120,7 +128,7 @@ const lifeStories = [
           </div>
         </article>
         <article class="card card--small">
-          <div class="frame card-media graphic graphic--laion" role="img" aria-label="A sagittal brain slice drawn as contour lines, with face- and scene-selective cortex filled in"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
+          <div class="frame card-media graphic graphic--laion" data-scrub="laion-sprite" data-frames="16" role="img" aria-label="A sagittal brain slice drawn as contour lines, with face- and scene-selective cortex filled in"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
           <h3>LAION-fMRI</h3>
           <p class="card-text">A public brain-imaging dataset for visual neuroscience.</p>
           <div class="card-footer">
@@ -128,7 +136,7 @@ const lifeStories = [
           </div>
         </article>
         <article class="card card--small">
-          <div class="frame card-media graphic graphic--thingsvision" role="img" aria-label="A similarity matrix of ResNet-50 features for eight image categories, one category highlighted"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
+          <div class="frame card-media graphic graphic--thingsvision" data-hover="thingsvision" role="img" aria-label="A similarity matrix of ResNet-50 features for eight image categories, one category highlighted"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
           <h3>thingsvision</h3>
           <p class="card-text">A common interface for extracting and comparing vision-model features.</p>
           <div class="card-footer">
@@ -245,7 +253,7 @@ const lifeStories = [
           <li class="entry">
             <time class="entry-meta" datetime={post.data.date.toISOString()}>{dateLabel(post.data.date)}</time>
             <div>
-              <h3 class="entry-title"><a class="stretched" href={`/blog/${post.slug}`}>{post.data.title}</a></h3>
+              <h3 class="entry-title"><a class="stretched" {...postLinkProps(post)}>{post.data.title}</a></h3>
               <p class="entry-text">{post.data.description}</p>
             </div>
           </li>
@@ -277,6 +285,11 @@ const lifeStories = [
           <a class="button button--primary" href="#life-about">A bit about me</a>
           <a class="button" href="#work">Back to work</a>
         </div>
+        <dl class="now">
+          <div><dt>Reading</dt><dd>{currentBooks.map(book => book.title).join(', ')}</dd></div>
+          <div><dt>Writing</dt><dd><a {...postLinkProps(latestPost)}>{latestPost.data.title}</a></dd></div>
+          <div><dt>Listening</dt><dd><a href={listening.href} target="_blank" rel="noopener">{listening.title}</a></dd></div>
+        </dl>
       </div>
       <div class="frame hero-portrait">
         <Image src={casualPortrait} alt="Johannes smiling in a T-shirt and climbing harness" widths={[320, 640, 960]} sizes="(max-width: 600px) 22rem, 25rem" width={640} format="webp" loading="eager" />
@@ -329,7 +342,7 @@ const lifeStories = [
         <article class="shelf-note">
           <h3>Horror movie night</h3>
           <p class="card-text">My wife and I watch horror movies with friends. I built a little recommender to help us choose.</p>
-          <div class="frame shelf-media graphic graphic--horrorverse" role="img" aria-label="The Horrorverse atlas of horror films, with the haunted-house region highlighted"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
+          <div class="frame shelf-media graphic graphic--horrorverse" data-hover="horrorverse" role="img" aria-label="The Horrorverse atlas of horror films, with the haunted-house region highlighted"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
           <div class="link-row">
             <a class="link" href="https://horrorverse.jroth.space/app/movie-night" target="_blank" rel="noopener">Find our next movie</a>
             <a class="link" href="https://letterboxd.com/haukeman/" target="_blank" rel="noopener">My Letterboxd</a>
@@ -388,7 +401,7 @@ const lifeStories = [
           <li class="entry">
             <time class="entry-meta" datetime={post.data.date.toISOString()}>{dateLabel(post.data.date)}</time>
             <div>
-              <h3 class="entry-title"><a class="stretched" href={`/blog/${post.slug}`}>{post.data.title}</a></h3>
+              <h3 class="entry-title"><a class="stretched" {...postLinkProps(post)}>{post.data.title}</a></h3>
               <p class="entry-text">{post.data.description}</p>
             </div>
           </li>
@@ -411,3 +424,7 @@ const lifeStories = [
     </ul>
   </section>
 </V2Layout>
+
+<script>
+  import '../scripts/graphics';
+</script>

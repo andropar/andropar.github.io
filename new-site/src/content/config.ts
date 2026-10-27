@@ -8,6 +8,8 @@ const blog = defineCollection({
     date: z.coerce.date(),
     draft: z.boolean().default(false),
     tags: z.array(z.string()).default([]),
+    // A piece published elsewhere: the entry links there and gets no article page.
+    link: z.string().url().optional(),
   }),
 });
 

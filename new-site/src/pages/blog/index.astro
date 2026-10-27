@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import V2Layout from '../../layouts/V2Layout.astro';
-import { readingTime } from '../../data/reading-time';
+import { postDetail, postLinkProps } from '../../data/posts';
 const posts = (await getCollection('blog')).filter(post => !post.data.draft).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const years = [...new Set(posts.map(post => post.data.date.getFullYear()))];
 ---
@@ -17,10 +17,10 @@ const years = [...new Set(posts.map(post => post.data.date.getFullYear()))];
         <ul class="post-list">
           {posts.filter(post => post.data.date.getFullYear() === year).map(post => (
             <li class="post-row">
-              <h3 class="post-title"><a class="stretched" href={`/blog/${post.slug}`}>{post.data.title}</a></h3>
+              <h3 class="post-title"><a class="stretched" {...postLinkProps(post)}>{post.data.title}</a></h3>
               <p class="post-text">{post.data.description}</p>
               <p class="meta">
-                <time datetime={post.data.date.toISOString()}>{post.data.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}</time> · {readingTime(post.body)} min read
+                <time datetime={post.data.date.toISOString()}>{post.data.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}</time> · {postDetail(post)}
               </p>
             </li>
           ))}

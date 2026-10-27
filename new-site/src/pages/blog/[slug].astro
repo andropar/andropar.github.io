@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import V2Layout from '../../layouts/V2Layout.astro';
 import { readingTime } from '../../data/reading-time';
 export async function getStaticPaths() {
-  const posts = (await getCollection('blog')).filter(post => !post.data.draft).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  const posts = (await getCollection('blog')).filter(post => !post.data.draft && !post.data.link).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
   return posts.map((post, i) => ({ params: { slug: post.slug }, props: { post, newer: posts[i - 1], older: posts[i + 1] } }));
 }
 const { post, newer, older } = Astro.props;
