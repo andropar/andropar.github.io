@@ -408,6 +408,9 @@ h1:focus { outline: none; }
 /* The five parts of each paper card share rows across the grid, so graphics, venues, titles, authors
    and toggles line up whatever the title length. */
 .card-grid--papers > .card { display: grid; grid-row: span 5; grid-template-rows: subgrid; row-gap: 0; align-content: start; }
+/* Subgrid rows inherit the grid's row gap, so the paper grid has none; spacing comes from the cards' own
+   margins, and stacked cards on phones get a margin between them. */
+.card-grid.card-grid--papers { row-gap: 0; }
 .card-grid--papers > .card > * { min-width: 0; }
 /* The award sits on its paper's graphic as a small label. */
 .paper-media { position: relative; }
@@ -796,6 +799,7 @@ summary::-webkit-details-marker { display: none; }
   .story { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
   .story:nth-child(even) .story-media { order: 0; }
   .cover-row { grid-template-columns: minmax(0, 1fr); gap: var(--space-3); }
+  .card-grid--papers > .card + .card { margin-top: var(--space-7); }
   .year-group { grid-template-columns: minmax(0, 1fr); gap: var(--space-3); }
   .post-nav { grid-template-columns: minmax(0, 1fr); }
   .post-nav-link--newer { grid-column: auto; text-align: left; }
