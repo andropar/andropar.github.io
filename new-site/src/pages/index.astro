@@ -31,6 +31,14 @@ const focusAreas = [
   { title: 'Research & experimental design', description: 'Turning open questions into testable ideas, sound experiments, and clear conclusions.' },
   { title: 'Project ownership & collaboration', description: 'Shaping the work, coordinating with others, and seeing projects through.' },
 ];
+const tools = [
+  { repo: 'slurmboard', description: 'A lightweight dashboard for Slurm jobs, logs and resource use on HPC clusters.' },
+  { repo: 'fmriqc', description: 'An interactive QA and review tool for fMRI data snapshots.' },
+  { repo: 'cvmanova_python', description: 'Cross-validated MANOVA for multivariate fMRI pattern analysis.' },
+  { repo: 'pysearchlight', description: 'Customisable searchlight analysis for Python.' },
+  { repo: 'how-to-sample', description: 'Code and experiments for the CCN 2025 paper on sampling natural images.' },
+  { repo: 'conwell_replication', description: 'A LAION-fMRI replication of a 118-model brain-alignment study.' },
+];
 const skills = [
   'Python', 'PyTorch', 'scikit-learn', 'pandas', 'NumPy', 'Deep learning', 'Computer vision', 'Image segmentation',
   'Embeddings', 'Feature extraction', 'Recommender systems', 'Collaborative filtering', 'UMAP', 'Model evaluation',
@@ -107,13 +115,12 @@ const lifeStories = [
         <a class="link" href="https://github.com/andropar" target="_blank" rel="noopener">More on GitHub</a>
       </div>
       <div class="project-group">
-        <h3 class="section-subhead">Independent work</h3>
         <div class="card-grid card-grid--projects">
           <article class="card">
             <div class="frame card-media graphic graphic--horrorverse" data-hover="horrorverse" role="img" aria-label="The Horrorverse atlas: about 19,000 horror films as dots, with the haunted-house region highlighted"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
             <h3>Horrorverse</h3>
-            <p class="card-text">Horror film recommendations, mood search, and a map of 20,000 films.</p>
-            <p class="card-detail">A side project I built end to end: collaborative-filtering picks, text-embedding search, an explorable film atlas, accounts, and deployment.</p>
+            <p class="card-text">A horror film recommender with mood search, an explorable map of 19,000 films and an illustrated history of the genre.</p>
+            <p class="card-detail">Designed and built it solo: a collaborative-filtering recommender, text-embedding search, the film atlas, an AI-assisted theme analysis, accounts and a self-hosted deployment.</p>
             <div class="card-footer">
               <a class="link stretched" href="https://horrorverse.jroth.space/" target="_blank" rel="noopener">Open Horrorverse</a>
             </div>
@@ -121,8 +128,8 @@ const lifeStories = [
           <article class="card">
             <div class="frame card-media graphic graphic--relaion" role="img" aria-label="A dithered contact sheet of natural photographs from the dataset"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
             <h3>ReLAION-natural</h3>
-            <p class="card-text">Naturalistic images and embeddings for vision research.</p>
-            <p class="card-detail">I developed pipelines for image classification, quality checks, and feature extraction to curate the dataset.</p>
+            <p class="card-text">Naturalness scores for all 2.1 billion images in ReLAION-2B, plus CLIP embeddings for the 500 million natural photos.</p>
+            <p class="card-detail">Built the GPU pipelines for classification, quality filtering and embedding extraction at billion-image scale. Downloaded over 30,000 times on Hugging Face.</p>
             <div class="card-footer">
               <a class="link stretched" href="https://huggingface.co/datasets/andropar/relaion2b-natural" target="_blank" rel="noopener">View dataset</a>
             </div>
@@ -130,12 +137,13 @@ const lifeStories = [
         </div>
       </div>
       <div class="project-group">
-        <h3 class="section-subhead">Collaborations</h3>
+        <h3 class="project-group-label">Collaborations</h3>
         <div class="card-grid card-grid--projects">
           <article class="card card--small">
             <div class="frame card-media graphic graphic--revision" data-hover="revision" role="img" aria-label="Brain-predictivity scores of 118 vision models, sorted, with the ten best highlighted"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
             <h3>re:vision</h3>
-            <p class="card-text">Website, data services, and annotation tools for a replication initiative.</p>
+            <p class="card-text">A community challenge testing whether findings in visual neuroscience replicate on LAION-fMRI.</p>
+            <p class="card-detail">Designed the data splits the challenge runs on, replicated a 118-model brain-alignment benchmark for the consortium paper, and built the website and data services.</p>
             <div class="card-footer">
               <a class="link stretched" href="https://re-vision-initiative.org/" target="_blank" rel="noopener">Explore project</a>
             </div>
@@ -143,20 +151,34 @@ const lifeStories = [
           <article class="card card--small">
             <div class="frame card-media graphic graphic--laion" data-scrub="laion-sprite" data-frames="16" role="img" aria-label="A sagittal brain slice drawn as contour lines, with face- and scene-selective cortex filled in"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
             <h3>LAION-fMRI</h3>
-            <p class="card-text">A public brain-imaging dataset for visual neuroscience.</p>
+            <p class="card-text">A deeply sampled 7T fMRI dataset: 5 people, 60 hours each, 25,000 natural images.</p>
+            <p class="card-detail">Designed the stimulus set, optimizing it for diversity to 2.5× the effective dimensionality of NSD and THINGS. Also built its Python package, website, 3D brain explorer and data access on AWS.</p>
             <div class="card-footer">
               <a class="link stretched" href="https://laion-fmri.hebartlab.com/" target="_blank" rel="noopener">Explore project</a>
+              <a class="link" href="https://laion-fmri.hebartlab.com/brain/" target="_blank" rel="noopener">Brain explorer</a>
             </div>
           </article>
           <article class="card card--small">
             <div class="frame card-media graphic graphic--thingsvision" data-hover="thingsvision" role="img" aria-label="A similarity matrix of ResNet-50 features for eight image categories, one category highlighted"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
             <h3>thingsvision</h3>
-            <p class="card-text">A common interface for extracting and comparing vision-model features.</p>
+            <p class="card-text">An open-source library for extracting and comparing features from vision models.</p>
+            <p class="card-detail">Third-largest contributor: added low-memory extraction, HDF5 dataset support and model-integration tests.</p>
             <div class="card-footer">
               <a class="link stretched" href="https://github.com/ViCCo-Group/thingsvision" target="_blank" rel="noopener">View library</a>
             </div>
           </article>
         </div>
+      </div>
+      <div class="project-group">
+        <h3 class="project-group-label">Open-source tools</h3>
+        <ul class="tool-list">
+          {tools.map(tool => (
+            <li>
+              <a class="link" href={`https://github.com/andropar/${tool.repo}`} target="_blank" rel="noopener">{tool.repo}</a>
+              <p>{tool.description}</p>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
 

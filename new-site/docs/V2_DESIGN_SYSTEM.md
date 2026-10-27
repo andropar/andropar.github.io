@@ -287,9 +287,13 @@ Both use native `<details>`, so they work with the keyboard and without JavaScri
 
 ### Work-specific compositions
 
-- **Selected work:** on a surface band, in two `.project-group`s with their own subheadings:
-  "Independent work" (Horrorverse and ReLAION-natural as headline cards) and "Collaborations"
-  (re:vision, LAION-fMRI and thingsvision as small cards), 64px apart.
+- **Selected work:** on a surface band, in three `.project-group`s 64px apart: the independent
+  projects (Horrorverse and ReLAION-natural as headline cards, no label), then "Collaborations"
+  (re:vision, LAION-fMRI and thingsvision as small cards) and "Open-source tools" (`.tool-list`: a
+  three-column list of public repos, each a link and one line), both under a 15px/600 secondary
+  `.project-group-label`. Every card has two lines: what the project is (`.card-text`), then what
+  Johannes did, with scale where it exists (`.card-detail`). A card footer can hold a second link,
+  which sits above the stretched card link.
 - **Expertise:** `<dl class="focus-grid">` with six areas, followed by "Methods & tools": a wrapping
   row of `.pills` (13px, hairline border, pill radius). The pills stretch to fill each row, so every row
   ends on the same edge, like justified text.

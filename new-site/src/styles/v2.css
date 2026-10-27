@@ -395,9 +395,16 @@ h1:focus { outline: none; }
 .card-grid--projects > .card { grid-column: span 3; }
 .card-grid--projects > .card--small { grid-column: span 2; }
 .card-grid--projects .card-media { aspect-ratio: 16 / 10; }
-/* Selected work is split into independent work and collaborations, each under its own subheading. */
-.project-group .section-subhead { margin-top: 0; }
+/* Selected work: own projects first, then collaborations under a small label. */
 .project-group + .project-group { margin-top: var(--space-8); }
+/* Small open-source tools: name and one line each, three to a row. */
+.tool-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-5) var(--space-6); margin: 0; padding: 0; list-style: none; }
+.tool-list li { padding-top: var(--space-4); border-top: 1px solid var(--line); }
+.tool-list p { margin-top: var(--space-1); color: var(--secondary); font-size: var(--text-sm); }
+/* A second link in a card footer sits above the card-wide stretched link. */
+.card-footer { justify-content: flex-start; }
+.card-footer .link:not(.stretched) { position: relative; z-index: 2; }
+.project-group-label { margin-bottom: var(--space-5); color: var(--secondary); font-size: var(--text-sm); font-weight: 600; letter-spacing: 0; }
 .card-grid--projects .card--small .card-media { aspect-ratio: 4 / 3; }
 
 /* Research: first-author papers as three small cards above the list */
@@ -749,6 +756,7 @@ summary::-webkit-details-marker { display: none; }
   .nav-links { gap: var(--space-4); }
   .hero { grid-template-columns: minmax(0, 1fr) minmax(10rem, 15rem); gap: var(--space-7); }
   .focus-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tool-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 720px) {
@@ -802,6 +810,7 @@ summary::-webkit-details-marker { display: none; }
   .story { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
   .story:nth-child(even) .story-media { order: 0; }
   .cover-row { grid-template-columns: minmax(0, 1fr); gap: var(--space-3); }
+  .tool-list { grid-template-columns: minmax(0, 1fr); }
   .card-grid--papers > .card + .card { margin-top: var(--space-7); }
   .year-group { grid-template-columns: minmax(0, 1fr); gap: var(--space-3); }
   .post-nav { grid-template-columns: minmax(0, 1fr); }
