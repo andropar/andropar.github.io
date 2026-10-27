@@ -164,20 +164,18 @@ const lifeStories = [
           </article>
         ))}
       </div>
-      <details class="disclosure">
-        <summary>Earlier publications</summary>
-        <ul class="entries">
+      <div class="pub-more">
+        <h3 class="section-subhead">Earlier publications</h3>
+        <ul class="pub-list">
           {olderPublications.map(paper => (
-            <li class="entry">
-              <span class="entry-meta">{paper.year}</span>
-              <div>
-                <h3 class="entry-title"><a href={paper.href} target="_blank" rel="noopener">{paper.title}</a></h3>
-                <p class="entry-text">{paper.authors} · {paper.venue}</p>
-              </div>
+            <li>
+              <p class="meta">{paper.year} · {paper.venue}</p>
+              <a class="pub-title" href={paper.href} target="_blank" rel="noopener">{paper.title}</a>
+              <p class="pub-authors">{paper.authors}</p>
             </li>
           ))}
         </ul>
-      </details>
+      </div>
     </section>
 
     <section class="section section--wide" id="experience" aria-labelledby="experience-heading">
