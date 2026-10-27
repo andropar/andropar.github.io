@@ -404,8 +404,14 @@ h1:focus { outline: none; }
 .paper-title { font-size: var(--text-md); font-weight: 600; line-height: 1.4; letter-spacing: -0.006em; }
 .paper-title a { text-decoration: none; }
 .paper-title a:hover { color: var(--accent); }
-.card-grid--papers .award-note { align-self: flex-start; }
 .card-grid--papers .toggle { margin-top: var(--space-3); }
+/* The five parts of each paper card share rows across the grid, so graphics, venues, titles, authors
+   and toggles line up whatever the title length. */
+.card-grid--papers > .card { display: grid; grid-row: span 5; grid-template-rows: subgrid; row-gap: 0; align-content: start; }
+.card-grid--papers > .card > * { min-width: 0; }
+/* The award sits on its paper's graphic as a small label. */
+.paper-media { position: relative; }
+.paper-media .award-note { position: absolute; right: var(--space-3); bottom: calc(var(--space-4) + var(--space-3)); margin: 0; background: var(--raised); }
 
 /* Data graphics: alpha masks (scripts/card_graphics.py) filled with the theme's ink and accent */
 .graphic { position: relative; }
@@ -504,6 +510,10 @@ summary::-webkit-details-marker { display: none; }
 .focus-grid dd { margin-top: var(--space-1); color: var(--muted); font-size: var(--text-sm); line-height: 1.55; }
 .skill-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-3) var(--space-4); margin-top: var(--space-6); }
 .skill-line h3 { font-size: var(--text-sm); }
+.skill-line { flex-direction: column; align-items: stretch; }
+/* Pills stretch to fill each row, like justified text, so every row ends on the same edge. */
+.skill-line .pills { width: 100%; }
+.skill-line .pills li { flex: 1 1 auto; text-align: center; }
 /* Pills: short labels such as skills and tags */
 .pills { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
 .pills li { padding: 2px 10px; border: 1px solid var(--line); border-radius: var(--radius-pill); color: var(--secondary); font-size: var(--text-xs); line-height: 1.5; }

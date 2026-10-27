@@ -31,11 +31,17 @@ const focusAreas = [
   { title: 'Research & experimental design', description: 'Turning open questions into testable ideas, sound experiments, and clear conclusions.' },
   { title: 'Project ownership & collaboration', description: 'Shaping the work, coordinating with others, and seeing projects through.' },
 ];
-const skills = ['Recommender systems', 'Embeddings', 'Feature extraction', 'Model evaluation', 'Dataset curation', 'Data services', 'Experimental design', 'Research software', 'Full-stack development', 'Python'];
+const skills = [
+  'Python', 'PyTorch', 'scikit-learn', 'pandas', 'NumPy', 'Deep learning', 'Computer vision', 'Image segmentation',
+  'Embeddings', 'Feature extraction', 'Recommender systems', 'Collaborative filtering', 'UMAP', 'Model evaluation',
+  'Representational similarity analysis', 'fMRI analysis', 'Experimental design', 'Statistics', 'Dataset curation',
+  'Data services', 'SQL', 'GPU pipelines', 'SLURM / HPC', 'Linux servers', 'AWS', 'Hugging Face', 'Git',
+  'Research software', 'Django', 'JavaScript',
+];
 const publications = [
   { year: '2026', title: 'Characterizing Universal Object Representations Across Vision Models', authors: 'Mahner*, Roth* et al.', venue: 'NeurIPS 2026 (accepted)', graphic: 'universal', graphicAlt: 'Dimensions of object-similarity structure in ten vision models, one row per model, placed by how consistently each recurs in the others; one shared dimension is traced across all models', href: 'https://arxiv.org/abs/2605.13675', note: 'Shared first author', summary: 'We compared the object similarity structure of 162 vision models to distinguish universal from model-specific dimensions, and related that structure to image properties, neural activity, and human judgments.' },
   { year: '2025', title: 'How to sample the world for understanding the visual system', authors: 'Roth & Hebart', venue: 'CCN', graphic: 'sampling', graphicAlt: 'Clusters of natural photographs in a t-SNE map, with the clusters that THINGS and NSD barely cover highlighted', href: 'https://openreview.net/forum?id=T9k6KkZoca', note: 'Oral', summary: 'How does the choice of images affect what we can learn about the visual brain? We compared image-sampling strategies using simulations and fMRI data to study dataset coverage and model generalization.' },
-  { year: '2025', title: 'Ten principles for reliable, efficient, and adaptable coding in psychology and cognitive neuroscience', authors: 'Roth*, Duan* et al.', venue: 'Communications Psychology', graphic: 'coding', graphicAlt: 'Every commit to the LAION-fMRI package in order, lines added above the axis and deleted below, with commits that touched the tests highlighted', href: 'https://doi.org/10.1038/s44271-025-00236-3', note: 'Shared first author', award: 'CMBB Replication Award · 2025', summary: 'A practical guide to research software, covering project organization, testing, documentation, version control, and collaboration.' },
+  { year: '2025', title: 'Ten principles for reliable, efficient, and adaptable coding in psychology and cognitive neuroscience', authors: 'Roth*, Duan* et al.', venue: 'Communications Psychology', graphic: 'coding', graphicAlt: 'Every commit to the LAION-fMRI package in order, lines added above the axis and deleted below, with commits that touched the tests highlighted', href: 'https://doi.org/10.1038/s44271-025-00236-3', note: 'Shared first author', award: 'CMBB Replication Award', summary: 'A practical guide to research software, covering project organization, testing, documentation, version control, and collaboration.' },
 ];
 const olderPublications = [
   { year: '2025', title: 'Fine-grained image and category information in ventral visual pathway', authors: 'Badwal, Bergmann, Roth et al.', venue: 'J Neuroscience', href: 'https://doi.org/10.1523/JNEUROSCI.0936-24.2024' },
@@ -155,11 +161,13 @@ const lifeStories = [
       <div class="card-grid card-grid--papers breakout">
         {publications.filter(paper => paper.graphic).map(paper => (
           <article class="card">
-            <div class={`frame card-media graphic graphic--paper-${paper.graphic}`} role="img" aria-label={paper.graphicAlt}><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
+            <div class="paper-media">
+              <div class={`frame card-media graphic graphic--paper-${paper.graphic}`} role="img" aria-label={paper.graphicAlt}><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
+              {paper.award && <p class="award-note"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M7 3h10v6a5 5 0 0 1-10 0V3ZM7 5H4v2a4 4 0 0 0 4 4m9-6h3v2a4 4 0 0 1-4 4M12 14v6m-4 1h8" /></svg>{paper.award}</p>}
+            </div>
             <p class="meta">{paper.year} · {paper.venue}</p>
             <h3 class="paper-title"><a href={paper.href} target="_blank" rel="noopener">{paper.title}</a></h3>
             <p class="card-detail">{paper.authors}{paper.note && <> · <span class="entry-note">{paper.note}</span></>}</p>
-            {paper.award && <p class="award-note"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M7 3h10v6a5 5 0 0 1-10 0V3ZM7 5H4v2a4 4 0 0 0 4 4m9-6h3v2a4 4 0 0 1-4 4M12 14v6m-4 1h8" /></svg>{paper.award}</p>}
             {paper.summary && <details class="toggle"><summary>About this paper</summary><p>{paper.summary}</p></details>}
           </article>
         ))}

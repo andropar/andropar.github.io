@@ -152,6 +152,8 @@ inside it switch to `--paper`.
 - **Focus areas:** three equal columns (two at ≤ 860px), each topped by a hairline, with 17px titles and
   15px muted descriptions.
 - **Paper cards (`.card-grid--papers`):** three equal columns with 4:3 graphics; one column at ≤ 600px.
+  Each card is a five-row subgrid (graphic, venue, title, authors, toggle), so those parts line up across
+  cards. An award sits on its graphic as a small label in the bottom-right corner.
 - **Life stories (`.life-stories`):** one row per story, photo (1.3fr) and text (1fr) alternating sides.
 - **Cover rows:** `120px | 1fr` like list rows, with wrapping 48px covers.
 - **Book archive:** intrinsic `repeat(auto-fill, minmax(min(100%, 13rem), 1fr))`, which gives four
@@ -288,7 +290,8 @@ Both use native `<details>`, so they work with the keyboard and without JavaScri
 - **Selected work:** on a surface band; Horrorverse and ReLAION-natural as headline cards, then
   re:vision, LAION-fMRI and thingsvision as small cards.
 - **Expertise:** `<dl class="focus-grid">` with six areas, followed by "Methods & tools": a wrapping
-  row of `.pills` (13px, hairline border, pill radius) listing the skills that used to sit on cards.
+  row of `.pills` (13px, hairline border, pill radius). The pills stretch to fill each row, so every row
+  ends on the same edge, like justified text.
 - **Research:** the three first- or shared-first-author papers as graphic cards, the remaining paper
   as a list row, then the "Earlier publications" disclosure.
 - **Order:** Selected work → Research → Experience & education → Expertise → Writing → Life teaser, so
