@@ -34,14 +34,15 @@ at the same vertical position on desktop and mobile.
 | `--accent` | `#34604a` | `#9fc4a8` | Hover color, focus ring, primary button hover, status dot |
 | `--on-ink` | `#fbfaf8` | `#141513` | Text on ink or accent fills |
 
-The accent appears on interaction (hover, focus), the availability dot, and the publication's award note. Photos
+The accent appears on interaction (hover, focus), the availability dot, the publication's award note, and
+as the single highlight in each project graphic. Photos
 are shown without filters in both themes. Text colors meet WCAG AA on `--paper`; `--muted` is about
 5:1 in light mode and 6:1 in dark mode.
 
 ### Typography
 
 One family: **Inter** (Google Fonts, variable `opsz` 14–32 and weights 400–600, roman and italic).
-**JetBrains Mono** 400 is used only for real code: the thingsvision snippet and code in articles.
+**JetBrains Mono** 400 is used only for real code in articles.
 
 | Token | Size | Role |
 | --- | --- | --- |
@@ -107,8 +108,9 @@ column is left-aligned on a shared edge; article text keeps that edge and is lim
   `--section-space` padding.
 - **Hero:** two columns, `minmax(0, 1fr)` copy and a `minmax(12rem, 18rem)` portrait, 64px gap,
   vertically centered.
-- **Card grid:** two equal `minmax(0, 1fr)` columns, 32px column gap, 48px row gap. A `.card--wide`
-  spans both columns.
+- **Card grid:** two equal `minmax(0, 1fr)` columns, 32px column gap, 48px row gap. Selected work
+  (`.card-grid--projects`) uses a six-column track: two headline cards span three columns each, and
+  three `.card--small` cards span two. Small cards have no `.card-detail`. At ≤ 720px all five stack.
 - **List rows (`.entry`):** `120px | minmax(0, 1fr)`, 32px column gap, baseline-aligned so the date
   sits on the title's first line.
 - **Focus areas:** two equal columns, each topped by a hairline, with 20px titles and short descriptions.
@@ -182,16 +184,20 @@ child images set to `object-fit: cover`. Aspect ratios:
 | Context | Ratio |
 | --- | --- |
 | Hero portrait | 4:5 (1:1 at ≤ 600px) |
-| Featured project (ReLAION contact sheet) | 5:2 |
-| Project cards | 16:10 (4:3 between 721 and 860px) |
+| Headline project cards | 16:10 |
+| Small project cards | 4:3 (16:10 at ≤ 720px) |
 | Life story photos | 4:3, with per-photo `object-position` |
 | Life teaser photo | 3:2 |
 | Book covers | 2:3 |
 
-Two frame variants: `.card-media--mark` centers the LAION-fMRI mosaic wordmark with 32px padding,
-and `.card-media--code` shows a real thingsvision usage snippet in JetBrains Mono (13px, 12px at
-≤ 860px). The code frame can grow taller than its ratio on very narrow screens so the code is never
-clipped.
+Project cards use data graphics instead of photos or logos. Each is drawn from that project's real data
+(the Horrorverse atlas, a dithered ReLAION contact sheet, model scores from the LAION-fMRI replication,
+a brain slice with face- and scene-selective cortex, a ResNet-50 similarity matrix) and stored as two
+alpha masks in `public/v2/graphics/`: `<name>-ink.png` and `<name>-accent.png`. `.graphic` paints them
+with `--ink` and `--accent` through CSS `mask`, inset 16px (12px for the contact sheet) and contained
+in the frame, so they follow the theme. Each graphic has exactly one accent element. ReLAION has
+`-dark` masks with a positive dither, because light ink on dark paper would show the photos as
+negatives. `scripts/card_graphics.py` regenerates the masks; it reads data outside this repo.
 
 ### Cards
 
@@ -222,7 +228,7 @@ Both use native `<details>`, so they work with the keyboard and without JavaScri
 
 ### Work-specific compositions
 
-- **Selected work:** four equal project cards: ReLAION-natural and re:vision, then LAION-fMRI and thingsvision.
+- **Selected work:** Horrorverse and ReLAION-natural as headline cards, then re:vision, LAION-fMRI and thingsvision as small cards.
 - **Expertise:** `<dl class="focus-grid">`, with each term at 20px/500 and the description at
   15px secondary. Six areas cover ML and data science, production ML systems, data engineering,
   backend and web development, research and experimental design, and project ownership and

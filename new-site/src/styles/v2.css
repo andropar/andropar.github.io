@@ -322,24 +322,32 @@ h1:focus { outline: none; }
   margin-top: auto;
   padding-top: var(--space-4);
 }
-.card--wide { grid-column: 1 / -1; }
-.card--wide > :not(.card-media) { max-width: var(--measure); }
 
+/* Selected work: two headline projects over three smaller ones, on a six-column track */
+.card-grid--projects { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.card-grid--projects > .card { grid-column: span 3; }
+.card-grid--projects > .card--small { grid-column: span 2; }
 .card-grid--projects .card-media { aspect-ratio: 16 / 10; }
-.card-grid--projects .card--wide .card-media { aspect-ratio: 5 / 2; }
-.card-media--mark { display: grid; place-items: center; padding: var(--space-6); }
-.card-media--mark > img { height: auto; object-fit: contain; }
-.card-media--revision { display: flex; align-items: center; justify-content: center; gap: var(--space-5); padding: var(--space-5); }
-.card-media--revision > img { width: clamp(4rem, 12vw, 7rem); height: clamp(4rem, 12vw, 7rem); object-fit: contain; }
-.card-media--revision > span { font-size: var(--text-2xl); font-weight: 500; letter-spacing: -0.022em; }
-.card-media--code { display: flex; align-items: center; padding: var(--space-5); overflow: visible; }
-.card-media--code pre {
-  min-width: 0;
-  max-width: 100%;
-  overflow-x: auto;
-  color: var(--secondary);
-  font: 400 var(--text-xs)/1.6 var(--font-mono);
+.card-grid--projects .card--small .card-media { aspect-ratio: 4 / 3; }
+
+/* Data graphics: alpha masks (scripts/card_graphics.py) filled with the theme's ink and accent */
+.graphic { position: relative; }
+.graphic > span {
+  position: absolute;
+  inset: var(--space-4);
+  background: var(--ink);
+  -webkit-mask: var(--ink-mask) center / contain no-repeat;
+  mask: var(--ink-mask) center / contain no-repeat;
 }
+.graphic > .graphic-accent { background: var(--accent); -webkit-mask-image: var(--accent-mask); mask-image: var(--accent-mask); }
+.graphic--relaion > span { inset: var(--space-3); }
+.graphic--horrorverse { --ink-mask: url(/v2/graphics/horrorverse-ink.png); --accent-mask: url(/v2/graphics/horrorverse-accent.png); }
+.graphic--relaion { --ink-mask: url(/v2/graphics/relaion-ink.png); --accent-mask: url(/v2/graphics/relaion-accent.png); }
+.graphic--revision { --ink-mask: url(/v2/graphics/revision-ink.png); --accent-mask: url(/v2/graphics/revision-accent.png); }
+.graphic--laion { --ink-mask: url(/v2/graphics/laion-ink.png); --accent-mask: url(/v2/graphics/laion-accent.png); }
+.graphic--thingsvision { --ink-mask: url(/v2/graphics/thingsvision-ink.png); --accent-mask: url(/v2/graphics/thingsvision-accent.png); }
+/* Light ink on dark paper would turn the photos into negatives, so dark mode gets a positive dither. */
+:root[data-theme='dark'] .graphic--relaion { --ink-mask: url(/v2/graphics/relaion-ink-dark.png); --accent-mask: url(/v2/graphics/relaion-accent-dark.png); }
 
 /* ---------- Entries: one row pattern for publications, roles, and writing ---------- */
 .entries { margin: 0; padding: 0; list-style: none; }
@@ -564,9 +572,6 @@ summary::-webkit-details-marker { display: none; }
   .navigation { gap: var(--space-5); }
   .nav-links { gap: var(--space-4); }
   .hero { grid-template-columns: minmax(0, 1fr) minmax(10rem, 15rem); gap: var(--space-7); }
-  .card-grid--projects .card-media { aspect-ratio: 4 / 3; }
-  .card-media--code { padding: var(--space-4); }
-  .card-media--code pre { font-size: 0.75rem; }
 }
 
 @media (max-width: 720px) {
@@ -591,7 +596,8 @@ summary::-webkit-details-marker { display: none; }
   .nav-links a { padding-block: var(--space-3); color: var(--ink); font-size: var(--text-md); }
   .nav-links a + a { border-top: 1px solid var(--line); }
   .card-grid--projects { grid-template-columns: minmax(0, 1fr); }
-  .card-grid--projects .card-media { aspect-ratio: 16 / 10; }
+  .card-grid--projects > .card, .card-grid--projects > .card--small { grid-column: auto; }
+  .card-grid--projects .card--small .card-media { aspect-ratio: 16 / 10; }
 }
 
 @media (max-width: 600px) {

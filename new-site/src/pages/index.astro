@@ -5,9 +5,6 @@ import V2Layout from '../layouts/V2Layout.astro';
 import { currentBooks, lovedBookGroups, okayBooks } from '../data/books';
 import workPortrait from '../../public/v2/portrait-oxford-original-face.png';
 import casualPortrait from '../../public/portrait-casual-hero.png';
-import relaionExamples from '../../public/v2/relaion-examples.png';
-import revisionLogo from '../../public/v2/revision-logo.png';
-import laionMosaic from '../../public/v2/laion-fmri-mosaic.png';
 import artAndFear from '../../public/v2/art-and-fear.jpg';
 import mindIlluminated from '../../public/v2/the-mind-illuminated.jpg';
 import bouldering from '../../public/personal/about-bouldering.webp';
@@ -23,14 +20,6 @@ const coverURL = (reference: string) => {
   return `https://covers.openlibrary.org/b/${kind === 'id' ? 'id' : 'isbn'}/${value}-M.jpg`;
 };
 const currentCovers = [artAndFear, mindIlluminated];
-const thingsvisionSample = `from thingsvision import get_extractor
-
-extractor = get_extractor(
-    model_name="alexnet",
-    source="torchvision",
-    device="cuda",
-    pretrained=True,
-)`;
 const focusAreas = [
   { title: 'Machine learning & data science', description: 'Building models and using data to understand patterns, make predictions, and support decisions.' },
   { title: 'Production ML systems', description: 'Making ML systems reliable, efficient, and maintainable in everyday use.' },
@@ -96,9 +85,17 @@ const lifeStories = [
       </div>
       <div class="card-grid card-grid--projects">
         <article class="card">
-          <div class="frame card-media">
-            <Image src={relaionExamples} alt="Example photographs from ReLAION-natural: interiors, furniture, people, and outdoor scenes" widths={[480, 900]} sizes="(max-width: 720px) 90vw, 444px" width={900} format="webp" loading="lazy" />
+          <div class="frame card-media graphic graphic--horrorverse" role="img" aria-label="The Horrorverse atlas: about 19,000 horror films as dots, with the haunted-house region highlighted"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
+          <h3>Horrorverse</h3>
+          <p class="card-text">Horror film recommendations, mood search, and a map of 20,000 films.</p>
+          <p class="card-detail">A side project I built end to end: collaborative-filtering picks, text-embedding search, an explorable film atlas, accounts, and deployment.</p>
+          <div class="card-footer">
+            <p class="meta">Recommender systems · Embeddings · Full stack</p>
+            <a class="link stretched" href="https://horrorverse.jroth.space/" target="_blank" rel="noopener">Open Horrorverse</a>
           </div>
+        </article>
+        <article class="card">
+          <div class="frame card-media graphic graphic--relaion" role="img" aria-label="A dithered contact sheet of natural photographs from the dataset"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
           <h3>ReLAION-natural</h3>
           <p class="card-text">Naturalistic images and embeddings for vision research.</p>
           <p class="card-detail">I developed pipelines for image classification, quality checks, and feature extraction to curate the dataset.</p>
@@ -107,38 +104,28 @@ const lifeStories = [
             <a class="link stretched" href="https://huggingface.co/datasets/andropar/relaion2b-natural" target="_blank" rel="noopener">View dataset</a>
           </div>
         </article>
-        <article class="card">
-          <div class="frame card-media card-media--revision" aria-hidden="true">
-            <Image src={revisionLogo} alt="" widths={[180, 360]} sizes="7rem" width={180} format="webp" loading="lazy" />
-            <span>re:vision</span>
-          </div>
+        <article class="card card--small">
+          <div class="frame card-media graphic graphic--revision" role="img" aria-label="Brain-predictivity scores of 118 vision models, sorted, with the ten best highlighted"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
           <h3>re:vision</h3>
           <p class="card-text">Website, data services, and annotation tools for a replication initiative.</p>
-          <p class="card-detail">I developed the website, data services, and annotation tools, and contributed to preprocessing and documentation. I also helped design dataset splits for training and evaluating models.</p>
           <div class="card-footer">
             <p class="meta">Research software · Model evaluation</p>
             <a class="link stretched" href="https://re-vision-initiative.org/" target="_blank" rel="noopener">Explore project</a>
           </div>
         </article>
-        <article class="card">
-          <div class="frame card-media card-media--mark">
-            <Image src={laionMosaic} alt="LAION-fMRI wordmark assembled from natural image thumbnails" widths={[480, 800]} sizes="(max-width: 720px) 90vw, 380px" width={800} format="webp" loading="lazy" />
-          </div>
+        <article class="card card--small">
+          <div class="frame card-media graphic graphic--laion" role="img" aria-label="A sagittal brain slice drawn as contour lines, with face- and scene-selective cortex filled in"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
           <h3>LAION-fMRI</h3>
           <p class="card-text">A public brain-imaging dataset for visual neuroscience.</p>
-          <p class="card-detail">I built the website and cloud-based download services. I also helped preprocess the data and develop a framework for selecting experimental stimuli.</p>
           <div class="card-footer">
             <p class="meta">Data services · Experimental design</p>
             <a class="link stretched" href="https://laion-fmri.hebartlab.com/" target="_blank" rel="noopener">Explore project</a>
           </div>
         </article>
-        <article class="card">
-          <div class="frame card-media card-media--code">
-            <pre><code>{thingsvisionSample}</code></pre>
-          </div>
+        <article class="card card--small">
+          <div class="frame card-media graphic graphic--thingsvision" role="img" aria-label="A similarity matrix of ResNet-50 features for eight image categories, one category highlighted"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
           <h3>thingsvision</h3>
           <p class="card-text">A common interface for extracting and comparing vision-model features.</p>
-          <p class="card-detail">I contributed to the software architecture, model integration, and memory efficiency.</p>
           <div class="card-footer">
             <p class="meta">Contributor · Python</p>
             <a class="link stretched" href="https://github.com/ViCCo-Group/thingsvision" target="_blank" rel="noopener">View library</a>
