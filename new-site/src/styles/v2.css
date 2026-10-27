@@ -480,6 +480,9 @@ summary::-webkit-details-marker { display: none; }
 .toggle > summary:hover { color: var(--ink); }
 .toggle > p { max-width: var(--measure); margin-top: var(--space-2); color: var(--secondary); font-size: var(--text-sm); }
 .disclosure { border-top: 1px solid var(--line); }
+/* A section that ends in a disclosure already closes with its hairline, so the next section drops its rule. */
+.section:has(> .disclosure:last-child) + .section { border-top: 0; }
+.section:has(> .disclosure:last-child) + .section::before { display: none; }
 .disclosure > summary {
   display: flex;
   align-items: baseline;
