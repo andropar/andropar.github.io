@@ -287,8 +287,9 @@ Both use native `<details>`, so they work with the keyboard and without JavaScri
 
 ### Work-specific compositions
 
-- **Selected work:** on a surface band; Horrorverse and ReLAION-natural as headline cards, then
-  re:vision, LAION-fMRI and thingsvision as small cards.
+- **Selected work:** on a surface band, in two `.project-group`s with their own subheadings:
+  "Independent work" (Horrorverse and ReLAION-natural as headline cards) and "Collaborations"
+  (re:vision, LAION-fMRI and thingsvision as small cards), 64px apart.
 - **Expertise:** `<dl class="focus-grid">` with six areas, followed by "Methods & tools": a wrapping
   row of `.pills` (13px, hairline border, pill radius). The pills stretch to fill each row, so every row
   ends on the same edge, like justified text.

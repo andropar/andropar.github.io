@@ -395,6 +395,9 @@ h1:focus { outline: none; }
 .card-grid--projects > .card { grid-column: span 3; }
 .card-grid--projects > .card--small { grid-column: span 2; }
 .card-grid--projects .card-media { aspect-ratio: 16 / 10; }
+/* Selected work is split into independent work and collaborations, each under its own subheading. */
+.project-group .section-subhead { margin-top: 0; }
+.project-group + .project-group { margin-top: var(--space-8); }
 .card-grid--projects .card--small .card-media { aspect-ratio: 4 / 3; }
 
 /* Research: first-author papers as three small cards above the list */
