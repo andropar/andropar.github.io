@@ -28,6 +28,7 @@
   --text-2xl: clamp(2rem, 1.45rem + 2.2vw, 2.75rem);     /* 32–44px  h1 */
   --text-display: clamp(2.5rem, 1.5rem + 4vw, 4.5rem);   /* 40–72px  page titles */
   --text-hero: clamp(2.75rem, 1.2rem + 5.6vw, 6rem);     /* 44–96px  hero name */
+  --text-section: clamp(1.875rem, 1.3rem + 1.9vw, 2.625rem); /* 30–42px  section headings */
   --leading-body: 1.65;
   --leading-prose: 1.75;
 
@@ -131,12 +132,34 @@ h1:focus { outline: none; }
 .container { width: min(var(--width-page), 100% - 2 * var(--gutter)); margin-inline: auto; }
 .section { padding-block: var(--section-space); border-top: 1px solid var(--line); }
 
-/* Visual elements (card grids, photo rows) widen to 1200px; headings and text stay in the column. */
-.breakout {
+/* Visual elements (card grids, photo rows) widen to 1200px. In a .section--wide everything,
+   heading included, shares that wider edge; running text keeps its own max-width. */
+.breakout, .section.section--wide > * {
   --breakout: min(var(--width-grid), 100vw - 2 * var(--gutter));
   width: var(--breakout);
   margin-inline: calc((100% - var(--breakout)) / 2);
 }
+
+/* The homepage shares one 1200px left edge: header, hero, wide sections and footer use the full
+   width, and text-only sections keep a 920px width from that same edge. */
+.layout-wide { --width-page: var(--width-grid); }
+.layout-wide .section:not(.section--wide) > * { max-width: 57.5rem; }
+
+/* A wide section's top rule spans its content, not the narrow column. */
+.section.section--wide:not(.section--band) {
+  --breakout: min(var(--width-grid), 100vw - 2 * var(--gutter));
+  position: relative;
+  border-top: 0;
+}
+.section.section--wide:not(.section--band)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: calc((100% - var(--breakout)) / 2);
+  width: var(--breakout);
+  border-top: 1px solid var(--line);
+}
+.section--band + .section.section--wide::before { display: none; }
 
 /* A full-bleed surface band behind a section, for rhythm. Frames inside switch to paper. */
 .section--band { position: relative; isolation: isolate; border-top: 0; }
@@ -149,9 +172,11 @@ h1:focus { outline: none; }
   align-items: baseline;
   justify-content: space-between;
   gap: var(--space-2) var(--space-5);
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-7);
 }
-.section-lede { grid-column: 1 / -1; max-width: var(--measure); color: var(--secondary); }
+/* Section headings sit clearly between the hero name and item titles. */
+.section-head h2, .split-body h2 { font-size: var(--text-section); line-height: 1.1; letter-spacing: -0.028em; }
+.section-lede { grid-column: 1 / -1; max-width: var(--measure); margin-top: var(--space-1); color: var(--secondary); }
 
 .skip-link {
   position: absolute;
@@ -353,7 +378,7 @@ h1:focus { outline: none; }
 .card-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-7) var(--space-6); }
 .card { position: relative; display: flex; flex-direction: column; min-width: 0; }
 .card-media { aspect-ratio: 4 / 3; margin-bottom: var(--space-4); }
-.card h3 { margin-bottom: var(--space-2); }
+.card h3 { margin-bottom: var(--space-2); font-weight: 600; letter-spacing: -0.014em; }
 .card-text { color: var(--secondary); }
 .card-detail { margin-top: var(--space-2); color: var(--secondary); font-size: var(--text-sm); }
 .card-footer {
@@ -377,7 +402,7 @@ h1:focus { outline: none; }
 .card-grid--papers { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-bottom: var(--space-6); }
 .card-grid--papers .card-media { aspect-ratio: 4 / 3; }
 .card-grid--papers .meta { margin-bottom: var(--space-2); }
-.paper-title { font-size: var(--text-md); line-height: 1.4; letter-spacing: 0; }
+.paper-title { font-size: var(--text-md); font-weight: 600; line-height: 1.4; letter-spacing: -0.006em; }
 .paper-title a { text-decoration: none; }
 .paper-title a:hover { color: var(--accent); }
 .card-grid--papers .award-note { align-self: flex-start; }
@@ -418,7 +443,7 @@ h1:focus { outline: none; }
   border-top: 1px solid var(--line);
 }
 .entry-meta { color: var(--muted); font-size: var(--text-xs); line-height: 1.5; font-variant-numeric: tabular-nums; }
-.entry-title { font-size: var(--text-md); font-weight: 500; line-height: 1.4; letter-spacing: -0.006em; }
+.entry-title { font-size: var(--text-md); font-weight: 600; line-height: 1.4; letter-spacing: -0.006em; }
 .entry-title a { text-decoration: none; transition: color var(--duration); }
 .entry-title a:hover { color: var(--accent); }
 .entry-text { max-width: var(--width-text); margin-top: var(--space-1); color: var(--secondary); font-size: var(--text-sm); }
@@ -434,6 +459,8 @@ h1:focus { outline: none; }
 .cv-columns > div { display: grid; grid-row: 1 / var(--row-end); grid-template-rows: subgrid; }
 .cv-columns .entries { display: grid; grid-row: 2 / var(--row-end); grid-template-rows: subgrid; }
 .cv-columns .section-subhead { margin-top: 0; }
+/* In the CV the organization reads as part of the title; the description stays secondary. */
+.cv-columns .entry-title + .entry-text { color: var(--ink); }
 
 /* A role's span on a shared 2014–now scale, drawn under its date. */
 .span-bar { position: relative; display: block; width: 100%; height: 2px; margin-top: var(--space-2); border-radius: 1px; background: var(--line); }
@@ -471,7 +498,7 @@ summary::-webkit-details-marker { display: none; }
 /* ---------- Work view ---------- */
 .focus-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-5) var(--space-6); }
 .focus-grid > div { padding-top: var(--space-4); border-top: 1px solid var(--line); }
-.focus-grid dt { font-size: var(--text-md); font-weight: 500; line-height: 1.4; }
+.focus-grid dt { font-size: var(--text-md); font-weight: 600; line-height: 1.4; }
 .focus-grid dd { margin-top: var(--space-1); color: var(--muted); font-size: var(--text-sm); line-height: 1.55; }
 .skill-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-3) var(--space-4); margin-top: var(--space-6); }
 .skill-line h3 { font-size: var(--text-sm); }
@@ -502,6 +529,9 @@ summary::-webkit-details-marker { display: none; }
 }
 .contact-email:hover { color: var(--accent); text-decoration-color: currentColor; }
 .contact-links { margin-top: var(--space-5); }
+.section--closing { padding-block: var(--space-8); }
+.section--closing .contact-email { font-size: var(--text-section); letter-spacing: -0.028em; text-underline-offset: 0.16em; text-decoration-thickness: 2px; }
+.section--closing .status { margin-top: var(--space-5); }
 
 /* ---------- Life view ---------- */
 /* Life stories: a photo essay, photo and text alternating sides. */
@@ -533,6 +563,8 @@ summary::-webkit-details-marker { display: none; }
 .cover { width: 3rem; aspect-ratio: 2 / 3; overflow: hidden; border-radius: 2px; background: var(--surface); box-shadow: 0 0 0 1px var(--line); transition: transform var(--duration); }
 .cover:hover { transform: translateY(-2px); }
 .cover img { width: 100%; height: 100%; object-fit: cover; }
+.covers--dense { gap: 6px; }
+.covers--dense .cover { width: 2.5rem; }
 .cover--current { box-shadow: 0 0 0 2px var(--paper), 0 0 0 3px var(--accent); }
 .cover-placeholder { display: grid; place-items: center; height: 100%; padding: 3px; color: var(--muted); font-size: 0.5rem; line-height: 1.2; text-align: center; }
 
@@ -571,7 +603,7 @@ summary::-webkit-details-marker { display: none; }
 .post-list { margin: 0; padding: 0; list-style: none; }
 .post-row { position: relative; max-width: var(--measure); padding-bottom: var(--space-6); }
 .post-row + .post-row { padding-top: var(--space-5); border-top: 1px solid var(--line); }
-.post-title { font-size: var(--text-lg); line-height: 1.35; }
+.post-title { font-size: var(--text-lg); font-weight: 600; line-height: 1.35; letter-spacing: -0.014em; }
 .post-title a { text-decoration: none; transition: color var(--duration); }
 .post-row:hover .post-title a { color: var(--accent); }
 .post-text { margin-top: var(--space-2); color: var(--secondary); }

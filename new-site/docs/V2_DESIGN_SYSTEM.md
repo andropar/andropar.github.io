@@ -57,14 +57,18 @@ One family: **Inter** (Google Fonts, variable `opsz` 14–32 and weights 400–6
 | `--text-sm` | 15px | Secondary text, nav links, buttons, standalone links, list descriptions |
 | `--text-md` | 17px | Body text, article prose, list-row titles (`.entry-title`) |
 | `--text-lg` | 20px | `h3`, hero lede, page and article ledes, contact email |
-| `--text-xl` | 24–28px fluid | `h2` section titles, article `h2` |
+| `--text-xl` | 24–28px fluid | Article `h2`, Life story headings |
+| `--text-section` | 30–42px fluid | Section headings (`.section-head h2`, the Life teaser), the closing email |
 | `--text-2xl` | 32–44px fluid | `h1` (article titles) |
 | `--text-display` | 40–72px fluid | Page titles such as "Writing" |
 | `--text-hero` | 44–96px fluid | Hero name, 600 weight, −0.045em, line height 0.95 |
 
 Rules:
 
-- All headings use weight 500, except the hero name (600). Tracking tightens with size: `h1` −0.022em, `h2` −0.016em,
+- Headings use weight 500, except the hero name and item titles (card, paper, list-row, post and
+  focus-area titles), which use 600 so each item has a clear entry point. Section headings use
+  −0.028em tracking. The type ladder is hero name → section heading → item title, with each step clearly
+  larger than the next. Tracking tightens with size: `h1` −0.022em, `h2` −0.016em,
   `h3` −0.01em. Headings use `text-wrap: balance`; paragraphs use `text-wrap: pretty`.
 - Body text is 400. `strong` is 600. Nothing on the site is set in uppercase or letter-spaced.
 - Line height is 1.65 for UI body text, 1.75 for article prose, 1.1–1.3 for headings, and 1.5 for
@@ -106,6 +110,13 @@ column is left-aligned on a shared edge; article text keeps that edge and is lim
 `.breakout` widens an element to `min(--width-grid, 100vw − 2 × gutter)`, centered on the column, so
 headings and text keep the column edge while visuals use more of wide screens. `body` clips horizontal
 overflow so full-bleed elements never cause sideways scrolling.
+
+**Homepage edge.** The homepage passes `wide` to `V2Layout`, which adds `.layout-wide` to `<body>` and
+sets `--width-page` to 1200px. Header, hero, every section rule and the footer then share one left edge.
+Sections whose content is visual are `.section--wide` (Selected work, Research, Experience & education,
+A bit about me, On my shelves): all their children span the full width, heading included. Text-only
+sections (Expertise, Writing, the Life teaser, Contact) keep their children to 920px from the same left
+edge. Writing pages keep the centered 920px column.
 
 `.section--band` paints a full-bleed `--surface` band behind a section (Selected work on Work, On my
 shelves on Life). It drops the section's hairline and the next section's, and frames and covers
@@ -280,6 +291,8 @@ Both use native `<details>`, so they work with the keyboard and without JavaScri
   row of `.pills` (13px, hairline border, pill radius) listing the skills that used to sit on cards.
 - **Research:** the three first- or shared-first-author papers as graphic cards, the remaining paper
   as a list row, then the "Earlier publications" disclosure.
+- **Order:** Selected work → Research → Experience & education → Expertise → Writing → Life teaser, so
+  the summary of skills follows the evidence.
 - **Experience & education:** role dates and descriptions follow `cv.tex` and the linked CV.
   `.cv-columns` (a `.breakout`) puts Experience (1.6fr) and Education (1fr) side by side under their own
   subheadings. Both columns are subgrids of one row grid, so the nth role and nth degree share a
@@ -293,15 +306,16 @@ Both use native `<details>`, so they work with the keyboard and without JavaScri
   alternating sides.
 - **On my shelves:** on a surface band. Music (Spotify embed) and Horror movie night (the Horrorverse
   atlas graphic, terracotta on Life) sit side by side at matching 152px heights. Below, "Books" is a
-  cover wall: one row per group, "Reading now" first with accent-ringed covers, 48px covers with the
-  title and author as a tooltip and alt text. Missing covers show the title on `--surface`. "Books I
+  cover wall: "Reading now" (48px covers with an accent ring), then all loved books in one dense
+  "Loved" wall of 40px covers, with title, author and category as a tooltip and alt text. Missing covers show the title on `--surface`. "Books I
   found okay" stays in a disclosure.
 - **Writing:** the same label and list rows as Work's writing section.
 
 ### Contact and footer
 
-Contact is shared by both views: `h2` "Say hi" with a lede, the email at 20px/500 with an
-underline, and a `.link-row` of external profiles. The footer is a 13px muted row with copyright and
+Contact is shared by both views and closes the page as a surface band (`.section--closing`, 64px
+padding): `h2` "Say hi" with a lede, the email at `--text-section` with a 2px underline, the
+availability status line, and a `.link-row` of external profiles. The footer is a 13px muted row with copyright and
 location on the left and "Back to top" on the right, above a hairline.
 
 ### Writing index

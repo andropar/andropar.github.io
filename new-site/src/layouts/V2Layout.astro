@@ -4,8 +4,10 @@ import '../styles/v2.css';
 interface Props {
   title: string;
   description?: string;
+  /** One 1200px left edge for the whole page (the homepage); otherwise a centered 920px column. */
+  wide?: boolean;
 }
-const { title, description = 'Johannes Roth is a machine learning engineer and PhD researcher in Leipzig, working on computer vision, data systems, and computational neuroscience.' } = Astro.props;
+const { title, wide = false, description = 'Johannes Roth is a machine learning engineer and PhD researcher in Leipzig, working on computer vision, data systems, and computational neuroscience.' } = Astro.props;
 const canonicalPath = Astro.url.pathname.replace(/^\/v2(?=\/|$)/, '') || '/';
 const canonicalURL = new URL(canonicalPath, Astro.site);
 const homeAnchor = /^\/(?:v2\/?)?$/.test(Astro.url.pathname) ? '' : '/';
@@ -43,7 +45,7 @@ const onWritingPage = canonicalPath.startsWith('/blog');
       })();
     </script>
   </head>
-  <body>
+  <body class:list={{ 'layout-wide': wide }}>
     <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="site-header">
       <nav class="container navigation" aria-label="Main navigation">
@@ -86,10 +88,12 @@ const onWritingPage = canonicalPath.startsWith('/blog');
       const main = document.getElementById('main-content');
       if (heroes.length > 1 && main) {
         function sizeHeroes() {
+          // The hidden view's hero has no width, so measure both at the visible hero's width.
+          const width = Math.max(...heroes.map(hero => hero.getBoundingClientRect().width)) || main!.clientWidth;
           const measurements = heroes.map(hero => {
             const copy = hero.cloneNode(true) as HTMLElement;
             copy.classList.add('hero-measure');
-            copy.style.width = `${main!.clientWidth}px`;
+            copy.style.width = `${width}px`;
             copy.setAttribute('aria-hidden', 'true');
             copy.inert = true;
             copy.removeAttribute('aria-labelledby');

@@ -72,7 +72,7 @@ const lifeStories = [
 ];
 ---
 
-<V2Layout title="Johannes Roth — Machine Learning & Research">
+<V2Layout title="Johannes Roth — Machine Learning & Research" wide>
   <div data-view="work" id="work">
     <section class="hero" aria-labelledby="work-title">
       <div class="hero-body">
@@ -95,7 +95,7 @@ const lifeStories = [
       </div>
     </section>
 
-    <section class="section section--band" id="selected-work" aria-labelledby="work-heading">
+    <section class="section section--band section--wide" id="selected-work" aria-labelledby="work-heading">
       <div class="section-head">
         <h2 id="work-heading">Selected work</h2>
         <a class="link" href="https://github.com/andropar" target="_blank" rel="noopener">More on GitHub</a>
@@ -146,20 +146,7 @@ const lifeStories = [
       </div>
     </section>
 
-    <section class="section" id="capabilities" aria-labelledby="capabilities-heading">
-      <div class="section-head">
-        <h2 id="capabilities-heading">Expertise</h2>
-      </div>
-      <dl class="focus-grid">
-        {focusAreas.map(area => <div><dt>{area.title}</dt><dd>{area.description}</dd></div>)}
-      </dl>
-      <div class="skill-line">
-        <h3>Methods & tools</h3>
-        <ul class="pills">{skills.map(skill => <li>{skill}</li>)}</ul>
-      </div>
-    </section>
-
-    <section class="section" id="research" aria-labelledby="research-heading">
+    <section class="section section--wide" id="research" aria-labelledby="research-heading">
       <div class="section-head">
         <h2 id="research-heading">Research & publications</h2>
         <a class="link" href="https://scholar.google.com/citations?user=U3Z3J2gAAAAJ" target="_blank" rel="noopener">Google Scholar</a>
@@ -204,7 +191,7 @@ const lifeStories = [
       </details>
     </section>
 
-    <section class="section" id="experience" aria-labelledby="experience-heading">
+    <section class="section section--wide" id="experience" aria-labelledby="experience-heading">
       <div class="section-head">
         <h2 id="experience-heading">Experience & education</h2>
         <a class="link" href="/cv.pdf">Full CV</a>
@@ -240,6 +227,19 @@ const lifeStories = [
             ))}
           </ul>
         </div>
+      </div>
+    </section>
+
+    <section class="section" id="capabilities" aria-labelledby="capabilities-heading">
+      <div class="section-head">
+        <h2 id="capabilities-heading">Expertise</h2>
+      </div>
+      <dl class="focus-grid">
+        {focusAreas.map(area => <div><dt>{area.title}</dt><dd>{area.description}</dd></div>)}
+      </dl>
+      <div class="skill-line">
+        <h3>Methods & tools</h3>
+        <ul class="pills">{skills.map(skill => <li>{skill}</li>)}</ul>
       </div>
     </section>
 
@@ -296,7 +296,7 @@ const lifeStories = [
       </div>
     </section>
 
-    <section class="section" id="life-about" aria-labelledby="life-about-heading">
+    <section class="section section--wide" id="life-about" aria-labelledby="life-about-heading">
       <div class="section-head">
         <h2 id="life-about-heading">A bit about me</h2>
       </div>
@@ -315,7 +315,7 @@ const lifeStories = [
       </div>
     </section>
 
-    <section class="section section--band" id="life-shelves" aria-labelledby="shelves-heading">
+    <section class="section section--band section--wide" id="life-shelves" aria-labelledby="shelves-heading">
       <div class="section-head">
         <h2 id="shelves-heading">On my shelves</h2>
         <p class="section-lede">Books, music, and movies.</p>
@@ -362,18 +362,16 @@ const lifeStories = [
             ))}
           </ul>
         </div>
-        {lovedBookGroups.map(group => (
-          <div class="cover-row">
-            <h4>{group.label}</h4>
-            <ul class="covers">
-              {group.books.map(([title, author, ref]) => (
-                <li class="cover" title={`${title} · ${author}`}>
-                  {ref ? <img src={coverURL(ref)} alt={`${title} by ${author}`} width="96" height="144" loading="lazy" decoding="async" /> : <span class="cover-placeholder">{title}</span>}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        <div class="cover-row">
+          <h4>Loved</h4>
+          <ul class="covers covers--dense">
+            {lovedBookGroups.flatMap(group => group.books.map(([title, author, ref]) => (
+              <li class="cover" title={`${title} · ${author} · ${group.label}`}>
+                {ref ? <img src={coverURL(ref)} alt={`${title} by ${author}`} width="80" height="120" loading="lazy" decoding="async" /> : <span class="cover-placeholder">{title}</span>}
+              </li>
+            )))}
+          </ul>
+        </div>
       </div>
       <details class="disclosure book-archive">
         <summary>Books I found okay</summary>
@@ -410,12 +408,13 @@ const lifeStories = [
     </section>
   </div>
 
-  <section class="section" id="contact" aria-labelledby="contact-heading">
+  <section class="section section--band section--closing" id="contact" aria-labelledby="contact-heading">
     <div class="section-head">
       <h2 id="contact-heading">Say hi</h2>
       <p class="section-lede">For research, collaborations, or a good conversation.</p>
     </div>
     <a class="contact-email" href="mailto:johannes@roth24.de">johannes@roth24.de</a>
+    <p class="meta status">Available from January 2027</p>
     <ul class="link-row contact-links">
       <li><a class="link" href="https://github.com/andropar" target="_blank" rel="noopener">GitHub</a></li>
       <li><a class="link" href="https://linkedin.com/in/johannes-roth-a67baa141" target="_blank" rel="noopener">LinkedIn</a></li>
