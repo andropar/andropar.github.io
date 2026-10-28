@@ -459,11 +459,13 @@ def paper_universal(w=1200, h=900, rank=30):
 
     files = sorted((Path.home() / "Downloads/p_max0pt02_model_features").glob("*.npy"))
     embeddings = []
-    for f in files:
+    for model_index, f in enumerate(files):
         z = np.load(f).astype(np.float64)
         d = squareform(pdist(z))
         sigma = np.median(d[np.triu_indices_from(d, 1)])
-        embeddings.append(_symnmf(np.exp(-(d**2) / (2 * sigma**2)), rank))
+        embeddings.append(
+            _symnmf(np.exp(-(d**2) / (2 * sigma**2)), rank, seed=model_index)
+        )
     unit = [e / np.linalg.norm(e, axis=0, keepdims=True) for e in embeddings]
     n_models = len(unit)
     null_rng = np.random.default_rng(0)
@@ -498,7 +500,8 @@ def paper_universal(w=1200, h=900, rank=30):
     )
     y = np.arange(n_models)
     # Two near-chance outliers (IPCL rows) would squash the strip; they fall off the left edge.
-    lo, hi = np.percentile(score, 1), score.max()
+    # Keep the 1st-percentile floor for the dots, but never cut off the highlighted thread.
+    lo, hi = min(np.percentile(score, 1), thread.min()), max(score.max(), thread.max())
     pad = (hi - lo) * 0.04
     for name in ("ink", "accent"):
         fig, ax = canvas(w, h)
