@@ -328,8 +328,12 @@ location on the left and "Back to top" on the right, above a hairline.
 
 ### Writing index
 
-Posts with a `link` in their front matter are pieces published elsewhere (such as the Horrorverse
-timeline essay): they get no article page, open the external page in a new tab, and show the host
+"A century of fear" is an interactive essay: its post has an empty body, and `[slug].astro` renders
+`src/components/CenturyOfFear.astro` instead (data in `public/writing/a-century-of-fear/`, refreshed
+by `scripts/century_of_fear_data.py`; styles in `src/styles/century-of-fear.css`, with its own
+categorical chart palette). Its reading time comes from `postMinutes()` in `src/data/posts.ts`.
+
+Posts with a `link` in their front matter are pieces published elsewhere: they get no article page, open the external page in a new tab, and show the host
 ("On horrorverse.jroth.space") instead of a reading time. The CMS has an optional "External link"
 field for this.
 

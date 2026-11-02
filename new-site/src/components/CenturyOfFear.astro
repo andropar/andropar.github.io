@@ -1,0 +1,26 @@
+---
+// The "A century of fear" essay: static text from src/data/century-of-fear.ts, with charts drawn
+// in the browser from the same data file.
+import { html } from '../data/century-of-fear';
+import '../styles/century-of-fear.css';
+---
+<div class="prose cof" data-cof data-src="/writing/a-century-of-fear/timeline.json" set:html={html} />
+<script>
+  import { mountEssay } from '../scripts/century-of-fear/essay.js';
+
+  const root = document.querySelector<HTMLElement>('[data-cof]');
+  if (root) {
+    fetch(root.dataset.src!)
+      .then(response => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json();
+      })
+      .then(data => mountEssay(root, data))
+      .catch(error => {
+        console.error('A century of fear: could not load the chart data', error);
+        root.querySelectorAll('[data-tl-chart="families"], [data-tl-chart="movers"]').forEach(node => {
+          node.innerHTML = '<p class="cof-error">The charts could not be loaded. Try reloading the page.</p>';
+        });
+      });
+  }
+</script>
