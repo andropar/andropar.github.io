@@ -24,7 +24,7 @@
 /* ---------- Layout ---------- */
 .article .prose.cof > * { max-width: none; }
 .article .prose.cof > * + * { margin-top: var(--space-8); }
-.article .prose.cof > :is(.tl-hero, .tl-year) { margin-top: var(--space-7); }
+.article .prose.cof > .tl-year { margin-top: var(--space-7); }
 .article .prose.cof > .tl-attrib { margin-top: var(--space-6); }
 .cof { position: relative; }
 .cof :is(.tl-opening, .tl-section) > :is(p, h2),
@@ -47,7 +47,9 @@
 .cof .tl-hero .tl-fig-head h3 { font-size: var(--text-lg); }
 .cof .tl-fig-head p { margin-top: var(--space-1); color: var(--muted); font-size: var(--text-xs); line-height: 1.5; }
 .cof .tl-chart { margin-top: var(--space-4); }
-.cof .tl-hero .tl-chart { margin-top: var(--space-5); }
+.cof .tl-part-head { margin-top: var(--space-6); color: var(--muted); font-size: var(--text-xs); line-height: 1.5; }
+.cof .tl-part-head strong { color: var(--ink); font-weight: 600; }
+.cof .tl-hero .tl-chart { margin-top: var(--space-3); }
 .cof .tl-chart svg { display: block; max-width: none; overflow: visible; }
 .cof .tl-source { margin-top: var(--space-3); color: var(--muted); font-size: var(--text-xs); line-height: 1.5; }
 .cof .tl-source a { color: var(--secondary); }
@@ -57,18 +59,13 @@
 .tl-base { stroke: var(--line-strong); }
 .tl-line { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
 .tl-dot { stroke: var(--paper); stroke-width: 2; }
-.tl-dot.tl-up { fill: var(--accent); }
-.tl-dot.tl-down { fill: var(--cof-second); }
 .tl-annot { fill: var(--secondary); font-size: 12px; font-weight: 500; paint-order: stroke; stroke: var(--paper); stroke-width: 3px; stroke-linejoin: round; }
 .tl-hit { fill: transparent; }
 .tl-row-label { fill: var(--secondary); font-size: 13px; }
-.tl-link { stroke: color-mix(in srgb, var(--accent) 55%, transparent); stroke-width: 2; }
-.tl-link-down { stroke: color-mix(in srgb, var(--cof-second) 60%, transparent); stroke-width: 2; }
-.tl-ring { fill: var(--paper); stroke: var(--secondary); stroke-width: 2; }
 .tl-change { font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; }
 .tl-change.up { fill: var(--accent); }
 .tl-change.down { fill: var(--cof-second); }
-.tl-plateau { stroke: var(--secondary); stroke-width: 1.5; opacity: 0.7; }
+.tl-vol-area { fill: color-mix(in srgb, var(--accent) 12%, transparent); }
 .tl-strong { fill: var(--ink); font-weight: 600; }
 .tl-small { font-size: 10.5px; }
 
@@ -99,6 +96,10 @@
 }
 .tl-tip strong { display: block; font-weight: 600; }
 .tl-tip span { display: flex; align-items: center; gap: 6px; color: color-mix(in srgb, var(--on-ink) 78%, transparent); }
+.tl-tip .tl-tip-film { align-items: flex-start; gap: 10px; margin-top: 6px; }
+.tl-tip-film img { flex: 0 0 auto; width: 46px; height: 69px; border-radius: 2px; object-fit: cover; background: color-mix(in srgb, var(--on-ink) 12%, transparent); }
+.tl-tip .tl-tip-film-text { display: block; }
+.tl-tip-film-text em { display: block; margin-top: 2px; color: var(--on-ink); font-style: italic; font-weight: 500; }
 
 /* ---------- Small multiples: the six families, then the open family's themes ---------- */
 .tl-sm-grid { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: var(--space-6) var(--gap); }
@@ -146,7 +147,14 @@
 .cof .tl-subjects-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-5); margin-bottom: var(--space-4); }
 .cof .tl-subjects-head h4 { font-size: var(--text-md); font-weight: 600; }
 .cof .tl-subjects-head p { color: var(--muted); font-size: var(--text-xs); line-height: 1.5; }
-.tl-subjects .tl-sm-grid { row-gap: var(--space-5); }
+.tl-sparks { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 0 var(--gap); }
+.tl-spark { display: grid; grid-template-columns: var(--name) minmax(0, 1fr) 36px; gap: 4px; align-items: center; padding: 3px 0; border-bottom: 1px solid var(--line); }
+.tl-spark-name { overflow: hidden; color: var(--secondary); font-size: 12.5px; text-overflow: ellipsis; white-space: nowrap; }
+.tl-spark.other .tl-spark-name { font-style: italic; }
+.tl-spark-share { color: var(--ink); font-size: var(--text-xs); font-weight: 500; font-variant-numeric: tabular-nums; text-align: right; }
+.tl-spark .tl-sm-line { stroke: var(--accent); }
+.tl-spark .tl-fade-top { stop-color: var(--accent); stop-opacity: 0.25; }
+@media (hover: hover) { .tl-spark .tl-hit:hover { fill: color-mix(in srgb, var(--ink) 6%, transparent); } }
 .tl-sm.small .tl-sm-head { padding-bottom: var(--space-1); }
 .tl-sm.small :is(.tl-sm-name, .tl-sm-share) { color: var(--muted); font-size: var(--text-xs); font-weight: 500; }
 .tl-sm.small.other .tl-sm-name { font-style: italic; }
@@ -157,12 +165,7 @@
 .tl-geo .tl-sm-name { color: var(--secondary); font-size: var(--text-xs); font-weight: 500; }
 
 /* Posters: the most-rated film of each decade */
-.cof .tl-films { margin-top: var(--space-6); }
-.cof .tl-films-head { margin-bottom: var(--space-3); color: var(--muted); font-size: var(--text-xs); line-height: 1.5; }
-.cof .tl-films-head strong { color: var(--ink); }
-.tl-strip { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: var(--space-3); }
-.cof .tl-strip-film { display: grid; gap: var(--space-1); color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; line-height: 1.3; text-decoration: none; }
-.tl-strip-film img, .tl-rev-poster img, .tl-sig-poster img, .tl-reach-card img {
+.tl-story-poster img, .tl-sig-poster img {
   display: block;
   width: 100%;
   height: auto;
@@ -171,11 +174,6 @@
   object-fit: cover;
   background: var(--surface);
   box-shadow: 0 0 0 1px var(--line);
-}
-.tl-strip-film img { transition: transform var(--duration), box-shadow var(--duration); }
-@media (hover: hover) {
-  .cof a.tl-strip-film:hover { color: var(--ink); }
-  a.tl-strip-film:hover img { transform: translateY(-2px); box-shadow: 0 0 0 1px var(--accent); }
 }
 
 /* ---------- The birth-year picker ---------- */
@@ -218,36 +216,31 @@
 .tl-era { stroke: var(--line-strong); stroke-width: 2; stroke-linecap: round; }
 .tl-era-band { fill: color-mix(in srgb, var(--ink) 3%, transparent); }
 .tl-era-label { fill: var(--muted); font-size: 11px; }
-.tl-era-film { fill: var(--secondary); font-style: italic; }
+.tl-event { stroke: var(--line-strong); stroke-width: 1; stroke-dasharray: 3 3; }
+.tl-end-label { font-size: 12px; font-weight: 600; }
 
-/* ---------- Stories that came back: posters on a shared time axis ---------- */
-.cof .tl-rev-row { padding-top: var(--space-3); border-top: 1px solid var(--line); }
-.cof .tl-rev-title { color: var(--muted); font-size: var(--text-xs); line-height: 1.5; }
-.cof .tl-rev-title :is(.tl-film, em) { font-size: var(--text-md); font-weight: 500; }
-.tl-rev-track { position: relative; }
-.cof .tl-rev-poster { position: absolute; top: 18px; display: grid; gap: 2px; color: var(--muted); font-size: 11px; font-variant-numeric: tabular-nums; line-height: 1.3; text-align: center; text-decoration: none; }
-.cof .tl-rev-poster.lift { top: 4px; }
-.tl-rev-poster img { opacity: 0.85; }
-.tl-rev-poster.main img { opacity: 1; box-shadow: 0 0 0 2px var(--accent); }
+/* ---------- Stories told again and again: remakes beside franchises ---------- */
+.tl-stories { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 0 var(--gap); align-items: start; margin-top: var(--space-4); }
+.cof .tl-story-head { padding-bottom: var(--space-2); border-bottom: 1px solid var(--line-strong); font-size: var(--text-sm); font-weight: 600; }
+.tl-story { padding: var(--space-3) 0 var(--space-2); border-bottom: 1px solid var(--line); }
+.cof .tl-story-name { overflow: hidden; color: var(--muted); font-size: var(--text-xs); line-height: 1.5; text-overflow: ellipsis; white-space: nowrap; }
+.cof .tl-story-name :is(.tl-film, em) { color: var(--ink); font-size: var(--text-sm); font-weight: 500; }
+.tl-story-posters { display: flex; margin-top: var(--space-2); }
+.cof .tl-story-poster { display: grid; flex: 0 0 auto; gap: 2px; color: var(--muted); font-size: 11px; font-variant-numeric: tabular-nums; line-height: 1.3; text-align: center; text-decoration: none; }
+.tl-story-poster img { opacity: 0.88; }
+.tl-story-poster.first img { opacity: 1; box-shadow: 0 0 0 2px var(--accent); }
 @media (hover: hover) {
-  .cof a.tl-rev-poster:hover { z-index: 1; color: var(--ink); }
-  a.tl-rev-poster:hover img { opacity: 1; }
+  .cof a.tl-story-poster:hover { color: var(--ink); }
+  a.tl-story-poster:hover img { opacity: 1; }
 }
-.tl-rev-axis { position: relative; height: 22px; border-top: 1px solid var(--line-strong); }
-.tl-rev-axis span { position: absolute; top: 4px; transform: translateX(-50%); color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
-.tl-rev-strip { display: flex; gap: var(--space-2); margin: var(--space-3) 0; padding: 2px 2px 4px; overflow-x: auto; scrollbar-width: none; }
-.cof .tl-rev-strip .tl-rev-poster { position: static; flex: 0 0 46px; }
-
-/* ---------- Franchises ---------- */
-.tl-fr-grid { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: var(--space-5) var(--gap); margin-top: var(--space-4); }
-.cof .tl-fr-name { margin-bottom: var(--space-1); overflow: hidden; font-size: var(--text-sm); font-weight: 500; line-height: 1.4; text-overflow: ellipsis; white-space: nowrap; }
-.tl-fr svg { display: block; overflow: visible; }
-.tl-fr-line { fill: none; stroke: var(--secondary); stroke-opacity: 0.5; stroke-width: 1.4; }
-.tl-fr-dot { fill: var(--secondary); }
-.tl-fr-dot.first { fill: var(--accent); stroke: var(--paper); stroke-width: 1.5; }
-.tl-fr-dot.comeback { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
+.tl-story svg { display: block; overflow: visible; }
+.tl-story-line { fill: none; stroke: var(--secondary); stroke-opacity: 0.55; stroke-width: 1.4; stroke-linejoin: round; }
+.tl-story-dot { fill: var(--secondary); }
+.tl-story-dot.first { fill: var(--accent); stroke: var(--paper); stroke-width: 1.5; }
+.tl-story-dot.comeback { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
 [data-href] { cursor: pointer; }
-@media (hover: hover) { .tl-fr-dot:hover { stroke: var(--ink); stroke-width: 2; } }
+@media (hover: hover) { .tl-story-dot:hover { stroke: var(--ink); stroke-width: 2; } }
+.tl-stories.one .tl-story-col + .tl-story-col { margin-top: var(--space-6); }
 
 /* ---------- Fame: the canon against all films, and fame against rating ---------- */
 .tl-div.up { fill: var(--accent); fill-opacity: 0.85; }
@@ -256,37 +249,38 @@
 .tl-reach-dot.famous { fill: var(--accent); fill-opacity: 0.85; }
 @media (hover: hover) { .tl-reach-dot:hover { fill-opacity: 1; stroke: var(--ink); } }
 .tl-reach-ring { fill: none; stroke: var(--ink); stroke-width: 1.5; }
-.tl-reach-n { fill: var(--ink); font-size: 11px; font-weight: 600; paint-order: stroke; stroke: var(--paper); stroke-width: 3px; }
-.tl-reach-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 180px), 1fr)); gap: var(--space-3); margin-top: var(--space-4); }
-.cof .tl-reach-card {
-  display: flex;
-  gap: var(--space-3);
-  align-items: center;
-  min-width: 0;
-  padding: var(--space-2);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  color: var(--secondary);
-  font-size: var(--text-xs);
-  line-height: 1.35;
-  text-decoration: none;
-  transition: border-color var(--duration), background-color var(--duration), color var(--duration);
-}
-@media (hover: hover) { .cof a.tl-reach-card:hover { border-color: var(--line-strong); background: var(--surface); color: var(--ink); } }
-.tl-reach-card img { flex: 0 0 34px; width: 34px; }
-.tl-reach-card b { color: var(--accent); font-weight: 600; }
-.tl-reach-card small { display: block; margin-top: 2px; color: var(--muted); font-size: 12px; }
+.tl-reach-n { fill: var(--ink); font-size: 11.5px; font-weight: 500; font-style: italic; paint-order: stroke; stroke: var(--paper); stroke-width: 3px; }
 
-/* ---------- Signature nightmares ---------- */
-.tl-sigs { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); gap: var(--space-3); margin-top: var(--space-4); }
-.tl-sig { display: flex; gap: var(--space-4); padding: var(--space-4); border-radius: var(--radius); background: var(--surface); }
-.cof .tl-sig-poster { flex: 0 0 56px; text-decoration: none; }
-.tl-sig-poster img { width: 56px; }
-.tl-sig-body { display: grid; align-content: start; gap: 2px; min-width: 0; }
-.tl-sig-country { font-size: var(--text-md); font-weight: 600; line-height: 1.3; }
-.tl-sig-ratio { color: var(--accent); font-size: var(--text-xl); font-weight: 500; line-height: 1.1; letter-spacing: -0.016em; font-variant-numeric: tabular-nums; }
-.tl-sig-theme { color: var(--secondary); font-size: var(--text-xs); font-weight: 600; line-height: 1.4; }
-.tl-sig-share, .tl-sig-film { color: var(--muted); font-size: 12px; line-height: 1.4; }
+/* ---------- Horror by country and decade: a heatmap ---------- */
+.tl-heat { display: grid; grid-template-columns: var(--label) repeat(var(--n), minmax(0, 1fr)); gap: 2px; margin-top: var(--space-4); font-size: 12px; font-variant-numeric: tabular-nums; }
+.tl-heat-year { padding-bottom: 4px; color: var(--muted); text-align: center; }
+.tl-heat-name { overflow: hidden; color: var(--secondary); line-height: 24px; text-overflow: ellipsis; white-space: nowrap; }
+.tl-heat-cell { height: 24px; border-radius: 2px; background: color-mix(in srgb, var(--accent) var(--level), color-mix(in srgb, var(--ink) 3%, var(--paper))); color: var(--secondary); line-height: 24px; text-align: center; }
+.tl-heat-cell.dark { color: var(--paper); }
+.tl-heat :is(.tl-heat-cell, .tl-heat-year).thin { opacity: 0.55; }
+@media (hover: hover) { .tl-heat-cell:hover { outline: 1.5px solid var(--ink); outline-offset: -1px; } }
+@media (max-width: 600px) { .tl-heat { font-size: 11px; } .tl-heat-cell, .tl-heat-name { height: 22px; line-height: 22px; } }
+
+/* ---------- Signature nightmares: a ranked list ---------- */
+.tl-sigs { display: grid; margin-top: var(--space-4); border-top: 1px solid var(--line-strong); }
+.tl-sig { display: grid; grid-template-columns: 18px 7.5rem minmax(0, 1fr) minmax(80px, 1.1fr) 2.6rem 6rem; gap: var(--space-3); align-items: center; padding: 3px 0; border-bottom: 1px solid var(--line); font-size: var(--text-xs); line-height: 1.35; }
+.tl-sig-head { padding: var(--space-2) 0; color: var(--muted); font-size: 12px; }
+.cof .tl-sig-poster { display: block; width: 18px; text-decoration: none; }
+.tl-sig-poster img { width: 18px; }
+.tl-sig-country { color: var(--ink); font-weight: 600; }
+.tl-sig-theme { color: var(--secondary); }
+.tl-sig-bar { height: 8px; border-radius: 2px; background: color-mix(in srgb, var(--ink) 6%, transparent); }
+.tl-sig-bar i { display: block; height: 100%; border-radius: 2px; background: var(--accent); }
+.tl-sig-ratio { color: var(--accent); font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
+.tl-sig-share { color: var(--muted); font-variant-numeric: tabular-nums; }
+@media (hover: hover) { .tl-sig:not(.tl-sig-head):hover { background: var(--surface); } }
+@media (max-width: 600px) {
+  .tl-sig { grid-template-columns: 18px minmax(0, 1fr) 2.6rem; row-gap: 0; }
+  .tl-sig-poster { grid-row: span 2; }
+  .tl-sig-theme { grid-column: 2; grid-row: 2; }
+  .tl-sig-bar, .tl-sig-share, .tl-sig-head { display: none; }
+  .tl-sig-ratio { grid-column: 3; grid-row: 1 / span 2; }
+}
 
 /* ---------- Keyword ridgeline ---------- */
 .tl-ridge-area { fill: color-mix(in srgb, var(--accent) 16%, var(--paper)); }
@@ -369,7 +363,6 @@
   .tl-sm.small .tl-sm-head { min-height: 2.9em; }
   .cof .tl-subjects-head { display: block; }
   .cof .tl-subjects-head p { margin-top: var(--space-1); }
-  .tl-strip { grid-auto-columns: 76px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; -webkit-mask-image: linear-gradient(to right, #000 82%, transparent); mask-image: linear-gradient(to right, #000 82%, transparent); }
   .tl-step { grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
   .tl-example { grid-template-columns: minmax(0, 1fr); }
   .tl-example-arrow { justify-self: center; transform: rotate(90deg); }

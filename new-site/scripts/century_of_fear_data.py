@@ -75,6 +75,25 @@ def main():
         finally:
             con.close()
 
+    # TMDB ratings for the remade stories, drawn under their posters like the franchises', and
+    # for each theme's poster films, so a category can show its most-rated film of a decade.
+    stories = [
+        film
+        for row in data["revivals"]["lineages"]
+        for film in [row, *row["returns"]]
+    ] + [film for band in data["bands"] for film in band.get("posters", [])]
+    con = sqlite3.connect(f"file:{catalogue}?mode=ro", uri=True)
+    try:
+        for film in stories:
+            rating = con.execute(
+                "SELECT tmdb_vote_average, tmdb_vote_count FROM movies WHERE movie_id = ? OR tmdb_id = ?",
+                (film["id"], tmdb.get(film["id"])),
+            ).fetchone()
+            if rating and rating[0] and rating[1]:
+                film["tmdb"], film["votes"] = round(rating[0], 1), rating[1]
+    finally:
+        con.close()
+
     missing = sorted(ids - tmdb.keys())
     data["tmdb"] = dict(sorted(tmdb.items()))
     OUT.parent.mkdir(parents=True, exist_ok=True)

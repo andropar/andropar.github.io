@@ -18,7 +18,7 @@ import '../styles/century-of-fear.css';
       .then(data => mountEssay(root, data))
       .catch(error => {
         console.error('A century of fear: could not load the chart data', error);
-        root.querySelectorAll('[data-tl-chart="families"], [data-tl-chart="movers"]').forEach(node => {
+        root.querySelectorAll('[data-tl-chart="volume"], [data-tl-chart="families"]').forEach(node => {
           node.innerHTML = '<p class="cof-error">The charts could not be loaded. Try reloading the page.</p>';
         });
       });
