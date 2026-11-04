@@ -192,11 +192,12 @@ top at 5:2.
 `.entry`: `.entry-meta` (date) in the 96px meta column beside `.entry-title` and `.entry-text`,
 separated by hairlines. In `.entries--cols` the date sits above the title and rows have no rules.
 
-### Role skills
+### Tools line
 
-There is no separate skills section. Each role ends with `.entry-tags`: a muted 12px line of what the
-role involved (methods, tools), taken from the CV, so every skill sits next to the work it came from.
-Degrees follow the roles under a `.panel-sub` "Education" label.
+There is no skills section and no per-role skill list. Experience & education ends with
+`.panel-tools`: one muted "Tools" label and a single row of tool names from the CV. What each role
+involved is in its description; the full CV is linked from the section header. Degrees follow the
+roles under a `.panel-sub` "Education" label.
 
 ### Timeline
 

@@ -105,13 +105,15 @@ const olderPublications = [
   { year: '2021', title: 'Preferred stimuli for individual voxels in the human visual system', authors: 'Roth, Seeliger, Schmid & Hebart', venue: 'Cosyne poster', href: 'https://jov.arvojournals.org/article.aspx?articleid=2777378' },
 ];
 const roles = [
-  { span: [2022.33, null], date: 'May 2022–present', title: 'PhD Researcher · Computational Cognitive Neuroscience', short: 'PhD · MPI CBS', tags: ['PyTorch', 'fMRI analysis', 'Model evaluation', 'Experimental design', 'GPU pipelines', 'SLURM / HPC', 'AWS', 'Hugging Face', 'Supervising students'], organization: 'Max Planck Institute for Human Cognitive and Brain Sciences & University of Giessen', description: 'Independent research on vision models and human brain activity, with GPU-based data pipelines, fMRI experiments, and public research software.' },
-  { span: [2021.42, 2022.33], date: 'Jun 2021–May 2022', title: 'Research Scientist · Machine Learning in Medicine', short: 'ScaDS.AI', tags: ['Deep learning', 'Medical imaging', 'Image segmentation', 'Clinical prediction', 'Uncertainty estimation'], organization: 'ScaDS.AI Dresden/Leipzig', description: 'Deep-learning models for brain-tumor segmentation and predictive models for clinical data, including mortality prediction and uncertainty estimation.' },
-  { span: [2019.83, 2021.33], date: 'Nov 2019–May 2021', title: 'Data Scientist / ML Engineer · Working student', short: 'CHECK24', tags: ['Computer vision', 'Backend engineering', 'Image retrieval', 'Duplicate detection', 'Data pipelines'], organization: 'CHECK24, Travel Vertical', description: 'Designed and deployed a production computer-vision service for 20 million hotel images. Improved recommendation-data pipelines, reducing update time by over 95%.' },
-  { span: [2020.75, 2021.33], date: 'Oct 2020–May 2021', title: 'Full-Stack Developer · Freelance', short: 'Kimetric · freelance', tags: ['Django', 'Client requirements', 'Deployment', 'Linux hosting'], organization: 'Kimetric UG', description: 'Delivered Django websites for Hebart Lab and the THINGS Initiative, from client requirements to deployment, Linux hosting, and maintenance.' },
-  { span: [2018.75, 2019.67], date: 'Oct 2018–Sep 2019', title: 'Data Scientist · Working student', short: 'Webdata Solutions', tags: ['Product matching', 'Image classification', 'Model evaluation'], organization: 'Webdata Solutions GmbH (now Vistex)', description: 'Developed machine-learning models for product matching and image classification in e-commerce, raising image-based matching accuracy from 12% to 83%.' },
-  { span: [2018.08, 2018.58], date: 'Feb 2018–Aug 2018', title: 'Data Analyst · Working student', short: 'Mercateo', tags: ['AWS', 'Data warehousing', 'Apache NiFi', 'Pentaho'], organization: 'Mercateo Services GmbH & Co. KG', description: 'Data integration, reporting, and testing for an AWS-based data warehouse using Apache NiFi and Pentaho.' },
+  { span: [2022.33, null], date: 'May 2022–present', title: 'PhD Researcher · Computational Cognitive Neuroscience', short: 'PhD · MPI CBS', organization: 'Max Planck Institute for Human Cognitive and Brain Sciences & University of Giessen', description: 'Independent research on vision models and human brain activity, with GPU-based data pipelines, fMRI experiments, and public research software.' },
+  { span: [2021.42, 2022.33], date: 'Jun 2021–May 2022', title: 'Research Scientist · Machine Learning in Medicine', short: 'ScaDS.AI', organization: 'ScaDS.AI Dresden/Leipzig', description: 'Deep-learning models for brain-tumor segmentation and predictive models for clinical data, including mortality prediction and uncertainty estimation.' },
+  { span: [2019.83, 2021.33], date: 'Nov 2019–May 2021', title: 'Data Scientist / ML Engineer · Working student', short: 'CHECK24', organization: 'CHECK24, Travel Vertical', description: 'Designed and deployed a production computer-vision service for 20 million hotel images. Improved recommendation-data pipelines, reducing update time by over 95%.' },
+  { span: [2020.75, 2021.33], date: 'Oct 2020–May 2021', title: 'Full-Stack Developer · Freelance', short: 'Kimetric · freelance', organization: 'Kimetric UG', description: 'Delivered Django websites for Hebart Lab and the THINGS Initiative, from client requirements to deployment, Linux hosting, and maintenance.' },
+  { span: [2018.75, 2019.67], date: 'Oct 2018–Sep 2019', title: 'Data Scientist · Working student', short: 'Webdata Solutions', organization: 'Webdata Solutions GmbH (now Vistex)', description: 'Developed machine-learning models for product matching and image classification in e-commerce, raising image-based matching accuracy from 12% to 83%.' },
+  { span: [2018.08, 2018.58], date: 'Feb 2018–Aug 2018', title: 'Data Analyst · Working student', short: 'Mercateo', organization: 'Mercateo Services GmbH & Co. KG', description: 'Data integration, reporting, and testing for an AWS-based data warehouse using Apache NiFi and Pentaho.' },
 ];
+// From the CV's skills section: tool names only, once, instead of per-role skill lists.
+const cvTools = ['Python', 'PyTorch', 'scikit-learn', 'SQL', 'FastAPI', 'Django', 'Docker', 'AWS', 'SLURM / HPC'];
 const education = [
   { span: [2022.33, null], date: 'May 2022–present', title: 'Doctoral candidate · Dr. rer. nat.', organization: 'University of Giessen', description: 'Research focus: machine learning and computational neuroscience.' },
   { span: [2017.75, 2021.42], date: '2017–2021', title: 'M.Sc. Computer Science', short: 'M.Sc. · Leipzig', organization: 'Leipzig University · Grade 1.2', description: 'Master’s thesis: generative deep learning for visual processing in the human brain (grade 1.1).' },
@@ -273,7 +275,6 @@ const lifeStories = [
                 <h3 class="entry-title">{role.title}</h3>
                 <p class="entry-text entry-org">{role.organization}</p>
                 <p class="entry-text">{role.description}</p>
-                <p class="entry-tags">{role.tags.join(' · ')}</p>
               </div>
             </li>
           ))}
@@ -291,6 +292,7 @@ const lifeStories = [
             </li>
           ))}
         </ul>
+        <p class="panel-tools"><span>Tools</span>{cvTools.join(' · ')}</p>
       </section>
       <section class="panel panel--life" aria-labelledby="life-teaser-heading">
         <div class="panel-head">
