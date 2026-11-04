@@ -8,7 +8,7 @@ THINGS-fMRI files in ``new-site/.local``, THINGS model features and the CCN 2025
 ``~/Downloads``, and the LAION-fMRI git history), so this only runs on Johannes's machine:
 
     python3 new-site/scripts/card_graphics.py [horrorverse relaion revision laion_fmri thingsvision
-                                               paper_universal paper_sampling paper_coding voice_annotate century
+                                               paper_universal paper_sampling paper_coding voice_annotate century conwell
                                                tool_icons]
 """
 
@@ -728,6 +728,39 @@ def century(w=1200, h=900, data=Path(__file__).resolve().parents[1] / "public/wr
         save_mask(fig, f"century-{layer}")
 
 
+def conwell(w=1200, h=900, metric="cRSA", repo=HOME / "conwell_replication"):
+    """The replication as a forest plot: for each controlled comparison in Conwell et al. (2024)
+    (architecture, task, training data), the original effect beside the LAION-fMRI split-half
+    estimate with its 95% interval. Originals are ink rings; replications are the accent."""
+    import re
+
+    df = pd.read_csv(repo / "reports/laion_fmri_conwell_fig2_4_effects.csv")
+    df = df[(df.split == "splithalf") & (df.metric == metric)]
+    number = r"([+-]?\d*\.\d+)"
+    rows = []
+    for _, row in df.iterrows():
+        original = re.match(number, str(row["conwell"]).strip())
+        replication = re.match(number + r" \[" + number + ", " + number + r"\]", str(row["split-half"]).strip())
+        if original and replication:
+            rows.append((float(original[1]), *map(float, replication.groups())))
+    rows.sort(key=lambda r: r[1])
+    log.info("conwell: %d effects with original and replication estimates", len(rows))
+    values = np.array(rows)
+    span = np.abs(values).max() * 1.15
+    y = np.arange(len(rows))
+    for layer in ("ink", "accent"):
+        fig, ax = canvas(w, h)
+        ax.set_xlim(-span, span)
+        ax.set_ylim(-1, len(rows))
+        if layer == "ink":
+            ax.vlines(0, -0.6, len(rows) - 0.4, color="k", lw=1.2, alpha=0.4)
+            ax.hlines(y, values[:, 2], values[:, 3], color="k", lw=2.4, alpha=0.55, capstyle="round")
+            ax.scatter(values[:, 0], y, s=70, facecolor="none", edgecolor="k", linewidths=2)
+        else:
+            ax.scatter(values[:, 1], y, s=90, color="k", linewidths=0)
+        save_mask(fig, f"conwell-{layer}")
+
+
 def tool_icons(size=128):
     """Square icons for the open-source tools list. Shown at about 30px, so these are schematic
     marks of what each tool does rather than plots of real data: few, thick elements."""
@@ -825,6 +858,7 @@ if __name__ == "__main__":
         "paper_coding",
         "voice_annotate",
         "century",
+        "conwell",
         "tool_icons",
     ]
     for target in targets:

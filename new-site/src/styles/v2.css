@@ -374,6 +374,7 @@ h1:focus { outline: none; }
 .graphic--voice { --ink-mask: url(/v2/graphics/voice-ink.png); --accent-mask: url(/v2/graphics/voice-accent.png); }
 .graphic--thingsvision { --ink-mask: url(/v2/graphics/thingsvision-ink.png); --accent-mask: url(/v2/graphics/thingsvision-accent.png); }
 .graphic--century { --ink-mask: url(/v2/graphics/century-ink.png); --accent-mask: url(/v2/graphics/century-accent.png); }
+.graphic--conwell { --ink-mask: url(/v2/graphics/conwell-ink.png); --accent-mask: url(/v2/graphics/conwell-accent.png); }
 .graphic--paper-universal { --ink-mask: url(/v2/graphics/paper-universal-ink.png); --accent-mask: url(/v2/graphics/paper-universal-accent.png); }
 .graphic--paper-sampling { --ink-mask: url(/v2/graphics/paper-sampling-ink.png); --accent-mask: url(/v2/graphics/paper-sampling-accent.png); }
 .graphic--paper-coding { --ink-mask: url(/v2/graphics/paper-coding-ink.png); --accent-mask: url(/v2/graphics/paper-coding-accent.png); }
@@ -452,9 +453,15 @@ summary::-webkit-details-marker { display: none; }
 /* Sections with figures or charts span the page; short text sections pair up 2:1, swapping sides. */
 .dense.dense--work { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: clamp(4rem, 7vw, 6.5rem) clamp(var(--space-7), 4vw, 4rem); padding-top: clamp(4rem, 7vw, 6.5rem); }
 .dense--work > * { grid-column: 1 / -1; }
-.dense--work > #tools { grid-column: span 8; }
-.dense--work > #writing { grid-column: span 4; }
-#tools .mini--cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+/* Selected work holds four groups: projects, publications, then open-source tools beside writing.
+   Tool rows spread out so the tools column ends level with the writing column. */
+#selected-work > :is(.work-group, .work-pair) + :is(.work-group, .work-pair) { margin-top: clamp(2.5rem, 4vw, 3.5rem); }
+.group-head { display: flex; align-items: baseline; gap: var(--space-2); margin-bottom: var(--space-4); padding-bottom: var(--space-2); border-bottom: 1px solid var(--line); }
+.group-head h3 { color: var(--muted); font-size: var(--text-sm); font-weight: 500; letter-spacing: 0; }
+.group-head .link { margin-left: auto; font-size: var(--text-xs); }
+.work-pair { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: clamp(var(--space-7), 4vw, 4rem); }
+#tools { display: flex; flex-direction: column; }
+#tools .mini--cols { flex: 1; grid-template-columns: repeat(2, minmax(0, 1fr)); align-content: space-between; }
 
 /* Life: the stories as a full-width band, then music, movies and writing in thirds, then the shelves. */
 .dense.dense--life { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: clamp(4rem, 7vw, 6.5rem) clamp(var(--space-7), 4vw, 4rem); padding-top: var(--space-6); }
@@ -471,7 +478,7 @@ summary::-webkit-details-marker { display: none; }
 .items--cols .item { grid-template-columns: 7.5rem minmax(0, 1fr); grid-template-rows: auto auto 1fr; align-content: start; column-gap: var(--space-4); row-gap: 0; }
 .items--cols .item > div:not(.item-media) { display: contents; }
 .items--cols .item-media { grid-row: 1 / span 3; aspect-ratio: 4 / 3; align-self: start; }
-.items--cols .item :is(.venue, h3, .card-detail) { grid-column: 2; }
+.items--cols .item :is(.venue, h3, h4, .card-detail) { grid-column: 2; }
 .items--cols .item .card-detail { align-self: start; }
 .items--cols .item :is(.card-text, .award-note) { grid-column: 1 / -1; }
 .items--cols .item .card-text { margin-top: var(--space-2); }
@@ -507,9 +514,9 @@ summary::-webkit-details-marker { display: none; }
 .items { display: grid; gap: var(--space-5); }
 .item { display: grid; grid-template-columns: 10.5rem minmax(0, 1fr); align-items: start; gap: var(--space-5); }
 .item-media { aspect-ratio: 4 / 3; margin: 0; }
-.item h3 { margin-bottom: 2px; font-size: var(--text-md); font-weight: 600; line-height: 1.3; letter-spacing: -0.01em; }
-.item h3 a { text-decoration: none; transition: color var(--duration); }
-.item h3 a:hover { color: var(--accent); }
+.item :is(h3, h4) { margin-bottom: 2px; font-size: var(--text-md); font-weight: 600; line-height: 1.3; letter-spacing: -0.01em; }
+.item :is(h3, h4) a { text-decoration: none; transition: color var(--duration); }
+.item :is(h3, h4) a:hover { color: var(--accent); }
 .item .meta { margin-bottom: 2px; }
 .item .card-text { font-size: var(--text-sm); }
 .item .card-detail { margin-top: var(--space-1); font-size: var(--text-xs); line-height: 1.5; }
@@ -540,11 +547,11 @@ summary::-webkit-details-marker { display: none; }
 .tile-media { aspect-ratio: 4 / 3; margin-bottom: var(--space-3); }
 .tiles--work .tile { display: grid; grid-template-columns: 8rem minmax(0, 1fr); grid-template-rows: auto 1fr auto; column-gap: var(--space-4); align-content: start; }
 .tiles--work .tile-media { grid-row: 1 / 3; margin-bottom: 0; }
-.tiles--work .tile > :is(h3, .card-text) { grid-column: 2; }
+.tiles--work .tile > :is(h3, h4, .card-text) { grid-column: 2; }
 .tiles--work .tile .item-links { grid-column: 1 / -1; margin-top: var(--space-3); }
 .tile-media--photos { display: grid; place-items: center; padding: var(--space-3); }
 .tile-media--photos img { width: 100%; height: 100%; object-fit: contain; }
-.tile h3 { margin-bottom: var(--space-1); font-size: var(--text-md); font-weight: 600; letter-spacing: -0.01em; }
+.tile :is(h3, h4) { margin-bottom: var(--space-1); font-size: var(--text-md); font-weight: 600; letter-spacing: -0.01em; }
 .stats { display: flex; flex-wrap: wrap; gap: 2px var(--space-3); margin: 0 0 var(--space-2); padding: 0; list-style: none; color: var(--muted); font-size: var(--text-xs); line-height: 1.5; font-variant-numeric: tabular-nums; }
 .stats b { color: var(--ink); font-weight: 600; }
 .tile .card-detail { font-size: var(--text-xs); line-height: 1.5; }
@@ -617,7 +624,8 @@ summary::-webkit-details-marker { display: none; }
   .dense.dense--life { grid-template-columns: minmax(0, 1fr); }
   .dense--life > .panel--third { grid-column: 1 / -1; }
   .stories.stories--band { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6) var(--space-5); }
-  .dense--work > #tools, .dense--work > #writing { grid-column: 1 / -1; }
+  .work-pair { grid-template-columns: minmax(0, 1fr); }
+  #tools .mini--cols { align-content: start; }
   .tiles--work { grid-template-columns: minmax(0, 1fr); }
   .items--cols { grid-template-columns: minmax(0, 1fr); }
   .items--cols .item { grid-template-columns: 10.5rem minmax(0, 1fr); column-gap: var(--space-5); }

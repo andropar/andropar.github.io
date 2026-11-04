@@ -42,16 +42,6 @@ const projects = [
     outcome: 'It\'s live, and we use it every movie night. Its catalogue also became the data behind <a href="/blog/a-century-of-fear">A century of fear</a>, an illustrated history of 19,302 horror films, each labelled by two Claude models and checked against Wikidata.',
   },
   {
-    id: 'voice-annotate',
-    title: 'voice-annotate',
-    summary: 'A macOS app: talk and draw on your screen, then paste the result into any coding agent.',
-    media: { graphic: 'voice', attrs: {}, label: 'The four marks from a voice-annotate demo capture on the frozen screen, each tied to the moment in the narration when it was drawn' },
-    links: [{ label: 'View on GitHub', href: 'https://github.com/andropar/voice-annotate' }],
-    what: 'Explaining a UI problem to a coding agent in text takes longer than fixing it, and a plain screenshot loses the pointing. voice-annotate records what you say while you draw on a frozen screen, then pastes annotated screenshots and a transcript into any agent.',
-    did: 'I built the app: on-device transcription with WhisperKit, a pen that turns strokes into circles, underlines and pins, and a transcript that cites each mark at the word you were saying when you drew it. A walkthrough mode turns a screen recording into a keyframe storyboard.',
-    outcome: 'It\'s open source, runs entirely on the device with no API keys, and has become part of how I work with coding agents.',
-  },
-  {
     id: 'relaion',
     title: 'ReLAION-natural',
     summary: 'Naturalness scores for every image in ReLAION-2B, plus CLIP embeddings for the natural photos.',
@@ -82,6 +72,16 @@ const projects = [
     outcome: 'It launched at VSS in May 2026, with prizes for the best replication and the best generalization. Reports are due in February 2027, and the synthesis paper follows later that year.',
   },
   {
+    id: 'conwell',
+    title: 'Conwell replication',
+    summary: 'A replication on LAION-fMRI of a large study on which design choices make vision models brain-like.',
+    media: { graphic: 'conwell', attrs: {}, label: 'For each controlled comparison in the original study, its effect as a ring beside the LAION-fMRI replication estimate with its interval' },
+    links: [{ label: 'View on GitHub', href: 'https://github.com/andropar/conwell_replication' }, { label: 'Original study', href: 'https://doi.org/10.1038/s41467-024-53972-1' }],
+    what: 'Conwell et al. (2024) compared a large survey of vision models against brain responses in NSD to ask which design choices, from architecture to training task and training data, make a model more brain-like. The replication asks whether those controlled comparisons hold on LAION-fMRI\'s much broader set of images.',
+    did: 'I re-ran the study\'s own feature-extraction protocol on 118 models and five LAION-fMRI participants, reproduced its controlled comparisons of architecture, training task and training data, and added tests on out-of-distribution images.',
+    outcome: 'It is the benchmark replication for the re:vision consortium paper. Some effects hold, like the advantage of contrastive self-supervised training; others shrink or flip.',
+  },
+  {
     id: 'thingsvision',
     title: 'thingsvision',
     summary: 'An open-source library for extracting and comparing features from vision models.',
@@ -93,23 +93,17 @@ const projects = [
   },
 ];
 const tools = [
+  { repo: 'voice-annotate', description: 'A macOS app: talk and draw on your screen, then paste the result into any coding agent.' },
   { repo: 'slurmboard', description: 'A lightweight dashboard for Slurm jobs, logs and resource use on HPC clusters.' },
   { repo: 'fmriqc', description: 'An interactive QA and review tool for fMRI data snapshots.' },
   { repo: 'cvmanova_python', description: 'Cross-validated MANOVA for multivariate fMRI pattern analysis.' },
   { repo: 'pysearchlight', description: 'Customisable searchlight analysis for Python.' },
   { repo: 'how-to-sample', description: 'Code and experiments for the CCN 2025 paper on sampling natural images.' },
-  { repo: 'conwell_replication', description: 'A LAION-fMRI replication of a 118-model brain-alignment study.' },
 ];
 const publications = [
   { year: '2026', title: 'Characterizing Universal Object Representations Across Vision Models', authors: 'Mahner*, Roth* et al.', venue: 'NeurIPS 2026 (accepted)', graphic: 'universal', graphicAlt: 'Dimensions of object-similarity structure in ten vision models, one row per model, placed by how consistently each recurs in the others; one shared dimension is traced across all models', href: 'https://arxiv.org/abs/2605.13675', note: 'Shared first author', summary: 'We compared the object similarity structure of 162 vision models to distinguish universal from model-specific dimensions, and related that structure to image properties, neural activity, and human judgments.' },
   { year: '2025', title: 'How to sample the world for understanding the visual system', authors: 'Roth & Hebart', venue: 'CCN', graphic: 'sampling', graphicAlt: 'Clusters of natural photographs in a t-SNE map, with the clusters that THINGS and NSD barely cover highlighted', href: 'https://openreview.net/forum?id=T9k6KkZoca', note: 'Oral', summary: 'How does the choice of images affect what we can learn about the visual brain? We compared image-sampling strategies using simulations and fMRI data to study dataset coverage and model generalization.' },
   { year: '2025', title: 'Ten principles for reliable, efficient, and adaptable coding in psychology and cognitive neuroscience', authors: 'Roth*, Duan* et al.', venue: 'Communications Psychology', graphic: 'coding', graphicAlt: 'Every commit to the LAION-fMRI package in order, lines added above the axis and deleted below, with commits that touched the tests highlighted', href: 'https://doi.org/10.1038/s44271-025-00236-3', award: 'CMBB Replication Award', summary: 'A practical guide to research software, covering project organization, testing, documentation, version control, and collaboration.' },
-];
-const olderPublications = [
-  { year: '2025', title: 'Fine-grained image and category information in ventral visual pathway', authors: 'Badwal, Bergmann, Roth et al.', venue: 'J Neuroscience', href: 'https://doi.org/10.1523/JNEUROSCI.0936-24.2024' },
-  { year: '2023', title: 'High stimulus presentation rates for fMRI', authors: 'Roth, Miyawaki & Hebart', venue: 'VSS poster', href: 'https://jov.arvojournals.org/article.aspx?articleid=2791453' },
-  { year: '2022', title: 'Multi-plane UNet++ Ensemble for Glioblastoma Segmentation', authors: 'Roth et al.', venue: 'MICCAI BrainLes 2021 proceedings', href: 'https://doi.org/10.1007/978-3-031-08999-2_23' },
-  { year: '2021', title: 'Preferred stimuli for individual voxels in the human visual system', authors: 'Roth, Seeliger, Schmid & Hebart', venue: 'Cosyne poster', href: 'https://jov.arvojournals.org/article.aspx?articleid=2777378' },
 ];
 const roles = [
   { span: [2022.33, null], date: 'May 2022–present', title: 'PhD Researcher · Computational Cognitive Neuroscience', short: 'PhD · MPI CBS', organization: 'Max Planck Institute for Human Cognitive and Brain Sciences & University of Giessen', description: 'Independent research on vision models and human brain activity, with GPU-based data pipelines, fMRI experiments, and public research software.' },
@@ -167,100 +161,93 @@ const lifeStories = [
       <section class="panel panel--band" id="selected-work" aria-labelledby="work-heading">
         <div class="panel-head">
           <h2 id="work-heading">Selected work</h2>
-          <a class="link" href="https://github.com/andropar" target="_blank" rel="noopener">GitHub</a>
         </div>
-        <div class="tiles tiles--work">
-          {projects.map(project => (
-            <article class="card tile">
-              {project.media.photos
-                ? <div class="frame tile-media tile-media--photos"><img src={project.media.photos} alt={project.media.label} width="1240" height="712" loading="lazy" decoding="async" /></div>
-                : <div class={`frame tile-media graphic graphic--${project.media.graphic}`} {...project.media.attrs} role="img" aria-label={project.media.label}><span class="graphic-ink"></span><span class="graphic-accent"></span></div>}
-              <h3>{project.title}</h3>
-              <p class="card-text">{project.summary}</p>
-              <div class="item-links">
-                <a class="link stretched" href={project.links[0].href} target="_blank" rel="noopener">{project.links[0].label}</a>
-                <button class="link more-button" type="button" data-dialog={`project-${project.id}`} aria-haspopup="dialog">More</button>
-              </div>
-            </article>
-          ))}
+        <section class="work-group" id="projects" aria-labelledby="projects-heading">
+          <div class="group-head">
+            <h3 id="projects-heading">Projects</h3>
+            <a class="link" href="https://github.com/andropar" target="_blank" rel="noopener">GitHub</a>
+          </div>
+          <div class="tiles tiles--work">
+            {projects.map(project => (
+              <article class="card tile">
+                {project.media.photos
+                  ? <div class="frame tile-media tile-media--photos"><img src={project.media.photos} alt={project.media.label} width="1240" height="712" loading="lazy" decoding="async" /></div>
+                  : <div class={`frame tile-media graphic graphic--${project.media.graphic}`} {...project.media.attrs} role="img" aria-label={project.media.label}><span class="graphic-ink"></span><span class="graphic-accent"></span></div>}
+                <h4>{project.title}</h4>
+                <p class="card-text">{project.summary}</p>
+                <div class="item-links">
+                  <a class="link stretched" href={project.links[0].href} target="_blank" rel="noopener">{project.links[0].label}</a>
+                  <button class="link more-button" type="button" data-dialog={`project-${project.id}`} aria-haspopup="dialog">More</button>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+        <section class="work-group" id="research" aria-labelledby="research-heading">
+          <div class="group-head">
+            <h3 id="research-heading">Publications</h3>
+            <a class="link" href="https://scholar.google.com/citations?user=U3Z3J2gAAAAJ" target="_blank" rel="noopener">Google Scholar</a>
+          </div>
+          <div class="items items--cols">
+            {publications.map(paper => (
+              <article class="card item">
+                <div class={`frame item-media graphic graphic--paper-${paper.graphic}`} role="img" aria-label={paper.graphicAlt}><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
+                <div>
+                  <p class="venue"><b>{paper.venue.replace(' (accepted)', '')}</b>{!paper.venue.includes(paper.year) && ` ${paper.year}`}{paper.note && <> · {paper.note}</>}</p>
+                  <h4><a class="stretched" href={paper.href} target="_blank" rel="noopener">{paper.title}</a></h4>
+                  <p class="card-detail">{paper.authors}</p>
+                  <p class="card-text">{paper.summary}</p>
+                  {paper.award && <p class="award-note"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M7 3h10v6a5 5 0 0 1-10 0V3ZM7 5H4v2a4 4 0 0 0 4 4m9-6h3v2a4 4 0 0 1-4 4M12 14v6m-4 1h8" /></svg>{paper.award}</p>}
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+        <div class="work-pair">
+          <section class="work-group" id="tools" aria-labelledby="tools-heading">
+            <div class="group-head">
+              <h3 id="tools-heading">Open-source tools</h3>
+              <a class="link" href="https://github.com/andropar" target="_blank" rel="noopener">GitHub</a>
+            </div>
+            <ul class="mini mini--cols mini--icons">
+              {tools.map(tool => (
+                <li>
+                  <span class="frame tool-icon graphic" aria-hidden="true" style={`--ink-mask: url(/v2/graphics/tool-${tool.repo}-ink.png); --accent-mask: url(/v2/graphics/tool-${tool.repo}-accent.png)`}><span class="graphic-ink"></span><span class="graphic-accent"></span></span>
+                  <div>
+                    <a class="link" href={`https://github.com/andropar/${tool.repo}`} target="_blank" rel="noopener">{tool.repo}</a>
+                    <p>{tool.description}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+          <section class="work-group" id="writing" aria-labelledby="writing-heading">
+            <div class="group-head">
+              <h3 id="writing-heading">Writing</h3>
+              <a class="link" href="/blog">All writing</a>
+            </div>
+            <ul class="posts">
+              {featuredPosts.map(post => {
+                const thumb = postThumbs[post.slug];
+                return (
+                  <li class="post">
+                    {thumb?.graphic && <span class={`frame post-thumb graphic graphic--${thumb.graphic}`} aria-hidden="true"><span class="graphic-ink"></span><span class="graphic-accent"></span></span>}
+                    {thumb?.image && <span class="frame post-thumb post-thumb--cover"><Image src={thumb.image} alt="" widths={[96, 192]} sizes="3rem" width={192} format="webp" loading="lazy" /></span>}
+                    <div>
+                      <time class="entry-meta" datetime={post.data.date.toISOString()}>{dateLabel(post.data.date)}</time>
+                      <h4 class="entry-title"><a class="stretched" {...postLinkProps(post)}>{post.data.title}</a></h4>
+                      <p class="entry-text">{post.data.description}</p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
         </div>
       </section>
     </div>
 
     <div class="dense dense--work">
-      <section class="panel" id="research" aria-labelledby="research-heading">
-        <div class="panel-head">
-          <h2 id="research-heading">Research & publications</h2>
-          <span class="count">{publications.length + olderPublications.length}</span>
-          <a class="link" href="https://scholar.google.com/citations?user=U3Z3J2gAAAAJ" target="_blank" rel="noopener">Google Scholar</a>
-        </div>
-        <p class="panel-lede">Mostly vision models and the visual brain, plus some medical imaging and research software.</p>
-        <div class="items items--cols">
-          {publications.map(paper => (
-            <article class="card item">
-              <div class={`frame item-media graphic graphic--paper-${paper.graphic}`} role="img" aria-label={paper.graphicAlt}><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
-              <div>
-                <p class="venue"><b>{paper.venue.replace(' (accepted)', '')}</b>{!paper.venue.includes(paper.year) && ` ${paper.year}`}{paper.note && <> · {paper.note}</>}</p>
-                <h3><a class="stretched" href={paper.href} target="_blank" rel="noopener">{paper.title}</a></h3>
-                <p class="card-detail">{paper.authors}</p>
-                <p class="card-text">{paper.summary}</p>
-                {paper.award && <p class="award-note"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M7 3h10v6a5 5 0 0 1-10 0V3ZM7 5H4v2a4 4 0 0 0 4 4m9-6h3v2a4 4 0 0 1-4 4M12 14v6m-4 1h8" /></svg>{paper.award}</p>}
-              </div>
-            </article>
-          ))}
-        </div>
-        <ul class="entries entries--cols">
-          {olderPublications.map(paper => (
-            <li class="entry">
-              <span class="entry-meta">{paper.year}</span>
-              <div>
-                <h3 class="entry-title"><a href={paper.href} target="_blank" rel="noopener">{paper.title}</a></h3>
-                <p class="entry-text">{paper.authors} · {paper.venue}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </section>
-      <section class="panel" id="tools" aria-labelledby="tools-heading">
-        <div class="panel-head">
-          <h2 id="tools-heading">Open-source tools</h2>
-          <span class="count">{tools.length}</span>
-          <a class="link" href="https://github.com/andropar" target="_blank" rel="noopener">GitHub</a>
-        </div>
-        <ul class="mini mini--cols mini--icons">
-          {tools.map(tool => (
-            <li>
-              <span class="frame tool-icon graphic" aria-hidden="true" style={`--ink-mask: url(/v2/graphics/tool-${tool.repo}-ink.png); --accent-mask: url(/v2/graphics/tool-${tool.repo}-accent.png)`}><span class="graphic-ink"></span><span class="graphic-accent"></span></span>
-              <div>
-                <a class="link" href={`https://github.com/andropar/${tool.repo}`} target="_blank" rel="noopener">{tool.repo}</a>
-                <p>{tool.description}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </section>
-      <section class="panel" id="writing" aria-labelledby="writing-heading">
-        <div class="panel-head">
-          <h2 id="writing-heading">Writing</h2>
-          <a class="link" href="/blog">All writing</a>
-        </div>
-        <ul class="posts">
-          {featuredPosts.map(post => {
-            const thumb = postThumbs[post.slug];
-            return (
-              <li class="post">
-                {thumb?.graphic && <span class={`frame post-thumb graphic graphic--${thumb.graphic}`} aria-hidden="true"><span class="graphic-ink"></span><span class="graphic-accent"></span></span>}
-                {thumb?.image && <span class="frame post-thumb post-thumb--cover"><Image src={thumb.image} alt="" widths={[96, 192]} sizes="3rem" width={192} format="webp" loading="lazy" /></span>}
-                <div>
-                  <time class="entry-meta" datetime={post.data.date.toISOString()}>{dateLabel(post.data.date)}</time>
-                  <h3 class="entry-title"><a class="stretched" {...postLinkProps(post)}>{post.data.title}</a></h3>
-                  <p class="entry-text">{post.data.description}</p>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-      </section>
       <section class="panel" id="experience" aria-labelledby="experience-heading">
         <div class="panel-head">
           <h2 id="experience-heading">Experience & education</h2>

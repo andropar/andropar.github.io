@@ -101,11 +101,12 @@ the centered 920px column. `body` clips horizontal overflow.
 - **Hero:** `minmax(0, 1fr) | minmax(14rem, 27rem)` with a 44px gap. The copy is vertically centered;
   the cut-out portrait is bottom-aligned so it stands on the first panel's rule. The hero gets its
   height from spacing between its parts (larger above 860px), never from larger parts.
-- **Work view:** a full-width Selected work band (`.work-band`, six `.tiles--work` tiles, three across, each an 8rem
-  thumbnail beside its title and one line, with the links below both), then
-  `.dense--work`, a 12-column grid. Sections with figures or charts span all 12 columns (Research,
-  Experience & education, Life outside work); the two short text sections pair up 8 + 4: Open-source
-  tools | Writing.
+- **Work view:** one full-width Selected work band (`.work-band`) with four groups, each under a
+  small `.group-head` (muted label, link on the right): *Projects* (six `.tiles--work` tiles, three
+  across, an 8rem thumbnail beside title and one line, links below), *Publications* (three
+  `.items--cols` papers), then a `.work-pair` of *Open-source tools* (2fr, rows spread so the column
+  ends level) beside *Writing* (1fr, the latest two posts). Then `.dense--work`, a 12-column grid
+  with Experience & education and Life outside work at full width.
 - **Life view:** `.dense--life`, also 12 columns: A bit about me as a four-column photo band, then
   Music, Horror movie night and Writing as three `.panel--third`s, then On my shelves full width.
 - **Inside full-width sections** content sits in its own columns: papers in three (`.items--cols`),
@@ -214,8 +215,7 @@ axis with year ticks. Bars are 38% ink, the current role `--accent-bright`, degr
 `.frame` is the only media container: 8px radius, `--surface` background, `overflow: hidden`.
 
 Tiles and papers use figures drawn from each project's real data instead of photos or logos: hex
-halftone dots of the Horrorverse atlas, the four real strokes of the voice-annotate demo capture tied
-to the narration's timeline, a colour contact sheet of ReLAION photos (the one real-photo
+halftone dots of the Horrorverse atlas, the Conwell replication as a forest plot of original against replicated effects, a colour contact sheet of ReLAION photos (the one real-photo
 tile, `relaion-photos.webp`), a LAION-fMRI brain slice with selective regions, the re:vision model
 scores as fine bars, a pooled thingsvision similarity matrix, and per-paper figures. Most are two
 alpha masks in `public/v2/graphics/` (`<name>-ink.png`, `<name>-accent.png`) painted through CSS
