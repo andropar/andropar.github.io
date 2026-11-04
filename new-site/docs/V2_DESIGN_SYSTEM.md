@@ -101,7 +101,7 @@ the centered 920px column. `body` clips horizontal overflow.
 - **Hero:** `minmax(0, 1fr) | minmax(14rem, 27rem)` with a 44px gap. The copy is vertically centered;
   the cut-out portrait is bottom-aligned so it stands on the first panel's rule. The hero gets its
   height from spacing between its parts (larger above 860px), never from larger parts.
-- **Work view:** a full-width Selected work band (`.work-band`, five `.tiles--work` tiles), then
+- **Work view:** a full-width Selected work band (`.work-band`, six `.tiles--work` tiles, three across with 16:10 figures), then
   `.dense--work`, a 12-column grid. Sections with figures or charts span all 12 columns (Research,
   Experience, Life outside work); short text sections pair up 8 + 4, swapping sides: Open-source tools
   | Writing, then Education | Expertise.
@@ -113,7 +113,6 @@ the centered 920px column. `body` clips horizontal overflow.
 
 | Breakpoint | Changes |
 | --- | --- |
-| ≤ 1100px | Work tiles go three across |
 | ≤ 1000px | The article contents list is hidden |
 | ≤ 960px | Both 12-column grids become one column; papers become thumbnail rows; column lists drop to two; Life stories 2×2 |
 | ≤ 860px | Hero portrait column narrows |
@@ -164,7 +163,7 @@ optional muted count, an optional right-aligned `.link`), an optional `.panel-le
 
 `.tile` (Selected work) is a flex column: a 4:3 tinted `.frame` with the graphic → 15px/600 `h3` →
 `.card-text` → 12px `.card-detail` → `.item-links`, pushed to the bottom so links line up across the
-row. Tiles carry no stats lines or labels; all five projects look the same, whoever led them.
+row. Tiles carry no stats lines or labels; all six projects look the same, whoever led them.
 
 ### Tool icons
 
@@ -194,7 +193,8 @@ axis with year ticks. Bars are 38% ink, the current role `--accent-bright`, degr
 `.frame` is the only media container: 8px radius, `--surface` background, `overflow: hidden`.
 
 Tiles and papers use figures drawn from each project's real data instead of photos or logos: hex
-halftone dots of the Horrorverse atlas, a colour contact sheet of ReLAION photos (the one real-photo
+halftone dots of the Horrorverse atlas, the four real strokes of the voice-annotate demo capture tied
+to the narration's timeline, a colour contact sheet of ReLAION photos (the one real-photo
 tile, `relaion-photos.webp`), a LAION-fMRI brain slice with selective regions, the re:vision model
 scores as fine bars, a pooled thingsvision similarity matrix, and per-paper figures. Most are two
 alpha masks in `public/v2/graphics/` (`<name>-ink.png`, `<name>-accent.png`) painted through CSS

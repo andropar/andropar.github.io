@@ -8,7 +8,8 @@ THINGS-fMRI files in ``new-site/.local``, THINGS model features and the CCN 2025
 ``~/Downloads``, and the LAION-fMRI git history), so this only runs on Johannes's machine:
 
     python3 new-site/scripts/card_graphics.py [horrorverse relaion revision laion_fmri thingsvision
-                                               paper_universal paper_sampling paper_coding tool_icons]
+                                               paper_universal paper_sampling paper_coding voice_annotate
+                                               tool_icons]
 """
 
 import json
@@ -647,6 +648,53 @@ def paper_coding(w=1200, h=900, repo=HOME / "LAION-fMRI"):
         save_mask(fig, f"paper-coding-{name}")
 
 
+def voice_annotate(w=1200, h=900, demo=HOME / "voice-annotate/docs/demo"):
+    """The demo capture from the voice-annotate README: its four real strokes on the frozen frame,
+    the narration as a word track on the capture's clock, and each mark tied to the moment it was
+    drawn. Words are spaced evenly (the demo keeps no word timestamps); their heights are word
+    lengths. The accent is mark #1, the circled 312% bug."""
+    from matplotlib.patches import FancyArrowPatch, FancyBboxPatch, Rectangle
+
+    marks = json.loads((demo / "marks.json").read_text())
+    words = (demo / "narration.txt").read_text().split()
+    frame_w, frame_h, duration = 1568, 1018, 19.0
+    track_y = 1230
+    t_to_x = lambda t: t / duration * frame_w
+
+    def stroke(ax, mark, lw):
+        pts = np.asarray(mark["points"], float)
+        if mark["tool"] == "rectangle":
+            (x0, y0), (x1, y1) = pts
+            ax.add_patch(Rectangle((x0, y0), x1 - x0, y1 - y0, fill=False, ec="k", lw=lw, joinstyle="round"))
+        elif mark["tool"] == "arrow":
+            ax.add_patch(FancyArrowPatch(pts[0], pts[1], arrowstyle="-|>,head_length=9,head_width=5", color="k", lw=lw, mutation_scale=2.2))
+        else:
+            ax.plot(pts[:, 0], pts[:, 1], color="k", lw=lw, solid_capstyle="round", solid_joinstyle="round")
+        return pts.mean(axis=0)
+
+    def link(ax, mark, centre, lw, alpha):
+        x = t_to_x(mark["start"])
+        ax.plot([x, centre[0]], [track_y - 40, centre[1]], color="k", lw=lw, alpha=alpha, linestyle=(0, (1.5, 2.5)), dash_capstyle="round")
+        ax.add_patch(plt.Circle((x, track_y - 40), 14, color="k"))
+
+    for layer in ("ink", "accent"):
+        fig, ax = canvas(w, h)
+        ax.set_xlim(-160, frame_w + 160)
+        ax.set_ylim(1360, -60)
+        if layer == "ink":
+            ax.add_patch(FancyBboxPatch((0, 0), frame_w, frame_h, boxstyle="round,pad=0,rounding_size=28", fill=False, ec="k", lw=1.4, alpha=0.45))
+            for i, word in enumerate(words):
+                x = t_to_x(0.4 + i / (len(words) - 1) * (duration - 0.8))
+                ax.vlines(x, track_y, track_y + 14 + 9 * len(word.strip(".,?!")), color="k", lw=2.2, alpha=0.6, capstyle="round")
+            ax.hlines(track_y, 0, frame_w, color="k", lw=1, alpha=0.35)
+        for i, mark in enumerate(marks):
+            if (i == 0) != (layer == "accent"):
+                continue
+            centre = stroke(ax, mark, 3.2 if i else 3.8)
+            link(ax, mark, centre, 1.4, 0.9 if i == 0 else 0.45)
+        save_mask(fig, f"voice-{layer}")
+
+
 def tool_icons(size=128):
     """Square icons for the open-source tools list. Shown at about 30px, so these are schematic
     marks of what each tool does rather than plots of real data: few, thick elements."""
@@ -742,6 +790,7 @@ if __name__ == "__main__":
         "paper_universal",
         "paper_sampling",
         "paper_coding",
+        "voice_annotate",
         "tool_icons",
     ]
     for target in targets:
