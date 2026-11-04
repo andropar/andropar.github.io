@@ -195,7 +195,8 @@ separated by hairlines. In `.entries--cols` the date sits above the title and ro
 ### Tools line
 
 There is no skills section and no per-role skill list. Experience & education ends with
-`.panel-tools`: one muted "Tools" label and a single row of tool names from the CV. What each role
+`.panel-tools`: labelled rows of tool names (*Tools* from the CV, *LLMs & agents*), each label in
+the meta column. What each role
 involved is in its description; the full CV is linked from the section header. Degrees follow the
 roles under a `.panel-sub` "Education" label.
 

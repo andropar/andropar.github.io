@@ -31,8 +31,8 @@ const projects = [
     media: { graphic: 'horrorverse', attrs: { 'data-hover': 'horrorverse' }, label: 'The Horrorverse atlas: horror films as dots arranged by theme and story, with the haunted-house region highlighted' },
     links: [{ label: 'Open Horrorverse', href: 'https://horrorverse.jroth.space/' }, { label: 'Movie night', href: 'https://horrorverse.jroth.space/app/movie-night' }],
     what: 'It started as a way to settle what to watch on our horror movie nights. Describe a mood, like slow-burn folk horror under 100 minutes, and it picks one to three films for the night. Rate a few films and the daily picks get better, or wander the atlas: about 20,700 films arranged by theme and story.',
-    did: 'I built the recommender, trained on MovieLens 32M with a content bridge for films nobody has rated yet, plus the mood search on text embeddings, the atlas, Letterboxd import, accounts and the self-hosted deployment.',
-    outcome: 'It\'s live, and we use it every movie night. Its catalogue also became the data behind <a href="/blog/a-century-of-fear">A century of fear</a>, an illustrated history of 19,302 horror films.',
+    did: 'I built the recommender, trained on MovieLens 32M with a content bridge for films nobody has rated yet, plus the mood search on text embeddings, a movie-night chat where an LLM turns what you say into search settings (it never does the ranking), the atlas, Letterboxd import, accounts and the self-hosted deployment.',
+    outcome: 'It\'s live, and we use it every movie night. Its catalogue also became the data behind <a href="/blog/a-century-of-fear">A century of fear</a>, an illustrated history of 19,302 horror films, each labelled by two Claude models and checked against Wikidata.',
   },
   {
     id: 'voice-annotate',
@@ -112,8 +112,11 @@ const roles = [
   { span: [2018.75, 2019.67], date: 'Oct 2018–Sep 2019', title: 'Data Scientist · Working student', short: 'Webdata Solutions', organization: 'Webdata Solutions GmbH (now Vistex)', description: 'Developed machine-learning models for product matching and image classification in e-commerce, raising image-based matching accuracy from 12% to 83%.' },
   { span: [2018.08, 2018.58], date: 'Feb 2018–Aug 2018', title: 'Data Analyst · Working student', short: 'Mercateo', organization: 'Mercateo Services GmbH & Co. KG', description: 'Data integration, reporting, and testing for an AWS-based data warehouse using Apache NiFi and Pentaho.' },
 ];
-// From the CV's skills section: tool names only, once, instead of per-role skill lists.
-const cvTools = ['Python', 'PyTorch', 'scikit-learn', 'SQL', 'FastAPI', 'Django', 'Docker', 'AWS', 'SLURM / HPC'];
+// Tool names only, once, instead of per-role skill lists. The first row is the CV's skills section.
+const toolRows = [
+  { label: 'Tools', items: ['Python', 'PyTorch', 'scikit-learn', 'SQL', 'FastAPI', 'Django', 'Docker', 'AWS', 'SLURM / HPC'] },
+  { label: 'LLMs & agents', items: ['Agentic coding', 'Claude Code', 'Codex', 'OpenRouter', 'Claude & OpenAI APIs', 'LLM labelling pipelines'] },
+];
 const education = [
   { span: [2022.33, null], date: 'May 2022–present', title: 'Doctoral candidate · Dr. rer. nat.', organization: 'University of Giessen', description: 'Research focus: machine learning and computational neuroscience.' },
   { span: [2017.75, 2021.42], date: '2017–2021', title: 'M.Sc. Computer Science', short: 'M.Sc. · Leipzig', organization: 'Leipzig University · Grade 1.2', description: 'Master’s thesis: generative deep learning for visual processing in the human brain (grade 1.1).' },
@@ -292,7 +295,9 @@ const lifeStories = [
             </li>
           ))}
         </ul>
-        <p class="panel-tools"><span>Tools</span>{cvTools.join(' · ')}</p>
+        <div class="panel-tools">
+          {toolRows.map(row => <p><span>{row.label}</span>{row.items.join(' · ')}</p>)}
+        </div>
       </section>
       <section class="panel panel--life" aria-labelledby="life-teaser-heading">
         <div class="panel-head">
