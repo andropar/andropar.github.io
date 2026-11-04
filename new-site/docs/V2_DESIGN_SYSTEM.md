@@ -192,13 +192,11 @@ top at 5:2.
 `.entry`: `.entry-meta` (date) in the 96px meta column beside `.entry-title` and `.entry-text`,
 separated by hairlines. In `.entries--cols` the date sits above the title and rows have no rules.
 
-### Tools line
+### No skills list
 
-There is no skills section and no per-role skill list. Experience & education ends with
-`.panel-tools`: one "Tools" row of tool names only (the CV's skills plus the LLM tools), the label
-in the meta column. Practices such as agentic coding are shown in the project dialogs, not listed. What each role
-involved is in its description; the full CV is linked from the section header. Degrees follow the
-roles under a `.panel-sub` "Education" label.
+There is no skills section, tools row or per-role tags. Tools are named in the text of the role or
+project they were used in, and the full CV (linked from the Experience & education header) carries
+the keyword list. Degrees follow the roles under a `.panel-sub` "Education" label.
 
 ### Timeline
 
