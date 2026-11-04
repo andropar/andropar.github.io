@@ -807,8 +807,7 @@ html:has(.project-dialog[open]) { overflow: hidden; }
 .project-dialog-close { position: absolute; z-index: 3; top: var(--space-3); right: var(--space-3); background: var(--raised); }
 .project-dialog-media { aspect-ratio: 16 / 8; border-radius: 0; }
 .project-dialog-media.graphic > :is(.graphic-ink, .graphic-accent) { inset: var(--space-6); }
-/* The brain sprite's frames are 4:3, so the scrubbed layer stays 4:3 or neighbouring slices show. */
-.project-dialog-media.graphic--laion > :is(.graphic-ink, .graphic-accent) { inset: var(--space-5) auto; left: 50%; aspect-ratio: 4 / 3; translate: -50% 0; }
+.project-dialog-media.graphic--laion > :is(.graphic-ink, .graphic-accent) { inset: var(--space-5) 0; }
 .project-dialog-media.tile-media--photos { position: relative; }
 .project-dialog-media.tile-media--photos img { position: absolute; inset: var(--space-5); width: calc(100% - 2 * var(--space-5)); height: calc(100% - 2 * var(--space-5)); object-fit: contain; }
 .project-dialog-body { display: grid; gap: var(--space-4); padding: var(--space-6) var(--space-7) var(--space-7); }
@@ -961,6 +960,9 @@ html:has(.project-dialog[open]) { overflow: hidden; }
 }
 .graphic-mark[data-cell] { margin: 0; border-radius: 1px; background: none; }
 .graphic.is-scrubbing > :is(.graphic-ink, .graphic-accent) { -webkit-mask-size: auto 100%; mask-size: auto 100%; }
+/* The sprite's frames are 4:3, so a scrubbable layer stays 4:3 and centred in frames of any shape;
+   otherwise neighbouring slices show at the sides. */
+.graphic[data-scrub] > :is(.graphic-ink, .graphic-accent) { right: auto; left: 50%; aspect-ratio: 4 / 3; translate: -50% 0; }
 .graphic-scrub-hint { position: absolute; z-index: 2; right: var(--space-3); bottom: var(--space-2); color: var(--muted); font-size: 0.75rem; pointer-events: none; }
 
 /* The availability dot breathes. */
