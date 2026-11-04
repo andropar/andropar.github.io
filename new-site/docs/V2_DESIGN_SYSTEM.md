@@ -235,9 +235,8 @@ pointer. Touch devices keep the static image.
 
 ### Photo bands
 
-`.life-band` (Life outside work, on Work) puts a short text in the first of five columns and the four
-life photos in the rest, lined up with the Selected work tiles. `.stories--band` (A bit about me, on
-Life) shows the same four stories as four columns, photo on top.
+Work has no photos; a small footer link ("Off the clock" / "Back to work") switches views.
+`.stories--band` (A bit about me, on Life) shows the four life stories as four columns, photo on top.
 
 ### Shelves
 
