@@ -99,12 +99,35 @@ def horrorverse(w=1600, h=1000):
     center, span = (lo + hi) / 2, (
         hi - lo
     ) * 1.08  # stretched to the card, like the live atlas
-    for name, mask, alpha in (("ink", ~accent, 0.55), ("accent", accent, 0.9)):
-        fig, ax = canvas(w, h)
-        ax.scatter(*xy[mask].T, s=2.4, c="k", alpha=alpha, linewidths=0)
-        ax.set_xlim(center[0] - span[0] / 2, center[0] + span[0] / 2)
-        ax.set_ylim(center[1] - span[1] / 2, center[1] + span[1] / 2)
-        save_mask(fig, f"horrorverse-{name}")
+    # Films as a halftone: a hex grid of round dots, each sized by how many films fall in that
+    # cell; cells mostly inside the haunted-house cluster become the accent.
+    from PIL import ImageDraw
+
+    x0, x1 = center[0] - span[0] / 2, center[0] + span[0] / 2
+    y0, y1 = center[1] - span[1] / 2, center[1] + span[1] / 2
+    px = (xy[:, 0] - x0) / (x1 - x0) * w
+    py = (1 - (xy[:, 1] - y0) / (y1 - y0)) * h
+    step = 30
+    row_h = step * 0.866
+    rows = (py / row_h).round().astype(int)
+    cols = ((px - (rows % 2) * step / 2) / step).round().astype(int)
+    cells = {}
+    for r, c, a in zip(rows, cols, accent):
+        n, k = cells.get((r, c), (0, 0))
+        cells[(r, c)] = (n + 1, k + int(a))
+    ref = np.quantile([n for n, _ in cells.values()], 0.9)
+    ss = 3  # supersampled, then downscaled for smooth edges
+    layers = {name: Image.new("L", (w * ss, h * ss), 0) for name in ("ink", "accent")}
+    pens = {name: ImageDraw.Draw(img) for name, img in layers.items()}
+    for (r, c), (n, k) in cells.items():
+        cx, cy = (c * step + (r % 2) * step / 2) * ss, r * row_h * ss
+        radius = max(step * 0.46 * min(1, np.sqrt(n / ref)), step * 0.12) * ss
+        name = "accent" if k > n * 0.4 else "ink"
+        pens[name].ellipse([cx - radius, cy - radius, cx + radius, cy + radius], fill=255)
+    for name, img in layers.items():
+        alpha = np.asarray(img.resize((w, h), Image.LANCZOS), float) / 255
+        save_array_mask(alpha * (0.85 if name == "ink" else 1), f"horrorverse-{name}")
+
 
     # Hover labels for the most-rated films, in the mask's pixel coordinates.
     import sqlite3
@@ -139,8 +162,10 @@ def horrorverse(w=1600, h=1000):
     save_hover("horrorverse", {"w": w, "h": h, "kind": "points", "points": points})
 
 
-def relaion(cols=10, rows=6, tile=72, gap=6, w=1600, h=1000):
-    """A dithered contact sheet of natural images (no people)."""
+def relaion(cols=7, rows=4, tile=160, gap=16, corner=20, pad=12):
+    """A contact sheet of natural images (no people) in colour, one tile ringed as the highlight."""
+    from PIL import ImageDraw
+
     categories = [
         "mountain",
         "forest",
@@ -169,19 +194,14 @@ def relaion(cols=10, rows=6, tile=72, gap=6, w=1600, h=1000):
     ]
     files = [p for c in categories for p in sorted(THUMBS.glob(f"{c}_*.jpg"))[:4]]
     files = list(rng.choice(files, cols * rows, replace=False))
-    bayer = (
-        np.array([[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]]) / 16
-        + 1 / 32
-    )
-    threshold = np.tile(bayer, (tile // 4, tile // 4))
-    sheet_w, sheet_h = cols * tile + (cols - 1) * gap, rows * tile + (rows - 1) * gap
-    ink = np.zeros((sheet_h, sheet_w))
-    light = np.zeros_like(ink)
-    accent = np.zeros_like(ink)
-    accent_tile = (2, 6)
+    size = (cols * tile + (cols - 1) * gap + 2 * pad, rows * tile + (rows - 1) * gap + 2 * pad)
+    sheet = Image.new("RGBA", size, (0, 0, 0, 0))
+    rounded = Image.new("L", (tile, tile), 0)
+    ImageDraw.Draw(rounded).rounded_rectangle([0, 0, tile - 1, tile - 1], corner, fill=255)
+    highlight, ring = (1, 4), 7
     for i, path in enumerate(files):
         r, c = divmod(i, cols)
-        img = Image.open(path).convert("L")
+        img = Image.open(path).convert("RGB")
         side = min(img.size)
         img = img.crop(
             (
@@ -191,32 +211,15 @@ def relaion(cols=10, rows=6, tile=72, gap=6, w=1600, h=1000):
                 (img.height + side) // 2,
             )
         ).resize((tile, tile), Image.LANCZOS)
-        lum = np.asarray(img, float) / 255
-        lum = np.clip(
-            (lum - lum.mean()) * 1.25 + 0.5, 0, 1
-        )  # even out exposure across tiles
-        y, x = r * (tile + gap), c * (tile + gap)
-        target = accent if (r, c) == accent_tile else ink
-        target[y : y + tile, x : x + tile] = lum < threshold
-        light[y : y + tile, x : x + tile] = (
-            lum >= threshold
-        )  # positive image for dark mode
-    scale = 2
-    for name, arr in (("ink", ink), ("ink-dark", light), ("accent", accent)):
-        if name == "ink-dark":
-            arr = arr.copy()
-            r, c = accent_tile
-            arr[
-                r * (tile + gap) : r * (tile + gap) + tile,
-                c * (tile + gap) : c * (tile + gap) + tile,
-            ] = 0
-        save_array_mask(arr, f"relaion-{name}", scale)
-    # Dark mode accent tile also needs the positive rendering.
-    r, c = accent_tile
-    y, x = r * (tile + gap), c * (tile + gap)
-    dark_accent = np.zeros_like(ink)
-    dark_accent[y : y + tile, x : x + tile] = 1 - accent[y : y + tile, x : x + tile]
-    save_array_mask(dark_accent, "relaion-accent-dark", scale)
+        x, y = pad + c * (tile + gap), pad + r * (tile + gap)
+        if (r, c) == highlight:
+            halo = Image.new("L", (tile + 2 * ring, tile + 2 * ring), 0)
+            ImageDraw.Draw(halo).rounded_rectangle([0, 0, halo.width - 1, halo.height - 1], corner + ring, fill=255)
+            sheet.paste((240, 127, 166, 255), (x - ring, y - ring), halo)
+        sheet.paste(img, (x, y), rounded)
+    path = OUT / "relaion-photos.webp"
+    sheet.save(path, "WEBP", quality=82, method=6)
+    log.info("wrote %s (%d KB, %d×%d)", path.name, path.stat().st_size // 1024, *size)
 
 
 def revision(w=1200, h=900, metric="srpr"):
@@ -236,14 +239,13 @@ def revision(w=1200, h=900, metric="srpr"):
     for name, sel in (("ink", ~top), ("accent", top)):
         fig, ax = canvas(w, h)
         m = per_model[sel]
-        ax.vlines(x[sel], m["min"], m["max"], color="k", alpha=0.35, linewidth=0.9)
-        ax.scatter(x[sel], m["mean"], s=9 if name == "ink" else 16, c="k", linewidths=0)
+        # One rounded bar per model, ranked; the ten best are the accent.
+        floor = per_model["min"].min() - 0.05
+        ax.vlines(x[sel], floor + 0.015, m["mean"], color="k", linewidth=1.9, capstyle="round")
         ax.set_xlim(-6, len(x) + 5)
-        ax.set_ylim(per_model["min"].min() - 0.05, per_model["max"].max() + 0.05)
-        if name == "ink":
-            for level in np.arange(0.1, 0.6, 0.1):
-                ax.axhline(level, color="k", alpha=0.12, linewidth=0.6)
+        ax.set_ylim(floor, per_model["max"].max() + 0.05)
         save_mask(fig, f"revision-{name}")
+
 
     x0, x1 = -6, len(x) + 5
     y0, y1 = per_model["min"].min() - 0.05, per_model["max"].max() + 0.05
@@ -303,29 +305,32 @@ def laion_fmri(w=1200, h=900, slices=16, tile_w=600, tile_h=450):
         levels = np.percentile(sl[brain > 0.5], [30, 55, 80])
         hh, ww = sl.shape
         span = max(hh * 1.12, ww * 1.12 * h / w)
-        masks = []
-        for name in ("ink", "accent"):
+        def draw(paint):
             fig, ax = canvas(w, h)
-            if name == "ink":
-                ax.contour(
-                    np.where(brain > 0.5, sl, 0),
-                    levels=levels,
-                    colors="k",
-                    linewidths=0.6,
-                    alpha=0.55,
-                )
-                ax.contour(brain, levels=[0.5], colors="k", linewidths=1.2)
-            elif act[brain > 0.5].max() > 0.35:
-                ax.contourf(
-                    np.where(brain > 0.5, act, 0),
-                    levels=[0.35, 2],
-                    colors="k",
-                    alpha=0.9,
-                )
+            paint(ax)
             ax.set_ylim(hh / 2 - span / 2, hh / 2 + span / 2)
             ax.set_xlim(ww / 2 - span * w / h / 2, ww / 2 + span * w / h / 2)
-            masks.append(figure_alpha(fig))
-        return masks
+            return figure_alpha(fig)
+
+        # A lightly filled brain with a firm outline and soft tissue contours; the selective
+        # regions are cut out of the ink and become the accent.
+        solid = draw(lambda ax: ax.contourf(brain, levels=[0.5, 2], colors="k"))
+        outline = draw(lambda ax: ax.contour(brain, levels=[0.5], colors="k", linewidths=2.4))
+        lines = draw(
+            lambda ax: ax.contour(
+                np.where(brain > 0.5, sl, 0), levels=levels, colors="k", linewidths=1.1
+            )
+        )
+        if act[brain > 0.5].max() > 0.35:
+            regions = draw(
+                lambda ax: ax.contourf(
+                    np.where(brain > 0.5, act, 0), levels=[0.35, 2], colors="k"
+                )
+            )
+        else:
+            regions = np.zeros_like(solid)
+        return [np.clip(0.16 * solid + outline + 0.45 * lines - regions, 0, 1), regions]
+
 
     ink, accent = render(static_idx, w, h)
     save_array_mask(ink, "laion-ink")
@@ -375,17 +380,18 @@ def thingsvision(w=1200, h=900, per_category=10):
     n = len(sim)
     block = np.repeat(np.arange(len(categories)), per_category)
     same = block[:, None] == block[None, :]
-    # Cells with a 1px gap, drawn as a raster so 6,400 cells stay cheap.
-    cell, gap = 10, 1
-    size = n * cell
-    grid = np.kron(sim, np.ones((cell, cell)))
-    mask = np.ones((cell, cell))
-    mask[-gap:, :] = 0
-    mask[:, -gap:] = 0
-    grid *= np.tile(mask, (n, n))
-    accent_cells = np.kron(
-        (same & (block[:, None] == 3)).astype(float), np.ones((cell, cell))
-    )
+    # A dot matrix: one dot per 2 × 2 block of image pairs, its radius set by the similarity.
+    # Drawn as an antialiased raster.
+    pooled = sim.reshape(n // 2, 2, n // 2, 2).mean(axis=(1, 3))
+    pooled_block = block[::2]
+    cell = 40
+    size = (n // 2) * cell
+    yy, xx = np.mgrid[0:cell, 0:cell]
+    dist = np.tile(np.hypot(xx - cell / 2 + 0.5, yy - cell / 2 + 0.5), (n // 2, n // 2))
+    radius = np.kron(0.25 + 0.75 * np.sqrt(pooled), np.ones((cell, cell))) * cell * 0.46
+    grid = np.clip(radius - dist + 0.5, 0, 1)
+    vehicles = pooled_block == 3
+    accent_cells = np.kron((vehicles[:, None] & vehicles[None, :]).astype(float), np.ones((cell, cell)))
     for name, arr in (
         ("ink", grid * (1 - accent_cells) * 0.9),
         ("accent", grid * accent_cells),
