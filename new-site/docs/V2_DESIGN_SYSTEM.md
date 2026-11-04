@@ -101,7 +101,8 @@ the centered 920px column. `body` clips horizontal overflow.
 - **Hero:** `minmax(0, 1fr) | minmax(14rem, 27rem)` with a 44px gap. The copy is vertically centered;
   the cut-out portrait is bottom-aligned so it stands on the first panel's rule. The hero gets its
   height from spacing between its parts (larger above 860px), never from larger parts.
-- **Work view:** a full-width Selected work band (`.work-band`, six `.tiles--work` tiles, three across with 16:10 figures), then
+- **Work view:** a full-width Selected work band (`.work-band`, six `.tiles--work` tiles, two across, each a 12rem
+  thumbnail beside its text), then
   `.dense--work`, a 12-column grid. Sections with figures or charts span all 12 columns (Research,
   Experience & education, Life outside work); the two short text sections pair up 8 + 4: Open-source
   tools | Writing.
@@ -165,6 +166,12 @@ optional muted count, an optional right-aligned `.link`), an optional `.panel-le
 `.card-text` → 12px `.card-detail` → `.item-links`, pushed to the bottom so links line up across the
 row. Tiles carry no stats lines or labels; all six projects look the same, whoever led them.
 
+### Writing rows
+
+`.posts` lists the latest posts as `.post` rows: a 5rem 4:3 `.post-thumb` (a mask graphic from the
+post's own data, or a book cover) beside the date, title and description. Thumbnails are mapped by slug
+in `postThumbs` in `index.astro`; a post without one spans the full row.
+
 ### Tool icons
 
 Open-source tools (`.mini--icons`) carry a 32px `.tool-icon` beside each name: a tinted square with
@@ -184,8 +191,7 @@ and dialogs render from the `projects` list in `index.astro`, so each project is
 ### Items
 
 `.item` (papers) is a thumbnail beside text: venue line (`.venue`: venue in `--ink`, then year and
-note), title, authors, summary and an optional `.award-note`. In `.items--cols` the thumbnail sits on
-top at 5:2.
+note), title, authors, summary and an optional `.award-note`. In `.items--cols` (three across) the thumbnail is a 7.5rem 4:3 square-ish frame beside the text.
 
 ### List rows
 

@@ -8,7 +8,7 @@ THINGS-fMRI files in ``new-site/.local``, THINGS model features and the CCN 2025
 ``~/Downloads``, and the LAION-fMRI git history), so this only runs on Johannes's machine:
 
     python3 new-site/scripts/card_graphics.py [horrorverse relaion revision laion_fmri thingsvision
-                                               paper_universal paper_sampling paper_coding voice_annotate
+                                               paper_universal paper_sampling paper_coding voice_annotate century
                                                tool_icons]
 """
 
@@ -695,6 +695,39 @@ def voice_annotate(w=1200, h=900, demo=HOME / "voice-annotate/docs/demo"):
         save_mask(fig, f"voice-{layer}")
 
 
+def century(w=1200, h=900, data=Path(__file__).resolve().parents[1] / "public/writing/a-century-of-fear/timeline.json"):
+    """Thumbnail for "A century of fear": the essay's yearly theme shares as a centred stream whose
+    thickness follows the number of notable horror films that year, one band per family in
+    alternating ink strengths, with ghosts and hauntings as the accent at the bottom."""
+    timeline = json.loads(Path(data).read_text())
+    families = timeline["family_shares"]
+    years = np.arange(timeline["meta"]["chart_start"], timeline["meta"]["chart_start"] + len(families[0]["shares"]))
+    ghosts = np.array(next(b for b in timeline["bands"] if b["id"] == "ghosts")["shares"], float)
+    shares = np.array([f["shares"] for f in families], float)
+    shares /= shares.sum(axis=0, keepdims=True)
+    kernel = np.ones(5) / 5
+    smooth = lambda row: np.convolve(np.pad(row, 2, mode="edge"), kernel, mode="valid")
+    shares = np.array([smooth(row) for row in shares])
+    ghosts = smooth(ghosts) / np.array([f["shares"] for f in families], float).sum(axis=0)
+    volume = dict(zip(timeline["volume"]["years"], timeline["volume"]["horror_notable"]))
+    thickness = smooth(np.sqrt([volume.get(int(y), 0) for y in years]))
+    thickness /= thickness.max()
+    tops = np.cumsum(shares, axis=0) * thickness - thickness / 2
+    base = -thickness / 2
+    for layer in ("ink", "accent"):
+        fig, ax = canvas(w, h)
+        ax.set_xlim(years[0] - 3, years[-1] + 3)
+        ax.set_ylim(-0.62, 0.62)
+        if layer == "ink":
+            bottom = base + ghosts * thickness
+            for i, top in enumerate(tops):
+                ax.fill_between(years, bottom, top, color="k", alpha=0.62 if i % 2 else 0.3, linewidth=0)
+                bottom = top
+        else:
+            ax.fill_between(years, base, base + ghosts * thickness, color="k", linewidth=0)
+        save_mask(fig, f"century-{layer}")
+
+
 def tool_icons(size=128):
     """Square icons for the open-source tools list. Shown at about 30px, so these are schematic
     marks of what each tool does rather than plots of real data: few, thick elements."""
@@ -791,6 +824,7 @@ if __name__ == "__main__":
         "paper_sampling",
         "paper_coding",
         "voice_annotate",
+        "century",
         "tool_icons",
     ]
     for target in targets:

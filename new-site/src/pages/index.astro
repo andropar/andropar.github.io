@@ -21,6 +21,13 @@ const coverURL = (reference: string) => {
   return `https://covers.openlibrary.org/b/${kind === 'id' ? 'id' : 'isbn'}/${value}-M.jpg`;
 };
 const currentCovers = [artAndFear, mindIlluminated];
+// Writing thumbnails by post slug: a mask graphic drawn from the post's data, or an image. Posts
+// without an entry show no thumbnail.
+const postThumbs: Record<string, { graphic?: string; image?: ImageMetadata }> = {
+  'a-century-of-fear': { graphic: 'century' },
+  'what-vision-models-agree-on': { graphic: 'paper-universal' },
+  its_always_clear_from_outside: { image: artAndFear },
+};
 // Selected work: each project feeds its tile (figure, title, summary, links) and its "More" dialog.
 // `media` is a mask graphic (with optional hover or scrub data) or the ReLAION photo sheet.
 const projects = [
@@ -237,16 +244,21 @@ const lifeStories = [
           <h2 id="writing-heading">Writing</h2>
           <a class="link" href="/blog">All writing</a>
         </div>
-        <ul class="entries">
-          {featuredPosts.map(post => (
-            <li class="entry">
-              <time class="entry-meta" datetime={post.data.date.toISOString()}>{dateLabel(post.data.date)}</time>
-              <div>
-                <h3 class="entry-title"><a class="stretched" {...postLinkProps(post)}>{post.data.title}</a></h3>
-                <p class="entry-text">{post.data.description}</p>
-              </div>
-            </li>
-          ))}
+        <ul class="posts">
+          {featuredPosts.map(post => {
+            const thumb = postThumbs[post.slug];
+            return (
+              <li class="post">
+                {thumb?.graphic && <span class={`frame post-thumb graphic graphic--${thumb.graphic}`} aria-hidden="true"><span class="graphic-ink"></span><span class="graphic-accent"></span></span>}
+                {thumb?.image && <span class="frame post-thumb post-thumb--cover"><Image src={thumb.image} alt="" widths={[96, 192]} sizes="3rem" width={192} format="webp" loading="lazy" /></span>}
+                <div>
+                  <time class="entry-meta" datetime={post.data.date.toISOString()}>{dateLabel(post.data.date)}</time>
+                  <h3 class="entry-title"><a class="stretched" {...postLinkProps(post)}>{post.data.title}</a></h3>
+                  <p class="entry-text">{post.data.description}</p>
+                </div>
+              </li>
+            );
+          })}
         </ul>
       </section>
       <section class="panel" id="experience" aria-labelledby="experience-heading">
@@ -392,16 +404,21 @@ const lifeStories = [
             <h2 id="life-notes-heading">Writing</h2>
             <a class="link" href="/blog">All writing</a>
           </div>
-          <ul class="entries">
-            {featuredPosts.map(post => (
-              <li class="entry">
-                <time class="entry-meta" datetime={post.data.date.toISOString()}>{dateLabel(post.data.date)}</time>
-                <div>
-                  <h3 class="entry-title"><a class="stretched" {...postLinkProps(post)}>{post.data.title}</a></h3>
-                  <p class="entry-text">{post.data.description}</p>
-                </div>
-              </li>
-            ))}
+          <ul class="posts">
+            {featuredPosts.map(post => {
+              const thumb = postThumbs[post.slug];
+              return (
+                <li class="post">
+                  {thumb?.graphic && <span class={`frame post-thumb graphic graphic--${thumb.graphic}`} aria-hidden="true"><span class="graphic-ink"></span><span class="graphic-accent"></span></span>}
+                  {thumb?.image && <span class="frame post-thumb post-thumb--cover"><Image src={thumb.image} alt="" widths={[96, 192]} sizes="3rem" width={192} format="webp" loading="lazy" /></span>}
+                  <div>
+                    <time class="entry-meta" datetime={post.data.date.toISOString()}>{dateLabel(post.data.date)}</time>
+                    <h3 class="entry-title"><a class="stretched" {...postLinkProps(post)}>{post.data.title}</a></h3>
+                    <p class="entry-text">{post.data.description}</p>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         </section>
 
