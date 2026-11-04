@@ -29,6 +29,70 @@ const focusAreas = [
   { title: 'Research & experimental design', description: 'Turning open questions into testable ideas, sound experiments, and clear conclusions.' },
   { title: 'Project ownership & collaboration', description: 'Shaping the work, coordinating with others, and seeing projects through.' },
 ];
+// Selected work: each project feeds its tile (figure, title, summary, links) and its "More" dialog.
+// `media` is a mask graphic (with optional hover or scrub data) or the ReLAION photo sheet.
+const projects = [
+  {
+    id: 'horrorverse',
+    title: 'Horrorverse',
+    summary: 'A horror film recommender with mood search, an explorable map of the genre and an illustrated history.',
+    media: { graphic: 'horrorverse', attrs: { 'data-hover': 'horrorverse' }, label: 'The Horrorverse atlas: horror films as dots arranged by theme and story, with the haunted-house region highlighted' },
+    links: [{ label: 'Open Horrorverse', href: 'https://horrorverse.jroth.space/' }, { label: 'Movie night', href: 'https://horrorverse.jroth.space/app/movie-night' }],
+    what: 'It started as a way to settle what to watch on our horror movie nights. Describe a mood, like slow-burn folk horror under 100 minutes, and it picks one to three films for the night. Rate a few films and the daily picks get better, or wander the atlas: about 20,700 films arranged by theme and story.',
+    did: 'I built the recommender, trained on MovieLens 32M with a content bridge for films nobody has rated yet, plus the mood search on text embeddings, the atlas, Letterboxd import, accounts and the self-hosted deployment.',
+    outcome: 'It\'s live, and we use it every movie night. Its catalogue also became the data behind <a href="/blog/a-century-of-fear">A century of fear</a>, an illustrated history of 19,302 horror films.',
+  },
+  {
+    id: 'voice-annotate',
+    title: 'voice-annotate',
+    summary: 'A macOS app: talk and draw on your screen, then paste the result into any coding agent.',
+    media: { graphic: 'voice', attrs: {}, label: 'The four marks from a voice-annotate demo capture on the frozen screen, each tied to the moment in the narration when it was drawn' },
+    links: [{ label: 'View on GitHub', href: 'https://github.com/andropar/voice-annotate' }],
+    what: 'Explaining a UI problem to a coding agent in text takes longer than fixing it, and a plain screenshot loses the pointing. voice-annotate records what you say while you draw on a frozen screen, then pastes annotated screenshots and a transcript into any agent.',
+    did: 'I built the app: on-device transcription with WhisperKit, a pen that turns strokes into circles, underlines and pins, and a transcript that cites each mark at the word you were saying when you drew it. A walkthrough mode turns a screen recording into a keyframe storyboard.',
+    outcome: 'It\'s open source, runs entirely on the device with no API keys, and has become part of how I work with coding agents.',
+  },
+  {
+    id: 'relaion',
+    title: 'ReLAION-natural',
+    summary: 'Naturalness scores for every image in ReLAION-2B, plus CLIP embeddings for the natural photos.',
+    media: { photos: '/v2/graphics/relaion-photos.webp', label: 'A contact sheet of natural photographs from the dataset, one highlighted' },
+    links: [{ label: 'View dataset', href: 'https://huggingface.co/datasets/andropar/relaion2b-natural' }, { label: 'CCN 2025 paper', href: 'https://openreview.net/forum?id=T9k6KkZoca' }],
+    what: 'Web-scale image datasets mix photographs with screenshots, product shots, memes and text. ReLAION-natural scores all 2.1 billion images in ReLAION-2B for how natural they are, so you can pull out the roughly 500 million natural photographs.',
+    did: 'I trained the naturalness classifier on CLIP embeddings, with about 26,000 images labelled through active learning, and built the GPU pipelines that scored the full dataset and extracted CLIP embeddings for the natural photos.',
+    outcome: 'It\'s the image pool behind the CCN 2025 paper on sampling natural images and the natural photographs in LAION-fMRI. On Hugging Face it\'s downloaded about 2,000 times a month.',
+  },
+  {
+    id: 'laion-fmri',
+    title: 'LAION-fMRI',
+    summary: 'A deeply sampled fMRI dataset of natural images.',
+    media: { graphic: 'laion', attrs: { 'data-scrub': 'laion-sprite', 'data-frames': '16' }, label: 'A sagittal brain slice drawn as contour lines, with face- and scene-selective cortex filled in' },
+    links: [{ label: 'Explore project', href: 'https://laion-fmri.hebartlab.com/' }, { label: 'Brain explorer', href: 'https://laion-fmri.hebartlab.com/brain/' }],
+    what: 'A 7T fMRI dataset in which five people each spent about 60 hours in the scanner looking at 25,052 natural images, many of them shown several times. It is built to cover far more of the visual world than earlier datasets: 2.5× the effective dimensionality of NSD and THINGS.',
+    did: 'I designed the stimulus set and built the tools around the data: the Python package, the website, the 3D brain explorer and the AWS data access.',
+    outcome: 'It launched at VSS 2026 and is freely available for research. It is also the dataset behind re:vision.',
+  },
+  {
+    id: 'revision',
+    title: 're:vision',
+    summary: 'A community challenge testing whether findings in visual neuroscience replicate on LAION-fMRI.',
+    media: { graphic: 'revision', attrs: { 'data-hover': 'revision' }, label: 'Brain-predictivity scores of 118 vision models, sorted, with the ten best highlighted' },
+    links: [{ label: 'Explore project', href: 'https://re-vision-initiative.org/' }],
+    what: 'Teams pick a published finding from visual neuroscience and test whether it replicates on LAION-fMRI\'s much broader set of images, and whether it generalizes. Every valid replication goes into a consortium paper, whatever the result.',
+    did: 'I am one of the coordinators. I made the data splits, ran the benchmark replication of 118 vision models for the consortium paper, and built the website and data services.',
+    outcome: 'It launched at VSS in May 2026, with prizes for the best replication and the best generalization. Reports are due in February 2027, and the synthesis paper follows later that year.',
+  },
+  {
+    id: 'thingsvision',
+    title: 'thingsvision',
+    summary: 'An open-source library for extracting and comparing features from vision models.',
+    media: { graphic: 'thingsvision', attrs: { 'data-hover': 'thingsvision' }, label: 'A similarity matrix of ResNet-50 features for eight image categories, one category highlighted' },
+    links: [{ label: 'View library', href: 'https://github.com/ViCCo-Group/thingsvision' }, { label: 'Paper', href: 'https://doi.org/10.3389/fninf.2021.679838' }],
+    what: 'Give it a folder of images and a vision model, and it returns the model\'s representation of every image, with tools to compare those representations to brains and behaviour. It supports models from torchvision, timm, OpenCLIP, Keras and more.',
+    did: 'I am one of its main contributors: I added low-memory feature extraction, support for HDF5 datasets, and the tests that check every integrated model.',
+    outcome: 'It has its own paper in Frontiers in Neuroinformatics and 179 stars on GitHub.',
+  },
+];
 const tools = [
   { repo: 'slurmboard', description: 'A lightweight dashboard for Slurm jobs, logs and resource use on HPC clusters.' },
   { repo: 'fmriqc', description: 'An interactive QA and review tool for fMRI data snapshots.' },
@@ -113,53 +177,19 @@ const lifeStories = [
           <a class="link" href="https://github.com/andropar" target="_blank" rel="noopener">GitHub</a>
         </div>
         <div class="tiles tiles--work">
-          <article class="card tile">
-            <div class="frame tile-media graphic graphic--horrorverse" data-hover="horrorverse" role="img" aria-label="The Horrorverse atlas: about 19,000 horror films as dots, with the haunted-house region highlighted"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
-            <h3>Horrorverse</h3>
-            <p class="card-text">A horror film recommender with mood search, an explorable map of the genre and an illustrated history.</p>
-            <div class="item-links">
-              <a class="link stretched" href="https://horrorverse.jroth.space/" target="_blank" rel="noopener">Open Horrorverse</a>
-              <button class="link more-button" type="button" data-dialog="project-horrorverse" aria-haspopup="dialog">More</button>
-            </div>
-          </article>
-          <article class="card tile">
-            <div class="frame tile-media graphic graphic--voice" role="img" aria-label="The four marks from a voice-annotate demo capture on the frozen screen, each tied to the moment in the narration when it was drawn"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
-            <h3>voice-annotate</h3>
-            <p class="card-text">A macOS app: talk and draw on your screen, then paste the result into any coding agent.</p>
-            <p class="card-detail">On-device transcription with WhisperKit, a pen that recognises circles and underlines, and a transcript that cites each mark at the word you said while drawing it.</p>
-            <div class="item-links"><a class="link stretched" href="https://github.com/andropar/voice-annotate" target="_blank" rel="noopener">View on GitHub</a></div>
-          </article>
-          <article class="card tile">
-            <div class="frame tile-media tile-media--photos"><img src="/v2/graphics/relaion-photos.webp" alt="A contact sheet of natural photographs from the dataset, one highlighted" width="1240" height="712" loading="lazy" decoding="async" /></div>
-            <h3>ReLAION-natural</h3>
-            <p class="card-text">Naturalness scores for every image in ReLAION-2B, plus CLIP embeddings for the natural photos.</p>
-            <p class="card-detail">GPU pipelines for classification, quality filtering and embedding extraction at billion-image scale, published on Hugging Face.</p>
-            <div class="item-links"><a class="link stretched" href="https://huggingface.co/datasets/andropar/relaion2b-natural" target="_blank" rel="noopener">View dataset</a></div>
-          </article>
-          <article class="card tile">
-            <div class="frame tile-media graphic graphic--laion" data-scrub="laion-sprite" data-frames="16" role="img" aria-label="A sagittal brain slice drawn as contour lines, with face- and scene-selective cortex filled in"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
-            <h3>LAION-fMRI</h3>
-            <p class="card-text">A deeply sampled fMRI dataset of natural images.</p>
-            <p class="card-detail">Designed the stimulus set (2.5× the effective dimensionality of NSD and THINGS); built the package, website, 3D brain explorer and AWS data access.</p>
-            <div class="item-links">
-              <a class="link stretched" href="https://laion-fmri.hebartlab.com/" target="_blank" rel="noopener">Explore project</a>
-              <a class="link" href="https://laion-fmri.hebartlab.com/brain/" target="_blank" rel="noopener">Brain explorer</a>
-            </div>
-          </article>
-          <article class="card tile">
-            <div class="frame tile-media graphic graphic--revision" data-hover="revision" role="img" aria-label="Brain-predictivity scores of 118 vision models, sorted, with the ten best highlighted"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
-            <h3>re:vision</h3>
-            <p class="card-text">A community challenge testing whether findings in visual neuroscience replicate on LAION-fMRI.</p>
-            <p class="card-detail">Data splits, the benchmark replication for the consortium paper, website and data services.</p>
-            <div class="item-links"><a class="link stretched" href="https://re-vision-initiative.org/" target="_blank" rel="noopener">Explore project</a></div>
-          </article>
-          <article class="card tile">
-            <div class="frame tile-media graphic graphic--thingsvision" data-hover="thingsvision" role="img" aria-label="A similarity matrix of ResNet-50 features for eight image categories, one category highlighted"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
-            <h3>thingsvision</h3>
-            <p class="card-text">An open-source library for extracting and comparing features from vision models.</p>
-            <p class="card-detail">Low-memory extraction, HDF5 dataset support and model-integration tests.</p>
-            <div class="item-links"><a class="link stretched" href="https://github.com/ViCCo-Group/thingsvision" target="_blank" rel="noopener">View library</a></div>
-          </article>
+          {projects.map(project => (
+            <article class="card tile">
+              {project.media.photos
+                ? <div class="frame tile-media tile-media--photos"><img src={project.media.photos} alt={project.media.label} width="1240" height="712" loading="lazy" decoding="async" /></div>
+                : <div class={`frame tile-media graphic graphic--${project.media.graphic}`} {...project.media.attrs} role="img" aria-label={project.media.label}><span class="graphic-ink"></span><span class="graphic-accent"></span></div>}
+              <h3>{project.title}</h3>
+              <p class="card-text">{project.summary}</p>
+              <div class="item-links">
+                <a class="link stretched" href={project.links[0].href} target="_blank" rel="noopener">{project.links[0].label}</a>
+                <button class="link more-button" type="button" data-dialog={`project-${project.id}`} aria-haspopup="dialog">More</button>
+              </div>
+            </article>
+          ))}
         </div>
       </section>
     </div>
@@ -449,34 +479,28 @@ const lifeStories = [
     </div>
   </div>
 
-  <dialog class="project-dialog" id="project-horrorverse" aria-labelledby="project-horrorverse-title" style="--tc: var(--p1)">
-    <button class="icon-button project-dialog-close" type="button" aria-label="Close">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
-    </button>
-    <div class="frame project-dialog-media graphic graphic--horrorverse" data-hover="horrorverse" role="img" aria-label="The Horrorverse atlas: horror films as dots arranged by theme and story, with the haunted-house region highlighted"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
-    <div class="project-dialog-body">
-      <h2 id="project-horrorverse-title">Horrorverse</h2>
-      <p class="project-dialog-lede">A horror film recommender with mood search, an explorable map of the genre and an illustrated history.</p>
-      <div class="project-facts">
-        <section>
-          <h3>What it is</h3>
-          <p>It started as a way to settle what to watch on our horror movie nights. Describe a mood, like slow-burn folk horror under 100 minutes, and it picks one to three films for the night. Rate a few films and the daily picks get better, or wander the atlas: about 20,700 films arranged by theme and story.</p>
-        </section>
-        <section>
-          <h3>What I did</h3>
-          <p>All of it, on my own: a collaborative-filtering recommender trained on MovieLens 32M, with a content bridge for films nobody has rated yet; text-embedding search for moods; the atlas; Letterboxd import and accounts; and the self-hosted deployment.</p>
-        </section>
-        <section>
-          <h3>What came out of it</h3>
-          <p>It's live, and we use it every movie night. Its catalogue also became the data behind <a href="/blog/a-century-of-fear">A century of fear</a>, an illustrated history of 19,302 horror films.</p>
-        </section>
+  {projects.map((project, i) => (
+    <dialog class="project-dialog" id={`project-${project.id}`} aria-labelledby={`project-${project.id}-title`} style={`--tc: var(--p${(i % 4) + 1})`}>
+      <button class="icon-button project-dialog-close" type="button" aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
+      </button>
+      {project.media.photos
+        ? <div class="frame project-dialog-media tile-media--photos"><img src={project.media.photos} alt={project.media.label} width="1240" height="712" loading="lazy" decoding="async" /></div>
+        : <div class={`frame project-dialog-media graphic graphic--${project.media.graphic}`} {...project.media.attrs} role="img" aria-label={project.media.label}><span class="graphic-ink"></span><span class="graphic-accent"></span></div>}
+      <div class="project-dialog-body">
+        <h2 id={`project-${project.id}-title`}>{project.title}</h2>
+        <p class="project-dialog-lede">{project.summary}</p>
+        <div class="project-facts">
+          <section><h3>What it is</h3><p>{project.what}</p></section>
+          <section><h3>What I did</h3><p>{project.did}</p></section>
+          <section><h3>What came out of it</h3><p set:html={project.outcome} /></section>
+        </div>
+        <div class="item-links">
+          {project.links.map(link => <a class="link" href={link.href} target="_blank" rel="noopener">{link.label}</a>)}
+        </div>
       </div>
-      <div class="item-links">
-        <a class="link" href="https://horrorverse.jroth.space/" target="_blank" rel="noopener">Open Horrorverse</a>
-        <a class="link" href="https://horrorverse.jroth.space/app/movie-night" target="_blank" rel="noopener">Movie night</a>
-      </div>
-    </div>
-  </dialog>
+    </dialog>
+  ))}
 
   <section class="contact-strip" id="contact" aria-labelledby="contact-heading">
     <div class="panel-head">

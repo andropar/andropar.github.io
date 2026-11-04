@@ -178,7 +178,8 @@ A tile's `More` button (`.more-button`, `data-dialog="<id>"`) opens a native `<d
 class="project-dialog">` (`src/scripts/project-dialogs.ts`): the project's figure large and still
 explorable, its title and one-line description, then three short sections (*What it is*, *What I
 did*, *What came out of it*) and its links. Escape, the close button and a backdrop click close it;
-the page behind does not scroll. Tiles with a dialog drop their `.card-detail` line.
+the page behind does not scroll. Every tile has one, so tiles carry no `.card-detail` line. Tiles
+and dialogs render from the `projects` list in `index.astro`, so each project is written once.
 
 ### Items
 
