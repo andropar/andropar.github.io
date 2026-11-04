@@ -130,39 +130,6 @@ def horrorverse(w=1600, h=1000):
         save_array_mask(alpha * (0.85 if name == "ink" else 1), f"horrorverse-{name}")
 
 
-    # Hover labels for the most-rated films, in the mask's pixel coordinates.
-    import sqlite3
-
-    catalogue = sqlite3.connect(
-        f"file:{HOME / 'horrorshow/data/v3/catalogue.sqlite'}?mode=ro", uri=True
-    )
-    counts = dict(
-        catalogue.execute("SELECT movie_id, COUNT(*) FROM ratings GROUP BY movie_id")
-    )
-    titles = {
-        movie_id: f"{title} ({year})" if year else title
-        for movie_id, title, year in catalogue.execute(
-            "SELECT movie_id, title, year FROM movies"
-        )
-    }
-    region_labels = {r["id"]: r["label"] for r in json.loads(str(data["regions"]))}
-    px = (xy[:, 0] - (center[0] - span[0] / 2)) / span[0] * w
-    py = (1 - (xy[:, 1] - (center[1] - span[1] / 2)) / span[1]) * h
-    order = sorted(
-        range(len(xy)), key=lambda i: -counts.get(str(data["movie_ids"][i]), 0)
-    )
-    points = []
-    for i in order:
-        movie_id = str(data["movie_ids"][i])
-        if movie_id not in titles or not (0 <= px[i] <= w and 0 <= py[i] <= h):
-            continue
-        region = region_labels.get(int(data["region_ids"][i]), "")
-        points.append([round(px[i]), round(py[i]), titles[movie_id], region])
-        if len(points) == 4000:
-            break
-    save_hover("horrorverse", {"w": w, "h": h, "kind": "points", "points": points})
-
-
 def relaion(cols=7, rows=4, tile=160, gap=16, corner=20, pad=12):
     """A contact sheet of natural images (no people) in colour, one tile ringed as the highlight."""
     from PIL import ImageDraw
