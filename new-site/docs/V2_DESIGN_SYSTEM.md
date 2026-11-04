@@ -118,7 +118,7 @@ the centered 920px column. `body` clips horizontal overflow.
 | ≤ 960px | Both 12-column grids become one column; papers become thumbnail rows; column lists drop to two; Life stories 2×2 |
 | ≤ 860px | Hero portrait column narrows |
 | ≤ 720px | Navigation collapses into a menu panel; work tiles two across |
-| ≤ 600px | Everything is one column; papers and stories are 104px-thumbnail rows; the hero puts name and lede beside a 3:4 tinted portrait tile; Life band photos 2×2 |
+| ≤ 600px | Everything is one column; work tiles, papers and stories are 104px-thumbnail rows; the hero puts name and lede beside a 3:4 tinted portrait tile; Life band photos 2×2 |
 | ≤ 380px | Tighter header controls |
 
 ## Components
@@ -165,6 +165,13 @@ optional muted count, an optional right-aligned `.link`), an optional `.panel-le
 `.tile` (Selected work) is a flex column: a 4:3 tinted `.frame` with the graphic → 15px/600 `h3` →
 `.card-text` → 12px `.card-detail` → `.item-links`, pushed to the bottom so links line up across the
 row. Tiles carry no stats lines or labels; all five projects look the same, whoever led them.
+
+### Tool icons
+
+Open-source tools (`.mini--icons`) carry a 32px `.tool-icon` beside each name: a tinted square with
+a schematic two-layer mask (`tool-<repo>-ink.png`, `-accent.png`, from `tool_icons()` in
+`scripts/card_graphics.py`), coloured by the same `--tc` rules as tiles. At that size they are marks
+of what each tool does (a waveform, job bars, a searchlight sphere), not plots of real data.
 
 ### Items
 

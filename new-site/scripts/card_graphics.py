@@ -8,7 +8,7 @@ THINGS-fMRI files in ``new-site/.local``, THINGS model features and the CCN 2025
 ``~/Downloads``, and the LAION-fMRI git history), so this only runs on Johannes's machine:
 
     python3 new-site/scripts/card_graphics.py [horrorverse relaion revision laion_fmri thingsvision
-                                               paper_universal paper_sampling paper_coding]
+                                               paper_universal paper_sampling paper_coding tool_icons]
 """
 
 import json
@@ -647,6 +647,90 @@ def paper_coding(w=1200, h=900, repo=HOME / "LAION-fMRI"):
         save_mask(fig, f"paper-coding-{name}")
 
 
+def tool_icons(size=128):
+    """Square icons for the open-source tools list. Shown at about 30px, so these are schematic
+    marks of what each tool does rather than plots of real data: few, thick elements."""
+    from matplotlib.patches import Circle, Ellipse
+
+    def draw(name, ink, accent):
+        for layer, paint in (("ink", ink), ("accent", accent)):
+            fig, ax = canvas(size, size)
+            ax.set_xlim(0, 1)
+            ax.set_ylim(0, 1)
+            paint(ax)
+            save_mask(fig, f"tool-{name}-{layer}")
+
+    def voice_ink(ax):
+        x = np.linspace(0.16, 0.84, 7)
+        h = np.array([0.10, 0.22, 0.34, 0.18, 0.28, 0.14, 0.08])
+        ax.vlines(x, 0.5 - h, 0.5 + h, color="k", linewidth=2.5, capstyle="round")
+
+    def voice_accent(ax):
+        t = np.linspace(0, 2 * np.pi, 120)
+        ax.plot(0.66 + 0.24 * np.cos(t), 0.5 + 0.3 * np.sin(t) + 0.02 * np.cos(3 * t), color="k", linewidth=2)
+
+    def slurm(rows):
+        def paint(ax):
+            for i, (start, length) in enumerate([(0.14, 0.42), (0.30, 0.52), (0.20, 0.30), (0.44, 0.40)]):
+                if i in rows:
+                    y = 0.76 - i * 0.17
+                    ax.hlines(y, start, start + length, color="k", linewidth=4.5, capstyle="round")
+        return paint
+
+    def fmriqc_ink(ax):
+        x = np.linspace(0.12, 0.88, 60)
+        for i, y in enumerate((0.72, 0.5, 0.28)):
+            trace = y + 0.05 * np.sin(x * (11 + 4 * i) + i) + 0.025 * np.sin(x * 37 + 2 * i)
+            ax.plot(x, trace, color="k", linewidth=1.6, solid_capstyle="round")
+
+    def fmriqc_accent(ax):
+        ax.vlines(0.64, 0.12, 0.88, color="k", linewidth=3, capstyle="round")
+
+    def cvmanova(which):
+        def paint(ax):
+            cx = 0.38 if which == 0 else 0.62
+            ax.add_patch(Ellipse((cx, 0.5), 0.44, 0.62, angle=30 if which == 0 else -30, fill=False, ec="k", lw=2.25))
+            ax.add_patch(Circle((cx, 0.5), 0.05, color="k"))
+        return paint
+
+    def searchlight_ink(ax):
+        g = np.linspace(0.14, 0.86, 5)
+        xs, ys = np.meshgrid(g, g)
+        far = np.hypot(xs - 0.5, ys - 0.5) > 0.2
+        ax.scatter(xs[far], ys[far], s=14, color="k", linewidths=0)
+
+    def searchlight_accent(ax):
+        g = np.linspace(0.14, 0.86, 5)
+        xs, ys = np.meshgrid(g, g)
+        near = np.hypot(xs - 0.5, ys - 0.5) <= 0.2
+        ax.scatter(xs[near], ys[near], s=28, color="k", linewidths=0)
+        ax.add_patch(Circle((0.5, 0.5), 0.3, fill=False, ec="k", lw=1.75))
+
+    pts = np.random.default_rng(11).uniform(0.12, 0.88, (26, 2))
+
+    def sample_ink(ax):
+        ax.scatter(pts[:, 0], pts[:, 1], s=9, color="k", linewidths=0)
+
+    def sample_accent(ax):
+        ax.scatter([0.24, 0.72, 0.36, 0.8], [0.74, 0.7, 0.26, 0.3], s=60, color="k", linewidths=0)
+
+    def conwell_ink(ax):
+        x = np.linspace(0.16, 0.84, 9)
+        y = x + np.array([0.08, -0.07, 0.05, -0.04, 0.09, -0.08, 0.04, -0.06, 0.03])
+        ax.scatter(x, y, s=24, color="k", linewidths=0)
+
+    def conwell_accent(ax):
+        ax.plot([0.1, 0.9], [0.1, 0.9], color="k", linewidth=2.5, solid_capstyle="round")
+
+    draw("voice-annotate", voice_ink, voice_accent)
+    draw("slurmboard", slurm({0, 1, 3}), slurm({2}))
+    draw("fmriqc", fmriqc_ink, fmriqc_accent)
+    draw("cvmanova_python", cvmanova(0), cvmanova(1))
+    draw("pysearchlight", searchlight_ink, searchlight_accent)
+    draw("how-to-sample", sample_ink, sample_accent)
+    draw("conwell_replication", conwell_ink, conwell_accent)
+
+
 if __name__ == "__main__":
     OUT.mkdir(parents=True, exist_ok=True)
     targets = sys.argv[1:] or [
@@ -658,6 +742,7 @@ if __name__ == "__main__":
         "paper_universal",
         "paper_sampling",
         "paper_coding",
+        "tool_icons",
     ]
     for target in targets:
         globals()[target]()

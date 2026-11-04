@@ -515,14 +515,14 @@ summary::-webkit-details-marker { display: none; }
 .item-media.graphic--laion > :is(.graphic-ink, .graphic-accent) { inset: 0; }
 
 /* Each tile and paper takes the next palette colour. */
-:is(.tiles, .items) > :nth-child(4n+1) { --tc: var(--p1); }
-:is(.tiles, .items) > :nth-child(4n+2) { --tc: var(--p2); }
-:is(.tiles, .items) > :nth-child(4n+3) { --tc: var(--p3); }
-:is(.tiles, .items) > :nth-child(4n+4) { --tc: var(--p4); }
+:is(.tiles, .items, .mini--icons) > :nth-child(4n+1) { --tc: var(--p1); }
+:is(.tiles, .items, .mini--icons) > :nth-child(4n+2) { --tc: var(--p2); }
+:is(.tiles, .items, .mini--icons) > :nth-child(4n+3) { --tc: var(--p3); }
+:is(.tiles, .items, .mini--icons) > :nth-child(4n+4) { --tc: var(--p4); }
 /* Each tile gets a faint tint of its colour; the graphic's highlight carries the full colour. */
-:is(.tile-media, .item-media) { background: color-mix(in srgb, var(--tc, var(--p1)) 7%, var(--surface)); }
-:is(.tile-media, .item-media).graphic > .graphic-ink { background: color-mix(in srgb, var(--ink) 72%, var(--tc, var(--p1))); }
-:is(.tile-media, .item-media, .shelf-media).graphic > .graphic-accent { background: var(--tc, var(--p1)); }
+:is(.tile-media, .item-media, .tool-icon) { background: color-mix(in srgb, var(--tc, var(--p1)) 7%, var(--surface)); }
+:is(.tile-media, .item-media, .tool-icon).graphic > .graphic-ink { background: color-mix(in srgb, var(--ink) 72%, var(--tc, var(--p1))); }
+:is(.tile-media, .item-media, .tool-icon, .shelf-media).graphic > .graphic-accent { background: var(--tc, var(--p1)); }
 .shelf-note .shelf-media.graphic { --tc: var(--p3); }
 
 /* Project tiles: a tinted graphic, the key numbers, then text. */
@@ -570,6 +570,10 @@ summary::-webkit-details-marker { display: none; }
 .mini { display: grid; gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
 .mini .link { font-size: var(--text-sm); }
 .mini p { margin-top: 1px; color: var(--secondary); font-size: var(--text-xs); line-height: 1.5; }
+/* Tools with a small schematic icon beside each name. */
+.mini--icons li { display: grid; grid-template-columns: 2rem minmax(0, 1fr); align-items: start; gap: var(--space-3); }
+.tool-icon { width: 2rem; aspect-ratio: 1; margin-top: 1px; border-radius: 7px; }
+.tool-icon.graphic > :is(.graphic-ink, .graphic-accent) { inset: 3px; }
 .focus-list { display: grid; gap: var(--space-3); }
 .focus-list dt { font-size: var(--text-sm); font-weight: 600; line-height: 1.4; }
 .focus-list dd { margin-top: 1px; color: var(--muted); font-size: var(--text-xs); line-height: 1.5; }
@@ -612,6 +616,11 @@ summary::-webkit-details-marker { display: none; }
 @media (max-width: 600px) {
   .tiles--work, .entries--cols, .mini--cols, .focus-list--cols, #tools .mini--cols, #capabilities .focus-list--cols { grid-template-columns: minmax(0, 1fr); }
   .life-band { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+  /* Project tiles become thumbnail rows, like the papers, instead of five full-width figures. */
+  .tiles--work .tile { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); grid-template-rows: auto auto auto 1fr; column-gap: var(--space-4); align-content: start; }
+  .tiles--work .tile-media { grid-row: 1 / -1; margin-bottom: 0; }
+  .tiles--work .tile > :not(.tile-media) { grid-column: 2; }
+  .tiles--work .tile .item-links { margin-top: 0; }
   .tl-row, .tl-axis { grid-template-columns: 7rem minmax(0, 1fr); gap: var(--space-3); }
   .item, .stories .item, .items--cols .item, .stories.stories--band .item { grid-template-columns: 6.5rem minmax(0, 1fr); gap: var(--space-4); }
   .stories, .stories.stories--band { grid-template-columns: minmax(0, 1fr); }

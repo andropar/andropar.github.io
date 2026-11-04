@@ -196,11 +196,14 @@ const lifeStories = [
           <span class="count">{tools.length}</span>
           <a class="link" href="https://github.com/andropar" target="_blank" rel="noopener">GitHub</a>
         </div>
-        <ul class="mini mini--cols">
+        <ul class="mini mini--cols mini--icons">
           {tools.map(tool => (
             <li>
-              <a class="link" href={`https://github.com/andropar/${tool.repo}`} target="_blank" rel="noopener">{tool.repo}</a>
-              <p>{tool.description}</p>
+              <span class="frame tool-icon graphic" aria-hidden="true" style={`--ink-mask: url(/v2/graphics/tool-${tool.repo}-ink.png); --accent-mask: url(/v2/graphics/tool-${tool.repo}-accent.png)`}><span class="graphic-ink"></span><span class="graphic-accent"></span></span>
+              <div>
+                <a class="link" href={`https://github.com/andropar/${tool.repo}`} target="_blank" rel="noopener">{tool.repo}</a>
+                <p>{tool.description}</p>
+              </div>
             </li>
           ))}
         </ul>
