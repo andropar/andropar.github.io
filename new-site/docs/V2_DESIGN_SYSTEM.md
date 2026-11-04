@@ -105,7 +105,9 @@ the centered 920px column. `body` clips horizontal overflow.
   small `.group-head` (muted label, link on the right): *Projects* (six `.tiles--work` tiles, three
   across, an 8rem thumbnail beside title and one line, links below), *Publications* (three
   `.items--cols` papers), then a `.work-pair` of *Open-source tools* (2fr, rows spread so the column
-  ends level) beside *Writing* (1fr, the latest two posts). Then `.dense--work`, a 12-column grid
+  ends level) beside *Writing* (1fr, the latest two posts). All four groups share one grid (`--work-gap`, `--work-thumb` on `#selected-work`: three equal
+  columns, one gap, 8rem thumbnails, 6.5rem on phones), so column and text edges line up between groups.
+  Then `.dense--work`, a 12-column grid
   with Experience & education and Life outside work at full width.
 - **Life view:** `.dense--life`, also 12 columns: A bit about me as a four-column photo band, then
   Music, Horror movie night and Writing as three `.panel--third`s, then On my shelves full width.

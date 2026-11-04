@@ -455,13 +455,17 @@ summary::-webkit-details-marker { display: none; }
 .dense--work > * { grid-column: 1 / -1; }
 /* Selected work holds four groups: projects, publications, then open-source tools beside writing.
    Tool rows spread out so the tools column ends level with the writing column. */
+/* All four groups share one grid: three equal columns, one gap, one thumbnail width, so column and
+   text edges line up from projects to publications to tools and writing. */
+#selected-work { --work-gap: var(--space-7); --work-thumb: 8rem; --work-thumb-gap: var(--space-4); }
 #selected-work > :is(.work-group, .work-pair) + :is(.work-group, .work-pair) { margin-top: clamp(2.5rem, 4vw, 3.5rem); }
 .group-head { display: flex; align-items: baseline; gap: var(--space-2); margin-bottom: var(--space-4); padding-bottom: var(--space-2); border-bottom: 1px solid var(--line); }
 .group-head h3 { color: var(--muted); font-size: var(--text-sm); font-weight: 500; letter-spacing: 0; }
 .group-head .link { margin-left: auto; font-size: var(--text-xs); }
-.work-pair { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: clamp(var(--space-7), 4vw, 4rem); }
-#tools { display: flex; flex-direction: column; }
-#tools .mini--cols { flex: 1; grid-template-columns: repeat(2, minmax(0, 1fr)); align-content: space-between; }
+.work-pair { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--work-gap); }
+#tools { display: flex; flex-direction: column; grid-column: span 2; }
+#tools .mini--cols { flex: 1; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--work-gap); align-content: space-between; }
+#selected-work .post { grid-template-columns: var(--work-thumb) minmax(0, 1fr); column-gap: var(--work-thumb-gap); }
 
 /* Life: the stories as a full-width band, then music, movies and writing in thirds, then the shelves. */
 .dense.dense--life { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: clamp(4rem, 7vw, 6.5rem) clamp(var(--space-7), 4vw, 4rem); padding-top: var(--space-6); }
@@ -473,15 +477,17 @@ summary::-webkit-details-marker { display: none; }
 .stories.stories--band .story-media { aspect-ratio: 4 / 3; }
 .dense--work > .panel { gap: var(--space-5); }
 
-.items--cols { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-6); }
+.items.items--cols { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-6) var(--work-gap, var(--space-6)); }
 /* Papers: the thumbnail sits beside venue, title and authors; the summary runs below both. */
-.items--cols .item { grid-template-columns: 7.5rem minmax(0, 1fr); grid-template-rows: auto auto 1fr; align-content: start; column-gap: var(--space-4); row-gap: 0; }
+.items--cols .item { grid-template-columns: var(--work-thumb, 7.5rem) minmax(0, 1fr); grid-template-rows: auto auto 1fr; align-content: start; column-gap: var(--work-thumb-gap, var(--space-4)); row-gap: 0; }
 .items--cols .item > div:not(.item-media) { display: contents; }
 .items--cols .item-media { grid-row: 1 / span 3; aspect-ratio: 4 / 3; align-self: start; }
 .items--cols .item :is(.venue, h3, h4, .card-detail) { grid-column: 2; }
+.items--cols .item .venue { margin-bottom: var(--space-1); }
+.items--cols .item :is(h3, h4) { margin-bottom: var(--space-1); }
 .items--cols .item .card-detail { align-self: start; }
 .items--cols .item :is(.card-text, .award-note) { grid-column: 1 / -1; }
-.items--cols .item .card-text { margin-top: var(--space-2); }
+.items--cols .item .card-text { margin-top: var(--space-4); }
 .items--cols .item .award-note { justify-self: start; }
 
 /* Entries laid out across columns: date above title, no rules between neighbours. */
@@ -543,9 +549,9 @@ summary::-webkit-details-marker { display: none; }
 .tiles { display: grid; gap: var(--space-6) var(--space-5); }
 /* Every project is a thumbnail beside its title and one line, three to a row, with the links below
    both; the full figure lives in its dialog. The thumbnail is about as tall as the text beside it. */
-.tiles--work { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-7) var(--space-7); }
+.tiles--work { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-7) var(--work-gap); }
 .tile-media { aspect-ratio: 4 / 3; margin-bottom: var(--space-3); }
-.tiles--work .tile { display: grid; grid-template-columns: 8rem minmax(0, 1fr); grid-template-rows: auto 1fr auto; column-gap: var(--space-4); align-content: start; }
+.tiles--work .tile { display: grid; grid-template-columns: var(--work-thumb) minmax(0, 1fr); grid-template-rows: auto 1fr auto; column-gap: var(--work-thumb-gap); align-content: start; }
 .tiles--work .tile-media { grid-row: 1 / 3; margin-bottom: 0; }
 .tiles--work .tile > :is(h3, h4, .card-text) { grid-column: 2; }
 .tiles--work .tile .item-links { grid-column: 1 / -1; margin-top: var(--space-3); }
@@ -625,6 +631,7 @@ summary::-webkit-details-marker { display: none; }
 
 @media (max-width: 1100px) {
   .tiles--work { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .items.items--cols { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 960px) {
   .dense { grid-template-columns: minmax(0, 1fr); }
@@ -633,10 +640,11 @@ summary::-webkit-details-marker { display: none; }
   .dense--life > .panel--third { grid-column: 1 / -1; }
   .stories.stories--band { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6) var(--space-5); }
   .work-pair, .exp-top { grid-template-columns: minmax(0, 1fr); }
+  #tools { grid-column: auto; }
   .exp-top .tl-rows { align-content: start; }
   #tools .mini--cols { align-content: start; }
   .tiles--work { grid-template-columns: minmax(0, 1fr); }
-  .items--cols { grid-template-columns: minmax(0, 1fr); }
+  .items.items--cols { grid-template-columns: minmax(0, 1fr); }
   .items--cols .item { grid-template-columns: 10.5rem minmax(0, 1fr); column-gap: var(--space-5); }
   .items--cols .item-media { aspect-ratio: 4 / 3; }
   .entries--cols, .mini--cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -650,6 +658,7 @@ summary::-webkit-details-marker { display: none; }
   .tl-row, .tl-axis { grid-template-columns: 7rem minmax(0, 1fr); gap: var(--space-3); }
   .item, .stories .item, .stories.stories--band .item { grid-template-columns: 6.5rem minmax(0, 1fr); gap: var(--space-4); }
   .items--cols .item { grid-template-columns: 6.5rem minmax(0, 1fr); column-gap: var(--space-4); }
+  #selected-work { --work-thumb: 6.5rem; }
   .stories, .stories.stories--band { grid-template-columns: minmax(0, 1fr); }
   .stories.stories--band .story-media { aspect-ratio: 4 / 5; }
   .contact-row { flex-direction: column; gap: var(--space-2); }
