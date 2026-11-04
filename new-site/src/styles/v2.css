@@ -467,8 +467,15 @@ summary::-webkit-details-marker { display: none; }
 .dense--work > .panel { gap: var(--space-5); }
 
 .items--cols { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-6); }
-.items--cols .item { grid-template-columns: 7.5rem minmax(0, 1fr); gap: var(--space-4); }
-.items--cols .item-media { aspect-ratio: 4 / 3; }
+/* Papers: the thumbnail sits beside venue, title and authors; the summary runs below both. */
+.items--cols .item { grid-template-columns: 7.5rem minmax(0, 1fr); grid-template-rows: auto auto 1fr; align-content: start; column-gap: var(--space-4); row-gap: 0; }
+.items--cols .item > div:not(.item-media) { display: contents; }
+.items--cols .item-media { grid-row: 1 / span 3; aspect-ratio: 4 / 3; align-self: start; }
+.items--cols .item :is(.venue, h3, .card-detail) { grid-column: 2; }
+.items--cols .item .card-detail { align-self: start; }
+.items--cols .item :is(.card-text, .award-note) { grid-column: 1 / -1; }
+.items--cols .item .card-text { margin-top: var(--space-2); }
+.items--cols .item .award-note { justify-self: start; }
 
 /* Entries laid out across columns: date above title, no rules between neighbours. */
 .entries--cols { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-5) var(--space-6); }
@@ -527,14 +534,14 @@ summary::-webkit-details-marker { display: none; }
 
 /* Project tiles: a tinted graphic, the key numbers, then text. */
 .tiles { display: grid; gap: var(--space-6) var(--space-5); }
-/* Every project is a thumbnail beside its text, two to a row; the full figure lives in its dialog.
-   Links sit at the foot of the thumbnail. */
-.tiles--work { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-7) var(--space-8); }
+/* Every project is a thumbnail beside its title and one line, three to a row, with the links below
+   both; the full figure lives in its dialog. The thumbnail is about as tall as the text beside it. */
+.tiles--work { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-7) var(--space-7); }
 .tile-media { aspect-ratio: 4 / 3; margin-bottom: var(--space-3); }
-.tiles--work .tile { display: grid; grid-template-columns: 12rem minmax(0, 1fr); grid-template-rows: auto auto 1fr; column-gap: var(--space-5); align-content: start; }
-.tiles--work .tile-media { grid-row: 1 / -1; margin-bottom: 0; }
-.tiles--work .tile > :not(.tile-media) { grid-column: 2; }
-.tiles--work .tile .item-links { align-self: end; padding-top: var(--space-2); }
+.tiles--work .tile { display: grid; grid-template-columns: 8rem minmax(0, 1fr); grid-template-rows: auto 1fr auto; column-gap: var(--space-4); align-content: start; }
+.tiles--work .tile-media { grid-row: 1 / 3; margin-bottom: 0; }
+.tiles--work .tile > :is(h3, .card-text) { grid-column: 2; }
+.tiles--work .tile .item-links { grid-column: 1 / -1; margin-top: var(--space-3); }
 .tile-media--photos { display: grid; place-items: center; padding: var(--space-3); }
 .tile-media--photos img { width: 100%; height: 100%; object-fit: contain; }
 .tile h3 { margin-bottom: var(--space-1); font-size: var(--text-md); font-weight: 600; letter-spacing: -0.01em; }
@@ -601,6 +608,9 @@ summary::-webkit-details-marker { display: none; }
 .contact-row .status { margin-top: 0; }
 .contact-row .contact-links { margin-top: 0; }
 
+@media (max-width: 1100px) {
+  .tiles--work { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 @media (max-width: 960px) {
   .dense { grid-template-columns: minmax(0, 1fr); }
   .dense.dense--work { grid-template-columns: minmax(0, 1fr); }
@@ -610,7 +620,7 @@ summary::-webkit-details-marker { display: none; }
   .dense--work > #tools, .dense--work > #writing { grid-column: 1 / -1; }
   .tiles--work { grid-template-columns: minmax(0, 1fr); }
   .items--cols { grid-template-columns: minmax(0, 1fr); }
-  .items--cols .item { grid-template-columns: 10.5rem minmax(0, 1fr); gap: var(--space-5); }
+  .items--cols .item { grid-template-columns: 10.5rem minmax(0, 1fr); column-gap: var(--space-5); }
   .items--cols .item-media { aspect-ratio: 4 / 3; }
   .entries--cols, .mini--cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .life-band { grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -621,7 +631,8 @@ summary::-webkit-details-marker { display: none; }
   .life-band { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
   .tiles--work .tile { grid-template-columns: 6.5rem minmax(0, 1fr); column-gap: var(--space-4); }
   .tl-row, .tl-axis { grid-template-columns: 7rem minmax(0, 1fr); gap: var(--space-3); }
-  .item, .stories .item, .items--cols .item, .stories.stories--band .item { grid-template-columns: 6.5rem minmax(0, 1fr); gap: var(--space-4); }
+  .item, .stories .item, .stories.stories--band .item { grid-template-columns: 6.5rem minmax(0, 1fr); gap: var(--space-4); }
+  .items--cols .item { grid-template-columns: 6.5rem minmax(0, 1fr); column-gap: var(--space-4); }
   .stories, .stories.stories--band { grid-template-columns: minmax(0, 1fr); }
   .stories.stories--band .story-media { aspect-ratio: 4 / 5; }
   .contact-row { flex-direction: column; gap: var(--space-2); }

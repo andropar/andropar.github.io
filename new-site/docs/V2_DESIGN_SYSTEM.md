@@ -101,8 +101,8 @@ the centered 920px column. `body` clips horizontal overflow.
 - **Hero:** `minmax(0, 1fr) | minmax(14rem, 27rem)` with a 44px gap. The copy is vertically centered;
   the cut-out portrait is bottom-aligned so it stands on the first panel's rule. The hero gets its
   height from spacing between its parts (larger above 860px), never from larger parts.
-- **Work view:** a full-width Selected work band (`.work-band`, six `.tiles--work` tiles, two across, each a 12rem
-  thumbnail beside its text), then
+- **Work view:** a full-width Selected work band (`.work-band`, six `.tiles--work` tiles, three across, each an 8rem
+  thumbnail beside its title and one line, with the links below both), then
   `.dense--work`, a 12-column grid. Sections with figures or charts span all 12 columns (Research,
   Experience & education, Life outside work); the two short text sections pair up 8 + 4: Open-source
   tools | Writing.
@@ -191,7 +191,7 @@ and dialogs render from the `projects` list in `index.astro`, so each project is
 ### Items
 
 `.item` (papers) is a thumbnail beside text: venue line (`.venue`: venue in `--ink`, then year and
-note), title, authors, summary and an optional `.award-note`. In `.items--cols` (three across) the thumbnail is a 7.5rem 4:3 square-ish frame beside the text.
+note), title, authors, summary and an optional `.award-note`. In `.items--cols` (three across) a 7.5rem thumbnail sits beside venue, title and authors, and the summary runs below both, so neither leaves empty space next to the other.
 
 ### List rows
 
