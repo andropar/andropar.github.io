@@ -117,8 +117,10 @@ const lifeStories = [
             <div class="frame tile-media graphic graphic--horrorverse" data-hover="horrorverse" role="img" aria-label="The Horrorverse atlas: about 19,000 horror films as dots, with the haunted-house region highlighted"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
             <h3>Horrorverse</h3>
             <p class="card-text">A horror film recommender with mood search, an explorable map of the genre and an illustrated history.</p>
-            <p class="card-detail">Collaborative-filtering recommender, text-embedding search, the film atlas, AI-assisted theme analysis, accounts and a self-hosted deployment.</p>
-            <div class="item-links"><a class="link stretched" href="https://horrorverse.jroth.space/" target="_blank" rel="noopener">Open Horrorverse</a></div>
+            <div class="item-links">
+              <a class="link stretched" href="https://horrorverse.jroth.space/" target="_blank" rel="noopener">Open Horrorverse</a>
+              <button class="link more-button" type="button" data-dialog="project-horrorverse" aria-haspopup="dialog">More</button>
+            </div>
           </article>
           <article class="card tile">
             <div class="frame tile-media graphic graphic--voice" role="img" aria-label="The four marks from a voice-annotate demo capture on the frozen screen, each tied to the moment in the narration when it was drawn"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
@@ -169,7 +171,7 @@ const lifeStories = [
           <span class="count">{publications.length + olderPublications.length}</span>
           <a class="link" href="https://scholar.google.com/citations?user=U3Z3J2gAAAAJ" target="_blank" rel="noopener">Google Scholar</a>
         </div>
-        <p class="panel-lede">At the Max Planck Institute and University of Giessen, I study how visual representations in models relate to the human brain.</p>
+        <p class="panel-lede">Mostly vision models and the visual brain, plus some medical imaging and research software.</p>
         <div class="items items--cols">
           {publications.map(paper => (
             <article class="card item">
@@ -447,6 +449,35 @@ const lifeStories = [
     </div>
   </div>
 
+  <dialog class="project-dialog" id="project-horrorverse" aria-labelledby="project-horrorverse-title" style="--tc: var(--p1)">
+    <button class="icon-button project-dialog-close" type="button" aria-label="Close">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
+    </button>
+    <div class="frame project-dialog-media graphic graphic--horrorverse" data-hover="horrorverse" role="img" aria-label="The Horrorverse atlas: horror films as dots arranged by theme and story, with the haunted-house region highlighted"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
+    <div class="project-dialog-body">
+      <h2 id="project-horrorverse-title">Horrorverse</h2>
+      <p class="project-dialog-lede">A horror film recommender with mood search, an explorable map of the genre and an illustrated history.</p>
+      <div class="project-facts">
+        <section>
+          <h3>What it is</h3>
+          <p>It started as a way to settle what to watch on our horror movie nights. Describe a mood, like slow-burn folk horror under 100 minutes, and it picks one to three films for the night. Rate a few films and the daily picks get better, or wander the atlas: about 20,700 films arranged by theme and story.</p>
+        </section>
+        <section>
+          <h3>What I did</h3>
+          <p>All of it, on my own: a collaborative-filtering recommender trained on MovieLens 32M, with a content bridge for films nobody has rated yet; text-embedding search for moods; the atlas; Letterboxd import and accounts; and the self-hosted deployment.</p>
+        </section>
+        <section>
+          <h3>What came out of it</h3>
+          <p>It's live, and we use it every movie night. Its catalogue also became the data behind <a href="/blog/a-century-of-fear">A century of fear</a>, an illustrated history of 19,302 horror films.</p>
+        </section>
+      </div>
+      <div class="item-links">
+        <a class="link" href="https://horrorverse.jroth.space/" target="_blank" rel="noopener">Open Horrorverse</a>
+        <a class="link" href="https://horrorverse.jroth.space/app/movie-night" target="_blank" rel="noopener">Movie night</a>
+      </div>
+    </div>
+  </dialog>
+
   <section class="contact-strip" id="contact" aria-labelledby="contact-heading">
     <div class="panel-head">
       <h2 id="contact-heading">Say hi</h2>
@@ -467,4 +498,5 @@ const lifeStories = [
 
 <script>
   import '../scripts/graphics';
+  import '../scripts/project-dialogs';
 </script>

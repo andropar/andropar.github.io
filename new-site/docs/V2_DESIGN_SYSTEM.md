@@ -172,6 +172,14 @@ a schematic two-layer mask (`tool-<repo>-ink.png`, `-accent.png`, from `tool_ico
 `scripts/card_graphics.py`), coloured by the same `--tc` rules as tiles. At that size they are marks
 of what each tool does (a waveform, job bars, a searchlight sphere), not plots of real data.
 
+### Project dialogs
+
+A tile's `More` button (`.more-button`, `data-dialog="<id>"`) opens a native `<dialog
+class="project-dialog">` (`src/scripts/project-dialogs.ts`): the project's figure large and still
+explorable, its title and one-line description, then three short sections (*What it is*, *What I
+did*, *What came out of it*) and its links. Escape, the close button and a backdrop click close it;
+the page behind does not scroll. Tiles with a dialog drop their `.card-detail` line.
+
 ### Items
 
 `.item` (papers) is a thumbnail beside text: venue line (`.venue`: venue in `--ink`, then year and
