@@ -451,9 +451,9 @@ summary::-webkit-details-marker { display: none; }
 /* Sections with figures or charts span the page; short text sections pair up 2:1, swapping sides. */
 .dense.dense--work { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: clamp(4rem, 7vw, 6.5rem) clamp(var(--space-7), 4vw, 4rem); padding-top: clamp(4rem, 7vw, 6.5rem); }
 .dense--work > * { grid-column: 1 / -1; }
-.dense--work > #tools, .dense--work > #capabilities { grid-column: span 8; }
-.dense--work > #writing, .dense--work > #education { grid-column: span 4; }
-#tools .mini--cols, #capabilities .focus-list--cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.dense--work > #tools { grid-column: span 8; }
+.dense--work > #writing { grid-column: span 4; }
+#tools .mini--cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
 /* Life: the stories as a full-width band, then music, movies and writing in thirds, then the shelves. */
 .dense.dense--life { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: clamp(4rem, 7vw, 6.5rem) clamp(var(--space-7), 4vw, 4rem); padding-top: var(--space-6); }
@@ -478,8 +478,6 @@ summary::-webkit-details-marker { display: none; }
 :is(.items, .timeline) + .entries--cols { margin-top: var(--space-2); padding-top: var(--space-5); border-top: 1px solid var(--line); }
 
 .mini--cols { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-5) var(--space-6); }
-.focus-list--cols { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4) var(--space-6); }
-#capabilities .skill-groups { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-4) var(--space-6); margin-top: var(--space-2); padding-top: var(--space-5); border-top: 1px solid var(--line); }
 /* Life band: echoes the Selected work row, text in the first column and four photos. */
 .life-band { position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--space-5); align-items: start; }
 .life-band-text p { margin-bottom: var(--space-2); color: var(--secondary); font-size: var(--text-sm); }
@@ -558,17 +556,17 @@ summary::-webkit-details-marker { display: none; }
 .tl-ticks { position: relative; height: 1rem; color: var(--muted); font-size: 0.6875rem; font-variant-numeric: tabular-nums; }
 .tl-ticks span { position: absolute; left: var(--at); transform: translateX(-50%); }
 
-/* Skills, grouped by kind instead of one long run of pills. */
-.skill-groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4) var(--space-5); margin-top: var(--space-2); }
-.skill-groups h3 { margin-bottom: 2px; color: var(--muted); font-size: var(--text-xs); font-weight: 500; letter-spacing: 0; }
-.skill-groups p { font-size: var(--text-sm); line-height: 1.5; }
 
 /* Entries inside a panel start right under its rule. */
 .panel .entry:first-child { padding-top: 0; border-top: 0; }
 .panel .entry { padding-block: var(--space-3); }
 .entry-org { color: var(--ink); }
+/* What a role involved: a muted line under its description, instead of a separate skills section. */
+.entry-tags { margin-top: var(--space-1); color: var(--muted); font-size: var(--text-xs); line-height: 1.5; }
+.panel-sub { margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid var(--line); color: var(--muted); font-size: var(--text-xs); font-weight: 500; letter-spacing: 0; }
+.panel-sub + .entries--cols { margin-top: calc(-1 * var(--space-2)); }
 
-/* Tools, focus areas: name plus one small line. */
+/* Tools: name plus one small line. */
 .mini { display: grid; gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
 .mini .link { font-size: var(--text-sm); }
 .mini p { margin-top: 1px; color: var(--secondary); font-size: var(--text-xs); line-height: 1.5; }
@@ -576,9 +574,6 @@ summary::-webkit-details-marker { display: none; }
 .mini--icons li { display: grid; grid-template-columns: 2rem minmax(0, 1fr); align-items: start; gap: var(--space-3); }
 .tool-icon { width: 2rem; aspect-ratio: 1; margin-top: 1px; border-radius: 7px; }
 .tool-icon.graphic > :is(.graphic-ink, .graphic-accent) { inset: 3px; }
-.focus-list { display: grid; gap: var(--space-3); }
-.focus-list dt { font-size: var(--text-sm); font-weight: 600; line-height: 1.4; }
-.focus-list dd { margin-top: 1px; color: var(--muted); font-size: var(--text-xs); line-height: 1.5; }
 .panel .pills { gap: 4px; }
 
 /* Life stories as items, two to a row. */
@@ -601,11 +596,11 @@ summary::-webkit-details-marker { display: none; }
   .dense.dense--life { grid-template-columns: minmax(0, 1fr); }
   .dense--life > .panel--third { grid-column: 1 / -1; }
   .stories.stories--band { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6) var(--space-5); }
-  .dense--work > #tools, .dense--work > #capabilities, .dense--work > #writing, .dense--work > #education { grid-column: 1 / -1; }
+  .dense--work > #tools, .dense--work > #writing { grid-column: 1 / -1; }
   .items--cols { grid-template-columns: minmax(0, 1fr); }
   .items--cols .item { grid-template-columns: 10.5rem minmax(0, 1fr); gap: var(--space-5); }
   .items--cols .item-media { aspect-ratio: 4 / 3; }
-  .entries--cols, .mini--cols, .focus-list--cols, #capabilities .skill-groups { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .entries--cols, .mini--cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .life-band { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .life-band-text { grid-column: 1 / -1; }
 }
@@ -613,7 +608,7 @@ summary::-webkit-details-marker { display: none; }
   .tiles--work { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 600px) {
-  .tiles--work, .entries--cols, .mini--cols, .focus-list--cols, #tools .mini--cols, #capabilities .focus-list--cols { grid-template-columns: minmax(0, 1fr); }
+  .tiles--work, .entries--cols, .mini--cols, #tools .mini--cols { grid-template-columns: minmax(0, 1fr); }
   .life-band { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
   /* Project tiles become thumbnail rows, like the papers, instead of five full-width figures. */
   .tiles--work .tile { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); grid-template-rows: auto auto auto 1fr; column-gap: var(--space-4); align-content: start; }

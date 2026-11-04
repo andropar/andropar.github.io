@@ -103,13 +103,13 @@ the centered 920px column. `body` clips horizontal overflow.
   height from spacing between its parts (larger above 860px), never from larger parts.
 - **Work view:** a full-width Selected work band (`.work-band`, six `.tiles--work` tiles, three across with 16:10 figures), then
   `.dense--work`, a 12-column grid. Sections with figures or charts span all 12 columns (Research,
-  Experience, Life outside work); short text sections pair up 8 + 4, swapping sides: Open-source tools
-  | Writing, then Education | Expertise.
+  Experience & education, Life outside work); the two short text sections pair up 8 + 4: Open-source
+  tools | Writing.
 - **Life view:** `.dense--life`, also 12 columns: A bit about me as a four-column photo band, then
   Music, Horror movie night and Writing as three `.panel--third`s, then On my shelves full width.
 - **Inside full-width sections** content sits in its own columns: papers in three (`.items--cols`),
-  earlier papers in four and roles in three (`.entries--cols`, `--thirds`), tools in two
-  (`.mini--cols`), focus areas in two or three and skill groups in four.
+  earlier papers in four, roles and degrees in three (`.entries--cols`, `--thirds`), and tools in
+  two (`.mini--cols`).
 
 | Breakpoint | Changes |
 | --- | --- |
@@ -191,6 +191,12 @@ top at 5:2.
 
 `.entry`: `.entry-meta` (date) in the 96px meta column beside `.entry-title` and `.entry-text`,
 separated by hairlines. In `.entries--cols` the date sits above the title and rows have no rules.
+
+### Role skills
+
+There is no separate skills section. Each role ends with `.entry-tags`: a muted 12px line of what the
+role involved (methods, tools), taken from the CV, so every skill sits next to the work it came from.
+Degrees follow the roles under a `.panel-sub` "Education" label.
 
 ### Timeline
 
