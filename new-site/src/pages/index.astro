@@ -298,25 +298,6 @@ const lifeStories = [
           ))}
         </ul>
       </section>
-      <section class="panel panel--life" aria-labelledby="life-teaser-heading">
-        <div class="panel-head">
-          <h2 id="life-teaser-heading">Life outside work</h2>
-        </div>
-        <div class="life-band">
-          <div class="life-band-text">
-            <p>Climbing, making music, books, and dinner with friends.</p>
-            <a class="link stretched" href="#life">Meet the other side of me</a>
-          </div>
-          {lifeStories.map(story => (
-            <figure class="life-band-photo">
-              <div class="frame">
-                <Image class="photo-grade" src={story.image} alt={story.alt} widths={[300, 600]} sizes="(max-width: 720px) 45vw, 16rem" width={600} format="webp" loading="lazy" style={`object-position: ${story.position}`} />
-              </div>
-              <figcaption>{story.title}</figcaption>
-            </figure>
-          ))}
-        </div>
-      </section>
     </div>
   </div>
 

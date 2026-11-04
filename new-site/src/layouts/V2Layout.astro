@@ -71,7 +71,7 @@ const onWritingPage = canonicalPath.startsWith('/blog');
     </header>
     <main id="main-content" class="container"><slot /></main>
     <footer class="container site-footer">
-      <p>© {new Date().getFullYear()} Johannes Roth · Leipzig, Germany</p>
+      <p>© {new Date().getFullYear()} Johannes Roth · Leipzig, Germany · <a href={`${homeAnchor}#life`} data-work-href={`${homeAnchor}#life`} data-life-href={`${homeAnchor}#work`} data-work-label="Off the clock" data-life-label="Back to work">Off the clock</a></p>
       <a href="#main-content">Back to top</a>
     </footer>
     <script>
