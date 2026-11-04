@@ -8,7 +8,8 @@ THINGS-fMRI files in ``new-site/.local``, THINGS model features and the CCN 2025
 ``~/Downloads``, and the LAION-fMRI git history), so this only runs on Johannes's machine:
 
     python3 new-site/scripts/card_graphics.py [horrorverse relaion revision laion_fmri thingsvision
-                                               paper_universal paper_sampling paper_coding]
+                                               paper_universal paper_sampling paper_coding voice_annotate century conwell
+                                               tool_icons]
 """
 
 import json
@@ -99,12 +100,35 @@ def horrorverse(w=1600, h=1000):
     center, span = (lo + hi) / 2, (
         hi - lo
     ) * 1.08  # stretched to the card, like the live atlas
-    for name, mask, alpha in (("ink", ~accent, 0.55), ("accent", accent, 0.9)):
-        fig, ax = canvas(w, h)
-        ax.scatter(*xy[mask].T, s=2.4, c="k", alpha=alpha, linewidths=0)
-        ax.set_xlim(center[0] - span[0] / 2, center[0] + span[0] / 2)
-        ax.set_ylim(center[1] - span[1] / 2, center[1] + span[1] / 2)
-        save_mask(fig, f"horrorverse-{name}")
+    # Films as a halftone: a hex grid of round dots, each sized by how many films fall in that
+    # cell; cells mostly inside the haunted-house cluster become the accent.
+    from PIL import ImageDraw
+
+    x0, x1 = center[0] - span[0] / 2, center[0] + span[0] / 2
+    y0, y1 = center[1] - span[1] / 2, center[1] + span[1] / 2
+    px = (xy[:, 0] - x0) / (x1 - x0) * w
+    py = (1 - (xy[:, 1] - y0) / (y1 - y0)) * h
+    step = 30
+    row_h = step * 0.866
+    rows = (py / row_h).round().astype(int)
+    cols = ((px - (rows % 2) * step / 2) / step).round().astype(int)
+    cells = {}
+    for r, c, a in zip(rows, cols, accent):
+        n, k = cells.get((r, c), (0, 0))
+        cells[(r, c)] = (n + 1, k + int(a))
+    ref = np.quantile([n for n, _ in cells.values()], 0.9)
+    ss = 3  # supersampled, then downscaled for smooth edges
+    layers = {name: Image.new("L", (w * ss, h * ss), 0) for name in ("ink", "accent")}
+    pens = {name: ImageDraw.Draw(img) for name, img in layers.items()}
+    for (r, c), (n, k) in cells.items():
+        cx, cy = (c * step + (r % 2) * step / 2) * ss, r * row_h * ss
+        radius = max(step * 0.46 * min(1, np.sqrt(n / ref)), step * 0.12) * ss
+        name = "accent" if k > n * 0.4 else "ink"
+        pens[name].ellipse([cx - radius, cy - radius, cx + radius, cy + radius], fill=255)
+    for name, img in layers.items():
+        alpha = np.asarray(img.resize((w, h), Image.LANCZOS), float) / 255
+        save_array_mask(alpha * (0.85 if name == "ink" else 1), f"horrorverse-{name}")
+
 
     # Hover labels for the most-rated films, in the mask's pixel coordinates.
     import sqlite3
@@ -139,8 +163,10 @@ def horrorverse(w=1600, h=1000):
     save_hover("horrorverse", {"w": w, "h": h, "kind": "points", "points": points})
 
 
-def relaion(cols=10, rows=6, tile=72, gap=6, w=1600, h=1000):
-    """A dithered contact sheet of natural images (no people)."""
+def relaion(cols=7, rows=4, tile=160, gap=16, corner=20, pad=12):
+    """A contact sheet of natural images (no people) in colour, one tile ringed as the highlight."""
+    from PIL import ImageDraw
+
     categories = [
         "mountain",
         "forest",
@@ -169,19 +195,14 @@ def relaion(cols=10, rows=6, tile=72, gap=6, w=1600, h=1000):
     ]
     files = [p for c in categories for p in sorted(THUMBS.glob(f"{c}_*.jpg"))[:4]]
     files = list(rng.choice(files, cols * rows, replace=False))
-    bayer = (
-        np.array([[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]]) / 16
-        + 1 / 32
-    )
-    threshold = np.tile(bayer, (tile // 4, tile // 4))
-    sheet_w, sheet_h = cols * tile + (cols - 1) * gap, rows * tile + (rows - 1) * gap
-    ink = np.zeros((sheet_h, sheet_w))
-    light = np.zeros_like(ink)
-    accent = np.zeros_like(ink)
-    accent_tile = (2, 6)
+    size = (cols * tile + (cols - 1) * gap + 2 * pad, rows * tile + (rows - 1) * gap + 2 * pad)
+    sheet = Image.new("RGBA", size, (0, 0, 0, 0))
+    rounded = Image.new("L", (tile, tile), 0)
+    ImageDraw.Draw(rounded).rounded_rectangle([0, 0, tile - 1, tile - 1], corner, fill=255)
+    highlight, ring = (1, 4), 7
     for i, path in enumerate(files):
         r, c = divmod(i, cols)
-        img = Image.open(path).convert("L")
+        img = Image.open(path).convert("RGB")
         side = min(img.size)
         img = img.crop(
             (
@@ -191,32 +212,15 @@ def relaion(cols=10, rows=6, tile=72, gap=6, w=1600, h=1000):
                 (img.height + side) // 2,
             )
         ).resize((tile, tile), Image.LANCZOS)
-        lum = np.asarray(img, float) / 255
-        lum = np.clip(
-            (lum - lum.mean()) * 1.25 + 0.5, 0, 1
-        )  # even out exposure across tiles
-        y, x = r * (tile + gap), c * (tile + gap)
-        target = accent if (r, c) == accent_tile else ink
-        target[y : y + tile, x : x + tile] = lum < threshold
-        light[y : y + tile, x : x + tile] = (
-            lum >= threshold
-        )  # positive image for dark mode
-    scale = 2
-    for name, arr in (("ink", ink), ("ink-dark", light), ("accent", accent)):
-        if name == "ink-dark":
-            arr = arr.copy()
-            r, c = accent_tile
-            arr[
-                r * (tile + gap) : r * (tile + gap) + tile,
-                c * (tile + gap) : c * (tile + gap) + tile,
-            ] = 0
-        save_array_mask(arr, f"relaion-{name}", scale)
-    # Dark mode accent tile also needs the positive rendering.
-    r, c = accent_tile
-    y, x = r * (tile + gap), c * (tile + gap)
-    dark_accent = np.zeros_like(ink)
-    dark_accent[y : y + tile, x : x + tile] = 1 - accent[y : y + tile, x : x + tile]
-    save_array_mask(dark_accent, "relaion-accent-dark", scale)
+        x, y = pad + c * (tile + gap), pad + r * (tile + gap)
+        if (r, c) == highlight:
+            halo = Image.new("L", (tile + 2 * ring, tile + 2 * ring), 0)
+            ImageDraw.Draw(halo).rounded_rectangle([0, 0, halo.width - 1, halo.height - 1], corner + ring, fill=255)
+            sheet.paste((240, 127, 166, 255), (x - ring, y - ring), halo)
+        sheet.paste(img, (x, y), rounded)
+    path = OUT / "relaion-photos.webp"
+    sheet.save(path, "WEBP", quality=82, method=6)
+    log.info("wrote %s (%d KB, %d×%d)", path.name, path.stat().st_size // 1024, *size)
 
 
 def revision(w=1200, h=900, metric="srpr"):
@@ -236,14 +240,13 @@ def revision(w=1200, h=900, metric="srpr"):
     for name, sel in (("ink", ~top), ("accent", top)):
         fig, ax = canvas(w, h)
         m = per_model[sel]
-        ax.vlines(x[sel], m["min"], m["max"], color="k", alpha=0.35, linewidth=0.9)
-        ax.scatter(x[sel], m["mean"], s=9 if name == "ink" else 16, c="k", linewidths=0)
+        # One rounded bar per model, ranked; the ten best are the accent.
+        floor = per_model["min"].min() - 0.05
+        ax.vlines(x[sel], floor + 0.015, m["mean"], color="k", linewidth=1.9, capstyle="round")
         ax.set_xlim(-6, len(x) + 5)
-        ax.set_ylim(per_model["min"].min() - 0.05, per_model["max"].max() + 0.05)
-        if name == "ink":
-            for level in np.arange(0.1, 0.6, 0.1):
-                ax.axhline(level, color="k", alpha=0.12, linewidth=0.6)
+        ax.set_ylim(floor, per_model["max"].max() + 0.05)
         save_mask(fig, f"revision-{name}")
+
 
     x0, x1 = -6, len(x) + 5
     y0, y1 = per_model["min"].min() - 0.05, per_model["max"].max() + 0.05
@@ -303,29 +306,32 @@ def laion_fmri(w=1200, h=900, slices=16, tile_w=600, tile_h=450):
         levels = np.percentile(sl[brain > 0.5], [30, 55, 80])
         hh, ww = sl.shape
         span = max(hh * 1.12, ww * 1.12 * h / w)
-        masks = []
-        for name in ("ink", "accent"):
+        def draw(paint):
             fig, ax = canvas(w, h)
-            if name == "ink":
-                ax.contour(
-                    np.where(brain > 0.5, sl, 0),
-                    levels=levels,
-                    colors="k",
-                    linewidths=0.6,
-                    alpha=0.55,
-                )
-                ax.contour(brain, levels=[0.5], colors="k", linewidths=1.2)
-            elif act[brain > 0.5].max() > 0.35:
-                ax.contourf(
-                    np.where(brain > 0.5, act, 0),
-                    levels=[0.35, 2],
-                    colors="k",
-                    alpha=0.9,
-                )
+            paint(ax)
             ax.set_ylim(hh / 2 - span / 2, hh / 2 + span / 2)
             ax.set_xlim(ww / 2 - span * w / h / 2, ww / 2 + span * w / h / 2)
-            masks.append(figure_alpha(fig))
-        return masks
+            return figure_alpha(fig)
+
+        # A lightly filled brain with a firm outline and soft tissue contours; the selective
+        # regions are cut out of the ink and become the accent.
+        solid = draw(lambda ax: ax.contourf(brain, levels=[0.5, 2], colors="k"))
+        outline = draw(lambda ax: ax.contour(brain, levels=[0.5], colors="k", linewidths=2.4))
+        lines = draw(
+            lambda ax: ax.contour(
+                np.where(brain > 0.5, sl, 0), levels=levels, colors="k", linewidths=1.1
+            )
+        )
+        if act[brain > 0.5].max() > 0.35:
+            regions = draw(
+                lambda ax: ax.contourf(
+                    np.where(brain > 0.5, act, 0), levels=[0.35, 2], colors="k"
+                )
+            )
+        else:
+            regions = np.zeros_like(solid)
+        return [np.clip(0.16 * solid + outline + 0.45 * lines - regions, 0, 1), regions]
+
 
     ink, accent = render(static_idx, w, h)
     save_array_mask(ink, "laion-ink")
@@ -375,17 +381,18 @@ def thingsvision(w=1200, h=900, per_category=10):
     n = len(sim)
     block = np.repeat(np.arange(len(categories)), per_category)
     same = block[:, None] == block[None, :]
-    # Cells with a 1px gap, drawn as a raster so 6,400 cells stay cheap.
-    cell, gap = 10, 1
-    size = n * cell
-    grid = np.kron(sim, np.ones((cell, cell)))
-    mask = np.ones((cell, cell))
-    mask[-gap:, :] = 0
-    mask[:, -gap:] = 0
-    grid *= np.tile(mask, (n, n))
-    accent_cells = np.kron(
-        (same & (block[:, None] == 3)).astype(float), np.ones((cell, cell))
-    )
+    # A dot matrix: one dot per 2 × 2 block of image pairs, its radius set by the similarity.
+    # Drawn as an antialiased raster.
+    pooled = sim.reshape(n // 2, 2, n // 2, 2).mean(axis=(1, 3))
+    pooled_block = block[::2]
+    cell = 40
+    size = (n // 2) * cell
+    yy, xx = np.mgrid[0:cell, 0:cell]
+    dist = np.tile(np.hypot(xx - cell / 2 + 0.5, yy - cell / 2 + 0.5), (n // 2, n // 2))
+    radius = np.kron(0.25 + 0.75 * np.sqrt(pooled), np.ones((cell, cell))) * cell * 0.46
+    grid = np.clip(radius - dist + 0.5, 0, 1)
+    vehicles = pooled_block == 3
+    accent_cells = np.kron((vehicles[:, None] & vehicles[None, :]).astype(float), np.ones((cell, cell)))
     for name, arr in (
         ("ink", grid * (1 - accent_cells) * 0.9),
         ("accent", grid * accent_cells),
@@ -641,6 +648,203 @@ def paper_coding(w=1200, h=900, repo=HOME / "LAION-fMRI"):
         save_mask(fig, f"paper-coding-{name}")
 
 
+def voice_annotate(w=1200, h=900, demo=HOME / "voice-annotate/docs/demo"):
+    """The demo capture from the voice-annotate README: its four real strokes on the frozen frame,
+    the narration as a word track on the capture's clock, and each mark tied to the moment it was
+    drawn. Words are spaced evenly (the demo keeps no word timestamps); their heights are word
+    lengths. The accent is mark #1, the circled 312% bug."""
+    from matplotlib.patches import FancyArrowPatch, FancyBboxPatch, Rectangle
+
+    marks = json.loads((demo / "marks.json").read_text())
+    words = (demo / "narration.txt").read_text().split()
+    frame_w, frame_h, duration = 1568, 1018, 19.0
+    track_y = 1230
+    t_to_x = lambda t: t / duration * frame_w
+
+    def stroke(ax, mark, lw):
+        pts = np.asarray(mark["points"], float)
+        if mark["tool"] == "rectangle":
+            (x0, y0), (x1, y1) = pts
+            ax.add_patch(Rectangle((x0, y0), x1 - x0, y1 - y0, fill=False, ec="k", lw=lw, joinstyle="round"))
+        elif mark["tool"] == "arrow":
+            ax.add_patch(FancyArrowPatch(pts[0], pts[1], arrowstyle="-|>,head_length=9,head_width=5", color="k", lw=lw, mutation_scale=2.2))
+        else:
+            ax.plot(pts[:, 0], pts[:, 1], color="k", lw=lw, solid_capstyle="round", solid_joinstyle="round")
+        return pts.mean(axis=0)
+
+    def link(ax, mark, centre, lw, alpha):
+        x = t_to_x(mark["start"])
+        ax.plot([x, centre[0]], [track_y - 40, centre[1]], color="k", lw=lw, alpha=alpha, linestyle=(0, (1.5, 2.5)), dash_capstyle="round")
+        ax.add_patch(plt.Circle((x, track_y - 40), 14, color="k"))
+
+    for layer in ("ink", "accent"):
+        fig, ax = canvas(w, h)
+        ax.set_xlim(-160, frame_w + 160)
+        ax.set_ylim(1360, -60)
+        if layer == "ink":
+            ax.add_patch(FancyBboxPatch((0, 0), frame_w, frame_h, boxstyle="round,pad=0,rounding_size=28", fill=False, ec="k", lw=1.4, alpha=0.45))
+            for i, word in enumerate(words):
+                x = t_to_x(0.4 + i / (len(words) - 1) * (duration - 0.8))
+                ax.vlines(x, track_y, track_y + 14 + 9 * len(word.strip(".,?!")), color="k", lw=2.2, alpha=0.6, capstyle="round")
+            ax.hlines(track_y, 0, frame_w, color="k", lw=1, alpha=0.35)
+        for i, mark in enumerate(marks):
+            if (i == 0) != (layer == "accent"):
+                continue
+            centre = stroke(ax, mark, 3.2 if i else 3.8)
+            link(ax, mark, centre, 1.4, 0.9 if i == 0 else 0.45)
+        save_mask(fig, f"voice-{layer}")
+
+
+def century(w=1200, h=900, data=Path(__file__).resolve().parents[1] / "public/writing/a-century-of-fear/timeline.json"):
+    """Thumbnail for "A century of fear": the essay's yearly theme shares as a centred stream whose
+    thickness follows the number of notable horror films that year, one band per family in
+    alternating ink strengths, with ghosts and hauntings as the accent at the bottom."""
+    timeline = json.loads(Path(data).read_text())
+    families = timeline["family_shares"]
+    years = np.arange(timeline["meta"]["chart_start"], timeline["meta"]["chart_start"] + len(families[0]["shares"]))
+    ghosts = np.array(next(b for b in timeline["bands"] if b["id"] == "ghosts")["shares"], float)
+    shares = np.array([f["shares"] for f in families], float)
+    shares /= shares.sum(axis=0, keepdims=True)
+    kernel = np.ones(5) / 5
+    smooth = lambda row: np.convolve(np.pad(row, 2, mode="edge"), kernel, mode="valid")
+    shares = np.array([smooth(row) for row in shares])
+    ghosts = smooth(ghosts) / np.array([f["shares"] for f in families], float).sum(axis=0)
+    volume = dict(zip(timeline["volume"]["years"], timeline["volume"]["horror_notable"]))
+    thickness = smooth(np.sqrt([volume.get(int(y), 0) for y in years]))
+    thickness /= thickness.max()
+    tops = np.cumsum(shares, axis=0) * thickness - thickness / 2
+    base = -thickness / 2
+    for layer in ("ink", "accent"):
+        fig, ax = canvas(w, h)
+        ax.set_xlim(years[0] - 3, years[-1] + 3)
+        ax.set_ylim(-0.62, 0.62)
+        if layer == "ink":
+            bottom = base + ghosts * thickness
+            for i, top in enumerate(tops):
+                ax.fill_between(years, bottom, top, color="k", alpha=0.62 if i % 2 else 0.3, linewidth=0)
+                bottom = top
+        else:
+            ax.fill_between(years, base, base + ghosts * thickness, color="k", linewidth=0)
+        save_mask(fig, f"century-{layer}")
+
+
+def conwell(w=1200, h=900, metric="cRSA", repo=HOME / "conwell_replication"):
+    """The replication as a forest plot: for each controlled comparison in Conwell et al. (2024)
+    (architecture, task, training data), the original effect beside the LAION-fMRI split-half
+    estimate with its 95% interval. Originals are ink rings; replications are the accent."""
+    import re
+
+    df = pd.read_csv(repo / "reports/laion_fmri_conwell_fig2_4_effects.csv")
+    df = df[(df.split == "splithalf") & (df.metric == metric)]
+    number = r"([+-]?\d*\.\d+)"
+    rows = []
+    for _, row in df.iterrows():
+        original = re.match(number, str(row["conwell"]).strip())
+        replication = re.match(number + r" \[" + number + ", " + number + r"\]", str(row["split-half"]).strip())
+        if original and replication:
+            rows.append((float(original[1]), *map(float, replication.groups())))
+    rows.sort(key=lambda r: r[1])
+    log.info("conwell: %d effects with original and replication estimates", len(rows))
+    values = np.array(rows)
+    span = np.abs(values).max() * 1.15
+    y = np.arange(len(rows))
+    for layer in ("ink", "accent"):
+        fig, ax = canvas(w, h)
+        ax.set_xlim(-span, span)
+        ax.set_ylim(-1, len(rows))
+        if layer == "ink":
+            ax.vlines(0, -0.6, len(rows) - 0.4, color="k", lw=1.2, alpha=0.4)
+            ax.hlines(y, values[:, 2], values[:, 3], color="k", lw=2.4, alpha=0.55, capstyle="round")
+            ax.scatter(values[:, 0], y, s=70, facecolor="none", edgecolor="k", linewidths=2)
+        else:
+            ax.scatter(values[:, 1], y, s=90, color="k", linewidths=0)
+        save_mask(fig, f"conwell-{layer}")
+
+
+def tool_icons(size=128):
+    """Square icons for the open-source tools list. Shown at about 30px, so these are schematic
+    marks of what each tool does rather than plots of real data: few, thick elements."""
+    from matplotlib.patches import Circle, Ellipse
+
+    def draw(name, ink, accent):
+        for layer, paint in (("ink", ink), ("accent", accent)):
+            fig, ax = canvas(size, size)
+            ax.set_xlim(0, 1)
+            ax.set_ylim(0, 1)
+            paint(ax)
+            save_mask(fig, f"tool-{name}-{layer}")
+
+    def voice_ink(ax):
+        x = np.linspace(0.16, 0.84, 7)
+        h = np.array([0.10, 0.22, 0.34, 0.18, 0.28, 0.14, 0.08])
+        ax.vlines(x, 0.5 - h, 0.5 + h, color="k", linewidth=2.5, capstyle="round")
+
+    def voice_accent(ax):
+        t = np.linspace(0, 2 * np.pi, 120)
+        ax.plot(0.66 + 0.24 * np.cos(t), 0.5 + 0.3 * np.sin(t) + 0.02 * np.cos(3 * t), color="k", linewidth=2)
+
+    def slurm(rows):
+        def paint(ax):
+            for i, (start, length) in enumerate([(0.14, 0.42), (0.30, 0.52), (0.20, 0.30), (0.44, 0.40)]):
+                if i in rows:
+                    y = 0.76 - i * 0.17
+                    ax.hlines(y, start, start + length, color="k", linewidth=4.5, capstyle="round")
+        return paint
+
+    def fmriqc_ink(ax):
+        x = np.linspace(0.12, 0.88, 60)
+        for i, y in enumerate((0.72, 0.5, 0.28)):
+            trace = y + 0.05 * np.sin(x * (11 + 4 * i) + i) + 0.025 * np.sin(x * 37 + 2 * i)
+            ax.plot(x, trace, color="k", linewidth=1.6, solid_capstyle="round")
+
+    def fmriqc_accent(ax):
+        ax.vlines(0.64, 0.12, 0.88, color="k", linewidth=3, capstyle="round")
+
+    def cvmanova(which):
+        def paint(ax):
+            cx = 0.38 if which == 0 else 0.62
+            ax.add_patch(Ellipse((cx, 0.5), 0.44, 0.62, angle=30 if which == 0 else -30, fill=False, ec="k", lw=2.25))
+            ax.add_patch(Circle((cx, 0.5), 0.05, color="k"))
+        return paint
+
+    def searchlight_ink(ax):
+        g = np.linspace(0.14, 0.86, 5)
+        xs, ys = np.meshgrid(g, g)
+        far = np.hypot(xs - 0.5, ys - 0.5) > 0.2
+        ax.scatter(xs[far], ys[far], s=14, color="k", linewidths=0)
+
+    def searchlight_accent(ax):
+        g = np.linspace(0.14, 0.86, 5)
+        xs, ys = np.meshgrid(g, g)
+        near = np.hypot(xs - 0.5, ys - 0.5) <= 0.2
+        ax.scatter(xs[near], ys[near], s=28, color="k", linewidths=0)
+        ax.add_patch(Circle((0.5, 0.5), 0.3, fill=False, ec="k", lw=1.75))
+
+    pts = np.random.default_rng(11).uniform(0.12, 0.88, (26, 2))
+
+    def sample_ink(ax):
+        ax.scatter(pts[:, 0], pts[:, 1], s=9, color="k", linewidths=0)
+
+    def sample_accent(ax):
+        ax.scatter([0.24, 0.72, 0.36, 0.8], [0.74, 0.7, 0.26, 0.3], s=60, color="k", linewidths=0)
+
+    def conwell_ink(ax):
+        x = np.linspace(0.16, 0.84, 9)
+        y = x + np.array([0.08, -0.07, 0.05, -0.04, 0.09, -0.08, 0.04, -0.06, 0.03])
+        ax.scatter(x, y, s=24, color="k", linewidths=0)
+
+    def conwell_accent(ax):
+        ax.plot([0.1, 0.9], [0.1, 0.9], color="k", linewidth=2.5, solid_capstyle="round")
+
+    draw("voice-annotate", voice_ink, voice_accent)
+    draw("slurmboard", slurm({0, 1, 3}), slurm({2}))
+    draw("fmriqc", fmriqc_ink, fmriqc_accent)
+    draw("cvmanova_python", cvmanova(0), cvmanova(1))
+    draw("pysearchlight", searchlight_ink, searchlight_accent)
+    draw("how-to-sample", sample_ink, sample_accent)
+    draw("conwell_replication", conwell_ink, conwell_accent)
+
+
 if __name__ == "__main__":
     OUT.mkdir(parents=True, exist_ok=True)
     targets = sys.argv[1:] or [
@@ -652,6 +856,10 @@ if __name__ == "__main__":
         "paper_universal",
         "paper_sampling",
         "paper_coding",
+        "voice_annotate",
+        "century",
+        "conwell",
+        "tool_icons",
     ]
     for target in targets:
         globals()[target]()

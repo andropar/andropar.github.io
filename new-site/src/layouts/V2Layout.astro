@@ -181,7 +181,7 @@ const onWritingPage = canonicalPath.startsWith('/blog');
             revealer.unobserve(entry.target);
           });
         }, { rootMargin: '0px 0px -8% 0px' });
-        document.querySelectorAll('.graphic, .span-bar').forEach(element => revealer.observe(element));
+        document.querySelectorAll('.graphic').forEach(element => revealer.observe(element));
       }
 
       window.addEventListener('hashchange', syncMode);
