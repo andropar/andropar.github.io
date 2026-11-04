@@ -640,6 +640,8 @@ summary::-webkit-details-marker { display: none; }
   .dense--life > .panel--third { grid-column: 1 / -1; }
   .stories.stories--band { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6) var(--space-5); }
   .work-pair, .exp-top { grid-template-columns: minmax(0, 1fr); }
+  /* Stacked, the pair keeps the same space between groups as the rest of Selected work. */
+  .work-pair { row-gap: calc(clamp(2.5rem, 4vw, 3.5rem) + var(--space-4)); }
   #tools { grid-column: auto; }
   .exp-top .tl-rows { align-content: start; }
   #tools .mini--cols { align-content: start; }
@@ -659,6 +661,7 @@ summary::-webkit-details-marker { display: none; }
   .item, .stories .item, .stories.stories--band .item { grid-template-columns: 6.5rem minmax(0, 1fr); gap: var(--space-4); }
   .items--cols .item { grid-template-columns: 6.5rem minmax(0, 1fr); column-gap: var(--space-4); }
   #selected-work { --work-thumb: 6.5rem; }
+  .post { grid-template-columns: 6.5rem minmax(0, 1fr); }
   .tiles--work .tile .item-links { display: flex; }
   .stories, .stories.stories--band { grid-template-columns: minmax(0, 1fr); }
   .stories.stories--band .story-media { aspect-ratio: 4 / 5; }
