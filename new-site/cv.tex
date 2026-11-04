@@ -1,11 +1,12 @@
 \documentclass[10pt,a4paper]{article}
-\usepackage[a4paper,left=21mm,right=21mm,top=17mm,bottom=19mm]{geometry}
+\usepackage[a4paper,left=19mm,right=19mm,top=15mm,bottom=17mm]{geometry}
 \usepackage{fontspec}
 \usepackage{enumitem}
 \usepackage{hyperref}
 \usepackage{tabularx}
 \usepackage{ragged2e}
 \usepackage{fancyhdr}
+\usepackage{xcolor}
 \IfFontExistsTF{Helvetica}{\setmainfont{Helvetica}}{%
   \setmainfont{texgyreheros}[
     Extension=.otf,
@@ -14,125 +15,121 @@
     ItalicFont=*-italic,
     BoldItalicFont=*-bolditalic]
 }
-\hypersetup{pdftitle={Johannes Roth - Machine Learning Engineer},pdfauthor={Johannes Roth},pdfsubject={Machine learning engineering, applied data science, and research},colorlinks=true,urlcolor=black}
+\definecolor{linkcolor}{HTML}{235B67}
+\hypersetup{pdftitle={Johannes Roth - Machine Learning and Software Engineer},pdfauthor={Johannes Roth},pdfsubject={Machine learning, software engineering, and applied research},colorlinks=true,urlcolor=linkcolor}
 \pagestyle{fancy}
 \fancyhf{}
 \renewcommand{\headrulewidth}{0pt}
-\cfoot{\fontsize{8.5}{10}\selectfont Johannes Roth \quad | \quad \thepage\ / 2}
+\cfoot{\fontsize{8}{10}\selectfont Johannes Roth\quad |\quad \thepage\ / 2}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0pt}
 \setlength{\RaggedRightRightskip}{0pt plus 1fil}
-\setlist[itemize]{leftmargin=12pt,itemsep=3pt,topsep=4pt,parsep=0pt,partopsep=0pt}
-\newcommand{\sectiontitle}[1]{\par\vspace{12pt}{\fontsize{12}{14}\selectfont\bfseries\MakeUppercase{#1}}\par\vspace{3pt}\hrule height 0.4pt\vspace{4pt}}
-\newcommand{\role}[3]{\par\vspace{8pt}\begin{tabularx}{\textwidth}{@{}Xr@{}}\textbf{#1}&{\small #2}\\\end{tabularx}\par\textit{#3}\par}
+\setlist[itemize]{leftmargin=12pt,itemsep=2pt,topsep=3pt,parsep=0pt,partopsep=0pt}
+\newcommand{\sectiontitle}[1]{\par\vspace{9pt}{\fontsize{11}{13}\selectfont\bfseries\MakeUppercase{#1}}\par\vspace{3pt}\hrule height 0.35pt\vspace{4pt}}
+\newcommand{\role}[3]{\par\vspace{5pt}\begin{tabularx}{\linewidth}{@{}Xr@{}}\textbf{#1}&{\fontsize{9.5}{11}\selectfont #2}\\\end{tabularx}\par\textit{#3}\par}
+\newcommand{\degree}[3]{\par\vspace{4pt}\textbf{#1}\hfill{\fontsize{9.5}{11}\selectfont #2}\par #3\par}
 \begin{document}
-\begin{center}
-{\fontsize{26}{30}\selectfont\bfseries Johannes Roth}\par
-\vspace{5pt}
-{\fontsize{12}{14}\selectfont Machine Learning Engineer}\par
-\vspace{7pt}
-{\small \href{mailto:johannes@roth24.de}{johannes@roth24.de}\quad
+{\centering
+{\fontsize{23}{26}\selectfont\bfseries Johannes Roth}\par
+\vspace{3pt}
+{\fontsize{11}{13}\selectfont Machine Learning \& Software Engineer}\par
+\vspace{6pt}
+{\fontsize{9.5}{11}\selectfont
+\href{mailto:johannes@roth24.de}{johannes@roth24.de}\quad
 \href{https://linkedin.com/in/johannes-roth-a67baa141}{LinkedIn}\quad
 \href{https://github.com/andropar}{GitHub}\quad
 \href{https://scholar.google.com/citations?user=U3Z3J2gAAAAJ}{Scholar}\quad
 \href{https://jroth.space}{jroth.space}\quad Leipzig, Germany}\par
 \vspace{4pt}
-{\small Available from January 2027}
-\end{center}
-\fontsize{10.5}{13}\selectfont
+{\fontsize{9.5}{11}\selectfont Available from January 2027}\par}
+\vspace{9pt}
+\fontsize{10.5}{12.5}\selectfont
 \RaggedRight
 \hyphenpenalty=10000
 \exhyphenpenalty=10000
-Machine learning engineer with experience taking ML and data projects from initial requirements to deployment and operation. Background in production computer vision, large-scale data processing, and independent research in computational neuroscience.
+Machine learning and software engineer with experience in applied research, model development, and web applications. Background in taking projects from requirements and experimentation through implementation, deployment, and ongoing maintenance.
+
+\begin{minipage}[t]{0.50\textwidth}
+\vspace{0pt}
+\fontsize{9.5}{11.5}\selectfont\RaggedRight
+\sectiontitle{Education}
+\textbf{Doctoral Candidate (Dr. rer. nat.)}\par
+University of Giessen; May 2022 -- Present\par
+\vspace{5pt}
+\textbf{M.Sc. Computer Science; grade 1.2}\par
+Leipzig University; 2017 -- 2021\par
+\vspace{5pt}
+\textbf{B.Sc. Business Information Systems; grade 1.5}\par
+Leipzig University; 2014 -- 2017\par
+\end{minipage}\hfill
+\begin{minipage}[t]{0.47\textwidth}
+\vspace{0pt}
+\fontsize{9.5}{11.5}\selectfont\RaggedRight
+\sectiontitle{Technical Skills}
+\textbf{ML \& Analysis:} Python, SQL, PyTorch, TensorFlow, scikit-learn; computer vision, embeddings, model evaluation, statistical analysis, experimental design.\par
+\vspace{4pt}
+\textbf{Engineering:} FastAPI, Flask, Django, HTML/CSS, Redis, Docker, Git, CI/CD; data pipelines.\par
+\vspace{4pt}
+\textbf{Cloud \& Compute:} AWS (S3, IAM), Linux, SLURM/HPC.\par
+\vspace{4pt}
+\textbf{Languages:} German (native), English (fluent).
+\end{minipage}
 
 \sectiontitle{Experience}
-\begin{samepage}
-\role{PhD Researcher - Computational Cognitive Neuroscience}{May 2022 -- Present}{Max Planck Institute for Human Cognitive and Brain Sciences \& University of Giessen}
+\role{PhD Researcher}{May 2022 -- Present}{Max Planck Institute for Human Cognitive and Brain Sciences \& University of Giessen}
 \begin{itemize}
-\item Conducted independent research at the intersection of \textbf{machine learning and computational neuroscience}, focusing on vision models and their relationship to human brain activity.
-\item Developed methods for model evaluation and experimental design, combining computational analyses with fMRI studies.
-\item Developed \textbf{GPU-based ML pipelines} for dataset curation and feature extraction, and released \href{https://huggingface.co/datasets/andropar/relaion2b-natural}{large-scale image datasets} for computer-vision research.
-\item Independently developed and maintained \href{https://laion-fmri.hebartlab.com}{\textbf{cloud services for sharing research datasets}}, public websites, and \href{https://re-vision-initiative.org/}{tools for organizing and annotating data}.
-\item Supervised working students and interns and collaborated with researchers across computer science and neuroscience.
+\item Conducted independent research on \textbf{vision models and human brain activity}, combining machine learning, statistical analysis, and fMRI experiments.
+\item Independently developed and maintained \href{https://laion-fmri.hebartlab.com}{\textbf{web applications and AWS-backed data services}} for sharing research datasets, covering requirements gathering, access control, hosting, and deployment.
+\item Developed data-processing and model-evaluation pipelines for curating \href{https://huggingface.co/datasets/andropar/relaion2b-natural}{large-scale image datasets} and comparing vision models with brain activity.
+\item Published research at \href{https://arxiv.org/abs/2605.13675}{\textbf{NeurIPS 2026 (shared first author)}} and presented work on experimental design at \href{https://openreview.net/forum?id=T9k6KkZoca}{\textbf{CCN 2025 (oral)}}.
+\item Supervised working students and interns.
 \end{itemize}
-\end{samepage}
 
-\begin{samepage}
 \role{Research Scientist - Machine Learning in Medicine}{Jun 2021 -- May 2022}{ScaDS.AI Dresden/Leipzig}
 \begin{itemize}
-\item Developed and evaluated deep-learning models for \textbf{medical image analysis}, including brain-tumor segmentation.
-\item Built predictive models for clinical data, with a focus on mortality prediction and uncertainty estimation.
+\item Developed \textbf{ensemble models for MRI brain-tumor segmentation}, with results published in the MICCAI BrainLes workshop proceedings.
+\item Developed and evaluated mortality-prediction models for clinical data, including uncertainty estimation.
 \end{itemize}
-\end{samepage}
 
-\begin{samepage}
 \role{Data Scientist / ML Engineer (Working Student)}{Nov 2019 -- May 2021}{CHECK24, Travel Vertical}
 \begin{itemize}
-\item Independently designed and deployed a \textbf{production computer-vision service} for \textbf{20 million hotel images}, covering model development and backend engineering.
-\item Prototyped additional computer-vision applications for image retrieval, duplicate detection, and image-quality assessment.
-\item Optimized recommendation-data pipelines through incremental processing, reducing update time by over \textbf{95\%}.
+\item Independently designed and deployed a \textbf{production computer-vision service that classified hotel photos by season}; built the models and backend and processed a catalogue of \textbf{20 million images}.
+\item Extended the work through prototypes for duplicate detection, image retrieval, and image-quality assessment.
+\item Introduced incremental processing for recommendation-data updates, reducing update time by approximately \textbf{95\%}.
 \end{itemize}
-\end{samepage}
 
-\begin{samepage}
 \role{Full-Stack Developer (Freelance)}{Oct 2020 -- May 2021}{Kimetric UG}
 \begin{itemize}
-\item Designed and delivered \href{https://hebartlab.com}{\textbf{Django-based websites}} to present research, publications, and \href{https://things-initiative.org}{public datasets}.
-\item Gathered client requirements and managed deployment, Linux hosting, and ongoing application maintenance.
+\item Designed and built \href{https://hebartlab.com}{\textbf{research-group}} and \href{https://things-initiative.org}{\textbf{public-dataset websites}} using Django.
+\item Gathered requirements directly from clients and managed Linux hosting, deployment, and ongoing application maintenance.
 \end{itemize}
-\end{samepage}
 
 \newpage
-\begin{samepage}
-\role{Data Scientist (Working Student)}{Oct 2018 -- Sep 2019}{Webdata Solutions GmbH (now Vistex)}
+\sectiontitle{Selected Projects}
 \begin{itemize}
-\item Developed machine-learning models for \textbf{product matching and image classification} in e-commerce.
-\item Improved image-based matching accuracy from \textbf{12\% to 83\%} against a classification baseline in an internal cross-retailer evaluation.
+\item \href{https://github.com/ViCCo-Group/thingsvision}{\textbf{thingsvision}} -- Contributed to an open-source library for extracting and comparing vision-model features, including memory-efficient extraction, dataset support, and model-integration tests.
+\item \href{https://laion-fmri.hebartlab.com}{\textbf{LAION-fMRI}} -- Designed the image collection and built research software, the public website, and a download service providing controlled access to a neuroimaging dataset through AWS.
+\item \href{https://re-vision-initiative.org/}{\textbf{re:vision}} -- Developed the website and data services for a community replication challenge, plus labeling tools used by working students and interns to prepare the dataset.
+\item \href{https://huggingface.co/datasets/andropar/relaion2b-natural}{\textbf{ReLAION-natural}} -- Published naturalness scores covering \textbf{2.1 billion image URLs}, alongside embeddings for a selected natural-image subset, to support dataset selection and visual similarity research.
 \end{itemize}
-\end{samepage}
-
-\begin{samepage}
-\role{Data Analyst (Working Student)}{Feb 2018 -- Aug 2018}{Mercateo Services GmbH \& Co. KG}
-\begin{itemize}
-\item Developed data-integration, reporting, and testing workflows for an \textbf{AWS-based data warehouse} using Apache NiFi and Pentaho.
-\end{itemize}
-\end{samepage}
-
-\sectiontitle{Technical Skills}
-\begin{itemize}
-\item \textbf{ML \& Analysis:} Python, SQL, PyTorch, TensorFlow, scikit-learn; computer vision, embeddings, model evaluation, statistical analysis, experimental design.
-\item \textbf{Software \& Data:} FastAPI, Flask, Django, Redis, Docker, Git, CI/CD; data pipelines, similarity search, dataset curation.
-\item \textbf{Cloud \& Compute:} AWS (S3, IAM), Linux, SLURM/HPC, multi-GPU processing.
-\item \textbf{Languages:} German (native), English (fluent).
-\end{itemize}
-
-\sectiontitle{Open Source}
-\begin{itemize}
-\item Contributed to \href{https://github.com/ViCCo-Group/thingsvision}{\textbf{thingsvision}}, an open-source library for computer-vision research, with work on software architecture, model integration, and memory efficiency.
-\end{itemize}
-
-\sectiontitle{Education}
-\role{Doctoral Candidate (Dr. rer. nat.)}{May 2022 -- Present}{University of Giessen}
-Research focus: machine learning and computational neuroscience.
-
-\role{M.Sc. Computer Science}{2017 -- 2021}{Leipzig University; grade 1.2}
-\begin{itemize}
-\item \textbf{Master's thesis (grade 1.1):} Applied generative deep learning to study visual processing in the human brain.
-\end{itemize}
-
-\role{B.Sc. Business Information Systems}{2014 -- 2017}{Leipzig University; grade 1.5}
+{\fontsize{9.5}{11.5}\selectfont Find more open-source projects on my \href{https://github.com/andropar}{GitHub}.\par}
 
 \sectiontitle{Selected Publications}
 \begin{itemize}
-\item F. P. Mahner*, \textbf{J. Roth*}, et al. \href{https://arxiv.org/abs/2605.13675}{\textit{Characterizing Universal Object Representations Across Vision Models}}. \textbf{NeurIPS 2026} (accepted). Shared first author.
-\item \textbf{J. Roth*}, Y. Duan*, et al. \href{https://doi.org/10.1038/s44271-025-00236-3}{\textit{Ten principles for reliable, efficient, and adaptable coding in psychology and cognitive neuroscience}}. Communications Psychology, 2025. Shared first author.
+\item F. P. Mahner*, \textbf{J. Roth*}, et al. \href{https://arxiv.org/abs/2605.13675}{\textit{Characterizing Universal Object Representations Across Vision Models}}. \textbf{NeurIPS 2026}. Shared first author.
+\item \textbf{J. Roth}, M. N. Hebart. \href{https://openreview.net/forum?id=T9k6KkZoca}{\textit{How to sample the world for understanding the visual system}}. \textbf{CCN 2025, oral presentation}.
+\item \textbf{J. Roth*}, Y. Duan*, et al. \href{https://doi.org/10.1038/s44271-025-00236-3}{\textit{Ten principles for reliable, efficient, and adaptable coding in psychology and cognitive neuroscience}}. Communications Psychology, 2025. Shared first author. \textbf{CMBB Replication Award (2025)}.
 \item \textbf{J. Roth} et al. \href{https://doi.org/10.1007/978-3-031-08999-2_23}{\textit{Multi-plane UNet++ Ensemble for Glioblastoma Segmentation}}. MICCAI BrainLes 2021 workshop proceedings, published 2022.
 \end{itemize}
 
-\sectiontitle{Recognition \& Service}
+\sectiontitle{Earlier Experience}
+\role{Data Scientist (Working Student)}{Oct 2018 -- Sep 2019}{Webdata Solutions GmbH (now Vistex)}
 \begin{itemize}
-\item Presented research at \href{https://openreview.net/forum?id=T9k6KkZoca}{\textbf{CCN 2025 (oral)}}.
-\item Elected representative for \textbf{180+ doctoral researchers} at MPI CBS (2023--2024).
-\item \textbf{CMBB Replication Award (2025)} for contributions to reliable coding practices in neuroscience.
+\item Developed ML models for matching products across retailers, improving image-based matching accuracy from \textbf{12\% to 83\%} against a classification baseline in an internal evaluation.
+\end{itemize}
+
+\role{Data Analyst (Working Student)}{Feb 2018 -- Aug 2018}{Mercateo Services GmbH \& Co. KG}
+\begin{itemize}
+\item Built data-integration, reporting, and testing workflows for an \textbf{AWS-based data warehouse} using Apache NiFi and Pentaho.
 \end{itemize}
 \end{document}
