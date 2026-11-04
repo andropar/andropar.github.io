@@ -193,12 +193,12 @@ const lifeStories = [
               <article class="card item">
                 <div class={`frame item-media graphic graphic--paper-${paper.graphic}`} role="img" aria-label={paper.graphicAlt}><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
                 {paper.award && <span class="award-badge" tabindex="0" role="img" aria-label={paper.award} data-tip={paper.award}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 3h10v6a5 5 0 0 1-10 0V3ZM7 5H4v2a4 4 0 0 0 4 4m9-6h3v2a4 4 0 0 1-4 4M12 14v6m-4 1h8" /></svg></span>}
-                <div>
+                <div class="item-head">
                   <p class="venue"><b>{paper.venue.replace(' (accepted)', '')}</b>{!paper.venue.includes(paper.year) && ` ${paper.year}`}{paper.note && <> · {paper.note}</>}</p>
                   <h4><a class="stretched" href={paper.href} target="_blank" rel="noopener">{paper.title}</a></h4>
                   <p class="card-detail">{paper.authors}</p>
-                  <p class="card-text">{paper.summary}</p>
                 </div>
+                <p class="card-text">{paper.summary}</p>
               </article>
             ))}
           </div>
