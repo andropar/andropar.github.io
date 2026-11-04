@@ -254,19 +254,22 @@ const lifeStories = [
           <a class="link" href="/cv.pdf">Full CV</a>
         </div>
         <div class="exp-top">
-          <div class="timeline" role="img" aria-label="Roles and degrees from 2014 to now as bars on one time axis">
-            <ol class="tl-rows">
-              {timelineRows.map(row => (
-                <li class:list={['tl-row', { 'tl-row--edu': row.edu, 'tl-row--current': !row.span[1] }]} style={spanStyle(row.span)}>
-                  <span class="tl-label">{row.label}</span>
-                  <span class="tl-track"><span class="tl-bar"></span></span>
-                </li>
-              ))}
-            </ol>
-            <div class="tl-axis"><span></span><span class="tl-ticks">{timelineTicks.map(tick => <span style={`--at: ${tick.at.toFixed(1)}%`}>{tick.year}</span>)}</span></div>
+          <div class="exp-chart">
+            <div class="group-head"><h3>Timeline</h3></div>
+            <div class="timeline" role="img" aria-label="Roles and degrees from 2014 to now as bars on one time axis">
+              <ol class="tl-rows">
+                {timelineRows.map(row => (
+                  <li class:list={['tl-row', { 'tl-row--edu': row.edu, 'tl-row--current': !row.span[1] }]} style={spanStyle(row.span)}>
+                    <span class="tl-label">{row.label}</span>
+                    <span class="tl-track"><span class="tl-bar"></span></span>
+                  </li>
+                ))}
+              </ol>
+              <div class="tl-axis"><span></span><span class="tl-ticks">{timelineTicks.map(tick => <span style={`--at: ${tick.at.toFixed(1)}%`}>{tick.year}</span>)}</span></div>
+            </div>
           </div>
           <div class="exp-edu">
-            <h3 class="panel-sub" id="education">Education</h3>
+            <div class="group-head"><h3 id="education">Education</h3></div>
             <ul class="entries entries--edu">
               {education.map(degree => (
                 <li class="entry">
@@ -281,6 +284,7 @@ const lifeStories = [
             </ul>
           </div>
         </div>
+        <div class="group-head exp-roles-head"><h3>Roles</h3></div>
         <ul class="entries entries--cols entries--thirds">
           {roles.map(role => (
             <li class="entry">

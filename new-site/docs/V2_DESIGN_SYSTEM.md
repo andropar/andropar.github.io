@@ -203,12 +203,12 @@ separated by hairlines. In `.entries--cols` the date sits above the title and ro
 
 There is no skills section, tools row or per-role tags. Tools are named in the text of the role or
 project they were used in, and the full CV (linked from the Experience & education header) carries
-the keyword list. Degrees follow the roles under a `.panel-sub` "Education" label.
+the keyword list.
 
 ### Timeline
 
-The timeline shares `.exp-top` with the degrees it charts (1.5fr | 1fr); its rows spread so it
-ends level with them. The roles follow at full width.
+The timeline shares `.exp-top` with the degrees it charts (1.5fr | 1fr), each under a group head
+(*Timeline*, *Education*) on one line; the chart's rows spread so it ends level with the degrees. The roles follow at full width.
 
 
 Experience opens with `.timeline`: one row per role or degree (label | track) on a shared 2014–now

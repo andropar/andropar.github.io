@@ -490,7 +490,7 @@ summary::-webkit-details-marker { display: none; }
 .panel .entries--cols > .entry { display: block; padding: 0; border: 0; }
 .entries--cols .entry-meta { display: block; margin-bottom: 2px; }
 .entries--cols .entry-text { max-width: none; }
-:is(.items, .timeline, .exp-top) + .entries--cols { margin-top: var(--space-2); padding-top: var(--space-5); border-top: 1px solid var(--line); }
+:is(.items, .timeline) + .entries--cols { margin-top: var(--space-2); padding-top: var(--space-5); border-top: 1px solid var(--line); }
 
 .mini--cols { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-5) var(--space-6); }
 /* Life band: echoes the Selected work row, text in the first column and four photos. */
@@ -560,10 +560,12 @@ summary::-webkit-details-marker { display: none; }
 
 /* The timeline shares its row with the degrees it also charts; the roles run full width below. */
 .exp-top { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: clamp(var(--space-7), 4vw, 4rem); }
-/* The chart's rows spread so it ends level with the degrees beside it. */
-.exp-top .timeline { display: flex; flex-direction: column; margin-bottom: 0; }
+/* Timeline and Education start on one heading line; the chart's rows spread so it ends level
+   with the degrees beside it. */
+.exp-chart { display: flex; flex-direction: column; }
+.exp-top .timeline { flex: 1; display: flex; flex-direction: column; margin-bottom: 0; }
 .exp-top .tl-rows { flex: 1; align-content: space-between; }
-.exp-edu .panel-sub { margin: 0 0 var(--space-2); padding: 0; border: 0; }
+.exp-roles-head { margin: clamp(2rem, 3vw, 2.75rem) 0 0; }
 .exp-edu .entry { padding-block: var(--space-2); }
 
 /* CV timeline: one bar per role or degree on a shared 2014–now axis. */
@@ -585,8 +587,6 @@ summary::-webkit-details-marker { display: none; }
 .panel .entry:first-child { padding-top: 0; border-top: 0; }
 .panel .entry { padding-block: var(--space-3); }
 .entry-org { color: var(--ink); }
-.panel-sub { margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid var(--line); color: var(--muted); font-size: var(--text-xs); font-weight: 500; letter-spacing: 0; }
-.panel-sub + .entries--cols { margin-top: calc(-1 * var(--space-2)); }
 
 /* Writing: a small thumbnail beside date, title and description. */
 .posts { display: grid; gap: var(--space-4); margin: 0; padding: 0; list-style: none; }
