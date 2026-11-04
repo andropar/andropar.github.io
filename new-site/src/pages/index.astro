@@ -35,7 +35,7 @@ const projects = [
     id: 'horrorverse',
     title: 'Horrorverse',
     summary: 'A horror film recommender with mood search and an explorable map of the genre.',
-    media: { graphic: 'horrorverse', attrs: { 'data-hover': 'horrorverse' }, label: 'The Horrorverse atlas: horror films as dots arranged by theme and story, with the haunted-house region highlighted' },
+    media: { graphic: 'horrorverse', attrs: {}, label: 'The Horrorverse atlas: horror films as dots arranged by theme and story, with the haunted-house region highlighted' },
     links: [{ label: 'Open Horrorverse', href: 'https://horrorverse.jroth.space/' }, { label: 'Movie night', href: 'https://horrorverse.jroth.space/app/movie-night' }],
     what: 'It started as a way to settle what to watch on our horror movie nights. Describe a mood, like slow-burn folk horror under 100 minutes, and it picks one to three films for the night. Rate a few films and the daily picks get better, or wander the atlas: about 20,700 films arranged by theme and story.',
     did: 'I built the recommender, trained on MovieLens 32M with a content bridge for films nobody has rated yet, plus the mood search on text embeddings, a movie-night chat where an LLM turns what you say into search settings (it never does the ranking), the atlas, Letterboxd import, accounts and the self-hosted deployment.',
@@ -367,7 +367,7 @@ const lifeStories = [
           </div>
           <div class="shelf-note">
             <p class="card-text">My wife and I watch horror movies with friends. I built a little recommender to help us choose.</p>
-            <div class="frame shelf-media graphic graphic--horrorverse" data-hover="horrorverse" role="img" aria-label="The Horrorverse atlas of horror films, with the haunted-house region highlighted"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
+            <div class="frame shelf-media graphic graphic--horrorverse" role="img" aria-label="The Horrorverse atlas of horror films, with the haunted-house region highlighted"><span class="graphic-ink"></span><span class="graphic-accent"></span></div>
             <div class="link-row">
               <a class="link" href="https://horrorverse.jroth.space/app/movie-night" target="_blank" rel="noopener">Find our next movie</a>
               <a class="link" href="https://letterboxd.com/haukeman/" target="_blank" rel="noopener">My Letterboxd</a>
