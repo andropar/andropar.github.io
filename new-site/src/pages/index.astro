@@ -253,16 +253,33 @@ const lifeStories = [
           <h2 id="experience-heading">Experience & education</h2>
           <a class="link" href="/cv.pdf">Full CV</a>
         </div>
-        <div class="timeline" role="img" aria-label="Roles and degrees from 2014 to now as bars on one time axis">
-          <ol class="tl-rows">
-            {timelineRows.map(row => (
-              <li class:list={['tl-row', { 'tl-row--edu': row.edu, 'tl-row--current': !row.span[1] }]} style={spanStyle(row.span)}>
-                <span class="tl-label">{row.label}</span>
-                <span class="tl-track"><span class="tl-bar"></span></span>
-              </li>
-            ))}
-          </ol>
-          <div class="tl-axis"><span></span><span class="tl-ticks">{timelineTicks.map(tick => <span style={`--at: ${tick.at.toFixed(1)}%`}>{tick.year}</span>)}</span></div>
+        <div class="exp-top">
+          <div class="timeline" role="img" aria-label="Roles and degrees from 2014 to now as bars on one time axis">
+            <ol class="tl-rows">
+              {timelineRows.map(row => (
+                <li class:list={['tl-row', { 'tl-row--edu': row.edu, 'tl-row--current': !row.span[1] }]} style={spanStyle(row.span)}>
+                  <span class="tl-label">{row.label}</span>
+                  <span class="tl-track"><span class="tl-bar"></span></span>
+                </li>
+              ))}
+            </ol>
+            <div class="tl-axis"><span></span><span class="tl-ticks">{timelineTicks.map(tick => <span style={`--at: ${tick.at.toFixed(1)}%`}>{tick.year}</span>)}</span></div>
+          </div>
+          <div class="exp-edu">
+            <h3 class="panel-sub" id="education">Education</h3>
+            <ul class="entries entries--edu">
+              {education.map(degree => (
+                <li class="entry">
+                  <span class="entry-meta">{degree.date}</span>
+                  <div>
+                    <h3 class="entry-title">{degree.title}</h3>
+                    <p class="entry-text entry-org">{degree.organization}</p>
+                    {degree.description && <p class="entry-text">{degree.description}</p>}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
         <ul class="entries entries--cols entries--thirds">
           {roles.map(role => (
@@ -272,19 +289,6 @@ const lifeStories = [
                 <h3 class="entry-title">{role.title}</h3>
                 <p class="entry-text entry-org">{role.organization}</p>
                 <p class="entry-text">{role.description}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-        <h3 class="panel-sub" id="education">Education</h3>
-        <ul class="entries entries--cols entries--thirds entries--edu">
-          {education.map(degree => (
-            <li class="entry">
-              <span class="entry-meta">{degree.date}</span>
-              <div>
-                <h3 class="entry-title">{degree.title}</h3>
-                <p class="entry-text entry-org">{degree.organization}</p>
-                {degree.description && <p class="entry-text">{degree.description}</p>}
               </div>
             </li>
           ))}

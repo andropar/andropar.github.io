@@ -207,6 +207,10 @@ the keyword list. Degrees follow the roles under a `.panel-sub` "Education" labe
 
 ### Timeline
 
+The timeline shares `.exp-top` with the degrees it charts (1.5fr | 1fr); its rows spread so it
+ends level with them. The roles follow at full width.
+
+
 Experience opens with `.timeline`: one row per role or degree (label | track) on a shared 2014–now
 axis with year ticks. Bars are 38% ink, the current role `--accent-bright`, degrees hatched.
 
