@@ -11,6 +11,18 @@ import previewStyles from '../../../styles/v2.css?raw';
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="cms-config-url" type="text/yaml" href="/blog/admin/config.yml?revision=session-v4" />
     <script is:inline>window.CMS_MANUAL_INIT = true;</script>
+    <style is:inline>
+      /* Phones: Decap lays the editor and the preview side by side at 800px or more. Below that, show
+         the editor alone at full width; the preview is the site itself. */
+      @media (max-width: 799px) {
+        [class*="EditorContainer"], [class*="ToolbarContainer"] { min-width: 0 !important; }
+        [class*="PreviewPaneContainer"]:not([class*="ControlPaneContainer"]) { display: none !important; }
+        .SplitPane > .Pane1 { width: 100% !important; flex: 1 1 auto !important; }
+        .SplitPane > .Resizer, .SplitPane > .Pane2, [class*="ViewControls"] { display: none !important; }
+        [class*="ControlPaneContainer"] { width: 100% !important; max-width: none !important; }
+        [class*="ControlPaneContainer"]:not([class*="PreviewPaneContainer"]) { padding-left: 12px !important; padding-right: 12px !important; }
+      }
+    </style>
   </head>
   <body>
     <script is:inline src="/blog/admin/decap.js"></script>
