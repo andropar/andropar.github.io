@@ -7,6 +7,8 @@ const blog = defineCollection({
     description: z.string(),
     date: z.coerce.date(),
     draft: z.boolean().default(false),
+    // Built at its address but left out of the writing list and search engines (for sharing drafts).
+    unlisted: z.boolean().default(false),
     tags: z.array(z.string()).default([]),
     // A piece published elsewhere: the entry links there and gets no article page.
     link: z.string().url().optional(),

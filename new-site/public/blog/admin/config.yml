@@ -44,10 +44,11 @@ collections:
         picker_utc: true
         default: '{{now}}'
       - { label: Draft, name: draft, widget: boolean, default: true, hint: 'Keep this on while writing. Turn it off to include the post on the site.' }
+      - { label: Unlisted, name: unlisted, widget: boolean, default: false, required: false, hint: 'With Draft off, the post is online at its address but not in the writing list or search engines. Handy for reading a draft on the site.' }
       - { label: Tags, name: tags, widget: list, required: false, default: [], hint: 'Add one or more topics.' }
       - { label: External link, name: link, widget: string, required: false, hint: 'Only for a piece published elsewhere. The writing list then opens this address instead of an article page.' }
       - label: Body
         name: body
         widget: richtext
         modes: [rich_text, raw]
-        hint: 'Use Rich Text for writing and formatting, or Markdown to edit HTML figures and custom layouts. Lines like {{figure:threats}} and markers like {{cite:skal}} are filled in by the site (charts and references): edit around them.'
+        hint: 'Use Rich Text for writing and formatting, or Markdown to edit HTML figures and custom layouts. Lines like {{figure:threats}} or {{step:funnel}} and markers like {{cite:skal}} or {{term:word|tooltip}} are filled in by the site: edit around them (the text after the | in a term is its tooltip).'

@@ -1,0 +1,31 @@
+---
+// "The recommendation system behind Horrorverse". Its text is Markdown (src/content/blog/horrorverse-recommender.md,
+// passed in as the slot; sections, tooltips and the maths block come from
+// src/scripts/horrorverse-recommender/remark-post.mjs). The interactive figures are drawn in the browser from the
+// post's data file: in a sticky column next to the section being read on wide screens, inline on narrow ones.
+import '../styles/horrorverse-recommender.css';
+---
+<div class="hv" data-hv data-src="/writing/horrorverse-recommender/data.json">
+  <div class="hv-grid">
+    <div class="post-body"><slot /></div>
+    <aside class="side" aria-label="Interactive figure"><div class="sticky" id="sticky"></div></aside>
+  </div>
+</div>
+<script>
+  import { mountPost } from '../scripts/horrorverse-recommender/post.js';
+
+  const root = document.querySelector<HTMLElement>('[data-hv]');
+  if (root) {
+    fetch(root.dataset.src!)
+      .then(response => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json();
+      })
+      .then(mountPost)
+      .catch(error => {
+        console.error('The recommendation system behind Horrorverse: could not load the figures', error);
+        const sticky = root.querySelector('#sticky');
+        if (sticky) sticky.innerHTML = '<p class="pn-foot">The figures could not be loaded. Try reloading the page.</p>';
+      });
+  }
+</script>

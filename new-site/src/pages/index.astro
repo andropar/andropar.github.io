@@ -13,7 +13,7 @@ import band from '../../public/personal/about-band.webp';
 import food from '../../public/personal/about-good-food.webp';
 import meditation from '../../public/personal/about-meditation.webp';
 
-const posts = (await getCollection('blog')).filter(post => !post.data.draft).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const posts = (await getCollection('blog')).filter(post => !post.data.draft && !post.data.unlisted).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const featuredPosts = posts.slice(0, 2);
 const dateLabel = (date: Date) => date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 const coverURL = (reference: string) => {

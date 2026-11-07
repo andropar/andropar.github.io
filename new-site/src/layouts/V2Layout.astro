@@ -6,8 +6,10 @@ interface Props {
   description?: string;
   /** One 1200px left edge for the whole page (the homepage); otherwise a centered 920px column. */
   wide?: boolean;
+  /** Keep the page out of search engines (unlisted posts). */
+  noindex?: boolean;
 }
-const { title, wide = false, description = 'Johannes Roth is a machine learning engineer and PhD researcher in Leipzig, working on computer vision, data systems, and computational neuroscience.' } = Astro.props;
+const { title, wide = false, noindex = false, description = 'Johannes Roth is a machine learning engineer and PhD researcher in Leipzig, working on computer vision, data systems, and computational neuroscience.' } = Astro.props;
 const canonicalPath = Astro.url.pathname.replace(/^\/v2(?=\/|$)/, '') || '/';
 const canonicalURL = new URL(canonicalPath, Astro.site);
 const homeAnchor = /^\/(?:v2\/?)?$/.test(Astro.url.pathname) ? '' : '/';
@@ -21,6 +23,7 @@ const onWritingPage = canonicalPath.startsWith('/blog');
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="author" content="Johannes Roth" />
+    {noindex && <meta name="robots" content="noindex" />}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
