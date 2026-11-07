@@ -50,4 +50,4 @@ collections:
         name: body
         widget: richtext
         modes: [rich_text, raw]
-        hint: 'Use Rich Text for writing and formatting, or Markdown to edit HTML figures and custom layouts.'
+        hint: 'Use Rich Text for writing and formatting, or Markdown to edit HTML figures and custom layouts. Lines like {{figure:threats}} and markers like {{cite:skal}} are filled in by the site (charts and references): edit around them.'

@@ -3,22 +3,18 @@ import { getCollection } from 'astro:content';
 import V2Layout from '../../layouts/V2Layout.astro';
 import { postMinutes } from '../../data/posts';
 import CenturyOfFear from '../../components/CenturyOfFear.astro';
-import { headings as centuryOfFearHeadings } from '../../data/century-of-fear';
-// Posts whose article is a component instead of their Markdown body.
-const ESSAYS: Record<string, { Essay: typeof CenturyOfFear; headings: { depth: number; slug: string; text: string }[] }> = {
-  'a-century-of-fear': { Essay: CenturyOfFear, headings: centuryOfFearHeadings },
-};
+// Posts whose Markdown is wrapped by a component that draws their charts.
+const WRAPPERS: Record<string, typeof CenturyOfFear> = { 'a-century-of-fear': CenturyOfFear };
 export async function getStaticPaths() {
   const posts = (await getCollection('blog')).filter(post => !post.data.draft && !post.data.link).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
   return posts.map((post, i) => ({ params: { slug: post.slug }, props: { post, newer: posts[i - 1], older: posts[i + 1] } }));
 }
 const { post, newer, older } = Astro.props;
-const essay = ESSAYS[post.slug];
 const { Content, headings } = await post.render();
-const Essay = essay?.Essay;
+const Wrapper = WRAPPERS[post.slug];
 const tags: string[] = post.data.tags;
 // Long posts get a table of contents in the right column on wide screens.
-const contents = (essay?.headings ?? headings).filter(heading => heading.depth === 2);
+const contents = headings.filter(heading => heading.depth === 2);
 const showContents = contents.length >= 3;
 ---
 <V2Layout title={`${post.data.title} — Johannes Roth`} description={post.data.description}>
@@ -33,7 +29,7 @@ const showContents = contents.length >= 3;
       </div>
     </header>
     <div class="article-body">
-      {Essay ? <Essay /> : <div class="prose"><Content /></div>}
+      {Wrapper ? <Wrapper><Content /></Wrapper> : <div class="prose"><Content /></div>}
       {showContents && (
         <nav class="article-contents" aria-label="Contents">
           <p class="meta">Contents</p>

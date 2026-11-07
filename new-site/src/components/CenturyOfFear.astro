@@ -1,10 +1,10 @@
 ---
-// The "A century of fear" essay: static text from src/data/century-of-fear.ts, with charts drawn
-// in the browser from the same data file.
-import { html } from '../data/century-of-fear';
+// The "A century of fear" essay. Its text is Markdown (src/content/blog/a-century-of-fear.md, passed in
+// as the slot, with charts and references filled in by src/scripts/century-of-fear/remark-essay.mjs);
+// the charts are drawn in the browser from the essay's data file.
 import '../styles/century-of-fear.css';
 ---
-<div class="prose cof" data-cof data-src="/writing/a-century-of-fear/timeline.json" set:html={html} />
+<div class="prose cof" data-cof data-src="/writing/a-century-of-fear/timeline.json"><slot /></div>
 <script>
   import { mountEssay } from '../scripts/century-of-fear/essay.js';
 
