@@ -1,4 +1,17 @@
 (() => {
+  // Saving a post is called "Publish" in Decap, which reads as "make public". Call it "Save":
+  // whether a post is public is the Draft switch.
+  const words = {
+    'Publish': 'Save', 'Publish now': 'Save', 'Publishing...': 'Saving...', 'Published': 'Saved',
+    'Publish and create new': 'Save and create new', 'Publish and duplicate': 'Save and duplicate',
+    'Entry published': 'Saved',
+  };
+  const rename = node => Object.fromEntries(Object.entries(node).map(([key, value]) =>
+    [key, typeof value === 'string' ? (words[value] ?? value) : value && typeof value === 'object' ? rename(value) : value]));
+  const en = CMS.getLocale('en');
+  if (en) CMS.registerLocale('en', rename(en));
+})();
+(() => {
   const proxy = CMS.getBackend('proxy');
   const Ready = createClass({
     componentDidMount() { this.props.onLogin({}); },

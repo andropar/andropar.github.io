@@ -3,7 +3,7 @@ title: The recommendation system behind Horrorverse
 description: How six ratings become recommendations on Horrorverse, and how I
   tested whether they are any good.
 date: 2026-11-07
-draft: false
+draft: true
 unlisted: true
 tags:
   - horror
