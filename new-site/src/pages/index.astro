@@ -19,6 +19,8 @@ const featuredPosts = posts.slice(0, 2);
 // Text that mentions an essay links to it only once its page exists, so a draft never leaves a dead link.
 const postPages = new Set(allPosts.filter(post => !post.data.draft && !post.data.link).map(post => post.slug));
 const essayMention = (slug: string, title: string) => (postPages.has(slug) ? `<a href="/blog/${slug}">${title}</a>` : title);
+// What Johannes is looking for next; shown under the hero buttons and in the contact strip.
+const availability = 'Open to ML engineer and research engineer roles from January 2027 · Leipzig or remote';
 const dateLabel = (date: Date) => date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 const coverURL = (reference: string) => {
   const [kind, value] = reference.includes(':') ? reference.split(':') : ['isbn', reference];
@@ -149,12 +151,12 @@ const lifeStories = [
       <div class="hero-body">
         <h1 id="work-title" tabindex="-1">Johannes Roth</h1>
         <p class="hero-lede">Machine learning engineer & PhD researcher.</p>
-        <p class="hero-text">At the Max Planck Institute in Leipzig, I work on vision models and the brain. Before that, I did machine learning at ScaDS.AI and CHECK24.</p>
+        <p class="hero-text">At the Max Planck Institute in Leipzig, I work on vision models and the brain, most recently in a paper at NeurIPS 2026. Before that, I did machine learning at ScaDS.AI and CHECK24.</p>
         <div class="hero-actions">
           <a class="button button--primary" href="#selected-work">Explore my work</a>
           <a class="button" href="#contact">Get in touch</a>
         </div>
-        <p class="meta status">Available from January 2027</p>
+        <p class="meta status">{availability}</p>
       </div>
       <div class="frame hero-portrait">
         <Image src={workPortrait} alt="Johannes Roth smiling, in a light blue Oxford shirt with rolled sleeves and his arms crossed" widths={[320, 640, 960]} sizes="(max-width: 600px) 22rem, 17rem" width={640} format="webp" loading="eager" fetchpriority="high" />
@@ -476,7 +478,7 @@ const lifeStories = [
     <div class="contact-row">
       <a class="contact-email" href="mailto:johannes@roth24.de">johannes@roth24.de</a>
       <p class="meta">For research, collaborations, or a good conversation.</p>
-      <p class="meta status">Available from January 2027</p>
+      <p class="meta status">{availability}</p>
       <ul class="link-row contact-links">
         <li><a class="link" href="https://github.com/andropar" target="_blank" rel="noopener">GitHub</a></li>
         <li><a class="link" href="https://linkedin.com/in/johannes-roth-a67baa141" target="_blank" rel="noopener">LinkedIn</a></li>
