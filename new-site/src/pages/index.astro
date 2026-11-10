@@ -190,8 +190,8 @@ const lifeStories = [
                 <p class="card-text">{project.summary}</p>
                 <p class="card-detail">{project.detail}</p>
                 <div class="item-links">
-                  <a class="link stretched" href={project.links[0].href} target="_blank" rel="noopener">{project.links[0].label}</a>
-                  <button class="link more-button" type="button" data-dialog={`project-${project.id}`} aria-haspopup="dialog">More</button>
+                  <a class="link" href={project.links[0].href} target="_blank" rel="noopener">{project.links[0].label}</a>
+                  <button class="link more-button stretched" type="button" data-dialog={`project-${project.id}`} aria-haspopup="dialog">More</button>
                 </div>
               </article>
             ))}

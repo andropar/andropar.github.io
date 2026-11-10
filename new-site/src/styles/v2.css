@@ -823,7 +823,9 @@ summary::-webkit-details-marker { display: none; }
 
 /* Project dialogs: a tile's "More" opens a large, explorable figure and three short sections. */
 .more-button { padding: 0; border: 0; background: none; font: inherit; font-size: var(--text-xs); cursor: pointer; }
-.tile .more-button { position: relative; z-index: 2; }
+/* A tile's "More" is its stretched control: a click anywhere on the tile opens the dialog, and the
+   link to the project itself sits above that as its own target. */
+.tile .more-button { position: static; }
 .project-dialog {
   width: min(100% - 2 * var(--gutter), 60rem);
   max-height: min(92vh, 56rem);

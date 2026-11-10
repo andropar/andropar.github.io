@@ -187,8 +187,9 @@ of what each tool does (a waveform, job bars, a searchlight sphere), not plots o
 
 ### Project dialogs
 
-A tile's `More` button (`.more-button`, `data-dialog="<id>"`) opens a native `<dialog
-class="project-dialog">` (`src/scripts/project-dialogs.ts`): the project's figure large and still
+A tile's `More` button (`.more-button`, `data-dialog="<id>"`) is the tile's `.stretched` control, so a
+click anywhere on the tile opens a native `<dialog class="project-dialog">`; the link to the project
+itself stays a separate target beside it. The dialog (`src/scripts/project-dialogs.ts`) shows the project's figure large and still
 explorable, its title and one-line description, then three short sections (*What it is*, *What I
 did*, *What came out of it*) and its links. Escape, the close button and a backdrop click close it;
 the page behind does not scroll. Tiles and dialogs render from the `projects` list in `index.astro`,
