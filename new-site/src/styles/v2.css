@@ -573,6 +573,8 @@ summary::-webkit-details-marker { display: none; }
 .exp-top .tl-rows { flex: 1; align-content: space-between; }
 .exp-roles-head { margin: clamp(2rem, 3vw, 2.75rem) 0 0; }
 .exp-edu .entry { padding-block: var(--space-2); }
+/* Older roles stay on the timeline; their descriptions open from a disclosure under the list. */
+.exp-earlier .entries { padding-bottom: var(--space-5); }
 
 /* CV timeline: one bar per role or degree on a shared 2014–now axis. */
 .timeline { display: grid; gap: var(--space-2); margin-bottom: var(--space-3); }

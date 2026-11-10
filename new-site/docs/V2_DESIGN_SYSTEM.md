@@ -218,7 +218,9 @@ the keyword list.
 ### Timeline
 
 The timeline shares `.exp-top` with the degrees it charts (1.5fr | 1fr), each under a group head
-(*Timeline*, *Education*) on one line; the chart's rows spread so it ends level with the degrees. The roles follow at full width.
+(*Timeline*, *Education*) on one line; the chart's rows spread so it ends level with the degrees. The roles follow at full width:
+the PhD and the two roles before it as one row of three, then a `.disclosure` ("More roles") with the
+older ones (`earlier: true` in `roles`). All of them stay on the timeline.
 
 
 Experience opens with `.timeline`: one row per role or degree (label | track) on a shared 2014–now

@@ -122,15 +122,17 @@ const roles = [
   { span: [2022.33, null], date: 'May 2022–present', title: 'PhD Researcher · Computational Cognitive Neuroscience', short: 'PhD · MPI CBS', organization: 'Max Planck Institute for Human Cognitive and Brain Sciences & University of Giessen', description: 'Independent research on vision models and human brain activity, with GPU-based data pipelines, fMRI experiments, and public research software.' },
   { span: [2021.42, 2022.33], date: 'Jun 2021–May 2022', title: 'Research Scientist · Machine Learning in Medicine', short: 'ScaDS.AI', organization: 'ScaDS.AI Dresden/Leipzig', description: 'Deep-learning models for brain-tumor segmentation and predictive models for clinical data, including mortality prediction and uncertainty estimation.' },
   { span: [2019.83, 2021.33], date: 'Nov 2019–May 2021', title: 'Data Scientist / ML Engineer · Working student', short: 'CHECK24', organization: 'CHECK24, Travel Vertical', description: 'Designed and deployed a production computer-vision service for 20 million hotel images. Improved recommendation-data pipelines, reducing update time by over 95%.' },
-  { span: [2020.75, 2021.33], date: 'Oct 2020–May 2021', title: 'Full-Stack Developer · Freelance', short: 'Kimetric · freelance', organization: 'Kimetric UG', description: 'Delivered Django websites for Hebart Lab and the THINGS Initiative, from client requirements to deployment, Linux hosting, and maintenance.' },
-  { span: [2018.75, 2019.67], date: 'Oct 2018–Sep 2019', title: 'Data Scientist · Working student', short: 'Webdata Solutions', organization: 'Webdata Solutions GmbH (now Vistex)', description: 'Developed machine-learning models for product matching and image classification in e-commerce, raising image-based matching accuracy from 12% to 83%.' },
-  { span: [2018.08, 2018.58], date: 'Feb 2018–Aug 2018', title: 'Data Analyst · Working student', short: 'Mercateo', organization: 'Mercateo Services GmbH & Co. KG', description: 'Data integration, reporting, and testing for an AWS-based data warehouse using Apache NiFi and Pentaho.' },
+  { span: [2020.75, 2021.33], date: 'Oct 2020–May 2021', title: 'Full-Stack Developer · Freelance', short: 'Kimetric · freelance', earlier: true, organization: 'Kimetric UG', description: 'Delivered Django websites for Hebart Lab and the THINGS Initiative, from client requirements to deployment, Linux hosting, and maintenance.' },
+  { span: [2018.75, 2019.67], date: 'Oct 2018–Sep 2019', title: 'Data Scientist · Working student', short: 'Webdata Solutions', earlier: true, organization: 'Webdata Solutions GmbH (now Vistex)', description: 'Developed machine-learning models for product matching and image classification in e-commerce, raising image-based matching accuracy from 12% to 83%.' },
+  { span: [2018.08, 2018.58], date: 'Feb 2018–Aug 2018', title: 'Data Analyst · Working student', short: 'Mercateo', earlier: true, organization: 'Mercateo Services GmbH & Co. KG', description: 'Data integration, reporting, and testing for an AWS-based data warehouse using Apache NiFi and Pentaho.' },
 ];
 const education = [
   { span: [2022.33, null], date: 'May 2022–present', title: 'Doctoral candidate · Dr. rer. nat.', organization: 'University of Giessen', description: 'Research focus: machine learning and computational neuroscience.' },
   { span: [2017.75, 2021.42], date: '2017–2021', title: 'M.Sc. Computer Science', short: 'M.Sc. · Leipzig', organization: 'Leipzig University · Grade 1.2', description: 'Master’s thesis: generative deep learning for visual processing in the human brain (grade 1.1).' },
   { span: [2014.75, 2017.75], date: '2014–2017', title: 'B.Sc. Business Information Systems', short: 'B.Sc. · Leipzig', organization: 'Leipzig University · Grade 1.5', description: '' },
 ];
+// The roles list shows the PhD and the two roles before it; older ones sit in a disclosure below.
+const roleGroups = [{ roles: roles.filter(role => !role.earlier) }, { roles: roles.filter(role => role.earlier), summary: 'More roles, 2018–2021' }];
 // Role and degree spans share one scale, so the bars in the date column are comparable.
 const now = new Date();
 const timelineStart = 2014;
@@ -299,18 +301,23 @@ const lifeStories = [
           </div>
         </div>
         <div class="group-head exp-roles-head"><h3>Roles</h3></div>
-        <ul class="entries entries--cols entries--thirds">
-          {roles.map(role => (
-            <li class="entry">
-              <span class="entry-meta">{role.date}</span>
-              <div>
-                <h3 class="entry-title">{role.title}</h3>
-                <p class="entry-text entry-org">{role.organization}</p>
-                <p class="entry-text">{role.description}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
+        {roleGroups.map(group => {
+          const entries = (
+            <ul class="entries entries--cols entries--thirds">
+              {group.roles.map(role => (
+                <li class="entry">
+                  <span class="entry-meta">{role.date}</span>
+                  <div>
+                    <h3 class="entry-title">{role.title}</h3>
+                    <p class="entry-text entry-org">{role.organization}</p>
+                    <p class="entry-text">{role.description}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          );
+          return group.summary ? <details class="disclosure exp-earlier"><summary>{group.summary}</summary>{entries}</details> : entries;
+        })}
       </section>
     </div>
   </div>
