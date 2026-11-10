@@ -103,7 +103,7 @@ the centered 920px column. `body` clips horizontal overflow.
   height from spacing between its parts (larger above 860px), never from larger parts.
 - **Work view:** one full-width Selected work band (`.work-band`) with four groups, each under a
   small `.group-head` (muted label, link on the right): *Projects* (six `.tiles--work` tiles, three
-  across, an 8rem thumbnail beside title and one line, links below), *Publications* (three
+  across, an 8rem thumbnail beside title, one line and the key numbers, links below), *Publications* (three
   `.items--cols` papers), then a `.work-pair` of *Open-source tools* (2fr, rows spread so the column
   ends level) beside *Writing* (1fr, the latest two posts). All four groups share one grid (`--work-gap`, `--work-thumb` on `#selected-work`: three equal
   columns, one gap, 8rem thumbnails, 6.5rem on phones), so column and text edges line up between groups.
@@ -166,8 +166,11 @@ optional muted count, an optional right-aligned `.link`), an optional `.panel-le
 ### Tiles
 
 `.tile` (Selected work) is a flex column: a 4:3 tinted `.frame` with the graphic → 15px/600 `h3` →
-`.card-text` → 12px `.card-detail` → `.item-links`, pushed to the bottom so links line up across the
-row. Tiles carry no stats lines or labels; all six projects look the same, whoever led them.
+`.card-text` → `.card-detail` → `.item-links`, pushed to the bottom so links line up across the
+row. The `.card-detail` is one muted line of key numbers (scale, usage, or Johannes's role), taken
+from the project's dialog text, so a reader who never opens a dialog still sees the evidence. Every
+tile has exactly one; there are no other stats or labels, so all six projects look the same,
+whoever led them.
 
 ### Writing rows
 
@@ -188,8 +191,8 @@ A tile's `More` button (`.more-button`, `data-dialog="<id>"`) opens a native `<d
 class="project-dialog">` (`src/scripts/project-dialogs.ts`): the project's figure large and still
 explorable, its title and one-line description, then three short sections (*What it is*, *What I
 did*, *What came out of it*) and its links. Escape, the close button and a backdrop click close it;
-the page behind does not scroll. Every tile has one, so tiles carry no `.card-detail` line. Tiles
-and dialogs render from the `projects` list in `index.astro`, so each project is written once.
+the page behind does not scroll. Tiles and dialogs render from the `projects` list in `index.astro`,
+so each project is written once; a tile's `detail` line repeats figures from its dialog text.
 
 ### Items
 

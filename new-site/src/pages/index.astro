@@ -34,13 +34,15 @@ const postThumbs: Record<string, { graphic?: string; image?: ImageMetadata }> = 
   'what-vision-models-agree-on': { graphic: 'paper-universal' },
   its_always_clear_from_outside: { image: artAndFear },
 };
-// Selected work: each project feeds its tile (figure, title, summary, links) and its "More" dialog.
+// Selected work: each project feeds its tile (figure, title, summary, one line of key numbers, links)
+// and its "More" dialog. `detail` repeats figures from the dialog text; keep the two in step.
 // `media` is a mask graphic (with optional hover or scrub data) or the ReLAION photo sheet.
 const projects = [
   {
     id: 'horrorverse',
     title: 'Horrorverse',
     summary: 'A horror film recommender with mood search and an explorable map of the genre.',
+    detail: '20,700 films · live and self-hosted',
     media: { graphic: 'horrorverse', attrs: {}, label: 'The Horrorverse atlas: horror films as dots arranged by theme and story, with the haunted-house region highlighted' },
     links: [{ label: 'Open Horrorverse', href: 'https://horrorverse.jroth.space/' }, { label: 'Movie night', href: 'https://horrorverse.jroth.space/app/movie-night' }],
     what: 'It started as a way to settle what to watch on our horror movie nights. Describe a mood, like slow-burn folk horror under 100 minutes, and it picks one to three films for the night. Rate a few films and the daily picks get better, or wander the atlas: about 20,700 films arranged by theme and story.',
@@ -51,6 +53,7 @@ const projects = [
     id: 'relaion',
     title: 'ReLAION-natural',
     summary: 'Naturalness scores for every image in ReLAION-2B, plus CLIP embeddings for the natural photos.',
+    detail: '2.1B images · 33,000 downloads',
     media: { photos: '/v2/graphics/relaion-photos.webp', label: 'A contact sheet of natural photographs from the dataset, one highlighted' },
     links: [{ label: 'View dataset', href: 'https://huggingface.co/datasets/andropar/relaion2b-natural' }, { label: 'CCN 2025 paper', href: 'https://openreview.net/forum?id=T9k6KkZoca' }],
     what: 'Web-scale image datasets mix photographs with screenshots, product shots, memes and text. ReLAION-natural scores all 2.1 billion images in ReLAION-2B for how natural they are, so you can pull out the roughly 500 million natural photographs.',
@@ -61,6 +64,7 @@ const projects = [
     id: 'laion-fmri',
     title: 'LAION-fMRI',
     summary: 'A deeply sampled fMRI dataset of natural images.',
+    detail: '5 participants · 60 hours each at 7T',
     media: { graphic: 'laion', attrs: { 'data-scrub': 'laion-sprite', 'data-frames': '16' }, label: 'A sagittal brain slice drawn as contour lines, with face- and scene-selective cortex filled in' },
     links: [{ label: 'Explore project', href: 'https://laion-fmri.hebartlab.com/' }, { label: 'Brain explorer', href: 'https://laion-fmri.hebartlab.com/brain/' }],
     what: 'A 7T fMRI dataset in which five people each spent about 60 hours in the scanner looking at 25,052 natural images, many of them shown several times. It is built to cover far more of the visual world than earlier datasets: 2.5× the effective dimensionality of NSD and THINGS.',
@@ -71,6 +75,7 @@ const projects = [
     id: 'revision',
     title: 're:vision',
     summary: 'A community challenge testing whether findings in visual neuroscience replicate on LAION-fMRI.',
+    detail: 'Co-coordinator · 118 models',
     media: { graphic: 'revision', attrs: { 'data-hover': 'revision' }, label: 'Brain-predictivity scores of 118 vision models, sorted, with the ten best highlighted' },
     links: [{ label: 'Explore project', href: 'https://re-vision-initiative.org/' }],
     what: 'Teams pick a published finding from visual neuroscience and test whether it replicates on LAION-fMRI\'s much broader set of images, and whether it generalizes. Every valid replication goes into a consortium paper, whatever the result.',
@@ -81,6 +86,7 @@ const projects = [
     id: 'conwell',
     title: 'Conwell replication',
     summary: 'A replication on LAION-fMRI of a large study on which design choices make vision models brain-like.',
+    detail: 'Benchmark for the re:vision paper',
     media: { graphic: 'conwell', attrs: {}, label: 'For each controlled comparison in the original study, its effect as a ring beside the LAION-fMRI replication estimate with its interval' },
     links: [{ label: 'View on GitHub', href: 'https://github.com/andropar/conwell_replication' }, { label: 'Original study', href: 'https://doi.org/10.1038/s41467-024-53147-y' }],
     what: 'Conwell et al. (2024) compared a large survey of vision models against brain responses in NSD to ask which design choices, from architecture to training task and training data, make a model more brain-like. The replication asks whether those controlled comparisons hold on LAION-fMRI\'s much broader set of images.',
@@ -91,6 +97,7 @@ const projects = [
     id: 'thingsvision',
     title: 'thingsvision',
     summary: 'An open-source library for extracting and comparing features from vision models.',
+    detail: '179 stars · 470 downloads a month',
     media: { graphic: 'thingsvision', attrs: { 'data-hover': 'thingsvision' }, label: 'A similarity matrix of ResNet-50 features for eight image categories, one category highlighted' },
     links: [{ label: 'View library', href: 'https://github.com/ViCCo-Group/thingsvision' }],
     what: 'Give it a folder of images and a vision model, and it returns the model\'s representation of every image, with tools to compare those representations to brains and behaviour. It supports models from torchvision, timm, OpenCLIP, Keras and more.',
@@ -181,6 +188,7 @@ const lifeStories = [
                   : <div class={`frame tile-media graphic graphic--${project.media.graphic}`} {...project.media.attrs} role="img" aria-label={project.media.label}><span class="graphic-ink"></span><span class="graphic-accent"></span></div>}
                 <h4>{project.title}</h4>
                 <p class="card-text">{project.summary}</p>
+                <p class="card-detail">{project.detail}</p>
                 <div class="item-links">
                   <a class="link stretched" href={project.links[0].href} target="_blank" rel="noopener">{project.links[0].label}</a>
                   <button class="link more-button" type="button" data-dialog={`project-${project.id}`} aria-haspopup="dialog">More</button>

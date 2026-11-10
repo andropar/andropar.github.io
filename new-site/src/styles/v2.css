@@ -539,13 +539,14 @@ summary::-webkit-details-marker { display: none; }
 
 /* Project tiles: a tinted graphic, the key numbers, then text. */
 .tiles { display: grid; gap: var(--space-6) var(--space-5); }
-/* Every project is a thumbnail beside its title and one line, three to a row, with the links below
-   both; the full figure lives in its dialog. The thumbnail is about as tall as the text beside it. */
+/* Every project is a thumbnail beside its title, one line and its key numbers, three to a row, with
+   the links below both; the full figure lives in its dialog. The thumbnail is about as tall as the
+   text beside it. */
 .tiles--work { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-7) var(--work-gap); }
 .tile-media { aspect-ratio: 4 / 3; margin-bottom: var(--space-3); }
-.tiles--work .tile { display: grid; grid-template-columns: var(--work-thumb) minmax(0, 1fr); grid-template-rows: auto 1fr auto; column-gap: var(--work-thumb-gap); align-content: start; }
-.tiles--work .tile-media { grid-row: 1 / 3; margin-bottom: 0; }
-.tiles--work .tile > :is(h3, h4, .card-text) { grid-column: 2; }
+.tiles--work .tile { display: grid; grid-template-columns: var(--work-thumb) minmax(0, 1fr); grid-template-rows: auto auto 1fr auto; column-gap: var(--work-thumb-gap); align-content: start; }
+.tiles--work .tile-media { grid-row: 1 / 4; margin-bottom: 0; }
+.tiles--work .tile > :is(h3, h4, .card-text, .card-detail) { grid-column: 2; }
 .tiles--work .tile .item-links { grid-column: 1 / -1; margin-top: var(--space-3); }
 /* The first link fills a thumbnail-wide column, so every "More" starts on the title's line. */
 .tiles--work .tile .item-links { display: grid; grid-template-columns: var(--work-thumb) auto; justify-content: start; column-gap: var(--work-thumb-gap); }
@@ -554,7 +555,7 @@ summary::-webkit-details-marker { display: none; }
 .tile :is(h3, h4) { margin-bottom: var(--space-1); font-size: var(--text-md); font-weight: 600; letter-spacing: -0.01em; }
 .stats { display: flex; flex-wrap: wrap; gap: 2px var(--space-3); margin: 0 0 var(--space-2); padding: 0; list-style: none; color: var(--muted); font-size: var(--text-xs); line-height: 1.5; font-variant-numeric: tabular-nums; }
 .stats b { color: var(--ink); font-weight: 600; }
-.tile .card-detail { font-size: var(--text-xs); line-height: 1.5; }
+.tile .card-detail { margin-top: var(--space-1); font-size: var(--text-xs); line-height: 1.5; }
 .venue { margin-bottom: 2px; color: var(--muted); font-size: var(--text-xs); font-variant-numeric: tabular-nums; }
 .venue b { color: var(--ink); font-weight: 600; }
 
