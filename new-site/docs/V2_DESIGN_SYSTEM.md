@@ -8,7 +8,7 @@ component class in that stylesheet.
 ## Direction
 
 A dense, white page. **Whitespace goes between blocks; inside a block, information sits tight.** One
-sans-serif family, small type, hairline rules on top of every panel, and colour used sparingly: a
+sans-serif family, compact type, hairline rules on top of every panel, and colour used sparingly: a
 muted four-colour palette appears only in data graphics and as faint tints behind them. Personality
 comes from the writing, the two portraits, the personal photos, and figures drawn from the projects'
 own data, each in its own style.
@@ -53,10 +53,10 @@ One family: **Inter** (variable, weights 400–600). **JetBrains Mono** 400 only
 
 | Token | Size | Role |
 | --- | --- | --- |
-| `--text-xs` | 12px | Metadata, captions, labels, tile details |
-| `--text-sm` | 13px | Secondary text, controls, list descriptions |
-| `--text-md` | 15px | Body, panel headings, tile and list titles |
-| `--text-lg` | 17px | `h3`, ledes, hero text |
+| `--text-xs` | 13px | Metadata, captions, labels, tile details |
+| `--text-sm` | 14px (15px at ≤ 600px) | Secondary text, controls, list descriptions |
+| `--text-md` | 16px | Body, panel headings, tile and list titles |
+| `--text-lg` | 18px | `h3`, ledes, hero text |
 | `--text-xl` | 19–22px | `h2` in articles |
 | `--text-section` | 20–26px | Larger section headings, the contact email |
 | `--text-2xl` | 26–34px | `h1` (article titles) |
@@ -64,7 +64,9 @@ One family: **Inter** (variable, weights 400–600). **JetBrains Mono** 400 only
 | `--text-hero` | 48–112px | Hero name, 600 weight, −0.045em, line height 0.95 |
 
 Headings use 500, except the hero name, panel headings and item titles, which use 600. Metadata is
-sentence case in `--muted` with tabular numerals. Nothing is uppercase or letter-spaced.
+sentence case in `--muted` with tabular numerals. Nothing is uppercase or letter-spaced. Anything a
+visitor reads as a sentence (descriptions, tool blurbs, life stories) is at least `--text-sm`;
+`--text-xs` is for dates, labels and counts.
 
 ### Spacing
 
@@ -160,13 +162,13 @@ portrait; both are transparent 4:5 cut-outs.
 
 ### Panels
 
-`.panel` is every homepage section: a `--line-strong` top rule, then `.panel-head` (15px/600 `h2`, an
+`.panel` is every homepage section: a `--line-strong` top rule, then `.panel-head` (16px/600 `h2`, an
 optional muted count, an optional right-aligned `.link`), an optional `.panel-lede`, and the body.
 
 ### Tiles
 
-`.tile` (Selected work) is a flex column: a 4:3 tinted `.frame` with the graphic → 15px/600 `h3` →
-`.card-text` → `.card-detail` → `.item-links`, pushed to the bottom so links line up across the
+`.tile` (Selected work) is a flex column: a 4:3 tinted `.frame` with the graphic → 16px/600 `h3` →
+`.card-text` → 13px `.card-detail` → `.item-links`, pushed to the bottom so links line up across the
 row. The `.card-detail` is one muted line of key numbers (scale, usage, or Johannes's role), taken
 from the project's dialog text, so a reader who never opens a dialog still sees the evidence. Every
 tile has exactly one; there are no other stats or labels, so all six projects look the same,
