@@ -13,8 +13,12 @@ import band from '../../public/personal/about-band.webp';
 import food from '../../public/personal/about-good-food.webp';
 import meditation from '../../public/personal/about-meditation.webp';
 
-const posts = (await getCollection('blog')).filter(post => !post.data.draft && !post.data.unlisted).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const allPosts = await getCollection('blog');
+const posts = allPosts.filter(post => !post.data.draft && !post.data.unlisted).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const featuredPosts = posts.slice(0, 2);
+// Text that mentions an essay links to it only once its page exists, so a draft never leaves a dead link.
+const postPages = new Set(allPosts.filter(post => !post.data.draft && !post.data.link).map(post => post.slug));
+const essayMention = (slug: string, title: string) => (postPages.has(slug) ? `<a href="/blog/${slug}">${title}</a>` : title);
 const dateLabel = (date: Date) => date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 const coverURL = (reference: string) => {
   const [kind, value] = reference.includes(':') ? reference.split(':') : ['isbn', reference];
@@ -39,7 +43,7 @@ const projects = [
     links: [{ label: 'Open Horrorverse', href: 'https://horrorverse.jroth.space/' }, { label: 'Movie night', href: 'https://horrorverse.jroth.space/app/movie-night' }],
     what: 'It started as a way to settle what to watch on our horror movie nights. Describe a mood, like slow-burn folk horror under 100 minutes, and it picks one to three films for the night. Rate a few films and the daily picks get better, or wander the atlas: about 20,700 films arranged by theme and story.',
     did: 'I built the recommender, trained on MovieLens 32M with a content bridge for films nobody has rated yet, plus the mood search on text embeddings, a movie-night chat where an LLM turns what you say into search settings (it never does the ranking), the atlas, Letterboxd import, accounts and the self-hosted deployment.',
-    outcome: 'It\'s live, and we use it every movie night. Its catalogue also became the data behind <a href="/blog/a-century-of-fear">A century of fear</a>, an illustrated history of 19,302 horror films, each labelled by two Claude models and checked against Wikidata.',
+    outcome: `It's live, and we use it every movie night. Its catalogue also became the data behind ${essayMention('a-century-of-fear', 'A century of fear')}, an illustrated history of 19,302 horror films, each labelled by two Claude models and checked against Wikidata.`,
   },
   {
     id: 'relaion',
@@ -76,7 +80,7 @@ const projects = [
     title: 'Conwell replication',
     summary: 'A replication on LAION-fMRI of a large study on which design choices make vision models brain-like.',
     media: { graphic: 'conwell', attrs: {}, label: 'For each controlled comparison in the original study, its effect as a ring beside the LAION-fMRI replication estimate with its interval' },
-    links: [{ label: 'View on GitHub', href: 'https://github.com/andropar/conwell_replication' }, { label: 'Original study', href: 'https://doi.org/10.1038/s41467-024-53972-1' }],
+    links: [{ label: 'View on GitHub', href: 'https://github.com/andropar/conwell_replication' }, { label: 'Original study', href: 'https://doi.org/10.1038/s41467-024-53147-y' }],
     what: 'Conwell et al. (2024) compared a large survey of vision models against brain responses in NSD to ask which design choices, from architecture to training task and training data, make a model more brain-like. The replication asks whether those controlled comparisons hold on LAION-fMRI\'s much broader set of images.',
     did: 'I re-ran the study\'s own feature-extraction protocol on 118 models and five LAION-fMRI participants, reproduced its controlled comparisons of architecture, training task and training data, and added tests on out-of-distribution images.',
     outcome: 'It is the benchmark replication for the re:vision consortium paper. Some effects hold, like the advantage of contrastive self-supervised training; others shrink or flip.',
