@@ -8,7 +8,7 @@ tags: ["AI", "productivity", "future of work"]
 
 For the month of December 2025 I splurged on the $200 Claude Max subscription. Not a small amount for a PhD student, but well worth it in hindsight: it gave me a visceral sense of how work, science, and life in general will change radically in the very near future.
 
-I took the plunge sometime end of November, after realizing that I had not been using LLMs to their full potential - despite being a heavy user since GPT-3 first came out in March 2022. Like everyone else, I started with ChatGPT, bound to copying and pasting from its chat interface. My usage grew as models improved and IDE integrations like Copilot and Cursor emerged. I'd heard of CLI agents like Claude Code, but never tried them. Why would I, when I could just use the IDE?
+I took the plunge sometime end of November, after realizing that I had not been using LLMs to their full potential - despite being a heavy user since the GPT-3 days in March 2022. Like everyone else, I started with ChatGPT, bound to copying and pasting from its chat interface. My usage grew as models improved and IDE integrations like Copilot and Cursor emerged. I'd heard of CLI agents like Claude Code, but never tried them. Why would I, when I could just use the IDE?
 
 This changed when I tried Opus 4.5 in Cursor. I wanted to run an existing neural network interpretability method on some images and plot the results - nothing complicated. I expected the usual output: a solid script that I'd have to tweak in a few places. But to my surprise, it didn't just deliver a working analysis - it asked for permission to execute it. And when something in the results looked off, it noticed, updated the script, and ran it again. All on its own initiative.
 
