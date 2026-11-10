@@ -112,7 +112,7 @@ the centered 920px column. `body` clips horizontal overflow.
   Then `.dense--work`, a 12-column grid
   with Experience & education and Life outside work at full width.
 - **Life view:** `.dense--life`, also 12 columns: A bit about me as a four-column photo band, then
-  Music, Horror movie night and Writing as three `.panel--third`s, then On my shelves full width.
+  Listening, Horror movie night and Writing as three `.panel--third`s, then On my shelves full width.
 - **Inside full-width sections** content sits in its own columns: papers in three (`.items--cols`),
   earlier papers in four, roles and degrees in three (`.entries--cols`, `--thirds`), and tools in
   two (`.mini--cols`).
@@ -250,7 +250,8 @@ Work has no photos; a small footer link ("Off the clock" / "Back to work") switc
 
 ### Shelves
 
-Music (Spotify embed) and Horror movie night (the atlas graphic) are 152px media blocks. The cover
+Listening (Spotify embed; named so it does not repeat the "Music" story about the band) and Horror
+movie night (the atlas graphic) are 152px media blocks. The cover
 wall has "Reading now" (accent-ringed covers) and one dense "Loved" wall with title, author and
 category as tooltip and alt text. "Books I found okay" stays in a `.disclosure`.
 
