@@ -586,16 +586,15 @@ export const plans: Plan[] = [
     id: "tasmania",
     option: "Option 4, added by Claude",
     name: "Tasmania",
-    where: "Maria Island, east coast",
+    where: "Maria Island circuit, east coast",
     pitch:
-      "Four nights on a car-free island national park: painted sandstone, white beaches, wombats on the grass, one small mountain.",
+      "A loop around a car-free island national park: south along the coast past painted sandstone, a still day on the isthmus, back north through the hills, and a summit on the last morning.",
     feels:
       "The closest to a retreat of the four: no cars, no shop, very few people overnight. Colder, less certain weather, and two extra flights.",
     hero: [
       {
         id: "t-hero",
-        caption:
-          "The Painted Cliffs, half an hour’s walk from the Darlington campground",
+        caption: "The Painted Cliffs, the first stop on the way south",
       },
     ],
     ratings: [4, 2, 3, 2],
@@ -603,23 +602,24 @@ export const plans: Plan[] = [
     glance: {
       tent: "4 nights",
       rest: "1 (Wed)",
-      walking: "about 45 km",
+      walking: "about 45 km, 55 with Mt Maria",
       bookings: "Flights, bus, ferry, two beds in Hobart",
       extra: "Flights roughly A$150–350 return",
     },
     facts: [
+      "The Maria Island circuit is about 34 km: Darlington south along the west coast to Frenchs Farm (about 11 km), then back north through the middle of the island (about 17 km), with side trips up Mount Maria (711 m) and Bishop and Clerk. Mostly old gravel roads; both summits end in a rock scramble.",
       "Sydney to Hobart is about a 2 hour flight. A shuttle bus runs Hobart to Triabunna (about 1 h 15); the ferry to Darlington takes about 30–45 minutes and sails several times a day in summer.",
       "No cars and no shop on the island. Carry all food for five days. Gas canister from Hobart.",
-      "Camping at Darlington costs a few dollars a night; Frenchs Farm and Encampment Cove are free. Rainwater tanks at each (treat it, and they can run low).",
+      "Campsites: Darlington and Frenchs Farm, with Encampment Cove a little further south. Untreated water at Frenchs Farm and a rainwater tank about 2 km past it; treat it.",
       "A Tasmanian parks pass is needed on top of the ferry ticket.",
       "December is cooler than Sydney: roughly 20°C by day and 10°C at night, sea about 15–16°C. Pack for wind and rain.",
       "Leave the laptop at Sydney Airport storage rather than Central, or with the Hobart accommodation.",
       "Tasmania has its own quarantine: no fresh fruit or vegetables on the flight in.",
     ],
     check: [
-      "I have not checked December 2026 timetables, prices or availability. The ferry and bus times are from the operators’ undated summer schedules.",
-      "Saturday needs a Hobart–Sydney flight that connects with the flight home. Fly up Friday evening if the gap is tight.",
-      "Ferries are cancelled in bad weather, so Friday’s boat off the island is the weak point of the plan.",
+      "Route distances are from a bushwalk.com circuit description, not from Parks Tasmania. I have not checked December 2026 timetables, prices or availability; ferry and bus times are from the operators’ undated summer schedules.",
+      "Thursday is long if you add Mount Maria (about 25 km). Climb it from Frenchs Farm on Wednesday instead if you would rather keep Thursday easy.",
+      "Saturday needs a Hobart–Sydney flight that connects with the flight home, and ferries are cancelled in bad weather, so Friday’s boat off the island is the weak point. Fly up Friday evening if the gap is tight.",
     ],
     days: [
       {
@@ -635,8 +635,9 @@ export const plans: Plan[] = [
           {
             id: "bishop",
             caption:
-              "Where you are heading: Maria Island’s north coast, with Bishop and Clerk on the skyline",
+              "Where you are heading: Maria Island’s north end, with Bishop and Clerk on the skyline",
           },
+          { id: "mi-sunset", caption: "Evening over Maria Island" },
         ],
       },
       {
@@ -645,38 +646,50 @@ export const plans: Plan[] = [
         type: "island",
         short: "Darlington",
         title: "Bus and ferry to Darlington",
-        text: "Morning shuttle to Triabunna, ferry across. Pitch the tent at Darlington, then walk the Fossil Cliffs loop and go to the Painted Cliffs around low tide.",
-        stats: ["Bus ~1 h 15", "Ferry ~40 min", "~8 km of short walks"],
+        text: "Morning shuttle to Triabunna, ferry across. Pitch the tent at Darlington, the old convict settlement by the jetty, then walk the Fossil Cliffs loop in the afternoon.",
+        stats: ["Bus ~1 h 15", "Ferry ~40 min", "~5 km loop"],
         sleep: "Tent, Darlington",
         photos: [
-          { id: "darlington", caption: "Arriving at Darlington by ferry" },
+          {
+            id: "darlington-jetty",
+            caption:
+              "Darlington jetty and the ruins of the old cement works, where the ferry lands",
+          },
+          { id: "darlington", caption: "Darlington from the water" },
+          {
+            id: "commissariat",
+            caption: "The Commissariat Store (1825) by the jetty",
+          },
           {
             id: "fossil",
             caption: "The Fossil Cliffs, an hour’s loop from camp",
           },
-          { id: "painted-2", caption: "The Painted Cliffs at low tide" },
-          { id: "wombat-2", caption: "Wombats live around the campground" },
+          {
+            id: "fossil-2",
+            caption: "Clifftop pasture on the Fossil Cliffs loop",
+          },
+          { id: "geese", caption: "Cape Barren geese graze on the lawns" },
+          { id: "wombat-2", caption: "A wombat and her young on Maria Island" },
         ],
       },
       {
         dow: "Tue",
         date: 15,
         type: "island",
-        short: "Walk south",
-        title: "Walk south to Frenchs Farm",
-        text: "About 11 km on a flat coastal track past the Painted Cliffs and a string of empty beaches. Encampment Cove is 2 km further if Frenchs Farm has company.",
-        stats: ["~11 km", "Flat"],
+        short: "South, coast",
+        title: "South along the west coast to Frenchs Farm",
+        text: "About 11 km with the full pack, mostly flat, past the Painted Cliffs (go around low tide) and a string of empty bays. Camp at Frenchs Farm; Encampment Cove is about half an hour further if you want the sea next to the tent.",
+        stats: ["~11 km", "Mostly flat"],
         sleep: "Tent, Frenchs Farm",
         photos: [
+          { id: "painted-2", caption: "The Painted Cliffs at low tide" },
           {
             id: "painted-3",
             caption: "Patterned sandstone on the island’s shore",
           },
+          { id: "mi-seascape", caption: "Rocky shore on the west coast" },
           { id: "maria-east", caption: "Clear, cold water" },
-          {
-            id: "painted-2",
-            caption: "The Painted Cliffs, passed again on the way south",
-          },
+          { id: "cliffs-sea", caption: "Sea cliffs on Maria Island" },
         ],
       },
       {
@@ -685,7 +698,7 @@ export const plans: Plan[] = [
         type: "rest",
         short: "Frenchs Farm",
         title: "Rest and sitting day",
-        text: "Sit, then wander to the isthmus: a narrow strip of sand with a long beach on each side.",
+        text: "Sit, then wander to the isthmus: a narrow strip of sand joining the two halves of the island, with Riedle Bay on one side and Shoal Bay on the other.",
         sleep: "Tent, Frenchs Farm",
         photos: [
           {
@@ -697,23 +710,25 @@ export const plans: Plan[] = [
             caption:
               "The isthmus and the southern half of the island, seen from Bishop and Clerk",
           },
+          { id: "mi-sky", caption: "Dusk on Maria Island" },
         ],
       },
       {
         dow: "Thu",
         date: 17,
         type: "island",
-        short: "Back north",
-        title: "Back to Darlington",
-        text: "The same 11 km north. Evening on the grass with the wombats and Cape Barren geese.",
-        stats: ["~11 km"],
+        short: "North, hills",
+        title: "Back north through the middle of the island",
+        text: "About 17 km on the inland track, through forest and old farmland, back to Darlington. The turnoff for Mount Maria, the island’s high point at 711 m, is on the way: about 4 km each way, two hours return, with a scramble at the top. I found no usable photos of the inland track or the summit.",
+        stats: ["~17 km", "+8 km for Mt Maria"],
         sleep: "Tent, Darlington",
         photos: [
           {
             id: "wombat",
-            caption: "A wombat. They graze on the lawns around Darlington",
+            caption:
+              "Wombats come out on the Darlington lawns in the evening",
           },
-          { id: "darlington", caption: "Darlington from the water" },
+          { id: "geese", caption: "Cape Barren geese and a gosling" },
         ],
       },
       {
@@ -722,13 +737,17 @@ export const plans: Plan[] = [
         type: "island",
         short: "Bishop and Clerk",
         title: "Bishop and Clerk, then off the island",
-        text: "Start early for the summit: about 11 km return and 600 m up, with a boulder scramble at the top. Afternoon ferry, bus to Hobart, bed.",
-        stats: ["~11 km return", "3–5 h"],
+        text: "Start early with a day pack: about 4 km each way along the Fossil Cliffs and up to the summit, the last part a boulder scramble. Afternoon ferry, bus to Hobart, bed.",
+        stats: ["~8 km return", "3–4 h", "600 m up"],
         sleep: "Bed, Hobart",
         photos: [
           { id: "bishop", caption: "Bishop and Clerk above the Fossil Cliffs" },
-          { id: "bishop-top", caption: "The view south from the top" },
-          { id: "fossil", caption: "The track starts along these cliffs" },
+          {
+            id: "bishop-top",
+            caption: "The view south from the top, over the isthmus",
+          },
+          { id: "fossil-top", caption: "The track starts along these cliffs" },
+          { id: "fossil-2", caption: "Looking back towards Darlington" },
         ],
       },
       {
@@ -738,12 +757,7 @@ export const plans: Plan[] = [
         short: "Fly home",
         title: "Hobart to Sydney, fly home",
         text: "Morning flight to Sydney, collect the luggage at the airport, check in.",
-        photos: [
-          {
-            id: "painted-3",
-            caption: "Patterned sandstone on Maria Island’s shore",
-          },
-        ],
+        photos: [{ id: "mi-sky", caption: "Maria Island at dusk" }],
       },
     ],
   },

@@ -413,5 +413,50 @@
   "w": 1600,
   "h": 900,
   "source": "File:Bouddi National Park Coastal Walk (15471835157).jpg"
+ },
+ "darlington-jetty": {
+  "w": 1600,
+  "h": 1025,
+  "source": "File:Maria Island Jetty, Cement Silos, Store and Clinker Storage.jpg"
+ },
+ "commissariat": {
+  "w": 1600,
+  "h": 1067,
+  "source": "File:Commissariat Store 1825.jpg"
+ },
+ "mi-seascape": {
+  "w": 1600,
+  "h": 1045,
+  "source": "File:Maria Island Seascape 3.jpg"
+ },
+ "mi-sunset": {
+  "w": 1600,
+  "h": 652,
+  "source": "File:Maria Island Tasmania (25545446921).jpg"
+ },
+ "mi-sky": {
+  "w": 1067,
+  "h": 1600,
+  "source": "File:Maria Island, Tasmania (25612547606).jpg"
+ },
+ "fossil-2": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:Maria Island Cliff.jpg"
+ },
+ "fossil-top": {
+  "w": 1067,
+  "h": 1600,
+  "source": "File:Fossil Cliffs Maria Island.jpg"
+ },
+ "cliffs-sea": {
+  "w": 1600,
+  "h": 900,
+  "source": "File:Maria island Cliff face.jpg"
+ },
+ "geese": {
+  "w": 1600,
+  "h": 1067,
+  "source": "File:Cape Barren goose (Cereopsis novaehollandiae) pair with juvenile Maria Island.jpg"
  }
 }
