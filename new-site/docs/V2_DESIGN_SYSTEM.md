@@ -200,7 +200,9 @@ so each project is written once; a tile's `detail` line repeats figures from its
 ### Items
 
 `.item` (papers) is a thumbnail beside text: venue line (`.venue`: venue in `--ink`, then year and
-note), title, authors, summary and an optional `.award-note`. In `.items--cols` (three across) a 7.5rem thumbnail sits beside venue, title and authors, and the summary runs below both, so neither leaves empty space next to the other.
+note), title, authors, summary and an optional `.award-note`. In `.items--cols` (three across) a 7.5rem thumbnail sits beside venue, title and authors, and the summary runs below both, so neither leaves empty space next to the other. Between 601px and
+1100px, where papers are one to a row, the summary moves beside the thumbnail under the authors and
+is capped at `--measure`, so its lines stay readable.
 
 ### List rows
 
