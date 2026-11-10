@@ -1,0 +1,384 @@
+---
+// A private planning page: unlisted, not in the sitemap, not linked from anywhere.
+import V2Layout from '../layouts/V2Layout.astro';
+import '../styles/sydney-walk.css';
+import photoSizes from '../data/sydney-walk-photos.json';
+import { plans, dayTypes, criteria, everyPlan, ruledOut, otherIdeas, links, type Photo } from '../data/sydney-walk';
+
+const base = '/trips/sydney-2026';
+const sizes = photoSizes as Record<string, { w: number; h: number }>;
+const photo = (p: Photo) => ({
+  ...p,
+  small: `${base}/${p.id}-800.webp`,
+  full: `${base}/${p.id}.webp`,
+  w: sizes[p.id].w,
+  h: sizes[p.id].h,
+});
+
+// Map: an equirectangular sketch of the coast around Sydney (x east, y south), in km from Central.
+const kx = 92.3; // km per degree of longitude at 34°S
+const ky = 111;
+const at = (lat: number, lon: number) => ({ x: (lon - 151.21) * kx, y: (-33.88 - lat) * ky });
+const coast = [
+  [-33.4, 151.46], [-33.58, 151.33], [-33.83, 151.3], [-33.95, 151.26], [-34.0, 151.23], [-34.07, 151.17],
+  [-34.13, 151.12], [-34.19, 151.05], [-34.25, 150.98], [-34.42, 150.91], [-34.5, 150.92], [-34.58, 150.88],
+  [-34.67, 150.86], [-34.75, 150.84], [-34.8, 150.8], [-34.9, 150.76],
+].map(([lat, lon]) => at(lat, lon));
+const coastPath = coast.map((p, i) => `${i ? 'L' : 'M'}${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ');
+const landPath = `${coastPath} L-110 ${coast[coast.length - 1].y.toFixed(1)} L-110 ${coast[0].y.toFixed(1)} Z`;
+const places = [
+  { name: 'Sydney', ...at(-33.88, 151.21), kind: 'city', dx: 5, dy: -4 },
+  { name: 'Blackheath', ...at(-33.63, 150.28), kind: 'mountain', dx: 5, dy: -4 },
+  { name: 'Katoomba', ...at(-33.71, 150.31), kind: 'mountain', dx: -3, dy: 10 },
+  { name: 'Bundeena', ...at(-34.08, 151.15), kind: 'coast', dx: 5, dy: 1 },
+  { name: 'North Era', ...at(-34.17, 151.06), kind: 'coast', dx: 5, dy: 3 },
+  { name: 'Kiama', ...at(-34.67, 150.855), kind: 'coast', dx: 5, dy: 0 },
+  { name: 'Gerringong', ...at(-34.75, 150.83), kind: 'coast', dx: 5, dy: 4 },
+];
+const rail = (pts: number[][]) => pts.map(([lat, lon], i) => { const p = at(lat, lon); return `${i ? 'L' : 'M'}${p.x.toFixed(1)} ${p.y.toFixed(1)}`; }).join(' ');
+const railWest = rail([[-33.88, 151.21], [-33.82, 151.0], [-33.75, 150.69], [-33.72, 150.45], [-33.71, 150.31], [-33.63, 150.28], [-33.59, 150.25]]);
+const railSouth = rail([[-33.88, 151.21], [-33.97, 151.1], [-34.07, 151.01], [-34.21, 150.99], [-34.42, 150.89], [-34.58, 150.86], [-34.67, 150.85], [-34.75, 150.82]]);
+---
+
+<V2Layout title="A week walking near Sydney" description="Private trip notes." wide noindex>
+  <div class="trip">
+    <header class="trip-head">
+      <p class="meta">Private · Sun 13 – Sat 19 December 2026 · after NeurIPS</p>
+      <h1>A week walking near Sydney</h1>
+      <p class="trip-lede">A small meditation retreat on foot: sitting in the mornings and evenings, walking alone during the day. Train and ferry only, my own tent and stove, five walking days between two travel days.</p>
+    </header>
+
+    <section class="glance" aria-labelledby="glance-title">
+      <div class="panel-head"><h2 id="glance-title">The options</h2><span class="count">{plans.length}</span></div>
+      <div class="glance-grid">
+        {plans.map(plan => (
+          <article class="glance-card" data-plan-card={plan.id}>
+            <div class:list={['frame', 'glance-photo', { 'glance-photo--split': plan.hero.length > 1 }]}>
+              {plan.hero.map(p => photo(p)).map(p => <img src={p.small} alt={p.caption} width={p.w} height={p.h} />)}
+            </div>
+            <p class="meta">{plan.option}</p>
+            <h3><a class="stretched" href={`#${plan.id}`} data-plan-link={plan.id}>{plan.name}</a></h3>
+            <p class="glance-where">{plan.where}</p>
+            <p class="glance-pitch">{plan.pitch}</p>
+            <ol class="strip" aria-label={`The seven days of ${plan.name}`}>
+              {plan.days.map(day => (
+                <li class={`strip-day t-${day.type}`} title={`${day.dow} ${day.date}: ${day.title}`}>
+                  <span class="strip-dow">{day.dow}</span>
+                  <span class="visually-hidden">{dayTypes[day.type]}</span>
+                </li>
+              ))}
+            </ol>
+            <dl class="dots">
+              {criteria.map((name, i) => (
+                <div>
+                  <dt>{name}</dt>
+                  <dd aria-label={`${plan.ratings[i]} out of 5`}>
+                    {[1, 2, 3, 4, 5].map(n => <span class:list={['dot', { on: n <= plan.ratings[i] }]}></span>)}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+            {plan.ratingsBy === 'claude' && <p class="meta">Dots here are Claude’s guess, not my gut.</p>}
+          </article>
+        ))}
+      </div>
+      <ul class="legend" aria-label="Day colours">
+        {Object.entries(dayTypes).map(([type, label]) => <li><span class={`swatch t-${type}`}></span>{label}</li>)}
+      </ul>
+    </section>
+
+    <section class="compare" aria-labelledby="compare-title">
+      <div class="panel compare-table-panel">
+        <div class="panel-head"><h2 id="compare-title">Side by side</h2></div>
+        <div class="table-scroll">
+          <table class="compare-table">
+            <thead>
+              <tr><th scope="col"></th>{plans.map(plan => <th scope="col">{plan.name}</th>)}</tr>
+            </thead>
+            <tbody>
+              {criteria.map((name, i) => (
+                <tr>
+                  <th scope="row">{name}</th>
+                  {plans.map(plan => (
+                    <td>
+                      <span class="dots-inline" aria-label={`${plan.ratings[i]} out of 5`}>
+                        {[1, 2, 3, 4, 5].map(n => <span class:list={['dot', { on: n <= plan.ratings[i] }]}></span>)}
+                      </span>
+                    </td>
+                  ))}
+                </tr>
+              ))}
+              <tr><th scope="row">Nights in the tent</th>{plans.map(plan => <td>{plan.glance.tent}</td>)}</tr>
+              <tr><th scope="row">Rest days</th>{plans.map(plan => <td>{plan.glance.rest}</td>)}</tr>
+              <tr><th scope="row">Walking</th>{plans.map(plan => <td>{plan.glance.walking}</td>)}</tr>
+              <tr><th scope="row">To book</th>{plans.map(plan => <td>{plan.glance.bookings}</td>)}</tr>
+              <tr><th scope="row">Note</th>{plans.map(plan => <td>{plan.glance.extra}</td>)}</tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="meta">Dots are my gut feeling out of 5; the Tasmania column is Claude’s guess.</p>
+      </div>
+      <div class="panel map-panel">
+        <div class="panel-head"><h2>Where they are</h2></div>
+        <div class="map-wrap">
+          <svg class="map" viewBox="-112 -52 190 162" role="img" aria-label="Map: the Blue Mountains are about 100 km west of Sydney, Royal National Park is just south, Kiama about 120 km south.">
+            <rect class="map-sea" x="-112" y="-52" width="190" height="162" />
+            <path class="map-land" d={landPath} />
+            <path class="map-rail" d={railWest} />
+            <path class="map-rail" d={railSouth} />
+            <text class="map-area" x={at(-33.6, 150.5).x} y={at(-33.52, 150.5).y}>Blue Mountains</text>
+            <text class="map-area" x={at(-34.12, 150.72).x} y={at(-34.12, 150.72).y}>Royal NP</text>
+            <text class="map-sea-label" x="36" y="60">Tasman Sea</text>
+            {places.map(p => (
+              <g>
+                <circle class={`map-dot k-${p.kind}`} cx={p.x} cy={p.y} r={p.kind === 'city' ? 2.6 : 2} />
+                <text class="map-label" x={p.x + p.dx} y={p.y + p.dy}>{p.name}</text>
+              </g>
+            ))}
+            <g class="map-scale" transform="translate(-104 100)">
+              <line x1="0" y1="0" x2="50" y2="0" /><text x="0" y="-3">50 km</text>
+            </g>
+          </svg>
+          <p class="meta map-note">Thin lines are the two train lines. Maria Island is off this map: about 1,050 km south of Sydney, a 2 hour flight to Hobart and then 90 km up Tasmania’s east coast.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="plans" aria-labelledby="plans-title">
+      <h2 id="plans-title" class="visually-hidden">Day by day</h2>
+      <div class="plan-tabs" role="tablist" aria-label="Choose a plan">
+        {plans.map((plan, i) => (
+          <button type="button" role="tab" id={`tab-${plan.id}`} aria-controls={plan.id} aria-selected={i === 0 ? 'true' : 'false'} data-plan-tab={plan.id}>
+            <span class="tab-option">{plan.option.replace(', added by Claude', '')}</span>{plan.name}
+          </button>
+        ))}
+        <button type="button" class="plan-all" data-plan-all aria-pressed="false">Show all</button>
+      </div>
+
+      {plans.map(plan => (
+        <article class="plan" id={plan.id} role="tabpanel" aria-labelledby={`tab-${plan.id}`} data-plan={plan.id}>
+          <div class:list={['plan-hero', { 'plan-hero--split': plan.hero.length > 1 }]}>
+            {plan.hero.map(p => photo(p)).map(p => (
+              <button type="button" class="shot" data-full={p.full} data-caption={p.caption}>
+                <img src={p.full} alt={p.caption} width={p.w} height={p.h} />
+              </button>
+            ))}
+            <div class="plan-hero-text">
+              <p>{plan.option} · {plan.where}</p>
+              <h3>{plan.name}</h3>
+            </div>
+          </div>
+          <p class="meta plan-hero-caption">{plan.hero.map(p => p.caption).join(' · ')}</p>
+
+          <div class="plan-intro">
+            <div>
+              <p class="plan-pitch">{plan.pitch}</p>
+              <p class="plan-feels"><span>Feels like</span> {plan.feels}</p>
+            </div>
+            <div class="plan-facts">
+              <h4>Facts</h4>
+              <ul>{plan.facts.map(fact => <li>{fact}</li>)}</ul>
+              {plan.check && (
+                <>
+                  <h4 class="check-head">Not checked yet</h4>
+                  <ul class="check">{plan.check.map(item => <li>{item}</li>)}</ul>
+                </>
+              )}
+            </div>
+          </div>
+
+          <ol class="strip strip--large" aria-label="The seven days">
+            {plan.days.map(day => (
+              <li class={`strip-day t-${day.type}`}>
+                <a href={`#${plan.id}-${day.dow.toLowerCase()}`}>
+                  <span class="strip-dow">{day.dow} {day.date}</span>
+                  <span class="strip-short">{day.short}</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+
+          <ol class="days">
+            {plan.days.map(day => {
+              const [main, ...rest] = day.photos.map(photo);
+              return (
+                <li class={`day t-${day.type}`} id={`${plan.id}-${day.dow.toLowerCase()}`}>
+                  <div class="day-when">
+                    <span class="day-dow">{day.dow}</span>
+                    <span class="day-date">{day.date} Dec</span>
+                    <span class="day-type"><span class={`swatch t-${day.type}`}></span>{dayTypes[day.type]}</span>
+                  </div>
+                  <div class="day-body">
+                    <h4>{day.title}</h4>
+                    <p>{day.text}</p>
+                    {day.stats && <ul class="pills">{day.stats.map(stat => <li>{stat}</li>)}</ul>}
+                    {day.sleep && <p class="meta day-sleep">Night: {day.sleep}</p>}
+                  </div>
+                  <div class:list={['day-photos', { 'day-photos--single': rest.length === 0 }]}>
+                    <figure class="day-main">
+                      <button type="button" class="shot frame" data-full={main.full} data-caption={main.caption}>
+                        <img src={main.small} srcset={`${main.small} 800w, ${main.full} ${main.w}w`} sizes="(max-width: 960px) 92vw, 780px" alt={main.caption} width={main.w} height={main.h} loading="lazy" decoding="async" />
+                      </button>
+                      <figcaption>{main.caption}</figcaption>
+                    </figure>
+                    {rest.length > 0 && (
+                      <ul class="day-more">
+                        {rest.map(p => (
+                          <li>
+                            <figure>
+                              <button type="button" class="shot frame" data-full={p.full} data-caption={p.caption}>
+                                <img src={p.small} alt={p.caption} width={p.w} height={p.h} loading="lazy" decoding="async" />
+                              </button>
+                              <figcaption>{p.caption}</figcaption>
+                            </figure>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
+        </article>
+      ))}
+    </section>
+
+    <section class="all-three">
+      <div class="panel">
+        <div class="panel-head"><h2>Applies to every plan</h2></div>
+        <dl class="notes">
+          {everyPlan.map(item => <div><dt>{item.title}</dt><dd>{item.text}</dd></div>)}
+        </dl>
+        <ul class="link-row">
+          {links.map(link => <li><a class="link" href={link.href} rel="noreferrer">{link.label}</a></li>)}
+        </ul>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h2>Ruled out</h2></div>
+        <dl class="notes notes--tight">
+          {ruledOut.map(item => <div><dt>{item.name}</dt><dd>{item.why}</dd></div>)}
+        </dl>
+      </div>
+    </section>
+
+    <section class="panel ideas" aria-labelledby="ideas-title">
+      <div class="panel-head"><h2 id="ideas-title">Other walks worth a look</h2><span class="count">{otherIdeas.length}</span></div>
+      <p class="panel-lede">Added by Claude. None of these beats the four plans above on its own, but each could swap in for part of one.</p>
+      <div class="ideas-grid">
+        {otherIdeas.map(idea => {
+          const [main, ...rest] = idea.photos.map(photo);
+          return (
+            <article class="idea">
+              <figure>
+                <button type="button" class="shot frame" data-full={main.full} data-caption={main.caption}>
+                  <img src={main.small} alt={main.caption} width={main.w} height={main.h} loading="lazy" decoding="async" />
+                </button>
+                <figcaption>{main.caption}</figcaption>
+              </figure>
+              {rest.length > 0 && (
+                <ul class="idea-more">
+                  {rest.map(p => (
+                    <li>
+                      <button type="button" class="shot frame" data-full={p.full} data-caption={p.caption}>
+                        <img src={p.small} alt={p.caption} width={p.w} height={p.h} loading="lazy" decoding="async" />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <p class="meta">{idea.where}</p>
+              <h3>{idea.name}</h3>
+              <p>{idea.text}</p>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+
+    <dialog class="lightbox" aria-label="Photo">
+      <button type="button" class="lightbox-close" aria-label="Close">×</button>
+      <button type="button" class="lightbox-nav lightbox-prev" aria-label="Previous photo">‹</button>
+      <figure>
+        <img alt="" />
+        <figcaption></figcaption>
+      </figure>
+      <button type="button" class="lightbox-nav lightbox-next" aria-label="Next photo">›</button>
+    </dialog>
+  </div>
+
+  <script>
+    const root = document.querySelector<HTMLElement>('.trip')!;
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[data-plan-tab]')];
+    const panels = [...root.querySelectorAll<HTMLElement>('[data-plan]')];
+    const allButton = root.querySelector<HTMLButtonElement>('[data-plan-all]')!;
+    const ids = panels.map(panel => panel.dataset.plan!);
+
+    function show(id: string | 'all', scroll = false) {
+      const all = id === 'all';
+      root.classList.add('has-tabs');
+      panels.forEach(panel => { panel.hidden = !all && panel.dataset.plan !== id; });
+      tabs.forEach(tab => {
+        const selected = !all && tab.dataset.planTab === id;
+        tab.setAttribute('aria-selected', String(selected));
+        tab.tabIndex = selected || all ? 0 : -1;
+      });
+      root.querySelectorAll<HTMLElement>('[data-plan-card]').forEach(card => card.classList.toggle('is-current', card.dataset.planCard === id));
+      allButton.setAttribute('aria-pressed', String(all));
+      try { history.replaceState(null, '', all ? '#all' : `#${id}`); } catch {}
+      if (scroll) root.querySelector('.plan-tabs')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => show(tab.dataset.planTab!));
+      tab.addEventListener('keydown', event => {
+        if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
+        const next = tabs[(i + (event.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+        next.focus();
+        show(next.dataset.planTab!);
+      });
+    });
+    allButton.addEventListener('click', () => show(allButton.getAttribute('aria-pressed') === 'true' ? ids[0] : 'all'));
+    root.querySelectorAll<HTMLAnchorElement>('[data-plan-link]').forEach(link => {
+      link.addEventListener('click', event => { event.preventDefault(); show(link.dataset.planLink!, true); });
+    });
+    // Day links in the strip scroll inside the open plan.
+    root.querySelectorAll<HTMLAnchorElement>('.strip--large a').forEach(link => {
+      link.addEventListener('click', event => {
+        event.preventDefault();
+        document.querySelector(link.getAttribute('href')!)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+    const hash = location.hash.slice(1);
+    show(hash === 'all' ? 'all' : ids.find(id => hash === id || hash.startsWith(`${id}-`)) ?? ids[0]);
+
+    // Lightbox: every photo opens large; arrows move through the photos currently visible.
+    const box = root.querySelector<HTMLDialogElement>('.lightbox')!;
+    const boxImage = box.querySelector('img')!;
+    const boxCaption = box.querySelector('figcaption')!;
+    let shots: HTMLButtonElement[] = [];
+    let current = 0;
+    function open(index: number) {
+      current = (index + shots.length) % shots.length;
+      const shot = shots[current];
+      boxImage.src = shot.dataset.full!;
+      boxImage.alt = shot.dataset.caption!;
+      boxCaption.textContent = `${shot.dataset.caption} (${current + 1} of ${shots.length})`;
+      if (!box.open) box.showModal();
+    }
+    root.addEventListener('click', event => {
+      const shot = (event.target as HTMLElement).closest<HTMLButtonElement>('.shot');
+      if (!shot) return;
+      shots = [...root.querySelectorAll<HTMLButtonElement>('.shot')].filter(button => button.offsetParent !== null);
+      open(shots.indexOf(shot));
+    });
+    box.querySelector('.lightbox-prev')!.addEventListener('click', () => open(current - 1));
+    box.querySelector('.lightbox-next')!.addEventListener('click', () => open(current + 1));
+    box.querySelector('.lightbox-close')!.addEventListener('click', () => box.close());
+    box.addEventListener('click', event => { if (event.target === box) box.close(); });
+    box.addEventListener('keydown', event => {
+      if (event.key === 'ArrowRight') open(current + 1);
+      if (event.key === 'ArrowLeft') open(current - 1);
+    });
+  </script>
+</V2Layout>

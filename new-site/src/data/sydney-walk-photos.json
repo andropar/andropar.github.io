@@ -1,0 +1,417 @@
+{
+ "m-hero": {
+  "w": 2400,
+  "h": 1394,
+  "source": "File:Grose Valley, NSW, Australia - April 2013.jpg"
+ },
+ "blackheath-town": {
+  "w": 1600,
+  "h": 900,
+  "source": "File:2023-05-13 Blackheath, New South Wales.jpg"
+ },
+ "blackheath-station": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:Blackheath Railway Station.jpg"
+ },
+ "mt-victoria": {
+  "w": 1600,
+  "h": 1069,
+  "source": "File:(1)Mount Victoria Railway Station.jpg"
+ },
+ "vf-track": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:264 Victoria Falls Track, Oct 79 (52154486862).jpg"
+ },
+ "vf-cascades": {
+  "w": 1600,
+  "h": 1060,
+  "source": "File:VictoriaCascades.jpg"
+ },
+ "vf-lookout": {
+  "w": 1600,
+  "h": 1073,
+  "source": "File:(1)Grose Valley from Victoria Falls Lookout.jpg"
+ },
+ "grose-river": {
+  "w": 1600,
+  "h": 1067,
+  "source": "File:Grose River, near Blue Gum Forest, Grose Valley, Blue Mountains 1.JPG"
+ },
+ "grose-rapids": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:563 Grosse R, Pierces Pass, Feb 1981 (52294513074).jpg"
+ },
+ "bluegum-1": {
+  "w": 1188,
+  "h": 799,
+  "source": "File:Blue Gum Forest Blue Sky.jpg"
+ },
+ "bluegum-2": {
+  "w": 1600,
+  "h": 1009,
+  "source": "File:(1)Blue Gum Forest.jpg"
+ },
+ "bluegum-3": {
+  "w": 1200,
+  "h": 1600,
+  "source": "File:027 Blue Gum Forest, Sept 1978 (52077457095).jpg"
+ },
+ "grose-sunrise": {
+  "w": 1600,
+  "h": 1053,
+  "source": "File:(1)Grose Valley sunrise.jpg"
+ },
+ "grose-mist": {
+  "w": 1600,
+  "h": 900,
+  "source": "File:Grose Valley at Mt Caley.jpg"
+ },
+ "govetts-1": {
+  "w": 1600,
+  "h": 899,
+  "source": "File:Govetts leap (50659742287).jpg"
+ },
+ "govetts-2": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:View from Govetts Leap Lookout Blackheath in the Blue Mountains.jpg"
+ },
+ "bridal-veil": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:View Bridal Veil Falls.jpg"
+ },
+ "evans": {
+  "w": 1600,
+  "h": 1067,
+  "source": "File:2013-07-03 Evans Lookout 03.jpg"
+ },
+ "grand-canyon-1": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:The Grand Canyon Blackheath.JPG"
+ },
+ "grand-canyon-2": {
+  "w": 1600,
+  "h": 1195,
+  "source": "File:Grand Canyon Track - panoramio (1).jpg"
+ },
+ "pulpit": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:Pulpit Rock Lookout - panoramio.jpg"
+ },
+ "wentworth-1": {
+  "w": 1401,
+  "h": 1600,
+  "source": "File:Upper Wentworth Falls 3, NSW, Australia - Nov 2008.jpg"
+ },
+ "wentworth-2": {
+  "w": 1600,
+  "h": 1546,
+  "source": "File:Upper Wentworth Falls, NSW, Australia - Nov 2008.jpg"
+ },
+ "jamison": {
+  "w": 1600,
+  "h": 1204,
+  "source": "File:Jamison valley frm wentworth falls.jpg"
+ },
+ "leura": {
+  "w": 1600,
+  "h": 1067,
+  "source": "File:Leura cascades stream.JPG"
+ },
+ "tarpeian": {
+  "w": 1600,
+  "h": 1067,
+  "source": "File:Tarpeian Lookout.jpg"
+ },
+ "sisters-1": {
+  "w": 1600,
+  "h": 1067,
+  "source": "File:Three Sisters Katoomba IMG 5370.jpg"
+ },
+ "sisters-2": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:Australia new Katoomba the three sisters.jpg"
+ },
+ "sisters-3": {
+  "w": 1600,
+  "h": 1067,
+  "source": "File:Three Sisters, Katoomba, NSW.jpg"
+ },
+ "katoomba-falls": {
+  "w": 1067,
+  "h": 1600,
+  "source": "File:Katoomba Falls IMG 5330.jpg"
+ },
+ "solitary": {
+  "w": 1600,
+  "h": 1068,
+  "source": "File:(1)Mount Solitary-1.jpg"
+ },
+ "c-hero": {
+  "w": 2400,
+  "h": 1920,
+  "source": "File:Eagle Rock and Curracurrong Falls, Royal National Park.jpg"
+ },
+ "ferry": {
+  "w": 1600,
+  "h": 1083,
+  "source": "File:Ferry from Cronulla to Bundeena (cropped).jpg"
+ },
+ "ferry-wharf": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:Cronulla - panoramio (83).jpg"
+ },
+ "track-1": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:Royal National Park Coast Track - panoramio (8).jpg"
+ },
+ "track-2": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:Marley Beach - panoramio (3).jpg"
+ },
+ "wedding-cake-1": {
+  "w": 1600,
+  "h": 1433,
+  "source": "File:Wedding Cake Rock - panoramio (edited).jpg"
+ },
+ "wedding-cake-2": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:The Cliff Face Near Wedding Cake Rock (23151643763).jpg"
+ },
+ "marley": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:Marley Beach.jpg"
+ },
+ "wattamolla-1": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:Wattamolla lagoon.jpg"
+ },
+ "wattamolla-2": {
+  "w": 1600,
+  "h": 1330,
+  "source": "File:Wattamolla Beach aerial.jpg"
+ },
+ "curracurrong": {
+  "w": 1600,
+  "h": 1068,
+  "source": "File:Curracurrong Twin Falls.jpg"
+ },
+ "garie-1": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:Garie Beach, Royal National Park.jpg"
+ },
+ "garie-2": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:Garie Beach - panoramio (5).jpg"
+ },
+ "era-1": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:Late Afternoon at North & South Era.jpg"
+ },
+ "era-2": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:North Era Beach.jpg"
+ },
+ "era-dusk": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:Dusk at North Era Beach.jpg"
+ },
+ "era-sunrise": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:Sunrise over North Era Beach.jpg"
+ },
+ "era-deer": {
+  "w": 1600,
+  "h": 1178,
+  "source": "File:(1)deer North Era Royal NP-3.jpg"
+ },
+ "burning-palms-1": {
+  "w": 1600,
+  "h": 900,
+  "source": "File:Royal National Park - Burning Palms Beach.jpg"
+ },
+ "burning-palms-2": {
+  "w": 1600,
+  "h": 1064,
+  "source": "File:A beach at Royal National Park.jpg"
+ },
+ "figure8": {
+  "w": 1237,
+  "h": 1600,
+  "source": "File:Infinity Pools.jpg"
+ },
+ "otford": {
+  "w": 1600,
+  "h": 1066,
+  "source": "File:Otford Lookout.jpg"
+ },
+ "otford-station": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:Otford railway station looking south from footbridge.jpg"
+ },
+ "minnamurra": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:Minnamurra River w-sandbank.jpg"
+ },
+ "bombo-1": {
+  "w": 1600,
+  "h": 1069,
+  "source": "File:Bombo Quarry.jpg"
+ },
+ "bombo-beach": {
+  "w": 1600,
+  "h": 663,
+  "source": "File:Panorama of Bombo, New South Wales.jpg"
+ },
+ "blowhole": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:Little Blowhole, Kiama 1.jpg"
+ },
+ "lighthouse": {
+  "w": 1067,
+  "h": 1600,
+  "source": "File:Kiama Lighthouse seen from the east.jpg"
+ },
+ "cathedral": {
+  "w": 1600,
+  "h": 680,
+  "source": "File:Cathedral Rocks - panoramio.jpg"
+ },
+ "kiama-1": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:The Kiama coastal walk - panoramio (13).jpg"
+ },
+ "kiama-2": {
+  "w": 1600,
+  "h": 843,
+  "source": "File:The Kiama coastal walk - panoramio (16).jpg"
+ },
+ "kiama-3": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:The Kiama coastal walk, nearing Kiama - panoramio.jpg"
+ },
+ "kiama-4": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:The Kiama coastal walk - panoramio (15).jpg"
+ },
+ "loves-bay": {
+  "w": 1200,
+  "h": 1600,
+  "source": "File:The Kiama coastal walk - panoramio (28).jpg"
+ },
+ "werri-1": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:Werri Beach from the headland - panoramio.jpg"
+ },
+ "werri-2": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:Looking north on Werri Beach - panoramio.jpg"
+ },
+ "t-hero": {
+  "w": 2400,
+  "h": 1601,
+  "source": "File:Painted Cliffs (51354210921).jpg"
+ },
+ "painted-2": {
+  "w": 1600,
+  "h": 1067,
+  "source": "File:Painted Cliffs.jpg"
+ },
+ "painted-3": {
+  "w": 1600,
+  "h": 1068,
+  "source": "File:Gliding Rock? (48792893226).jpg"
+ },
+ "darlington": {
+  "w": 1600,
+  "h": 865,
+  "source": "File:Darlington, Maria Island.jpg"
+ },
+ "fossil": {
+  "w": 1600,
+  "h": 900,
+  "source": "File:Maria Island Grand Picnic .jpg"
+ },
+ "bishop": {
+  "w": 1600,
+  "h": 1067,
+  "source": "File:Fossil Bay Maria Island 4nitsirk 8460241226..jpg"
+ },
+ "bishop-top": {
+  "w": 1195,
+  "h": 1600,
+  "source": "File:Maria Island from the top of Bishop and Clerk.jpg"
+ },
+ "wombat": {
+  "w": 1600,
+  "h": 1063,
+  "source": "File:Common wombat 6.jpg"
+ },
+ "wombat-2": {
+  "w": 1600,
+  "h": 1067,
+  "source": "File:Common wombat (Vombatus ursinus tasmaniensis) female with juvenile Maria Island.jpg"
+ },
+ "maria-beach": {
+  "w": 1600,
+  "h": 1067,
+  "source": "File:Maria Island Beach.jpg"
+ },
+ "maria-east": {
+  "w": 1200,
+  "h": 1600,
+  "source": "File:Maria Island East Coast.jpg"
+ },
+ "wineglass": {
+  "w": 1600,
+  "h": 1200,
+  "source": "File:Freycinet Wineglass Bay And Promise Bay.jpg"
+ },
+ "hazards": {
+  "w": 1600,
+  "h": 1064,
+  "source": "File:The Hazards From Hazards Beach.jpg"
+ },
+ "hazards-beach": {
+  "w": 1600,
+  "h": 1067,
+  "source": "File:Freycinet National Park, Tasmania 13.jpg"
+ },
+ "cape-pillar": {
+  "w": 1600,
+  "h": 1178,
+  "source": "File:Cape Pillar Sea Cliffs.jpg"
+ },
+ "bouddi": {
+  "w": 1600,
+  "h": 900,
+  "source": "File:Bouddi National Park Coastal Walk (15471835157).jpg"
+ }
+}
