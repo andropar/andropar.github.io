@@ -39,9 +39,11 @@ const onWritingPage = canonicalPath.startsWith('/blog');
       (() => {
         const mode = /^#(?:life|personal)(?:-|$)/.test(location.hash) ? 'life' : 'work';
         document.documentElement.dataset.v2Mode = mode;
-        let theme = 'light';
-        try { theme = localStorage.getItem('v2-theme') === 'dark' ? 'dark' : 'light'; } catch {}
-        document.documentElement.dataset.theme = theme;
+        // The visitor's own choice wins; without one, the page follows the system setting.
+        let stored = null;
+        try { stored = localStorage.getItem('v2-theme'); } catch {}
+        const systemDark = matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme = stored === 'dark' || stored === 'light' ? stored : systemDark ? 'dark' : 'light';
         if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
           document.documentElement.classList.add('reveal-ready');
         }
@@ -160,6 +162,14 @@ const onWritingPage = canonicalPath.startsWith('/blog');
         const theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
         root.dataset.theme = theme;
         try { localStorage.setItem('v2-theme', theme); } catch {}
+        syncTheme();
+      });
+      // Until the visitor uses the toggle, a change of the system setting changes the page too.
+      matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+        let stored = null;
+        try { stored = localStorage.getItem('v2-theme'); } catch {}
+        if (stored === 'dark' || stored === 'light') return;
+        root.dataset.theme = event.matches ? 'dark' : 'light';
         syncTheme();
       });
       menuToggle?.addEventListener('click', () => {

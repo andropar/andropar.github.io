@@ -306,8 +306,9 @@ reading time. Each post is fully clickable; the title turns accent on hover.
   to `(hover: hover)` devices.
 - Skip link, `inert` on the hidden view, `aria-pressed` on the theme toggle, `aria-expanded` on the
   menu, and `aria-current` on the active view and page are all kept.
-- Theme: `data-theme` on `<html>` is persisted in `localStorage` under `v2-theme`, and every color
-  token has a dark value.
+- Theme: `data-theme` on `<html>` follows the system setting (`prefers-color-scheme`) until the
+  visitor uses the toggle; that choice is persisted in `localStorage` under `v2-theme` and wins from
+  then on. Every color token has a dark value.
 
 ## Adding to the system
 
