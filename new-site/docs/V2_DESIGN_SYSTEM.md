@@ -327,3 +327,8 @@ reading time. Each post is fully clickable; the title turns accent on hover.
 The homepage is `/`, writing is `/blog`, and the editor is `/admin`. The `/v2` routes render the same
 components with canonical links to the main routes. `/about`, `/now`, and `/projects` redirect to the
 corresponding homepage sections.
+
+`/sitemap.xml` and `/rss.xml` are small endpoints (`src/pages/sitemap.xml.ts`, `rss.xml.ts`) that list
+the listed posts; `public/robots.txt` names the sitemap. Every page shares one link-preview card,
+`public/og.jpg` (1200×630), which repeats the Work hero and is drawn from `scripts/og-image.html`;
+the commands to regenerate it are in that file.

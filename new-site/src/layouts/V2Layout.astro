@@ -14,6 +14,9 @@ const canonicalPath = Astro.url.pathname.replace(/^\/v2(?=\/|$)/, '') || '/';
 const canonicalURL = new URL(canonicalPath, Astro.site);
 const homeAnchor = /^\/(?:v2\/?)?$/.test(Astro.url.pathname) ? '' : '/';
 const onWritingPage = canonicalPath.startsWith('/blog');
+// Link previews: one card image for every page (scripts/og-image.html), and posts are articles.
+const previewImage = new URL('/og.jpg', Astro.site);
+const isArticle = /^\/blog\/[^/]+\/?$/.test(canonicalPath);
 ---
 
 <!doctype html>
@@ -26,11 +29,18 @@ const onWritingPage = canonicalPath.startsWith('/blog');
     {noindex && <meta name="robots" content="noindex" />}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={isArticle ? 'article' : 'website'} />
     <meta property="og:url" content={canonicalURL} />
+    <meta property="og:site_name" content="Johannes Roth" />
+    <meta property="og:image" content={previewImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Johannes Roth, machine learning engineer and PhD researcher" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="canonical" href={canonicalURL} />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
+    <link rel="alternate" type="application/rss+xml" title="Johannes Roth — Writing" href="/rss.xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..600;1,14..32,400..600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />

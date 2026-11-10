@@ -1,0 +1,48 @@
+<!doctype html>
+<!--
+  The link-preview card shown when the site is shared (public/og.jpg, 1200×630; referenced from
+  src/layouts/V2Layout.astro). It repeats the Work hero: name, lede and the cut-out portrait.
+
+  To regenerate after changing the text or the portrait, run from new-site/:
+
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --hide-scrollbars \
+      --window-size=1200,630 --virtual-time-budget=5000 --screenshot=og.png scripts/og-image.html
+    sips -s format jpeg -s formatOptions 88 og.png --out public/og.jpg && rm og.png
+
+  Colours and type follow src/styles/v2.css (ink, muted, accent, the hero name's weight and tracking).
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Link-preview card</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..600&display=swap" rel="stylesheet" />
+    <style>
+      html, body { margin: 0; }
+      body {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 410px;
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+        background: #ffffff;
+        color: #1c1d1a;
+        font-family: 'Inter', sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      .text { align-self: center; padding: 0 0 12px 84px; }
+      h1 { margin: 0 0 30px; font-size: 128px; font-weight: 600; line-height: 0.95; letter-spacing: -0.045em; }
+      .lede { margin: 0; font-size: 40px; line-height: 1.22; letter-spacing: -0.02em; }
+      .meta { display: flex; align-items: center; gap: 14px; margin: 44px 0 0; color: #6b6d66; font-size: 25px; }
+      .meta::before { content: ''; width: 11px; height: 11px; border-radius: 50%; background: #4761bb; }
+      .portrait { align-self: end; width: 410px; height: 590px; object-fit: cover; object-position: 50% 0; }
+    </style>
+  </head>
+  <body>
+    <div class="text">
+      <h1>Johannes<br />Roth</h1>
+      <p class="lede">Machine learning engineer<br />&amp; PhD researcher.</p>
+      <p class="meta">jroth.space</p>
+    </div>
+    <img class="portrait" src="../public/v2/portrait-oxford-original-face.png" alt="" />
+  </body>
+</html>
