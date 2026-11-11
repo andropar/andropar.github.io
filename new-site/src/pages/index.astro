@@ -106,7 +106,7 @@ const projects = [
   },
 ];
 const tools = [
-  { repo: 'voice-annotate', url: '/voice-annotate/', description: 'An app for macOS, Windows and Linux: talk and draw on your screen, then paste the result into any coding agent.' },
+  { repo: 'voice-annotate', name: 'Scribble', url: '/voice-annotate/', description: 'An app for macOS, Windows and Linux: talk and draw on your screen, then paste the result into any coding agent.' },
   { repo: 'slurmboard', description: 'A lightweight dashboard for Slurm jobs, logs and resource use on HPC clusters.' },
   { repo: 'fmriqc', description: 'An interactive QA and review tool for fMRI data snapshots.' },
   { repo: 'cvmanova_python', description: 'Cross-validated MANOVA for multivariate fMRI pattern analysis.' },
@@ -230,7 +230,7 @@ const lifeStories = [
                 <li>
                   <span class="frame tool-icon graphic" aria-hidden="true" style={`--ink-mask: url(/v2/graphics/tool-${tool.repo}-ink.png); --accent-mask: url(/v2/graphics/tool-${tool.repo}-accent.png)`}><span class="graphic-ink"></span><span class="graphic-accent"></span></span>
                   <div>
-                    <a class="link" href={tool.url ?? `https://github.com/andropar/${tool.repo}`} target="_blank" rel="noopener">{tool.repo}</a>
+                    <a class="link" href={tool.url ?? `https://github.com/andropar/${tool.repo}`} target="_blank" rel="noopener">{tool.name ?? tool.repo}</a>
                     <p>{tool.description}</p>
                   </div>
                 </li>
