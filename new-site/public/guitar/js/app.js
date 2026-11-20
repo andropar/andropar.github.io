@@ -2,8 +2,9 @@ import {
   QUALITIES, QUALITY_KEYS, ROOT_NAMES, INTERVAL_NAMES, TUNING, STRING_NAMES, MAJOR_SCALE, MINOR_SCALE,
   makeChord, chordKey, voicingsFor, guessKey, keyName, diatonicChords, romanFor, nextDegrees,
   FUNCTION_TEXT, FUNCTION_SHORT, pc, noteName, noteWithOctave, pretty, positionsOf,
+  PENTATONIC, findLoop, shapeWithCapo,
 } from "./theory.js";
-import { Listener } from "./detect.js";
+import { Listener, DEFAULTS } from "./detect.js";
 import { renderNeck, diagramSVG } from "./fretboard.js";
 import { playNote, strum, arpeggiate } from "./synth.js";
 import { LESSONS } from "./lessons.js";
@@ -27,6 +28,13 @@ const state = {
   historyIsExample: true,
   labelMode: store.get("labelMode", "interval"),
   extra: store.get("extra", "none"),
+  capo: store.get("capo", 0),
+  resp: store.get("resp", "fast"),
+  bpm: null,
+  key: null,
+  loop: null,
+  loopMiss: 0,
+  pendingHist: null,
   lastSoundAt: 0,
   lastNoteMidi: null,
   prevNoteMidi: null,
@@ -61,11 +69,11 @@ async function toggleListening() {
     return;
   }
   try {
-    state.listener = new Listener(onFrame);
+    state.listener = new Listener(onFrame, RESPONSE[state.resp]);
     await state.listener.start();
     state.listening = true;
     $("banner").hidden = true;
-    if (state.historyIsExample) { state.history = []; state.historyIsExample = false; renderHistory(); }
+    if (state.historyIsExample) { state.history = []; state.historyIsExample = false; state.loop = null; state.key = null; renderHistory(); }
   } catch (err) {
     console.error("Microphone failed", err);
     const b = $("banner");
@@ -113,6 +121,12 @@ const chromaBars = [];
 
 function onFrame(f) {
   state.frame = f;
+  const ph = state.pendingHist;
+  if (ph && performance.now() - ph.at >= 220) {
+    state.pendingHist = null;
+    if (state.display.type === "chord" && chordKey(state.display.chord) === chordKey(ph.chord)) pushHistory(ph.chord);
+  }
+  if (f.bpm !== state.bpm && (f.bpm != null || !f.silent)) { state.bpm = f.bpm; renderTempo(); }
   $("meter").style.width = (f.level * 100).toFixed(0) + "%";
   if (!f.silent) state.lastSoundAt = performance.now();
 
@@ -127,8 +141,8 @@ function onFrame(f) {
   }
   $("noteCount").textContent = f.silent ? "quiet" : active.size === 1 ? "1 note" : `${active.size} notes`;
 
-  // Tuner
-  if (f.pitch && !f.silent) {
+  // Tuner: only meaningful when a single note rings (chords give octave errors).
+  if (f.pitch && !f.silent && (f.activePcs || []).length === 1) {
     const m = f.pitch.midi;
     const nearest = Math.round(m);
     const c = (m - nearest) * 100;
@@ -144,7 +158,9 @@ function onFrame(f) {
     const cur = state.display;
     if (cur.type !== "chord" || cur.source !== "mic" || chordKey(cur.chord) !== chordKey(ch) || cur.chord.slash !== ch.slash) {
       setDisplay({ type: "chord", chord: ch, source: "mic", alternatives: f.alternatives || [] });
-      pushHistory(ch);
+      // Only chords that stay on screen for a moment enter the history (and the key / loop
+      // analysis), so a brief in-between flash doesn't pollute it.
+      state.pendingHist = { chord: ch, at: performance.now() };
     }
   } else if (f.stableMode === "note" && f.pitch && !f.silent) {
     const midi = Math.round(f.pitch.midi);
@@ -165,13 +181,27 @@ function onFrame(f) {
 function setDisplay(d) {
   state.display = d;
   renderReadout();
+  renderCapoNote();
+  renderSongBar();
   renderNeckView();
   renderVoicings();
   renderKeyBox();
 }
 
+/** Ranked key guesses, with hysteresis: the current key stays unless another is clearly better. */
+function rankedKeys() {
+  let ranked = guessKey(state.history);
+  if (!ranked.length) { state.key = null; return ranked; }
+  if (state.key) {
+    const cur = ranked.find((r) => r.key.tonic === state.key.tonic && r.key.mode === state.key.mode);
+    if (cur && cur !== ranked[0] && cur.score >= ranked[0].score - 0.6) ranked = [cur, ...ranked.filter((r) => r !== cur)];
+  }
+  state.key = ranked[0].key;
+  return ranked;
+}
+
 function currentKey() {
-  const ranked = guessKey(state.history);
+  const ranked = rankedKeys();
   return ranked.length ? ranked[0].key : null;
 }
 
@@ -287,6 +317,14 @@ function renderNeckView() {
     sub = "Outlined dots are the exact pitch you played; the others are the same note in other octaves.";
   }
   const faint = new Map();
+  if (state.extra === "penta") {
+    const k = currentKey() || (d.type === "chord" ? { tonic: d.chord.rootPc, mode: d.chord.q.family === "min" ? "minor" : "major" } : { tonic: pc(d.midi), mode: "minor" });
+    const pent = PENTATONIC[k.mode];
+    const degreeLabel = k.mode === "major" ? ["1", "2", "3", "5", "6"] : ["1", "♭3", "4", "5", "♭7"];
+    pent.forEach((s, i) => faint.set((k.tonic + s) % 12, state.labelMode === "interval" ? degreeLabel[i] : noteName((k.tonic + s) % 12)));
+    const rel = k.mode === "major" ? `${pretty(noteName((k.tonic + 9) % 12))} minor pentatonic` : `${pretty(noteName((k.tonic + 3) % 12))} major pentatonic`;
+    sub = `Hollow dots: the ${pretty(noteName(k.tonic))} ${k.mode} pentatonic, five notes that sound good over every chord in ${keyName(k)}${currentKey() ? "" : " (a guess until you play a few chords)"}. Same notes as the ${rel}. The classic box shape is where the dots cluster around one fret position.`;
+  }
   if (state.extra === "key") {
     const k = currentKey() || (d.type === "chord" ? { tonic: d.chord.rootPc, mode: d.chord.q.family === "min" ? "minor" : "major" } : { tonic: pc(d.midi), mode: "major" });
     const scale = k.mode === "major" ? MAJOR_SCALE : MINOR_SCALE;
@@ -324,22 +362,36 @@ function renderVoicings() {
     box.innerHTML = `<p class="muted" style="grid-column:1/-1">You're playing a single note. Chords built on it: ${[maj, min, makeChord(pc(d.midi), "7")].map((c) => `<button class="chip" type="button" data-show="${c.rootPc}:${c.quality}">${pretty(c.symbol)}</button>`).join(" ")}</p>`;
     return;
   }
-  $("voicingTitle").textContent = pretty(d.chord.baseSymbol);
-  const vs = voicingsFor(d.chord);
+  // With a capo, show the shapes you'd finger (the chord moved down by the capo).
+  const shape = shapeWithCapo(d.chord, state.capo);
+  $("voicingTitle").textContent = pretty(d.chord.baseSymbol) + (state.capo ? ` (${pretty(shape.baseSymbol)} shapes, capo ${state.capo})` : "");
+  const vs = voicingsFor(shape);
   box.innerHTML = vs.length
-    ? vs.map((v, i) => `<button class="voicing" type="button" data-v="${i}">${diagramSVG(d.chord, v)}<span class="vl">${esc(v.label)}</span><span class="vd">${esc(v.detail)}</span></button>`).join("")
+    ? vs.map((v, i) => `<button class="voicing" type="button" data-v="${i}">${diagramSVG(shape, v)}<span class="vl">${esc(v.label)}</span><span class="vd">${esc((state.capo ? `Frets counted from the capo. ` : "") + v.detail)}</span></button>`).join("")
     : `<p class="muted">No common shape stored for this chord yet.</p>`;
-  box.querySelectorAll(".voicing").forEach((b) => b.addEventListener("click", () => strum(vs[+b.dataset.v].notes)));
+  box.querySelectorAll(".voicing").forEach((b) => b.addEventListener("click", () => strum(vs[+b.dataset.v].notes.map((m) => (m == null ? null : m + state.capo)))));
 }
 
 // ---------------------------------------------------------------------------
 // History & key
+
+function updateLoop() {
+  const k = currentKey();
+  const loop = findLoop(state.history, k ? k.tonic : null);
+  const last = state.history[state.history.length - 1];
+  if (loop) { state.loop = loop; state.loopMiss = 0; }
+  else if (state.loop && last && !state.loop.chords.some((c) => chordKey(c) === chordKey(last))) {
+    // Keep showing the loop through a stray chord; drop it once you've clearly moved on.
+    if (++state.loopMiss >= 2) state.loop = null;
+  }
+}
 
 function pushHistory(ch) {
   const last = state.history[state.history.length - 1];
   if (last && chordKey(last) === chordKey(ch)) return;
   state.history.push(ch);
   if (state.history.length > 16) state.history.shift();
+  updateLoop();
   renderHistory();
 }
 
@@ -357,13 +409,14 @@ function renderHistory() {
     if (state.historyIsExample) box.insertAdjacentHTML("beforeend", `<span class="pill" style="align-self:center">example</span>`);
   }
   renderKeyBox();
+  renderSongBar();
 }
 
-$("clearHistory").addEventListener("click", () => { state.history = []; state.historyIsExample = false; renderHistory(); });
+$("clearHistory").addEventListener("click", () => { state.history = []; state.historyIsExample = false; state.loop = null; state.key = null; renderHistory(); });
 
 function renderKeyBox() {
   const box = $("keyBox");
-  const ranked = guessKey(state.history);
+  const ranked = rankedKeys();
   if (!ranked.length) {
     box.innerHTML = `<p class="hint">Play at least two different chords and I'll work out which key you're in.</p>`;
     return;
@@ -669,6 +722,73 @@ function renderLessonNecks() {
     draw();
   }
 }
+
+// ---------------------------------------------------------------------------
+// Song bar: key, numeral, tempo, progression, capo, response
+
+const RESPONSE = {
+  fast: {},
+  steady: { commitFrames: 5, onsetCommitFrames: 5, sticky: 0.12, stickyOnset: 0.1 },
+};
+
+function renderSongBar() {
+  const ranked = rankedKeys();
+  const k = ranked.length ? ranked[0].key : null;
+  const d = state.display;
+  if (!k) {
+    $("sbKey").textContent = "–";
+    $("sbKeySub").textContent = state.history.length ? "play one more different chord" : "play a few chords";
+    $("sbNum").textContent = "–";
+    $("sbFn").innerHTML = "&nbsp;";
+  } else {
+    $("sbKey").textContent = pretty(keyName(k));
+    const second = ranked[1];
+    const close = second && ranked[0].score - second.score < 0.35;
+    $("sbKeySub").textContent = close ? `or ${pretty(keyName(second.key))}` : "confident";
+    if (d.type === "chord") {
+      const r = romanFor(d.chord, k);
+      $("sbNum").textContent = pretty(r.numeral);
+      $("sbFn").textContent = r.diatonic ? `${r.fn}: ${FUNCTION_TEXT[r.fn]}` : "borrowed from outside the key";
+    } else {
+      const scale = k.mode === "major" ? MAJOR_SCALE : MINOR_SCALE;
+      const deg = scale.indexOf((pc(d.midi) - k.tonic + 12) % 12);
+      $("sbNum").textContent = deg >= 0 ? `degree ${deg + 1}` : "outside";
+      $("sbFn").textContent = deg >= 0 ? `${pretty(noteName(pc(d.midi)))} is in the scale` : `${pretty(noteName(pc(d.midi)))} is not in ${keyName(k)}`;
+    }
+  }
+  const loop = state.loop;
+  if (loop) {
+    $("sbLoop").textContent = loop.chords.map((c) => pretty(c.baseSymbol)).join(" – ");
+    $("sbLoopName").textContent = loop.famous ? `${loop.famous.numerals}: ${loop.famous.name}` : (k ? loop.chords.map((c) => pretty(romanFor(c, k).numeral)).join("–") : "repeating pattern");
+  } else {
+    $("sbLoop").textContent = "–";
+    $("sbLoopName").textContent = "loop a chord pattern twice";
+  }
+}
+
+function renderTempo() {
+  $("sbBpm").textContent = state.bpm ? `${state.bpm} BPM` : "–";
+  $("sbBpmSub").textContent = state.bpm ? "from your strums" : "strum steadily";
+}
+
+function renderCapoNote() {
+  const d = state.display;
+  if (state.capo && d.type === "chord") {
+    const shape = shapeWithCapo(d.chord, state.capo);
+    $("nowFull").insertAdjacentHTML("beforeend", ` <span class="pill">${esc(pretty(shape.baseSymbol))} shape, capo ${state.capo}</span>`);
+  }
+}
+
+(function initSongControls() {
+  $("capo").innerHTML = Array.from({ length: 10 }, (_, i) => `<option value="${i}">${i === 0 ? "none" : "fret " + i}</option>`).join("");
+  $("capo").value = state.capo;
+  $("capo").addEventListener("change", () => {
+    state.capo = +$("capo").value;
+    store.set("capo", state.capo);
+    setDisplay(state.display);
+  });
+  bindSeg("resp", "resp", () => state.listener?.setOptions({ ...DEFAULTS, ...RESPONSE[state.resp] }));
+})();
 
 // ---------------------------------------------------------------------------
 // Boot

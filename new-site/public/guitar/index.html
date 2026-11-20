@@ -96,6 +96,27 @@ nav.tabs button[aria-selected="true"] { background: var(--surface); color: var(-
 .panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; min-width: 0; }
 .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 
+/* Song bar */
+.songbar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.6fr) auto; gap: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 16px; }
+.sb-item { display: grid; gap: 2px; padding: 12px 16px; min-width: 0; align-content: start; }
+.sb-item + .sb-item { border-left: 1px solid var(--line); }
+.sb-item b { font-family: var(--display); font-size: 1.45rem; font-weight: 800; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sb-item small { color: var(--muted); font-size: 0.78rem; line-height: 1.3; }
+.sb-ctl { gap: 8px; align-content: center; }
+.sb-ctl .row { justify-content: space-between; gap: 10px; flex-wrap: nowrap; }
+@media (max-width: 980px) {
+  .songbar { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .sb-wide { grid-column: span 2; }
+  .sb-item + .sb-item { border-left: 0; }
+  .sb-item { border-top: 1px solid var(--line); }
+  .sb-item:nth-child(-n+3) { border-top: 0; }
+}
+@media (max-width: 520px) {
+  .sb-wide, .sb-ctl { grid-column: 1 / -1; }
+  .sb-item { padding: 10px 12px; }
+  .sb-item b { font-size: 1.15rem; }
+}
+
 /* Now playing */
 .now { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 16px; }
 @media (max-width: 820px) { .now { grid-template-columns: 1fr; } }
@@ -142,7 +163,7 @@ nav.tabs button[aria-selected="true"] { background: var(--surface); color: var(-
 .neck-panel { margin-top: 16px; }
 .neck-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
 .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
-.seg button { border: 0; background: transparent; padding: 5px 11px; font-size: 0.85rem; color: var(--muted); }
+.seg button { border: 0; background: transparent; padding: 5px 11px; font-size: 0.85rem; color: var(--muted); white-space: nowrap; }
 .seg button + button { border-left: 1px solid var(--line); }
 .seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
 .neck-scroll { overflow-x: auto; margin: 0 -4px; padding: 0 4px; }
@@ -287,6 +308,19 @@ footer { margin-top: 32px; font-size: 0.8rem; color: var(--muted); }
 
   <!-- LISTEN -->
   <section class="view" id="view-listen">
+    <div class="songbar" id="songbar">
+      <div class="sb-item"><span class="eyebrow">Key</span><b id="sbKey">–</b><small id="sbKeySub">play a few chords</small></div>
+      <div class="sb-item"><span class="eyebrow">In the key</span><b id="sbNum">–</b><small id="sbFn">&nbsp;</small></div>
+      <div class="sb-item"><span class="eyebrow">Tempo</span><b id="sbBpm">–</b><small id="sbBpmSub">from your strums</small></div>
+      <div class="sb-item sb-wide"><span class="eyebrow">Progression</span><b id="sbLoop">–</b><small id="sbLoopName">loop a chord pattern twice</small></div>
+      <div class="sb-item sb-ctl">
+        <div class="row"><label class="eyebrow" for="capo">Capo</label><select id="capo" aria-label="Capo fret"></select></div>
+        <div class="row"><span class="eyebrow">Response</span><div class="seg" role="group" aria-label="Detection response">
+          <button type="button" data-resp="fast" aria-pressed="true" title="Shows chord changes after ~0.15 s; may briefly flash an in-between chord">Fast</button>
+          <button type="button" data-resp="steady" aria-pressed="false" title="Waits a little longer before switching; calmer display">Steady</button>
+        </div></div>
+      </div>
+    </div>
     <div class="now">
       <div class="panel readout" id="readout">
         <div class="status">
@@ -330,9 +364,10 @@ footer { margin-top: 32px; font-size: 0.8rem; color: var(--muted); }
             <button type="button" data-label="name" aria-pressed="false">Note names</button>
           </div>
           <div class="seg" role="group" aria-label="Extra notes">
-            <button type="button" data-extra="none" aria-pressed="true">Chord only</button>
-            <button type="button" data-extra="key" aria-pressed="false">+ Key scale</button>
-            <button type="button" data-extra="all" aria-pressed="false">All notes</button>
+            <button type="button" data-extra="none" aria-pressed="true">Chord</button>
+            <button type="button" data-extra="key" aria-pressed="false" title="Show the rest of the key's scale">+ Scale</button>
+            <button type="button" data-extra="penta" aria-pressed="false">+ Pentatonic</button>
+            <button type="button" data-extra="all" aria-pressed="false">All</button>
           </div>
         </div>
       </div>

@@ -259,7 +259,7 @@ function fitsDegree(quality, k, deg) {
  * Guess the key from recent chords (oldest first). Returns ranked keys with scores, or [] if too little data.
  */
 export function guessKey(history) {
-  const recent = history.slice(-10);
+  const recent = history.slice(-12);
   const distinct = new Set(recent.map((c) => c.rootPc + ":" + c.quality));
   if (distinct.size < 2) return [];
   const out = [];
@@ -277,9 +277,11 @@ export function guessKey(history) {
           if (deg === 0) score += 0.45 * w; // tonic chord present
         }
       });
-      const first = recent[0];
+      // Where the song started is a strong tonic cue; use the start of the whole history,
+      // not of the sliding window (which would drift through the loop).
+      const first = history[0];
       const last = recent[recent.length - 1];
-      if (first && first.rootPc === tonic) score += 0.25;
+      if (first && first.rootPc === tonic) score += 0.6;
       if (last && last.rootPc === tonic) score += 0.15;
       if (mode === "major") score += 0.01; // tiny tie-break toward major
       out.push({ key: k, score });
@@ -382,3 +384,86 @@ export function positionsOf(pitchClass, maxFret = 12) {
 }
 
 export { SHAPES as _SHAPES, OPEN as _OPEN };
+
+// ----------------------------------------------------------------------------
+// Song helpers: progression loops, solo scales, capo
+
+export const PENTATONIC = { major: [0, 2, 4, 7, 9], minor: [0, 3, 5, 7, 10] };
+
+const famOf = (q) => {
+  const f = QUALITIES[q].family;
+  if (f === "dom") return "maj";
+  if (f === "sus" || f === "5") return "any";
+  if (f === "aug") return "maj";
+  return f; // maj | min | dim
+};
+
+// Well-known progressions as [semitones above tonic, family] steps.
+const FAMOUS = [
+  { steps: [[0, "maj"], [7, "maj"], [9, "min"], [5, "maj"]], numerals: "I–V–vi–IV", name: "the four-chord pop progression", mode: "major" },
+  { steps: [[9, "min"], [5, "maj"], [0, "maj"], [7, "maj"]], numerals: "vi–IV–I–V", name: "the pop progression started on the minor chord (sadder)", mode: "major" },
+  { steps: [[0, "maj"], [9, "min"], [5, "maj"], [7, "maj"]], numerals: "I–vi–IV–V", name: "the 50s doo-wop progression", mode: "major" },
+  { steps: [[0, "maj"], [5, "maj"], [7, "maj"]], numerals: "I–IV–V", name: "the folk / blues / rock-and-roll workhorse", mode: "major" },
+  { steps: [[0, "maj"], [5, "maj"], [7, "maj"], [5, "maj"]], numerals: "I–IV–V–IV", name: "the garage-rock riff progression", mode: "major" },
+  { steps: [[2, "min"], [7, "maj"], [0, "maj"]], numerals: "ii–V–I", name: "the jazz cadence", mode: "major" },
+  { steps: [[0, "maj"], [10, "maj"], [5, "maj"]], numerals: "I–♭VII–IV", name: "the Mixolydian rock progression (borrowed ♭VII)", mode: "major" },
+  { steps: [[0, "maj"], [5, "maj"]], numerals: "I–IV", name: "a two-chord vamp", mode: "major" },
+  { steps: [[0, "maj"], [7, "maj"]], numerals: "I–V", name: "a two-chord vamp", mode: "major" },
+  { steps: [[0, "min"], [10, "maj"], [8, "maj"], [7, "maj"]], numerals: "i–VII–VI–V", name: "the Andalusian cadence (flamenco)", mode: "minor" },
+  { steps: [[0, "min"], [8, "maj"], [3, "maj"], [10, "maj"]], numerals: "i–VI–III–VII", name: "the epic minor pop progression", mode: "minor" },
+  { steps: [[0, "min"], [8, "maj"], [10, "maj"]], numerals: "i–VI–VII", name: "the minor rock progression", mode: "minor" },
+  { steps: [[0, "min"], [5, "min"], [7, "min"]], numerals: "i–iv–v", name: "natural-minor progression", mode: "minor" },
+  { steps: [[0, "min"], [5, "min"], [7, "maj"]], numerals: "i–iv–V", name: "minor progression with the strong major V", mode: "minor" },
+  { steps: [[0, "min"], [7, "maj"]], numerals: "i–V", name: "a minor two-chord vamp", mode: "minor" },
+];
+
+/**
+ * Detect a repeating chord loop at the end of the history (at least two full cycles).
+ * Returns {chords, famous?: {numerals, name, tonic}} or null.
+ */
+export function findLoop(history, preferTonic = null) {
+  // Same chord for loop purposes: same root and compatible type (a power chord matches the
+  // major or minor chord on its root, since it's that chord without the third).
+  const same = (a, b) => {
+    if (a.rootPc !== b.rootPc) return false;
+    const fa = famOf(a.quality), fb = famOf(b.quality);
+    return fa === fb || fa === "any" || fb === "any";
+  };
+  const L = history.length;
+  for (let p = 2; p <= 6; p++) {
+    if (L < 2 * p) break;
+    let ok = true;
+    for (let i = 0; i < p; i++) if (!same(history[L - 1 - i], history[L - 1 - p - i])) { ok = false; break; }
+    if (!ok) continue;
+    // Name each step by the fuller of its two occurrences (F rather than F5).
+    const loop = history.slice(-p).map((c, i) => {
+      const other = history[L - 2 * p + i];
+      return QUALITIES[c.quality].family === "5" || QUALITIES[c.quality].family === "sus" ? other : c;
+    });
+    // Try every rotation and tonic against the famous list; prefer the guessed key's tonic.
+    let found = null;
+    const tonics = preferTonic != null ? [preferTonic, ...[...Array(12).keys()].filter((x) => x !== preferTonic)] : [...Array(12).keys()];
+    outer: for (const tonic of tonics) {
+      for (const f of FAMOUS) {
+        if (f.steps.length !== p) continue;
+        for (let r = 0; r < p; r++) {
+          const rot = loop.slice(r).concat(loop.slice(0, r));
+          const match = rot.every((c, i) => {
+            const [semi, fam] = f.steps[i];
+            const cf = famOf(c.quality);
+            return (c.rootPc - tonic + 12) % 12 === semi && (cf === fam || cf === "any");
+          });
+          if (match) { found = { ...f, tonic, chords: rot }; break outer; }
+        }
+      }
+    }
+    return { chords: found ? found.chords : loop, famous: found };
+  }
+  return null;
+}
+
+/** Chord as fingered with a capo: the shape name is the sounding chord moved down by the capo. */
+export function shapeWithCapo(chord, capo) {
+  if (!capo) return chord;
+  return makeChord((chord.rootPc - capo + 12) % 12, chord.quality);
+}
